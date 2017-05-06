@@ -1,4 +1,4 @@
-package de.arthurkaul.archref;
+package de.arthurkaul.archref.restController;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -13,12 +13,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import de.arthurkaul.archref.Repository;
+import de.arthurkaul.archref.exceptions.RepositoryAlreadyExistException;
+import de.arthurkaul.archref.exceptions.RepositoryNotFoundException;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -51,18 +56,16 @@ public class AdministrationController {
 	 */
 	@RequestMapping(value = "/api/repositories", method = RequestMethod.POST)
     public ResponseEntity<Repository> createRepository(@RequestBody Repository repository, UriComponentsBuilder ucBuilder) {
-		
-		System.out.println("Rep Name" + repository.getName());
-		System.out.println("CREATE REPOSITORY");
        
 		if (isRepositoryExist(repository)) {
-            return new ResponseEntity(new CustomErrorType("Unable to create. A Repository with name " + 
-            		repository.getName() + " already exist."),HttpStatus.CONFLICT);
+			throw new RepositoryAlreadyExistException("RepositoryAlreadyExistException: Unable to create Repository. Repository with name: "+ repository.getName() + "already exist.");  
         }
 		
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/repositories/{name}").buildAndExpand(repository.getName()).toUri());
-        return new ResponseEntity<Repository>( repository, headers, HttpStatus.CREATED);
+      
+        return ResponseEntity.created(headers.getLocation()).body(repository);
+       
      }
  
 
@@ -90,18 +93,18 @@ public class AdministrationController {
     // ------------------- Delete a User-----------------------------------------
  
     @RequestMapping(value = "/api/repositories/{name}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable("name") String name) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("name") String name) {
 
     	File file = new File("/resources/static/repositories/" + name);
       
         if (!file.isDirectory()) {
-           
-            return new ResponseEntity(new CustomErrorType("Unable to delete. Repository with name " + name + " not found."),
-                    HttpStatus.NOT_FOUND);
+ 
+        	throw new RepositoryNotFoundException("RepositoryNotFoundException: Unable to delete Repository. Repository with name"+ name + "not found.");  
+            
         }
         file.delete();
 
-        return new ResponseEntity<Repository>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
  
 //    // ------------------- Delete All Users-----------------------------
@@ -175,6 +178,12 @@ public class AdministrationController {
 //       }
 //		return new ResponseEntity<Repository>(repositories, HttpStatus.OK);
 //	}
+	
+	 @ExceptionHandler(RepositoryNotFoundException.class)  
+	    public String exceptionHandler(Exception e){  
+	        return e.getMessage();  
+	       	        
+	    }  
 	
 	
 }

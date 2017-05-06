@@ -1,4 +1,4 @@
-package de.arthurkaul.archref;
+package de.arthurkaul.archref.restController;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
