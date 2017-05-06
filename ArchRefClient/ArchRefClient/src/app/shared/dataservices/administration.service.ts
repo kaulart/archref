@@ -18,11 +18,11 @@ export class AdministrationService {
         return this.http.get(this.repositoriesUrl).map(this.extractRepositoriesListData).catch(this.handleError);
    }
 
-   public addRepository(name: String): Observable<Repository> {
+   public addRepository(repository: Repository): Observable<Repository> {
     alert('POST RequestSend');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.repositoriesUrl, JSON.stringify(name), options)
+    return this.http.post(this.repositoriesUrl, repository, options)
                     .map(this.extractRepositoryData)
                     .catch(this.handleError);
   }

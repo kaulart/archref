@@ -2,6 +2,7 @@
 export class Repository {
 
   name: string;
+  id: number;
 
   constructor(name: string) {
     this.name = name;
@@ -13,6 +14,10 @@ export class Repository {
 
   public setName(name: string) {
     this.name = name;
+  }
+
+   public getID() {
+    return this.name;
   }
 
 }

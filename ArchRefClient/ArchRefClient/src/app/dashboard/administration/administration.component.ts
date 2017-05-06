@@ -22,7 +22,8 @@ export class AdministrationComponent implements OnInit {
 
   private addRepository(name: string) {
     alert("AddNewRepository");
-    this.administrationDataService.addRepository(name).subscribe(repositories => this.repositories.push(repositories));
+    let repository: Repository = new Repository(name);
+    this.administrationDataService.addRepository(repository).subscribe(repositories => this.repositories.push(repositories));
   }
 
   private editRepository(id: string) {
