@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+.top_collapse_area {
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background: #004080;
+    padding: 20px;
+}
+
+.middle_collapse_area {
+      border: 2px solid #004080;
+      padding: 20px;
+}
+
+.bottom_collapse_area {
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    height: 40px;
+    background: #004080;
+    padding: 20px;
+}
+
+.dashboard_area {
+    padding: 20px;
+}
+
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #c0c0c0;
+}
+
+.table-head{
+	background-color: #808080;	
+}
+
+.data_panel{
+
+	margin-bottom:30px;
+}

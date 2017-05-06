@@ -1,0 +1,26 @@
+<button class="btn btn-default" id="toggle-sidebar" type="button"
+	(click)="eventCalled()">&#9776;</button>
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+	<ul class="list-group">
+		<a routerLink="/dashboard/home"
+			[routerLinkActive]="['router-link-active']" class="list-group-item">
+			<i class="fa fa-fw fa-dashboard"></i> Home
+		</a>
+		
+		<a routerLink="/dashboard/modelling"
+			[routerLinkActive]="['router-link-active']" class="list-group-item">
+			<i class="fa fa-fw fa-dashboard"></i> Topology-Tool
+		</a>
+		
+		<a routerLink="/dashboard/modelling"
+			[routerLinkActive]="['router-link-active']" class="list-group-item">
+			<i class="fa fa-fw fa-dashboard"></i> Level-Graph-Tool
+		</a>
+		
+		<a routerLink="/dashboard/administration"
+			[routerLinkActive]="['router-link-active']" class="list-group-item">
+			<i class="fa fa-fw fa-dashboard"></i> Administration Tool
+		</a>
+		
+	</ul>
+</nav>

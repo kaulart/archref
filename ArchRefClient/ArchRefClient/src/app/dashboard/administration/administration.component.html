@@ -1,0 +1,83 @@
+<div class="dashboard_area">
+  <h2 class="text-muted">
+		Administration
+  </h2>
+  
+  <div id="repository_area panel-group" class="row data_panel" aria-multiselectable="true">
+  
+  	<div class="top_collapse_area col-12-sm">
+  		<h3 class="text-muted">
+		Repositories
+ 		 </h3>
+ 		 
+ 		<button class="w3-green" id="addRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#addRepositoriesFieldsArea">
+ 		 <i class="fa fa-plus" aria-hidden="true"></i>
+ 		 New</button>
+ 		
+ 		<button id="importRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importRepositoriesFieldsArea">
+         <i class="fa fa-upload" aria-hidden="true"></i>
+ 		Import</button>
+  	</div>
+ 	
+ 	<div id="accordion panel-group">
+  		<div class="collapse panel" id="addRepositoriesFieldsArea">
+  	    	<form>
+      			<div class="form-group">
+        		<label for="name">Name</label>
+        			<input #name type="text" class="form-control" id="name" value="Unnamed" required>
+      			</div>
+      			
+      			<button type="submit" class="btn btn-success" (click)=(addRepository(name.value))>Save</button>
+   			 </form>
+  		</div>
+  	
+  		<div class="collapse panel" id="importRepositoriesFieldsArea">
+  			<form>
+  				<div class="form-group">
+        		<label for="name">Name</label>
+        			<input type="text" class="form-control" id="name" required>
+      			</div>
+     			 <div class="form-group">
+       				 <label for="name">File</label>
+       				 <input type="text" class="form-control" id="name" required>
+    			 </div>
+    			 
+     			 <button type="submit" class="btn btn-success" (click)=(importRepository())>Upload</button>
+ 			 </form>
+  		</div>
+  	
+    </div>
+  	
+  	<div class="middle_collapse_area col-12-sm w3-responsive">
+  		<table class="w3-table-all table-striped w3-bordered">
+  			<thead>
+  				<tr>
+  					<th class="table-head"></th>
+   			  		<th class="table-head">Nr.</th>
+     				<th class="table-head">Name</th>
+     				<th class="table-head">Edit</th>
+     				<th class="table-head">Export</th>
+     				<th class="table-head">Delete</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+  				<tr routerLink="/dashboard/repository"  [queryParams]="{name: repository.getName() }"
+			 *ngFor="let repository of repositories">
+   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+   				 <td>{{ repositories.indexOf(repository) +1 }}</td>	 
+   				 <td>{{repository.name}}</td>
+   				 <td><button (click)="editRepository(repository.name)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="exportRepository(repository.name)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="deleteRepository(repository.name, $event)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+ 			</tr>
+  			</tbody>
+ 		</table>
+  	</div>
+  	
+  	<div class="bottom_collapse_area">
+  	
+  	</div>
+  	
+  </div>
+  
+</div>

@@ -1,0 +1,55 @@
+<div id="moddeling_area" class="container-fluid">
+	
+	<div class="row">
+		<div id="controll_area" class="col-xl-12 col-lg-12 w3-blue">
+			
+		</div>
+		
+		<div id="draw_area" class="col-xl-9 col-lg-9 w3-red"  (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+	        
+	       <svg class="draw-window w3-white" preserveAspectRatio="xMidYMid meet" >
+                <rect *ngFor="let node of nodes" [attr.name]="node.getName()" [attr.id]="node.getID()" [attr.x]="node.getPos_X()" [attr.y]="node.getPos_Y()" [attr.width]="node.getWidth()" [attr.height]="node.getHeight()" (mousedown)="startMovingNode($event, node)" (mousemove)="moveNode($event, node)" (mouseup)="mouseUp($event)" />
+           		
+           </svg>
+           	
+    	</div>
+    	
+		<div id="toolbox_area" class="col-xl-3 col-lg-3 w3-green" >
+			
+			<div class="col-sm-12">
+				Toolbox
+			</div>
+			
+			<div class="col-sm-12 toolbox">
+  			
+  				<button class="col-sm-12 btn btn-primary" type="button" data-toggle="collapse" data-target="#nodeTypesToolbox" aria-expanded="false" aria-controls="nodeTypesToolbox">
+   					<span class="glyphicon glyphicon-triangle-right" aria-hidden="true">NodeTypes</span>
+ 				</button>
+
+				<div class=" col-sm-12 collapse toolbox" id="nodeTypesToolbox">
+			 		<ul id="nodeTypesList" class=" col-sm-12 list-group">
+            			<li draggable="true" *ngFor="let nodeType of nodeTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{nodeType.getName()}}</li>
+             		</ul>
+				</div>
+			</div>
+			
+			<div class="col-sm-12 toolbox">
+				
+				<button class="col-sm-12 btn btn-primary" type="button" data-toggle="collapse" data-target="#relationTypeToolbox" aria-expanded="false" aria-controls="relationTypeToolbox">
+   					<span class="glyphicon glyphicon-triangle-right" aria-hidden="true">RelationTypes</span>
+ 				</button>
+
+				<div class=" col-sm-12 collapse" id="relationTypeToolbox">
+			 		<ul id="relationTypesList" class=" col-sm-12 list-group">
+            			<li draggable="true" *ngFor="let relationType of relationTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{relationType.getName()}}</li>
+             		</ul>
+				</div>
+			
+			</div>
+
+		</div>
+		
+	</div>
+	
+</div>
+

@@ -1,0 +1,96 @@
+<div class="dashboard_area">
+  <h2 class="text-muted">
+		{{name}} Repository
+  </h2>
+  
+  <div id="nodeType_area" class="data_panel row ">
+  
+  	<div class="top_collapse_area col-12-sm">
+  		<h3 class="text-muted">
+		NodeTypes
+ 		 </h3>
+  	</div>
+  	
+  	<div class="middle_collapse_area col-12-sm w3-responsive">
+  		<table class="w3-table-all table-striped w3-bordered">
+  			<thead>
+  				<tr>
+  					<th class="table-head"></th>
+   			  		<th class="table-head">Nr.</th>
+   			  
+     				<th class="table-head">Name</th>
+     				<th class="table-head">View</th>
+     				<th class="table-head">Edit</th>
+     				<th class="table-head">Export</th>
+     				<th class="table-head">Delete</th>
+  				</tr>
+  			</thead>
+  		
+  			<tbody>
+  				<tr
+			 *ngFor="let nodeType of nodeTypeList">
+   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+   				 <td>{{ nodeTypeList.indexOf(nodeType) + 1 }}</td>
+   				 <td>{{ nodeType.getName() }}</td>
+   				 <td><button (click)="viewNodeType(nodeType.getID())"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="editNodeType(nodeType.getID())"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="exportNodeType(nodeType.getID())"><i class="fa fa-download" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="deleteNodeType(nodeType.getID())"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+ 			</tr>
+ 			
+  			</tbody>
+ 		</table>
+  	</div>
+  	
+  	<div class="bottom_collapse_area">
+  	
+  	</div>
+  	
+  </div>
+  
+  <div id="relationType_area" class=" data_panel row">
+  
+  	<div class="top_collapse_area col-12-sm">
+  		<h3 class="text-muted">
+		RelationTypes
+ 		 </h3>
+  	</div>
+  	
+  	<div class="middle_collapse_area col-12-sm w3-responsive">
+  		<table class="w3-table-all table-striped w3-bordered">
+  			<thead>
+  				<tr>
+  					<th class="table-head"></th>
+   			  		<th class="table-head">Nr.</th>
+     				<th class="table-head">Name</th>
+     				<th class="table-head">ID</th>
+     				<th class="table-head">Edit</th>
+     				<th class="table-head">Export</th>
+     				<th class="table-head">Delete</th>
+  				</tr>
+  			</thead>
+  		
+  			<tbody>
+  				<tr
+			 *ngFor="let relationType of relationTypeList">
+   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+   				 <td>{{ relationTypeList.indexOf(relationType) + 1 }}</td>
+   				 <td>{{ relationType.getName() }}</td>
+   				 <td>{{ relationType.getName() }}</td>
+   				 <td (click)="editRelationType(relationType.getID())"><i class="fa fa-pencil" aria-hidden="true"></i></td>
+   				 <td (click)="exportRelationType(relationType.getID())"><i class="fa fa-download" aria-hidden="true"></i></td>
+   				 <td (click)="deleteRelationType(relationType.getID())"><i class="fa fa-trash" aria-hidden="true"></i></td>
+ 			</tr>
+ 			
+  			</tbody>
+ 		</table>
+  	</div>
+  	
+  	<div class="bottom_collapse_area">
+  	
+  	</div>
+  	
+  </div>
+  
+</div>
+
