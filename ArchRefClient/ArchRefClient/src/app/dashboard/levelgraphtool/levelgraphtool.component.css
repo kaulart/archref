@@ -1,0 +1,33 @@
+#moddeling_area{
+	
+	height: 300px;
+	width: 100%;
+}
+
+#draw_area{
+	height: 800px;
+}
+
+#controll_area_level_grap_tool{
+	height: 250px;
+	width: 100%;
+	padding : 5px;	
+}
+
+#toolbox_area{
+	height: 800px;
+	padding : 5px;	
+}
+
+.draggable{
+	cursor:move;
+}
+
+.draw-window{
+	height: 100px;
+	width: 100%;
+}
+
+.toolbox{
+	padding: 5px;
+}

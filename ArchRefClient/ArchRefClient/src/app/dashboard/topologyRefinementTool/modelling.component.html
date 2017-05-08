@@ -28,7 +28,7 @@
 
 				<div class=" col-sm-12 collapse toolbox" id="nodeTypesToolbox">
 			 		<ul id="nodeTypesList" class=" col-sm-12 list-group">
-            			<li draggable="true" *ngFor="let nodeType of nodeTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{nodeType.getName()}}</li>
+            			<li draggable="true" *ngFor="let nodeType of nodeTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{nodeType.name}}</li>
              		</ul>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 
 				<div class=" col-sm-12 collapse" id="relationTypeToolbox">
 			 		<ul id="relationTypesList" class=" col-sm-12 list-group">
-            			<li draggable="true" *ngFor="let relationType of relationTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{relationType.getName()}}</li>
+            			<li draggable="true" *ngFor="let relationshipType of relationshipTypes" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{relationshipType.name}}</li>
              		</ul>
 				</div>
 			

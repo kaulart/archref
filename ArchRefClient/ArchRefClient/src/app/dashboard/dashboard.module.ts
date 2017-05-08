@@ -10,10 +10,13 @@ import { DashboardComponent } from './dashboard.component';
 
 import {TopNavComponent} from '../shared/index';
 import {SidebarComponent} from '../shared/index';
-import { ModellingModule } from './architectureRefinementTool/modelling.module';
-import { LevelgraphmodellingComponent } from './levelGraphModellingTool/levelgraphmodelling.component';
+import { ModellingModule } from './topologyRefinementTool/modelling.module';
+
 import { AdministrationComponent } from './administration/administration.component';
 import { RepositoryComponent } from './administration/repository/repository.component';
+import { LevelGraphModellerComponent } from './levelgraphtool/levelgraphmodeller/levelgraphmodeller.component';
+import { LevelGraphToolComponent } from './levelgraphtool/levelgraphtool.component';
+
 
 
 @NgModule({
@@ -24,7 +27,7 @@ import { RepositoryComponent } from './administration/repository/repository.comp
       HomeModule,
       ModellingModule
     ],
-    declarations: [DashboardComponent, TopNavComponent, SidebarComponent, LevelgraphmodellingComponent, AdministrationComponent, RepositoryComponent],
+    declarations: [DashboardComponent, TopNavComponent, SidebarComponent, LevelGraphToolComponent, AdministrationComponent, RepositoryComponent, LevelGraphModellerComponent],
     exports: [DashboardComponent, TopNavComponent, SidebarComponent]
 })
 

@@ -1,33 +1,16 @@
-import { LevelGraphNode } from './levelgraphnode';
-import { LevelGraphRelation } from './levelgraphrelation';
+
 
 export class LevelGraph {
 
-  private levelGraphNodeList : LevelGraphNode[];
-  private levelGraphRelationList : LevelGraphRelation[];
+  name: string;
+  id: string;
+  numberOfLevels: number;
 
-  constructor() {
-
+  constructor(name: string, id: string, numberOfLevels: number) {
+      this.name = name;
+      this.id = id;
+      this.numberOfLevels = numberOfLevels;
   }
 
-  public addNode() {
-
-  }
-
-  public removeNode() {
-
-  }
-
-  public addRelation() {
-
-  }
-
-  public setLevelGraphNodeList() {}
-
-  public setLevelGraphRelationList() {}
-
-  public getLevelGraphNodeList() {}
-
-  public getLevelGraphRelationList() {}
 }
 

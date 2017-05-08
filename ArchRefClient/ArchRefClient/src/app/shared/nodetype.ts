@@ -1,34 +1,13 @@
-import { DeploymentArtifact } from './deploymentartifact';
-import { InstanceState } from './instancestate';
-import { Interface } from './interface';
-import { Policy } from './policy';
 
-
+import { Repository } from './repository';
 export class NodeType {
 
-      iconPath: string;
-      interfaces: Interface[];
-      private name: string;
-      private id: string;
-      isAbstractNodeType: boolean;
-      isFinalNodeType: boolean;
-      instanceStates: InstanceState[];
-      derivedFrom: string;
-      policies: Policy[];
-      deploymentArtifacts: DeploymentArtifact[];
+              name: string;
+                id: number = null;
+        repositoryNodeType: Repository;
 
-      constructor(name: string, id: string) {
+      constructor(name: string, repositoryNodeType: Repository) {
           this.name = name;
-          this.id = id;
+          this.repositoryNodeType = repositoryNodeType;
       }
-
-      public getName() {
-        return this.name;
-      }
-
-      public getID() {
-         return this.id;
-      }
-
-
 }

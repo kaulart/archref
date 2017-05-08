@@ -4,7 +4,7 @@ import { Route } from '@angular/router';
 
 export const ModellingRoutes: Route[] = [
     {
-      path: 'modelling',
+      path: 'topologyrefinementtool',
       component: ModellingComponent
     }
 ];

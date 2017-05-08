@@ -1,0 +1,92 @@
+<div class="dashboard_area">
+  <h2 class="text-muted">
+		Level-Graph Administration
+  </h2>
+  
+  <div id="repository_area panel-group" class="row data_panel" aria-multiselectable="true">
+  
+  	<div class="top_collapse_area col-12-sm">
+  		<h3 class="text-muted">
+		Level-Graphs
+ 		</h3>
+ 		 
+ 		<button class="w3-green" id="createLevelGraph" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createLevelGraphFieldsArea">
+ 		 <i class="fa fa-plus" aria-hidden="true"></i>
+ 		 New</button>
+ 		
+ 		<button  data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importLevelGraphFieldsArea">
+         <i class="fa fa-upload" aria-hidden="true"></i>
+ 		Import</button>
+  	</div>
+ 	
+ 	<div id="accordion panel-group">
+  		
+  		<div class="collapse panel" id="createLevelGraphFieldsArea">
+  	    	<form>
+      			<div class="form-group">
+        		<label for="name">Name</label>
+        			<input #name type="text" class="form-control" id="name" value="Unnamed" required>
+      			</div>
+      			
+      			<div class="form-group">
+        		<label for="numberOfLevels">Name</label>
+        			<input #numberOfLevels type="text" class="form-control" id="numberOfLevels" value="1" required>
+      			</div>
+      			
+      			<button type="submit" class="btn btn-success" (click)="createLevelGraph(name.value, numberOfLevels.value)">Create</button>
+   			 </form>
+  		</div>
+  	
+  		<div class="collapse panel" id="importLevelGraphFieldsArea">
+  			<form>
+  				<div class="form-group">
+        		<label for="name">Name</label>
+        			<input type="text" class="form-control" id="name" required>
+      			</div>
+     			 <div class="form-group">
+       				 <label for="name">File</label>
+       				 <input type="text" class="form-control" id="name" required>
+    			 </div>
+    			 
+     			 <button type="submit" class="btn btn-success" (click)=(importLevelGraph())>Upload</button>
+ 			 </form>
+  		</div>
+  	
+    </div>
+  	
+  	<div class="middle_collapse_area col-12-sm w3-responsive">
+  		<table class="w3-table-all table-striped w3-bordered">
+  			<thead>
+  				<tr>
+  					<th class="table-head"></th>
+   			  		<th class="table-head">Nr.</th>
+     				<th class="table-head">Name</th>
+     				<th class="table-head">ID</th>
+     				<th class="table-head">View</th>
+     				<th class="table-head">Edit</th>
+     				<th class="table-head">Export</th>
+     				<th class="table-head">Delete</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+  				<tr routerLink="/dashboard/levelgraphmodeller"  [queryParams]="{name: levelGraph.name, id: levelGraph.id}" *ngFor="let levelGraph of levelGraphs">
+   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+   				 <td>{{ levelGraphs.indexOf(levelGraph) +1 }}</td>	 
+   				 <td>{{ levelGraph.name }}</td>
+   				 <td>{{ levelGraph.id }}</td>
+   				 <td><button (click)="editRepository(levelGraph.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="editRepository(levelGraph.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="exportRepository(levelGraph.id)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="deleteLevelGraph(levelGraph.id, $event)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+ 			     </tr>
+  			</tbody>
+ 		</table>
+  	</div>
+  	
+  	<div class="bottom_collapse_area">
+  	
+  	</div>
+  	
+  </div>
+  
+</div>

@@ -1,55 +1,66 @@
-import { RelationType } from '../relationtype';
+
+import { RelationshipType } from '../relationshiptype';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class RelationTypeService {
+export class RelationshipTypeService {
 
-  private repositoriesUrl = '/api/relationTypes';
+  private relationshipTypeUrl = '/api/relationshiptype';
 
   constructor(private http: Http) { }
 
-  public getRelationTypes(): Observable<RelationType[]> {
-
-   alert('GET RequestSend');
-
-   return this.http.get(this.repositoriesUrl)
-                    .map(this.extractRelationTypesData)
+  public getRelationshipTypes(): Observable<RelationshipType[]> {
+    alert("GET RELATIONTYPE REQUEST SEND");
+   return this.http.get(this.relationshipTypeUrl)
+                    .map(this.extractRelationshipTypesDataList)
                     .catch(this.handleError);
   }
 
 
-   public getNodeTypes(): Observable<RelationType[]> {
-
-   alert('GET NodeType RequestSend');
-
-   return this.http.get(this.repositoriesUrl)
-                    .map(this.extractRelationTypesData)
-                    .catch(this.handleError);
-  }
-
-
-   public addRepository(relationType: RelationType): Observable<RelationType> {
-    alert('POST NodeType RequestSend');
+   public createRelationshipType(relationshipType: RelationshipType): Observable<RelationshipType> {
+    alert('POST RelationshipType RequestSend');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.repositoriesUrl, JSON.stringify(name), options)
-                    .map(this.extractRelationTypesData)
+    return this.http.post(this.relationshipTypeUrl, relationshipType, options)
+                    .map(this.extractRelationshipTypeData)
                     .catch(this.handleError);
   }
 
-  public deleteNodeType(relationTypeName: String, repositoryName: String): Observable<RelationType> {
-    alert('DELETE NodeType RequestSend');
+  public deleteRelationshipType(id: string): Observable<RelationshipType> {
+    alert('DELETE RelationshiupType RequestSend');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.repositoriesUrl + '/' + relationTypeName + '/' +  repositoryName, options)
+    return this.http.delete(this.relationshipTypeUrl + '/' + id, options)
                     .map(res => res)
                     .catch(this.handleError);
   }
 
-  public extractRelationTypesData() {
+  public extractRelationshipTypesDataList(res) {
 
+       let body = res.json();
+       let relationshipTypeList: RelationshipType[] = [];
+       alert("BODyDATA RELATION" + JSON.stringify(body));
+
+       for (let relationshipType of body) {
+
+        let tempRelationshipType: RelationshipType = new RelationshipType(relationshipType.name, relationshipType.repository);
+        tempRelationshipType.id =  relationshipType.id;
+        relationshipTypeList.push(tempRelationshipType);
+
+    }
+
+    return relationshipTypeList || { };
+
+  }
+
+   private extractRelationshipTypeData(res: Response) {
+    let body = res.json();
+    let relationshipType: RelationshipType = new RelationshipType(body.name, body.repository);
+       alert("BODyDATA ITeM RELATION" + JSON.stringify(body));
+    relationshipType.id = body.id; 
+    return relationshipType || { };
   }
 
   private handleError(error: Response | any)  {

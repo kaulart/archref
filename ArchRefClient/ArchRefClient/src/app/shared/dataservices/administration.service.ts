@@ -7,19 +7,30 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AdministrationService {
-//    let headers = new Headers();
-//    headers.append('Accept', 'application/xml');
+
    private repositoriesUrl = '/api/repositories';
 
    constructor(private http: Http) { }
 
+   //GET
    public getRepositories(): Observable<Repository[]> {
-
-        return this.http.get(this.repositoriesUrl).map(this.extractRepositoriesListData).catch(this.handleError);
+        alert("SEND GET ALL REPOSITORIES REQUEST");
+        return this.http.get(this.repositoriesUrl).map(this.extractRepositoryDataList).catch(this.handleError);
    }
 
+   public getRepository(id: number): Observable<Repository> {
+     
+     alert("SEND GET REPOSITORY ID REQUEST");
+    return this.http.get(this.repositoriesUrl + '/' + id)
+                    .map(this.extractRepositoryData)
+                    .catch(this.handleError);
+  }
+
+   //CREATE
    public addRepository(repository: Repository): Observable<Repository> {
-    alert('POST RequestSend');
+     
+   
+     alert("SEND CREATE REPOSITORY REQUEST");
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.repositoriesUrl, repository, options)
@@ -27,23 +38,30 @@ export class AdministrationService {
                     .catch(this.handleError);
   }
 
-  public deleteRepository(name: String): Observable<Repository> {
-    alert('DELETE RequestSend');
+  //DELETE
+  public deleteRepository(id: string): Observable<Repository> {
+     alert("SEND DELETE REPOSITORY ID REQUEST");
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.repositoriesUrl + '/' + name , options)
+    return this.http.delete(this.repositoriesUrl + '/' + id , options)
                     .map(res => res)
                     .catch(this.handleError);
   }
 
-  private extractRepositoriesListData(res: Response) {
+  private extractRepositoryDataList(res: Response) {
 
     let body = res.json();
     let repoList: Repository[] = [];
-
+    alert("BODY DATA OF ARRAY \n" + JSON.stringify(body));
     for (let repository of body) {
+
         let tempRepository: Repository = new Repository(repository.name);
+        tempRepository.id = repository.id;
+        tempRepository.id = repository.id;
+        tempRepository.nodeTypeList =  repository.nodeTypeList;
+        tempRepository.relationshipTypeList = repository.relationTypeList;
         repoList.push(tempRepository);
+
     }
 
     return repoList || { };
@@ -51,9 +69,11 @@ export class AdministrationService {
 
   private extractRepositoryData(res: Response) {
     let body = res.json();
-    alert(body.name);
+      alert("BODY DATA OF ITEM \n" + JSON.stringify(body));
     let rep: Repository = new Repository(body.name);
-       alert(rep);
+    rep.id = body.id;
+    rep.nodeTypeList =  body.nodeTypeList;
+    rep.relationshipTypeList = body.relationTypeList;
     return rep || { };
   }
 

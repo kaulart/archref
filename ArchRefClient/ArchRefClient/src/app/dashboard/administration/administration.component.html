@@ -62,15 +62,15 @@
   				</tr>
   			</thead>
   			<tbody>
-  				<tr routerLink="/dashboard/repository"  [queryParams]="{name: repository.getName() }"
+  				<tr routerLink="/dashboard/repository"  [queryParams]="{name: repository.name , id: repository.id}"
 			 *ngFor="let repository of repositories">
    				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
    				 <td>{{ repositories.indexOf(repository) +1 }}</td>	 
    				 <td>{{repository.name}}</td>
-   				  <td>{{repository.id}}</td>
-   				 <td><button (click)="editRepository(repository.name)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="exportRepository(repository.name)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="deleteRepository(repository.name, $event)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+   				 <td>{{repository.id}}</td>
+   				 <td><button (click)="editRepository(repository.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="exportRepository(repository.id)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
+   				 <td><button (click)="deleteRepository(repository.id, $event)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
  			</tr>
   			</tbody>
  		</table>
