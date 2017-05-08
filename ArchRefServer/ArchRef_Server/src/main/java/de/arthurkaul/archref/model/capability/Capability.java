@@ -1,14 +1,12 @@
-package de.arthurkaul.archref.model;
+package de.arthurkaul.archref.model.capability;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
 @Entity
-
-public class ArtifactType {
+public class Capability {
 	@Id
 	@GeneratedValue()
 	@Column(name="ID")

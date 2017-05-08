@@ -2,43 +2,66 @@ package de.arthurkaul.archref.services;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.NodeType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import de.arthurkaul.archref.model.NodeType;
+import de.arthurkaul.archref.repositories.NodeTypeRepository;
+
+
+@Service
 public class NodeTypeService implements NodeTypeInterface {
 
+	@Autowired
+	NodeTypeRepository nodeTypeRepository;
+	
 	@Override
 	public Collection<NodeType> findAllNodeTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return nodeTypeRepository.findAll();
+		
 	}
 
 	@Override
 	public NodeType findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return nodeTypeRepository.findOne(id);
+		
 	}
 
 	@Override
 	public NodeType create(NodeType nodeType) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (nodeType.getId() != null) {
+			return null;
+        }
+		
+		return nodeTypeRepository.save(nodeType);
 	}
 
 	@Override
 	public NodeType update(NodeType nodeType) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		NodeType persistedNodeType = nodeTypeRepository.findOne(nodeType.getId());
+        
+		if (persistedNodeType == null) {
+            return null;
+        }
+		
+		return nodeTypeRepository.save(nodeType);
 	}
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		
+		nodeTypeRepository.delete(id);	
 		
 	}
 
 	@Override
 	public void deleteAllNodeTypes() {
-		// TODO Auto-generated method stub
+		
+		nodeTypeRepository.deleteAll();
 		
 	}
 

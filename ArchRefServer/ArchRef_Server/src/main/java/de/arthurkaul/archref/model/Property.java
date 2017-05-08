@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 
-public class ArtifactType {
+public class Property {
 	@Id
 	@GeneratedValue()
 	@Column(name="ID")

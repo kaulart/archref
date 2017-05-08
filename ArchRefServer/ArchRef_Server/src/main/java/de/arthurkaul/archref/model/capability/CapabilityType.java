@@ -1,4 +1,4 @@
-package de.arthurkaul.archref.model;
+package de.arthurkaul.archref.model.capability;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 
-public class ArtifactType {
+public class CapabilityType {
 	@Id
 	@GeneratedValue()
 	@Column(name="ID")

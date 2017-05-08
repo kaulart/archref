@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.NodeTypeAlreadyExistException;
@@ -16,7 +17,7 @@ import de.arthurkaul.archref.exceptions.NodeTypeNotFoundException;
 import de.arthurkaul.archref.model.NodeType;
 import de.arthurkaul.archref.services.NodeTypeService;
 
-
+@RestController
 public class NodeTypeController {
 	   
 	@Autowired
@@ -58,6 +59,7 @@ public class NodeTypeController {
         }
 		NodeType saved = nodeTypeService.create(nodeType);
 		
+		System.out.println("TEST");
        return ResponseEntity.created(ucBuilder.path("/api/nodetype/{id}").buildAndExpand(nodeType.getId()).toUri()).body(saved);
       
     }

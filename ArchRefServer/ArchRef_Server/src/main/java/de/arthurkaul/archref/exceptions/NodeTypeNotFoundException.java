@@ -1,6 +1,6 @@
 package de.arthurkaul.archref.exceptions;
 
-public class NodeTypeNotFoundException extends NodeTypeException {
+public class NodeTypeNotFoundException extends RuntimeException {
 	
 	public  NodeTypeNotFoundException(String message){
 		super(message);

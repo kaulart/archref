@@ -1,6 +1,6 @@
 package de.arthurkaul.archref.exceptions;
 
-public class NodeTypeAlreadyExistException extends NodeTypeException {
+public class NodeTypeAlreadyExistException extends RuntimeException {
 
 	public NodeTypeAlreadyExistException(String message) {
 		super(message);
