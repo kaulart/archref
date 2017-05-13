@@ -1,90 +1,193 @@
-<div id="level_graph_tool" class="container-fluid">
-	
+<div id="level_graph_tool" class="container-fluid w3-theme-l3">
+
 	<div class="row">
-		
-		<div id="controll_area_level_grap_tool" class="col-sm-12 w3-blue">
-			<H3 class="col-sm-6">Level-Graph Name: {{currentLevelGraphName}}</H3>
-			<H3 class="col-sm-6">Level-Graph ID: {{currentLevelGraphId}}</H3>
- 			
- 			<div class="col-sm-4 form-group w3-light-grey">
- 				<label>Displayed Levels:</label>
-  			
-  				<label *ngFor="let level of levels" class="form-control">
-        			<input type="checkbox" name="levels"  [(ngModel)]="level.checked"  value="{{level.value}}" /> {{level.name}}
-   				 </label>
 
-  			</div>
-  			
-  			<div class="col-sm-4 form-group w3-light-grey">
- 				<label>Displayed Level-Graph RelationTypes:</label>
-  			
-  				<label *ngFor="let levelGraphRelationType of levelGraphRelationTypes " class="form-control">
-        			<input type="checkbox" name="levelGraphRelationTypes"   [(ngModel)]="levelGraphRelationType.checked" value={{levelGraphRelationType.value}} /> {{levelGraphRelationType.name}}
-   				 </label>
+		<div class="col-sm-12 w3-theme-d3 w3-card-4" style="margin-bottom: 0px;">
+			<H3 class="col-sm-5">Level-Graph Name: {{currentLevelGraphName}}</H3>
+			<H3 class="col-sm-5">Level-Graph ID: {{currentLevelGraphId}}</H3>
+			<button class=" w3-theme-d1 btn btn-primary w3-right" type="button" data-toggle="collapse" data-target="#control_level_graph_tool"
+				aria-expanded="false" aria-controls="control_level_graph_tool">
+				<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+			</button>
 
-  			</div>
-		
 		</div>
-		
-		<div id="draw_area" class="col-xl-9 col-lg-9 w3-red">
-	        
-	       <svg  *ngFor="let level of activeLevels" class="draw-window w3-yellow" preserveAspectRatio="xMidYMid meet"  (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-                 <rect *ngFor="let node of nodes" [attr.name]="node.getName()" [attr.id]="node.getID()" [attr.x]="node.getPos_X()" [attr.y]="node.getPos_Y()" [attr.width]="node.getWidth()" [attr.height]="node.getHeight()" (mousedown)="startMovingNode($event, node)" (mousemove)="moveNode($event, node)" (mouseup)="mouseUp($event)" />		
-           </svg>
-           	
-    	</div>
-    	
-		<div id="toolbox_area" class="col-xl-3 col-lg-3 w3-green" >
+
+		<div style="margin-top: 0px;" id="control_level_graph_tool" class="col-sm-12 w3-card-4 w3-theme collapse">
+
+			<div id="control_number_of_levels" class=" col-sm-4 w3-theme-l2 ">
+
+				<div class="form-inline">
+
+					<label for="number_of_levels">Number of Levels:</label>
+
+					<button class=" w3-right">
+						<i class="fa fa-plus" aria-hidden="true" (click)=addLevel()></i>
+					</button>
+					<input readonly style="width: 100px" id="number_of_levels" type="number" class="w3-center w3-right"
+						value="{{currentLevelGraph.getNumberOfLevels()}}" min="1" max="5">
+					<button class=" w3-right">
+						<i class="fa fa-minus" aria-hidden="true" (click)=removeLevel()></i>
+					</button>
+
+				</div>
+				<label>Displayed Levels:</label>
+				<div class="form-group w3-light-grey" style="overflow: scroll; height: 150px;">
+
+					<label *ngFor="let level of currentLevelGraph.levels" class="form-control"> <input type="checkbox" name="levels"
+						[(ngModel)]="level.checked" value="{{level.id}}" (click)="onShowLevel(level)" /> {{level.name}}
+					</label>
+				</div>
+
+			</div>
+
+			<div id="control_displayed_relationTypes" class="col-sm-4 form-group w3-light-grey w3-theme-l2">
+				<label>Displayed Level-Graph RelationTypes:</label> <label *ngFor="let levelGraphRelationType of levelGraphRelationTypes " class="form-control">
+					<input type="checkbox" name="levelGraphRelationTypes" [(ngModel)]="levelGraphRelationType.checked" value={{levelGraphRelationType.id}} />
+					{{levelGraphRelationType.name}}
+				</label>
+
+			</div>
+
+		</div>
+
+		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme" style="margin: 0px; padding: 10px; margin-top: 10px">
+
+			<h5 style="width: 100% w3-theme-d4">Toolbox</h5>
+			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
 			
-			<div class="col-sm-12" id="toolbox_header">
-				Toolbox
-				
+				<ul *ngFor="let tool of toolList">
+					<li>  <input type="radio" name="radiogroup" [checked]="tool.id === 1" value="{{tool.name}}">{{tool.name}}</li>
+				</ul>
+			
+			</div>
+
+			<hr>
+
+			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
+
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse"
+					data-target="#toolbox_level_graph_nodes" aria-expanded="false" aria-controls="toolbox_level_graph_nodes">
+					Level Graph Nodes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="collapse" id="toolbox_level_graph_nodes" style="margin: 0px; padding: 0px; width: 100%">
+					<ul style="padding: 5px" id="levelGraphSpezialNodeList" class="  list-group">
+						<li class="fragmentType w3-round" draggable="true" *ngFor="let fragmentType of levelGraphNodeTypes"
+							(drag)="onDrag($event, fragmentType, 'FragmentNode')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							<h3>Fragment Node</h3></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<hr>
+
+
+			<div id="toolbox_group"style="margin: 0px; padding: 0px; width: 100%">
+
+
 				<div class="dropdown">
-  					
-  					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}
-  						<span class="caret"></span>
-  					</button>
-  							
-  					<ul class="dropdown-menu">
-   						<li *ngFor="let repository of repositories" ><button (click)="onSelectRepository(repository.id)">{{ repository.name }}</button></li>
-  					</ul>
-  					
-				</div>
- 				 
-			</div>
-			
-			<div class="col-sm-12 toolbox" id="toolbox_body">
-  			
-  				<button class="col-sm-12 btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes" aria-expanded="false" aria-controls="toolbox_nodes">
-   					<span class="glyphicon glyphicon-triangle-right" aria-hidden="true">NodeTypes</span>
- 				</button>
+					<label>Selected Repository:</label>
+					<button style="width: 100%" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}
 
-				<div class=" col-sm-12 collapse toolbox" id="toolbox_nodes">
-			 		<ul id="nodeTypesList" class=" col-sm-12 list-group">
-            		
-            			<li draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{nodeType.name}}</li>
-             			
-             		</ul>
-				</div>
-			</div>
-			
-			<div class="col-sm-12 toolbox">
-				
-				<button class="col-sm-12 btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_relations" aria-expanded="false" aria-controls="toolbox_relations">
-   					<span class="glyphicon glyphicon-triangle-right" aria-hidden="true">RelationTypes</span>
- 				</button>
+					</button>
 
-				<div class=" col-sm-12 collapse" id="toolbox_relations">
-			 		<ul id="relationTypesList" class=" col-sm-12 list-group">
-            			<li draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)" >{{relationshipType.name}}</li>
-             		</ul>
+					<ul class="dropdown-menu">
+						<li class="repositoryListItem" *ngFor="let repository of repositories" (click)="onSelectRepository(repository.id)">{{ repository.name }}</li>
+					</ul>
+
 				</div>
-			
+
 			</div>
+
+			<div class=" toolbox_group" style="margin: 0px; padding: 0px; width: 100%">
+
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes"
+					aria-expanded="false" aria-controls="toolbox_nodes">
+					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="  collapse toolbox" id="toolbox_nodes" style="margin: 0px; padding: 0px; width: 100%">
+					<ul style="padding: 5px" id="nodeTypesList" class=" list-group">
+
+						<li class="nodeType w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList"
+							(drag)="onDrag($event, nodeType, 'NodeType')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							<h3>{{nodeType.name}}</h3></li>
+
+					</ul>
+				</div>
+			</div>
+
+			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
+
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse"
+					data-target="#toolbox_relations" aria-expanded="false" aria-controls="toolbox_relations">
+					RelationTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="collapse toolbox" id="toolbox_relations" style="margin: 0px; padding: 0px; width: 100%">
+					<ul style="padding: 5px" id="relationTypesList" class="  list-group">
+						<li class="relationType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList"
+							(drag)="onDrag($event, relationshipType, 'RelationshipType')" (dragover)="onDragOver($event)"><img
+							src="http://lorempixum.com/100/100/nature/1" />
+							<h3>{{relationshipType.name}}</h3></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<hr>
 
 		</div>
-		
+
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;">
+
+			<svg id="parent">
+				
+				<g *ngFor="let level of activeLevels">
+				   
+				   <rect [attr.x]="0" [attr.y]="level.y" [attr.width]="40" [attr.height]="level.height" fill="blue"></rect>
+                   <text [attr.x]="40" [attr.y]="level.y" font-family="Verdana" font-size="35" fill="red">Hello</text> 
+				   <rect class="level_content" [attr.x]="0" [attr.y]="level.y + level.height + 10" [attr.height]="20" (mousedown)="startChangeLevelHeight($event)"
+					(mousemove)="changeLevelHeight($event, level)" (mouseup)="stopChangeLevelHeight($event)"></rect>
+				
+			     	<svg id="child" class="level_content w3-yellow" [attr.id]="level.value" [attr.x]="50" [attr.y]="level.y" [attr.height]="level.height"> 
+					
+					 <rect class="level_content" [attr.id]="level.value" [attr.x]="0" [attr.y]="0" [attr.height]="level.height" fill="green"
+						(dragover)="onDragOver($event)" (drop)="onDrop($event, level)">
+					 </rect>
+					
+					<g *ngFor="let levelGraphNode  of levelGraphNodeTypeNodes">
+						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
+						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
+						style="fill:red;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
+						(mouseup)="stopMovingNode($event)" />	
+					</g>
+					
+					<g *ngFor="let levelGraphNode  of levelGraphRelationshipTypeNodes">
+						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
+						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
+						style="fill:blue;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
+						(mouseup)="stopMovingNode($event)" />	
+					</g>
+					
+					<g *ngFor="let levelGraphNode  of levelGraphFragmentNodes">
+					<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
+						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
+						style="fill:yellow;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
+						(mouseup)="stopMovingNode($event)" />	
+					
+					</g>
+					
+					</svg>
+
+				</g>
+    	
+           </svg>
+
+		</div>
+
 	</div>
-	
+
 </div>
 

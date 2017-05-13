@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.node.NodeType;
+import de.arthurkaul.archref.model.relation.RelationshipType;
+
 @Entity
 @Table(name="REPOSITORY")
 public class Repository {
@@ -34,9 +37,8 @@ public class Repository {
 	
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryRelationshipType")
 	@JsonManagedReference
-	private Collection<RelationshipType> relationTypeList;
+	private Collection<RelationshipType> relationshipTypeList;
 	
-
 //	private ArrayList<RequirementType> requirementTypeList;
 //	private ArrayList<Capability> capabilityTypeList;
 //	private ArrayList<ArtifactType> artifactTypeList;
@@ -68,12 +70,12 @@ public class Repository {
 		this.nodeTypeList = nodeTypeList;
 	}
 
-	public Collection<RelationshipType> getRelationTypeList() {
-		return relationTypeList;
+	public Collection<RelationshipType> getRelationshipTypeList() {
+		return relationshipTypeList;
 	}
 
-	public void setRelationTypeList(Collection<RelationshipType> relationTypeList) {
-		this.relationTypeList = relationTypeList;
+	public void setRelationshipTypeList(Collection<RelationshipType> relationshipTypeList) {
+		this.relationshipTypeList = relationshipTypeList;
 	}
 	
 }

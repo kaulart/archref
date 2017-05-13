@@ -1,4 +1,5 @@
-import { NodeType } from '../nodetype';
+
+import { NodeType } from '../datamodel/topologymodel/nodetype';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -28,7 +29,7 @@ export class NodeTypeService {
                     .catch(this.handleError);
   }
 
-  public deleteNodeType(id: string): Observable<NodeType> {
+  public deleteNodeType(id: number): Observable<NodeType> {
     alert('DELETE NodeType RequestSend');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });

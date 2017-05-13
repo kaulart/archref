@@ -35,6 +35,8 @@
     "moment": "2.15.1",
     "ng2-bootstrap": "2.0.0-rc.0",
     "ng2-drag-drop": "^1.5.1",
+    "ng2-file-upload": "^1.2.1",
+    "primeng": "^4.0.0",
     "protractor": "5.1.0",
     "reflect-metadata": "0.1.8",
     "rxjs": "5.0.0-rc.4",

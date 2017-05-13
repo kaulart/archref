@@ -1,9 +1,12 @@
-import { Repository } from '../repository';
+
+import { Logger } from '../../../logger/logger';
+import { Repository } from '../datamodel/repository';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+
 
 @Injectable()
 export class AdministrationService {
@@ -14,13 +17,13 @@ export class AdministrationService {
 
    //GET
    public getRepositories(): Observable<Repository[]> {
-        alert("SEND GET ALL REPOSITORIES REQUEST");
+        Logger.info('Send GET Repositories Request', AdministrationService.name);
         return this.http.get(this.repositoriesUrl).map(this.extractRepositoryDataList).catch(this.handleError);
    }
 
    public getRepository(id: number): Observable<Repository> {
-     
-     alert("SEND GET REPOSITORY ID REQUEST");
+
+    Logger.info('Send GET Repository Request with ID:' + id, AdministrationService.name);
     return this.http.get(this.repositoriesUrl + '/' + id)
                     .map(this.extractRepositoryData)
                     .catch(this.handleError);
@@ -28,9 +31,9 @@ export class AdministrationService {
 
    //CREATE
    public addRepository(repository: Repository): Observable<Repository> {
-     
-   
-     alert("SEND CREATE REPOSITORY REQUEST");
+
+    Logger.info('Send POST Repository Request', AdministrationService.name);
+    Logger.data(JSON.stringify(repository), AdministrationService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.repositoriesUrl, repository, options)
@@ -39,8 +42,8 @@ export class AdministrationService {
   }
 
   //DELETE
-  public deleteRepository(id: string): Observable<Repository> {
-     alert("SEND DELETE REPOSITORY ID REQUEST");
+  public deleteRepository(id: number): Observable<Repository> {
+    Logger.info('Send DELETE Repository Request with ID: ' + id, AdministrationService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.delete(this.repositoriesUrl + '/' + id , options)
@@ -49,17 +52,20 @@ export class AdministrationService {
   }
 
   private extractRepositoryDataList(res: Response) {
+    Logger.info('Extract Data of Response Body', AdministrationService.name);
 
     let body = res.json();
     let repoList: Repository[] = [];
-    alert("BODY DATA OF ARRAY \n" + JSON.stringify(body));
+
+    Logger.data('[RESPONSE][REPOSITORIES]: ' + JSON.stringify(body), AdministrationService.name);
+
     for (let repository of body) {
 
         let tempRepository: Repository = new Repository(repository.name);
         tempRepository.id = repository.id;
         tempRepository.id = repository.id;
         tempRepository.nodeTypeList =  repository.nodeTypeList;
-        tempRepository.relationshipTypeList = repository.relationTypeList;
+        tempRepository.relationshipTypeList = repository.relationshipTypeList;
         repoList.push(tempRepository);
 
     }
@@ -68,12 +74,13 @@ export class AdministrationService {
   }
 
   private extractRepositoryData(res: Response) {
+    Logger.info('Extract Data of Response Body', AdministrationService.name);
     let body = res.json();
-      alert("BODY DATA OF ITEM \n" + JSON.stringify(body));
+    Logger.data('[RESPONSE][REPOSITORY]: ' + JSON.stringify(body), AdministrationService.name);
     let rep: Repository = new Repository(body.name);
     rep.id = body.id;
     rep.nodeTypeList =  body.nodeTypeList;
-    rep.relationshipTypeList = body.relationTypeList;
+    rep.relationshipTypeList = body.relationshipTypeList;
     return rep || { };
   }
 

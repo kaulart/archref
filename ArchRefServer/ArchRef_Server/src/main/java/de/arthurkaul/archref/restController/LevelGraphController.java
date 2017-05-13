@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.LevelGraphAlreadyExistException;
 import de.arthurkaul.archref.exceptions.LevelGraphNotFoundException;
-import de.arthurkaul.archref.model.LevelGraph;
+import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.services.LevelGraphService;
 
 @RestController
@@ -53,7 +53,7 @@ public class LevelGraphController {
 	
 	@RequestMapping(value = "/api/levelgraph", method = RequestMethod.POST)
    public ResponseEntity<LevelGraph> createLevelGraph(@RequestBody LevelGraph levelGraph, UriComponentsBuilder ucBuilder) {
-		
+		 System.out.println("CALL API");
 		if (levelGraph.getId() != null) {
 			throw new LevelGraphAlreadyExistException("LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + levelGraph.getId() + " already exist.");          	
         }

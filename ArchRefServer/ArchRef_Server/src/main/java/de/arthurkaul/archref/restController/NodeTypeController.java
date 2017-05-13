@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.NodeTypeAlreadyExistException;
 import de.arthurkaul.archref.exceptions.NodeTypeNotFoundException;
-import de.arthurkaul.archref.model.NodeType;
+import de.arthurkaul.archref.model.node.NodeType;
 import de.arthurkaul.archref.services.NodeTypeService;
 
 @RestController

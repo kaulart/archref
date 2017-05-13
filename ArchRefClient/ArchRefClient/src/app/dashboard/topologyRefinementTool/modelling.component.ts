@@ -1,10 +1,8 @@
-import { Node } from '../../shared/node';
+import { NodeType } from '../../shared/datamodel/topologymodel/nodetype';
+import { RelationshipType } from '../../shared/datamodel/topologymodel/relationshiptype';
+import { TopologyTemplate } from '../../shared/datamodel/topologymodel/topologytemplate';
 import { Component, OnInit } from '@angular/core';
 import { NodeTypeService} from '../../shared/dataservices/nodetype.service';
-import { Topology} from '../../shared/topology';
-
-import { NodeType } from '../../shared/nodetype';
-import { RelationshipType } from '../../shared/relationshiptype';
 
 
 @Component({
@@ -16,7 +14,7 @@ import { RelationshipType } from '../../shared/relationshiptype';
 
 export class ModellingComponent implements OnInit {
 
-  private currentTopologie: Topology;
+  private currentTopologie: TopologyTemplate;
   private currentDragData: any;
 
   private nodeTypes: NodeType[] = [];
@@ -30,8 +28,8 @@ export class ModellingComponent implements OnInit {
   moveNode(event: MouseEvent, node: Node) {
 
     if (this.mousedown === true) {
-       node.setPos_X(event.offsetX - node.getWidth() / 2);
-       node.setPos_Y(event.offsetY - node.getHeight() / 2);
+//       node.setPos_X(event.offsetX - node.getWidth() / 2);
+//       node.setPos_Y(event.offsetY - node.getHeight() / 2);
     }
 
   }
@@ -54,8 +52,8 @@ export class ModellingComponent implements OnInit {
   }
 
   onDrop(event) {
-      let newTempnode: Node = new Node("dummy", "dummy", "dummy",   event.offsetX,    event.offsetY, 50, 50);
-      this.nodes.push(newTempnode);
+//      let newTempnode: Node = new Node("dummy", "dummy", "dummy",   event.offsetX,    event.offsetY, 50, 50);
+//      this.nodes.push(newTempnode);
   }
 
   ngOnInit() {

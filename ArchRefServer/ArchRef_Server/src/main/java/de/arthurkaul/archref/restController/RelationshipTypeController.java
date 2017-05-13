@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RelationshipTypeAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RelationshipTypeNotFoundException;
-import de.arthurkaul.archref.model.RelationshipType;
+import de.arthurkaul.archref.model.relation.RelationshipType;
 import de.arthurkaul.archref.services.RelationshipService;
 
 @RestController

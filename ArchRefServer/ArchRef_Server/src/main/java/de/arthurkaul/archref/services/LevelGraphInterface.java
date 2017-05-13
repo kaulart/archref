@@ -2,7 +2,7 @@ package de.arthurkaul.archref.services;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.LevelGraph;
+import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 
 public interface LevelGraphInterface {
 

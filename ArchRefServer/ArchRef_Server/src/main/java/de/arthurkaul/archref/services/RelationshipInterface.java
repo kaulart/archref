@@ -2,7 +2,7 @@ package de.arthurkaul.archref.services;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.RelationshipType;
+import de.arthurkaul.archref.model.relation.RelationshipType;
 
 
 public interface RelationshipInterface {

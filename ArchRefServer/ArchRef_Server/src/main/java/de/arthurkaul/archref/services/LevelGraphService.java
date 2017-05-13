@@ -3,8 +3,7 @@ package de.arthurkaul.archref.services;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import de.arthurkaul.archref.model.LevelGraph;
+import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.repositories.LevelGraphRepository;
 
 @Service

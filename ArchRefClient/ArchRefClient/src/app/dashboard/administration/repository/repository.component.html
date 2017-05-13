@@ -1,188 +1,24 @@
 <div class="dashboard_area">
-  <h2 class="text-muted">
-		{{repositoryName}} Repository
-  </h2>
-  
-  <div id="nodeType_area" class="data_panel row ">
-  
-  	<div class="top_collapse_area col-12-sm">
-  		<h3 class="text-muted">
-		NodeTypes
- 		 </h3>
- 		 
- 		 <button class="w3-green" id="createNodeType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createNodeTypeFieldsArea">
- 		 <i class="fa fa-plus" aria-hidden="true"></i>
- 		 New</button>
- 		
- 		<button id="importNodeType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importNodeTypeFieldsArea">
-         <i class="fa fa-upload" aria-hidden="true"></i>
- 		Import</button>
- 		
- 		
-  	</div>
-  	
-  	<div id="accordion panel-group">
-  		<div class="collapse panel" id="createNodeTypeFieldsArea">
-  	    	<form>
-      			<div class="form-group">
-        		<label for="nameNodeType">Name</label>
-        			<input #nameNodeType type="text" class="form-control" id="nameNodeType" value="Unnamed" required>
-      			</div>
-      			
-      			<div class="form-group">
-        		<label for="iconNodeType">Icon</label>
-        			<input #iconNodeType type="text" class="form-control" id="iconNodeType" value="Unnamed">
-      			</div>
-      			
-      			<button type="submit" class="btn btn-success" (click)=(createNodeType(nameNodeType.value))>Create</button>
-   			 </form>
-  		</div>
-  	
-  		<div class="collapse panel" id="importNodeTypeFieldsArea">
-  			<form>
-  				<div class="form-group">
-        		<label for="nameNodeType">Name</label>
-        			<input type="text" class="form-control" id="nameNodeType" required>
-      			</div>
-     			 <div class="form-group">
-       				 <label for="name">File</label>
-       				 <input type="text" class="form-control" id="name" required>
-    			 </div>
-    			 
-     			 <button type="submit" class="btn btn-success" (click)=(importNodeType())>Import</button>
- 			 </form>
-  		</div>
-  	
-    </div>
-  	
-  	
-  	<div class="middle_collapse_area col-12-sm w3-responsive">
-  		<table class="w3-table-all table-striped w3-bordered">
-  			<thead>
-  				<tr>
-  					<th class="table-head"></th>
-   			  		<th class="table-head">Nr.</th>
-     				<th class="table-head">Name</th>
-     				<th class="table-head">ID</th>
-     				<th class="table-head">View</th>
-     				<th class="table-head">Edit</th>
-     				<th class="table-head">Export</th>
-     				<th class="table-head">Delete</th>
-  				</tr>
-  			</thead>
-  		
-  		
-  			<tbody>
-  				<tr
-			 *ngFor="let nodeType of currentRepository.nodeTypeList">
-   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-   				 <td>{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
-   				 <td>{{ nodeType.name }}</td>
-   				  <td>{{ nodeType.id }}</td>
-   				 <td><button (click)="viewNodeType(nodeType.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="editNodeType(nodeType.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="exportNodeType(nodeType.id)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="deleteNodeType(nodeType.id)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
- 			</tr>
- 			
-  			</tbody>
- 		</table>
-  	</div>
-  	
-  	<div class="bottom_collapse_area">
-  	
-  	</div>
-  	
-  </div>
-  
-  <div id="relationType_area" class=" data_panel row">
-  
-  	<div class="top_collapse_area col-12-sm">
-  		<h3 class="text-muted">
-		RelationTypes
- 		 </h3>
- 		 
- 		 <button class="w3-green" id="createRelationshipType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createRelationshipTypeFieldsArea">
- 		 <i class="fa fa-plus" aria-hidden="true"></i>
- 		 New</button>
- 		
- 		<button id="importRelationshipType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importRelationshipTypeFieldsArea">
-         <i class="fa fa-upload" aria-hidden="true"></i>
- 		Import</button>
-  	</div>
-  	
-  	<div id="accordion panel-group">
-  		<div class="collapse panel" id="createRelationshipTypeFieldsArea">
-  	    	<form>
-      			<div class="form-group">
-        		<label for="nameRelationshipType">Name</label>
-        			<input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType" value="Unnamed" required>
-      			</div>
-      			
-      			<div class="form-group">
-        		<label for="iconRelationshipType">Icon</label>
-        			<input #iconRelationshipType type="text" class="form-control" id="iconRelationshipType" value="Unnamed">
-      			</div>
-      			
-      			<button type="submit" class="btn btn-success" (click)=(createRelationshipType(nameRelationshipType.value))>Create</button>
-   			 </form>
-  		</div>
-  	
-  		<div class="collapse panel" id="importRelationshipTypeFieldsArea">
-  			<form>
-  				<div class="form-group">
-        		<label for="nameNodeType">Name</label>
-        			<input type="text" class="form-control" id="nameNodeType" required>
-      			</div>
-     			 <div class="form-group">
-       				 <label for="name">File</label>
-       				 <input type="text" class="form-control" id="name" required>
-    			 </div>
-    			 
-     			 <button type="submit" class="btn btn-success" (click)=(importNodeType())>Import</button>
- 			 </form>
-  		</div>
-  	
-    </div>
-  	
-  	
-  	<div class="middle_collapse_area col-12-sm w3-responsive">
-  		<table class="w3-table-all table-striped w3-bordered">
-  			<thead>
-  				<tr>
-  					<th class="table-head"></th>
-   			  		<th class="table-head">Nr.</th>
-     				<th class="table-head">Name</th>
-     				<th class="table-head">ID</th>
-     				<th class="table-head">View</th>
-     				<th class="table-head">Edit</th>
-     				<th class="table-head">Export</th>
-     				<th class="table-head">Delete</th>
-  				</tr>
-  			</thead>
-  		
-  			<tbody>
-  				<tr
-			 *ngFor="let relationshipType of currentRepository.relationshipTypeList">
-   				 <td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-   				 <td>{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
-   				 <td>{{ relationshipType.name }}</td>
-   				 <td>{{ relationshipType.id }}</td>
-   				 <td><button (click)="viewNodeType(nodeType.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="editRelationshipType(relationshipType.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-   				 <td><button (click)="exportRelationshipType(relationshipType.id)"><i class="fa fa-download" aria-hidden="true"></i></button></td>
-   				 <td><button  (click)="deleteRelationshipType(relationshipType.id)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
- 			</tr>
- 			
-  			</tbody>
- 		</table>
-  	</div>
-  	
-  	<div class="bottom_collapse_area">
-  	
-  	</div>
-  	
-  </div>
-  
+
+	<div class="w3-theme-d4 w3-card-4 heading">
+		<h2>{{repositoryName}} Repository</h2>
+	</div>
+	<div class="data-panel ">
+		
+		<ul class="tabrow nav" role="tablist">
+			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#nodeType" style="color: white" role="tab">Node Type</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#relationshipType" style="color: white" role="tab">Relationship Type</a></li>
+		</ul>
+
+		<div class="tab-content rounded tab-panel">
+			<div id="nodeType" class="rounded tab-pane active" role="tabpanel">
+				<app-nodetype [currentRepository]="currentRepository"></app-nodetype>
+			</div>
+
+			<div id="relationshipType" class="rounded tab-pane" role="tabpanel">
+				<app-relationshiptype [currentRepository]="currentRepository"></app-relationshiptype>
+			</div>
+		</div>
+	</div>
 </div>
 

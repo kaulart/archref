@@ -8,8 +8,8 @@
 		<div id="draw_area" class="col-xl-9 col-lg-9 w3-red"  (dragover)="onDragOver($event)" (drop)="onDrop($event)">
 	        
 	       <svg class="draw-window w3-white" preserveAspectRatio="xMidYMid meet" >
-                <rect *ngFor="let node of nodes" [attr.name]="node.getName()" [attr.id]="node.getID()" [attr.x]="node.getPos_X()" [attr.y]="node.getPos_Y()" [attr.width]="node.getWidth()" [attr.height]="node.getHeight()" (mousedown)="startMovingNode($event, node)" (mousemove)="moveNode($event, node)" (mouseup)="mouseUp($event)" />
-           		
+            <!--    <rect *ngFor="let node of nodes" [attr.name]="node.getName()" [attr.id]="node.getID()" [attr.x]="node.getPos_X()" [attr.y]="node.getPos_Y()" [attr.width]="node.getWidth()" [attr.height]="node.getHeight()" (mousedown)="startMovingNode($event, node)" (mousemove)="moveNode($event, node)" (mouseup)="mouseUp($event)" />
+           		 -->
            </svg>
            	
     	</div>

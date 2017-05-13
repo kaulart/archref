@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.arthurkaul.archref.model.node.NodeTemplate;
+import de.arthurkaul.archref.model.relation.RelationshipTemplate;
+
 @Entity
 @Table(name="TOPOLOGY_TEMPLATE")
 public class TopologyTemplate {

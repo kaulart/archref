@@ -10,22 +10,27 @@ import { routes } from './app.routes';
 
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AdministrationService } from './shared/dataservices/administration.service';
+import { LevelService } from './shared/dataservices/level.service';
 import { LevelGraphService } from './shared/dataservices/levelgraphservice';
 import { NodeTypeService } from './shared/dataservices/nodetype.service';
 import { RelationshipTypeService } from './shared/dataservices/relationshiptype.service';
 
+
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
+
     BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [AdministrationService, NodeTypeService, RelationshipTypeService, LevelGraphService],
+  providers: [AdministrationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

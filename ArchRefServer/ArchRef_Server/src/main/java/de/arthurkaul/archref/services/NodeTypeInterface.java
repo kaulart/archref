@@ -2,7 +2,7 @@ package de.arthurkaul.archref.services;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.NodeType;;
+import de.arthurkaul.archref.model.node.NodeType;;
 
 public interface NodeTypeInterface {
 	

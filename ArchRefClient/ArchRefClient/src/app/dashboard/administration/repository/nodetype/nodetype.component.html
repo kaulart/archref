@@ -1,0 +1,86 @@
+<div class="tab-panel">
+
+	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area ">
+
+		<div class="panel panel-default">
+
+			<div class="row panel-heading control-panel">
+
+				<h3 class="col-sm-3">Node Types</h3>
+
+				<button class="w3-right w3-theme-l1 btn" id="importNodeType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
+					href="#importNodeTypeFieldsArea">
+					<i class="fa fa-upload" aria-hidden="true"></i> Import
+				</button>
+
+				<button class="w3-right w3-green btn" id="createNodeType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
+					href="#createNodeTypeFieldsArea">
+					<i class="fa fa-plus" aria-hidden="true"></i> New
+				</button>
+
+			</div>
+
+			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+				<form>
+					<div class="form-group">
+						<label for="nameNodeType">Name: </label> <input #nameNodeType type="text" class="form-control" id="nameNodeType" value="Unnamed" required>
+					</div>
+					<div class="form-group">
+						<input type="file" ng2FileSelect [uploader]="uploader" />
+					</div>
+					<button type="submit" class="btn btn-success" (click)=(createNodeType(nameNodeType.value))>Create</button>
+				</form>
+			</div>
+
+			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importNodeTypeFieldsArea">
+				<form>
+
+					<div class="form-group">
+						<label for="nameNodeType">Name: </label> <input type="text" class="form-control" id="nameNodeType" required>
+					</div>
+
+					<div class="form-group">
+						<label for="name">File: </label> <input type="text" class="form-control" id="name" required>
+					</div>
+
+					<button type="submit" class="btn btn-success" (click)=(importNodeType())>Import</button>
+				</form>
+			</div>
+		</div>
+
+
+		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
+			<table class="w3-table-all table-striped w3-bordered">
+				<thead>
+					<tr class="w3-theme-d3">
+						<th class="table-head"></th>
+						<th class="table-head">Nr.</th>
+						<th class="table-head">Name</th>
+						<th class="table-head">ID</th>
+						<th class="table-head">Edit</th>
+						<th class="table-head">Export</th>
+						<th class="table-head">Delete</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr *ngFor="let nodeType of currentRepository.nodeTypeList">
+						<td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td>{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
+						<td>{{ nodeType.name }}</td>
+						<td>{{ nodeType.id }}</td>
+						<td><button class="btn w3-blue" (click)="editNodeType(nodeType.id)">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</button></td>
+						<td><button class="btn" disabled (click)="exportNodeType(nodeType.id)">
+								<i class="fa fa-download" aria-hidden="true"></i>
+							</button></td>
+						<td><button class="w3-red btn" (click)="deleteNodeType(nodeType.id)">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

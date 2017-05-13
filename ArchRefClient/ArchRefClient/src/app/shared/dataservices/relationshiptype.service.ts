@@ -1,5 +1,6 @@
 
-import { RelationshipType } from '../relationshiptype';
+
+import { RelationshipType } from '../datamodel/topologymodel/relationshiptype';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -28,7 +29,7 @@ export class RelationshipTypeService {
                     .catch(this.handleError);
   }
 
-  public deleteRelationshipType(id: string): Observable<RelationshipType> {
+  public deleteRelationshipType(id: number): Observable<RelationshipType> {
     alert('DELETE RelationshiupType RequestSend');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
