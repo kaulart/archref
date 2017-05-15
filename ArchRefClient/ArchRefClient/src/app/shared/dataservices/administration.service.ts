@@ -40,6 +40,17 @@ export class AdministrationService {
                     .map(this.extractRepositoryData)
                     .catch(this.handleError);
   }
+  
+     //UPDATE
+    public updateRepository(repository: Repository): Observable<Repository> {
+    Logger.info('[REQUEST]: Send PUT Request Repository', AdministrationService.name);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.repositoriesUrl, repository, options)
+      .map(this.extractRepositoryData)
+      .catch(this.handleError);
+  }
+  
 
   //DELETE
   public deleteRepository(id: number): Observable<Repository> {

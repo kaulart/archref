@@ -1,15 +1,14 @@
 import { Logger } from '../../../../logger/logger';
 import { Level } from '../../../shared/datamodel/levelgraphmodel/level';
 import { LevelGraph } from '../../../shared/datamodel/levelgraphmodel/levelgraph';
-import { LevelGraphConnectedToRelation } from '../../../shared/datamodel/levelgraphmodel/levelgraphconnectedtorelation';
-import { LevelGraphFragmentNode } from '../../../shared/datamodel/levelgraphmodel/levelgraphfragmentnode';
-import { LevelGraphHostedOnRelation } from '../../../shared/datamodel/levelgraphmodel/levelgraphhostedonrelation';
-import { LevelGraphNodeType } from '../../../shared/datamodel/levelgraphmodel/levelgraphnodetype';
-import { LevelGraphRefineToRelation } from '../../../shared/datamodel/levelgraphmodel/levelgraphrefinetorelation';
-import { LevelGraphRelationshipTypeNode } from '../../../shared/datamodel/levelgraphmodel/levelgraphrelationshiptypenode';
+import { LevelGraphNode } from '../../../shared/datamodel/levelgraphmodel/levelgraphnode';
+import { Path } from '../../../shared/datamodel/path';
+import { Point } from '../../../shared/datamodel/point';
 import { Repository } from '../../../shared/datamodel/repository';
 import { AdministrationService } from '../../../shared/dataservices/administration.service';
+import { LevelGraphNodeService } from '../../../shared/dataservices/levelgraphnode.service';
 import { LevelGraphService } from '../../../shared/dataservices/levelgraphservice';
+
 import { Utility } from '../../../utility';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,20 +31,24 @@ export class LevelGraphModellerComponent implements OnInit {
   private currentDragData: any;
   typeCurrentDragData: string;
 
+  //  // Current draw relation
+  //  points: Point[] = [{ x: 0, y: 0 }, { x: 0, y: 0 }];
+  //  leveGraphHostedOnRelation = new LevelGraphHostedOnRelation(new Path(this.points), null);
+
   // Collection of repositories witch are exist
   repositories: Repository[] = [];
   selectedRepository: Repository = new Repository('Select Reposiory');
 
-  // Collection of nodes in the level graph witch is currently displayed
-  levelGraphNodeTypeNodes: LevelGraphNodeType[] = [];
-  levelGraphRelationshipTypeNodes: LevelGraphRelationshipTypeNode[] = []
-  levelGraphFragmentNodes: LevelGraphFragmentNode[] = [];
+  //  // Collection of nodes in the level graph witch is currently displayed
+  //  levelGraphNodeTypeNodes: LevelGraphNodeType[] = [];
+  //  levelGraphRelationshipTypeNodes: LevelGraphRelationshipTypeNode[] = []
+  //  levelGraphFragmentNodes: LevelGraphFragmentNode[] = [];
 
   // Collection of relations in the level graph in sum and separated related to the LevelGraphRelationType
 
-  levelGraphRefineToRelation: LevelGraphRefineToRelation[] = [];
-  levelGraphConnectToRelation: LevelGraphConnectedToRelation[] = [];
-  levelGraphHostedOnRelation: LevelGraphHostedOnRelation[] = [];
+  //  levelGraphRefineToRelation: LevelGraphRefineToRelation[] = [];
+  //  levelGraphConnectToRelation: LevelGraphConnectedToRelation[] = [];
+  //  levelGraphHostedOnRelation: LevelGraphHostedOnRelation[] = [];
 
   // Collection of all levels witch are currently activated for displaying in the front-end
   activeLevels: Level[] = [];
@@ -59,13 +62,17 @@ export class LevelGraphModellerComponent implements OnInit {
 
   private drag = false;
 
+  private drawHostedOnRelation = false;
+  private drawConnectedToRelation = false;
+
+
   toolList = [
     { name: 'Move Node', id: 0, checked: true },
     { name: 'ConnectedTo', id: 1, checked: false },
     { name: 'HostedOn', id: 2, checked: false },
     { name: 'RefineTo', id: 3, checked: false }
   ];
-  
+
   levelGraphRelationTypes = [
     { name: 'ConnectedTo', id: '1', checked: true },
     { name: 'HostedOn', id: '2', checked: true },
@@ -88,7 +95,7 @@ export class LevelGraphModellerComponent implements OnInit {
    *************************************************************************************************************************************/
 
   constructor(private route: ActivatedRoute, private router: Router, private levelGraphService: LevelGraphService,
-    private administrationService: AdministrationService) { }
+    private administrationService: AdministrationService, private levelGraphNodeService: LevelGraphNodeService) { }
 
   ngOnInit() {
 
@@ -111,17 +118,6 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    *************************************************************************************************************************************/
 
-  activateLevels(levels: Level[]) {
-
-    for (let level of this.currentLevelGraph.levels) {
-
-      if (level.checked === true) {
-        this.activeLevels.push(level);
-      }
-    }
-
-  }
-
   loadRepositories() {
     this.administrationService.getRepositories().subscribe(repositories => this.repositories = repositories);
   }
@@ -136,6 +132,16 @@ export class LevelGraphModellerComponent implements OnInit {
     this.activateLevels(levelGraph.levels);
   }
 
+  activateLevels(levels: Level[]) {
+
+    for (let level of this.currentLevelGraph.levels) {
+
+      if (level.checked === true) {
+        this.activeLevels.push(level);
+      }
+    }
+
+  }
 
   /***************************************************************************************************************************************
    *
@@ -217,19 +223,41 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    **************************************************************************************************************************************/
 
-  startMovingNode(event: MouseEvent) {
-
+  startMovingNode(event: MouseEvent, level: Level) {
+    Logger.info("Call MOUSEDOWN Event", LevelGraphModellerComponent.name);
     this.mousedownOnLevelGraphNode = true;
     this.lastMousePositionY = event.offsetY;
     this.lastMousePositionX = event.offsetX;
-  
+
+    if (this.toolList[1].checked) {
+
+    } else if (this.toolList[2].checked) {
+      Logger.info("HostedOn Tool Selectedt", LevelGraphModellerComponent.name);
+      let startPoint = new Point(this.lastMousePositionX, this.lastMousePositionY);
+      let endPoint = new Point(this.lastMousePositionX, this.lastMousePositionY);
+      let tempPoints: Point[] = [];
+      tempPoints.push(startPoint);
+      tempPoints.push(endPoint);
+      let tempPath = new Path(tempPoints);
+      //      this.leveGraphHostedOnRelation.path = tempPath;
+      //      this.leveGraphHostedOnRelation.level = level;
+
+      this.drawHostedOnRelation = true;
+
+    } else if (this.toolList[3].checked) {
+
+
+    } else {
+
+    }
+
   }
 
-  
-  drawEdge(){
-  
+
+  drawEdge() {
+
   }
-  
+
   moveNode(event: MouseEvent, node: any) {
 
     let newMousePositionY = event.offsetY;
@@ -238,16 +266,36 @@ export class LevelGraphModellerComponent implements OnInit {
     let deltaX = (newMousePositionX - this.lastMousePositionX);
     // Logger.info("[MOUSEMOVEEVENT] event OFFSETY: " + (newMousePositionY - this.lastMousePositionY), LevelGraphModellerComponent.name);
 
-    if (this.mousedownOnLevelGraphNode === true) {
-    
-      node.y = node.y + deltaY;
-        node.x = node.x + deltaX;
-    }
-  
-  
-    this.lastMousePositionY = newMousePositionY;
-    this.lastMousePositionX = newMousePositionX;
+    Logger.info('Selected Tool: Moving Tool -->' + this.toolList[0].checked + 'ConnectedTo Tool -->' + this.toolList[1].checked + 'HostedOn Tool -->' + this.toolList[2].checked + 'RefineTo Tool -->' + this.toolList[3].checked, LevelGraphModellerComponent.name);
 
+    if (this.mousedownOnLevelGraphNode === true) {
+
+      if (this.toolList[1].checked) {
+        Logger.info('ConnecedTo Tool Selected', LevelGraphModellerComponent.name);
+      } else if (this.toolList[2].checked) {
+
+        //        Logger.info('HostedOn Tool Selected', LevelGraphModellerComponent.name);
+        //        let x = this.leveGraphHostedOnRelation.path.points[this.leveGraphHostedOnRelation.path.points.length - 1].x + deltaX;
+        //        let y = this.leveGraphHostedOnRelation.path.points[this.leveGraphHostedOnRelation.path.points.length - 1].y + deltaY;
+        //
+        //        let endPoint = new Point(x, y);
+        //
+        //        this.leveGraphHostedOnRelation.path.points[this.leveGraphHostedOnRelation.path.points.length] = endPoint;
+
+
+      } else if (this.toolList[3].checked) {
+        Logger.info('RefineTo Tool Selected', LevelGraphModellerComponent.name);
+
+      } else {
+        Logger.info('MoveNoode Tool Selected', LevelGraphModellerComponent.name);
+        node.y = node.y + deltaY;
+        node.x = node.x + deltaX;
+      }
+
+      this.lastMousePositionY = newMousePositionY;
+      this.lastMousePositionX = newMousePositionX;
+
+    }
   }
 
   stopMovingNode(event) {
@@ -256,9 +304,15 @@ export class LevelGraphModellerComponent implements OnInit {
     this.lastMousePositionX = event.offsetX;
   }
 
- 
-  
-  
+
+  changeTool(tool: any) {
+
+    for (let tool of this.toolList) {
+      tool.checked = false;
+    }
+    tool.checked = true;
+  }
+
 
   /*****************************************************************************************************************************************
    *
@@ -280,27 +334,29 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
-  onDrop(event, level) {
-    Logger.info("[ONDROP]", LevelGraphModellerComponent.name);
+  onDrop(event, level: Level) {
+    Logger.info('[ONDROP]', LevelGraphModellerComponent.name);
     if (this.drag === true) {
-      if (this.typeCurrentDragData === "NodeType") {
-        Logger.data("On Drop Data of Level: " + JSON.stringify(level) + " Data of current DragData: " + JSON.stringify(this.currentDragData) + "OFFSET X  " + event.offsetX + "  OFFSET Y  " + event.offsetY, LevelGraphModellerComponent.name);
-        let levelGraphNodeTypeNode = new LevelGraphNodeType(event.offsetX - 50, event.offsetY -level.y, 200, 100, this.currentDragData, level);
-        this.levelGraphNodeTypeNodes.push(levelGraphNodeTypeNode);
 
-      } else if (this.typeCurrentDragData === "RelationshipType") {
+      // TODO: Type Handling
+      if (this.typeCurrentDragData === 'NodeType') {
 
-        let levelGraphRelationshipTypeNode = new LevelGraphRelationshipTypeNode(event.offsetX -50, event.offsetY - level.y, 200, 100, this.currentDragData, level);
-        this.levelGraphRelationshipTypeNodes.push(levelGraphRelationshipTypeNode);
+      } else if (this.typeCurrentDragData === 'RelationshipType') {
 
-      } else if (this.typeCurrentDragData === "FragmentNode") {
-
-        let levelGraphFragmentNode = new LevelGraphFragmentNode(event.offsetX -50, event.offsetY - level.y, 200, 100, level);
-        this.levelGraphFragmentNodes.push(levelGraphFragmentNode);
+      } else if (this.typeCurrentDragData === 'FragmentNode') {
 
       } else {
-        console.log("NO ");
+
       }
+
+      if ((this.typeCurrentDragData === 'FragmentNode') && (level.value < 2)) {
+
+      } else {
+        let levelGraphNode = new LevelGraphNode(event.offsetX - 50, event.offsetY - level.y, 200, 100, level);
+        levelGraphNode.levelGraph = this.currentLevelGraph;
+        this.levelGraphNodeService.createLevelGraphNode(levelGraphNode).subscribe(levelGraphNodeRes => this.currentLevelGraph.levelGraphNodes.push(levelGraphNodeRes));
+      }
+
       this.drag = false;
     }
   }

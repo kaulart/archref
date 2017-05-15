@@ -10,4 +10,17 @@ export class Utility {
 
   }
 
+
+  static updateElementInArry(res: any, array: any[]) {
+
+    for (let i = 0; i < array.length; i++) {
+
+      if (res.id === array[i].id) {
+        array[i] = res;
+      }
+
+    }
+
+    return array;
+  }
 }

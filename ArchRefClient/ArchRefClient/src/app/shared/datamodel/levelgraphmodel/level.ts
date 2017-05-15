@@ -2,15 +2,21 @@
  * New typescript file
  */
 import { LevelGraph } from './levelgraph';
+import { LevelGraphNode } from './levelgraphnode';
+import { LevelGraphRelation } from './levelgraphrelation';
+
 export class Level {
 
-  name: string;
-  value: number
   id: number;
+  name: string;
+  value: number;
   checked: boolean;
   y: number;
   height: number;
   levelGraph: LevelGraph;
+  outLevelGraphRelations: LevelGraphRelation[] = [];
+  inLevelGraphRelations: LevelGraphRelation[] = [];
+  levelGraphnodes: LevelGraphNode[] = [];
 
   constructor(name: string, value: number, checked: boolean, y: number, height: number, levelGraph: LevelGraph) {
     this.name = name;

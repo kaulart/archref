@@ -1,15 +1,19 @@
+
 <div class="dashboard_area">
+
+
+
 
 	<div class="w3-theme-d4 w3-card-4 heading">
 		<h2 style="margin: 10px; padding: 5px">Administration</h2>
 	</div>
 
 	<div id="accordion" class="rounded panel-group collapsed_area data_panel w3-theme-d2 w3-card-4">
-		
+
 		<div class="panel panel-default ">
-			
+
 			<div class="row panel-heading control-panel">
-				
+
 				<h3 class="col-sm-3">Repositories</h3>
 
 				<button class="w3-right w3-theme-l1 btn btn-primary" id="importRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
@@ -30,7 +34,7 @@
 						<label for="name">Name: </label> <input #name type="text" class="form-control" id="name" value="Unnamed" required>
 					</div>
 
-					<button type="submit" class="btn btn-success" (click)=(addRepository(name.value))>Save</button>
+					<button type="submit" class="btn btn-success" (click)=(createRepository(name.value))>Save</button>
 				</form>
 			</div>
 
@@ -72,7 +76,7 @@
 							}}</td>
 						<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}">{{ repository.name }}</td>
 						<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}">{{ repository.id }}</td>
-						<td><button type="button" data-toggle="modal" data-target="#editRepositoryModal" class="w3-blue btn">
+						<td><button type="button" data-toggle="modal" data-target="#editRepositoryModal" class="w3-blue btn" (click) = setEditRepositoryData(repository)>
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
 						<td><button class=" btn" disabled (click)="exportRepository(repository.id)">
@@ -106,10 +110,10 @@
 			<div class="  input-panel">
 				<form>
 					<div class="form-group">
-						<label for="name">Name: </label> <input  type="text" class="form-control" id="name" value="" required>
+						<label for="name">Name: </label> <input #editName type="text" class="form-control" id="name" value="{{editedRepository.name}}" required>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="editRepository(repository.id, name.value)">Save</button>
+					<button type="button" class="btn btn-primary" (click)="updateRepository(editName.value)"  data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import de.arthurkaul.archref.model.InstanceState;
 import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.model.interfaces.Interface;
 
@@ -40,9 +39,6 @@ public class RelationshipType {
 	
 	//private NodeType derivedFromNodeType;
 	
-	@ManyToMany
-	@JoinTable(name="RELATIONSHIPTYPE_INSTANCESTATE", joinColumns=@JoinColumn(name="RELATIONSHIPTYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="INSTANCESTATE_ID", referencedColumnName="ID"))
-	private Collection<InstanceState> instanceStateList;
 	
 	@ManyToMany
 	@JoinTable(name="RELATIONSHIPTYPE_SOURCEINTERFACE", joinColumns=@JoinColumn(name="RELATIONSHIPTYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="INTERFACE_ID", referencedColumnName="ID"))
@@ -79,13 +75,6 @@ public class RelationshipType {
 		this.repositoryRelationshipType = repositoryRelationshipType;
 	}
 
-	public Collection<InstanceState> getInstanceStateList() {
-		return instanceStateList;
-	}
-
-	public void setInstanceStateList(Collection<InstanceState> instanceStateList) {
-		this.instanceStateList = instanceStateList;
-	}
 
 	public Collection<Interface> getSourceInterfacesList() {
 		return sourceInterfacesList;

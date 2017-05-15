@@ -1,5 +1,7 @@
 package de.arthurkaul.archref.model.node;
 
+import java.net.URI;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +26,12 @@ public class NodeType {
 	private String name;
 	
 //	private NodeType derivedFromNodeType;
+//	
+//	private URI targetNamespace;
+//	
+//	private boolean abstractNodeType;
+//	
+//	private boolean finalNodeType;
 	
 //	@ManyToMany
 //	@JoinTable(name="NODETYPE_REQUIREMENTDEFINITION", joinColumns=@JoinColumn(name="NODETYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="REQUIREMENT_ID", referencedColumnName="ID"))
@@ -76,5 +84,37 @@ public class NodeType {
 	        this.repositoryNodeType = repositoryNodeType;
 	     
 	}
+
+//	public NodeType getDerivedFromNodeType() {
+//		return derivedFromNodeType;
+//	}
+//
+//	public void setDerivedFromNodeType(NodeType derivedFromNodeType) {
+//		this.derivedFromNodeType = derivedFromNodeType;
+//	}
+//
+//	public URI getTargetNamespace() {
+//		return targetNamespace;
+//	}
+//
+//	public void setTargetNamespace(URI targetNamespace) {
+//		this.targetNamespace = targetNamespace;
+//	}
+//
+//	public boolean isAbstractNodeType() {
+//		return abstractNodeType;
+//	}
+//
+//	public void setAbstractNodeType(boolean abstractNodeType) {
+//		this.abstractNodeType = abstractNodeType;
+//	}
+//
+//	public boolean isFinalNodeType() {
+//		return finalNodeType;
+//	}
+//
+//	public void setFinalNodeType(boolean finalNodeType) {
+//		this.finalNodeType = finalNodeType;
+//	}
 
 }

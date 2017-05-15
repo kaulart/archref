@@ -50,15 +50,15 @@
 
 		</div>
 
-		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme" style="margin: 0px; padding: 10px; margin-top: 10px">
+		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme" style="margin: 0px; padding: 10px; margin-top: 10px;">
 
 			<h5 style="width: 100% w3-theme-d4">Toolbox</h5>
 			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
-			
+
 				<ul *ngFor="let tool of toolList">
-					<li>  <input type="radio" name="radiogroup" [checked]="tool.id === 1" value="{{tool.name}}">{{tool.name}}</li>
+					<li><input type="radio" name="radiogroup" [checked]="tool.checked" (click)="changeTool(tool)" value="{{tool.name}}">{{tool.name}}</li>
 				</ul>
-			
+
 			</div>
 
 			<hr>
@@ -83,7 +83,7 @@
 			<hr>
 
 
-			<div id="toolbox_group"style="margin: 0px; padding: 0px; width: 100%">
+			<div id="toolbox_group" style="margin: 0px; padding: 0px; width: 100%">
 
 
 				<div class="dropdown">
@@ -157,32 +157,24 @@
 						(dragover)="onDragOver($event)" (drop)="onDrop($event, level)">
 					 </rect>
 					
-					<g *ngFor="let levelGraphNode  of levelGraphNodeTypeNodes">
-						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
+					<g *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
+						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x"
 						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
-						style="fill:red;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
-						(mouseup)="stopMovingNode($event)" />	
+						style="fill:red;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event, level)" (mousemove)="moveNode($event, levelGraphNode)"
+						(mouseup)="stopMovingNode($event, level)" />	
 					</g>
 					
-					<g *ngFor="let levelGraphNode  of levelGraphRelationshipTypeNodes">
-						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
-						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
-						style="fill:blue;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
-						(mouseup)="stopMovingNode($event)" />	
-					</g>
-					
-					<g *ngFor="let levelGraphNode  of levelGraphFragmentNodes">
-					<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.getId()" [attr.x]="levelGraphNode.x"
-						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
-						style="fill:yellow;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event)" (mousemove)="moveNode($event, levelGraphNode)"
-						(mouseup)="stopMovingNode($event)" />	
-					
-					</g>
+				<!-- 	 <polyline *ngIf="drawHostedOnRelation" [attr.points]="leveGraphHostedOnRelation.path"
+						style="fill:none;stroke:black;stroke-width:3" />
+
+					 <polyline *ngIf="drawConnectedToRelation" points="20,100 70,80 100,20"
+						style="fill:none;stroke:black;stroke-width:3" />
+					 -->
 					
 					</svg>
 
 				</g>
-    	
+				
            </svg>
 
 		</div>

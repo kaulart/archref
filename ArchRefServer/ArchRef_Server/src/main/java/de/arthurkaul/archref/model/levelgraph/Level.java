@@ -1,5 +1,8 @@
 package de.arthurkaul.archref.model.levelgraph;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Level {
@@ -20,6 +25,7 @@ public class Level {
 	private Long id;
 	
 	@Column(name="VALUE")
+	@NotNull
 	private Long value;
 	
 	@Column(name="NAME")
@@ -38,10 +44,22 @@ public class Level {
 	@NotNull
 	private Integer height;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="LEVELGRAPH_ID")
-	@JsonBackReference
+	@ManyToOne(fetch=FetchType.LAZY)	
+	@JoinColumn(name="LEVELGRAPH_LEVEL_ID")
+	@JsonBackReference (value="levelgraph-level")
 	private LevelGraph levelGraph;
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevel")
+	@JsonManagedReference (value="level-sourceLevelGraphRelation")
+	private Collection<LevelGraphRelation> outLevelGraphRelations;
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevel")
+	@JsonManagedReference (value="level-sourceLevelGraphRelation")
+	private Collection<LevelGraphRelation> inLevelGraphRelations;
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="level")
+	@JsonManagedReference (value="level-levelGraphNode")
+	private Collection<LevelGraphNode> levelGraphNodes;
 	
 	
 	public Long getId() {
@@ -74,17 +92,37 @@ public class Level {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Long getValue() {
+		return value;
+	}
+	public void setValue(Long value) {
+		this.value = value;
+	}
+
 	public LevelGraph getLevelGraph() {
 		return levelGraph;
 	}
 	public void setLevelGraph(LevelGraph levelGraph) {
 		this.levelGraph = levelGraph;
 	}
-	public Long getValue() {
-		return value;
+	public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
+		return outLevelGraphRelations;
 	}
-	public void setValue(Long value) {
-		this.value = value;
+	public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
+		this.outLevelGraphRelations = outLevelGraphRelations;
+	}
+	public Collection<LevelGraphRelation> getInLevelGraphRelations() {
+		return inLevelGraphRelations;
+	}
+	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
+		this.inLevelGraphRelations = inLevelGraphRelations;
+	}
+	public Collection<LevelGraphNode> getLevelGraphNodes() {
+		return levelGraphNodes;
+	}
+	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+		this.levelGraphNodes = levelGraphNodes;
 	}
 	
 }

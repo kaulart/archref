@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import de.arthurkaul.archref.exceptions.LevelGraphAlreadyExistException;
 import de.arthurkaul.archref.exceptions.LevelGraphNotFoundException;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
-import de.arthurkaul.archref.services.LevelGraphService;
+import de.arthurkaul.archref.services.levelgraph.LevelGraphService;
 
 @RestController
 public class LevelGraphController {

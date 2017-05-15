@@ -15,6 +15,7 @@ export class AdministrationComponent implements OnInit {
 
   public repositories: Repository[] = [];
   public createdRepository: Repository;
+  public editedRepository: Repository = new Repository('');
 
   constructor(private administrationDataService: AdministrationService) { }
 
@@ -23,26 +24,32 @@ export class AdministrationComponent implements OnInit {
     this.loadAdministrationData();
   }
 
-  private addRepository(name: string) {
-    Logger.info("Add Repository", AdministrationComponent.name);
+  private createRepository(name: string) {
+    Logger.info('Create Repository', AdministrationComponent.name);
     let repository: Repository = new Repository(name);
     Logger.data(JSON.stringify(repository), AdministrationComponent.name);
     this.administrationDataService.addRepository(repository).subscribe(repositoryCreated => this.repositories.push(repositoryCreated));
   }
 
   private deleteRepository(id: number, event) {
-    Logger.info("Delete Repository", AdministrationComponent.name);
+    Logger.info('Delete Repository', AdministrationComponent.name);
     this.administrationDataService.deleteRepository(id).subscribe(res => this.repositories = Utility.deleteElementFromArry(id, this.repositories));
   }
 
-  private editRepository(id: number, name: string) {
-    Logger.info("Edit Repository", AdministrationComponent.name);
+  private updateRepository(name: string) {
+    Logger.info('Update Repository', AdministrationComponent.name);
+    this.editedRepository.name = name;
+    this.administrationDataService.updateRepository(this.editedRepository).subscribe(res => this.repositories = Utility.updateElementInArry(res, this.repositories));
   }
 
   private loadAdministrationData() {
-    Logger.info("Load Repository Data", AdministrationComponent.name);
+    Logger.info('Load Repository Data', AdministrationComponent.name);
     this.administrationDataService.getRepositories().subscribe(repositories => this.repositories = repositories);
   }
 
+  private setEditRepositoryData(repository) {
+    Logger.info('Set Edit Repository Data', AdministrationComponent.name);
+    this.editedRepository = repository;
+  }
 
 }

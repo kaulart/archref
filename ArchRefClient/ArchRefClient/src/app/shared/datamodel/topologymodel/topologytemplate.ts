@@ -8,13 +8,15 @@ import { NodeTemplate } from './nodetemplate';
 import { RelationshipTemplate } from './relationshiptemplate';
 export class TopologyTemplate {
 
-  id: number;
-  name: string;
-  nodeTemplates: NodeTemplate[] = [];
-  relationshipTemplates: RelationshipTemplate[] = [];
+  private id: number;
+  private name: string;
+  private nodeTemplates: NodeTemplate[];
+  private relationshipTemplates: RelationshipTemplate[];
 
   constructor(name) {
     this.name = name;
+    this.nodeTemplates = [];
+    this.nodeTemplates = [];
   }
 
   /**
@@ -36,16 +38,6 @@ export class TopologyTemplate {
 
   public getRelationshipTemplates(): RelationshipTemplate[] {
     return this.relationshipTemplates;
-  }
-
-  public getNodeTemplate(): NodeTemplate {
-    //TODO
-    return null;
-  }
-
-  public getRelationshipTemplate(): RelationshipTemplate {
-    //TODO
-    return null;
   }
 
   /**

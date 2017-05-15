@@ -29,33 +29,17 @@ public class LevelGraph {
 	private Integer numberOfLevels;
 	
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
-	@JsonManagedReference
+	@JsonManagedReference (value="levelgraph-level")
 	private Collection<Level> levels;
 	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphNodeType> levelGraphNodeTypes;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphFragmentNode> levelGraphFragmentNodeList;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphRelationType> levelGraphRelationTypeList;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphConnectedToRelation> levelGraphConnectToRelationList;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphHostedOnRelation> levelGraphHostedOnRelationList;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-//	@JsonManagedReference
-//	private Collection<LevelGraphRefineToRlation> levelslevelGraphRefineToRelationList;
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
+	@JsonManagedReference (value="levelgraph-levelgraphnodes")
+	private Collection<LevelGraphNode> levelGraphNodes;
 	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
+	@JsonManagedReference (value="levelgraph-levelgraphrelation")
+	private Collection<LevelGraphRelation> levelGraphRelations;
+
 	public Long getId() {
 		return id;
 	}
@@ -88,52 +72,21 @@ public class LevelGraph {
 		this.levels = levels;
 	}
 
-//	public Collection<LevelGraphNodeType> getLevelGraphNodeTypes() {
-//		return levelGraphNodeTypes;
-//	}
-//
-//	public void setLevelGraphNodeTypes(Collection<LevelGraphNodeType> levelGraphNodeTypes) {
-//		this.levelGraphNodeTypes = levelGraphNodeTypes;
-//	}
-//
-//	public Collection<LevelGraphFragmentNode> getLevelGraphFragmentNodeList() {
-//		return levelGraphFragmentNodeList;
-//	}
-//
-//	public void setLevelGraphFragmentNodeList(Collection<LevelGraphFragmentNode> levelGraphFragmentNodeList) {
-//		this.levelGraphFragmentNodeList = levelGraphFragmentNodeList;
-//	}
-//
-//	public Collection<LevelGraphRelationType> getLevelGraphRelationTypeList() {
-//		return levelGraphRelationTypeList;
-//	}
-//
-//	public void setLevelGraphRelationTypeList(Collection<LevelGraphRelationType> levelGraphRelationTypeList) {
-//		this.levelGraphRelationTypeList = levelGraphRelationTypeList;
-//	}
-//
-//	public Collection<LevelGraphConnectedToRelation> getLevelGraphConnectToRelationList() {
-//		return levelGraphConnectToRelationList;
-//	}
-//
-//	public void setLevelGraphConnectToRelationList(Collection<LevelGraphConnectedToRelation> levelGraphConnectToRelationList) {
-//		this.levelGraphConnectToRelationList = levelGraphConnectToRelationList;
-//	}
-//
-//	public Collection<LevelGraphHostedOnRelation> getLevelGraphHostedOnRelationList() {
-//		return levelGraphHostedOnRelationList;
-//	}
-//
-//	public void setLevelGraphHostedOnRelationList(Collection<LevelGraphHostedOnRelation> levelGraphHostedOnRelationList) {
-//		this.levelGraphHostedOnRelationList = levelGraphHostedOnRelationList;
-//	}
-//
-//	public Collection<LevelGraphRefineToRlation> getLevelslevelGraphRefineToRelationList() {
-//		return levelslevelGraphRefineToRelationList;
-//	}
-//
-//	public void setLevelslevelGraphRefineToRelationList(Collection<LevelGraphRefineToRlation> levelslevelGraphRefineToRelationList) {
-//		this.levelslevelGraphRefineToRelationList = levelslevelGraphRefineToRelationList;
-//	}
+	public Collection<LevelGraphNode> getLevelGraphNodes() {
+		return levelGraphNodes;
+	}
+
+	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+		this.levelGraphNodes = levelGraphNodes;
+	}
+
+	public Collection<LevelGraphRelation> getLevelGraphRelations() {
+		return levelGraphRelations;
+	}
+
+	public void setLevelGraphRelations(Collection<LevelGraphRelation> levelGraphRelations) {
+		this.levelGraphRelations = levelGraphRelations;
+	}
+
 
 }
