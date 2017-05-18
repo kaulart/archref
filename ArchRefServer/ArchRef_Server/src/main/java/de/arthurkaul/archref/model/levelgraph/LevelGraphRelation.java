@@ -1,5 +1,7 @@
 package de.arthurkaul.archref.model.levelgraph;
 
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import de.arthurkaul.archref.model.Path;
+
 
 @Entity
 public class LevelGraphRelation {
@@ -44,6 +49,14 @@ public class LevelGraphRelation {
 	@JoinColumn(name = "TARGETLEVELGRAPH_NODE_ID")
 	@JsonBackReference  (value="levelgraphrelation-targetlevelgraphnodes")
 	private LevelGraphNode targetLevelGraphNode;
+	
+	@Column(name = "TYPE")
+	private String levelGraphRelationType;
+
+	
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="PATH_ID")
+	private Path path;
 
 
 	public Level getSourceLevel() {
@@ -93,5 +106,23 @@ public class LevelGraphRelation {
 	public void setLevelGraph(LevelGraph levelGraph) {
 		this.levelGraph = levelGraph;
 	}
+
+	public Path getPath() {
+		return path;
+	}
+
+	public void setPath(Path path) {
+		this.path = path;
+	}
+
+	public String getLevelGraphRelationType() {
+		return levelGraphRelationType;
+	}
+
+	public void setLevelGraphRelationType(String levelGraphRelationType) {
+		this.levelGraphRelationType = levelGraphRelationType;
+	}
+
+
 
 }

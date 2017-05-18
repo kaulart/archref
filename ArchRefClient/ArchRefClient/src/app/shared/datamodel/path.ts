@@ -23,4 +23,14 @@ export class Path {
     this.pathDataString = this.pathDataString + point.x + ',' + point.y + ' ';
   }
 
+  
+    updatePath() {
+    this.pathDataString = '';
+    for (let point of this.points) {
+
+      this.pathDataString = this.pathDataString + point.x + ',' + point.y + ' ';
+
+    }
+
+  }
 }

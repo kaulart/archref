@@ -9,6 +9,10 @@
 				aria-expanded="false" aria-controls="control_level_graph_tool">
 				<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 			</button>
+			<button class="btn btn-primary w3-right w3-green" type="button" aria-expanded="false" aria-controls="control_level_graph_tool"
+				(click)="updateLevelGraph()">
+				<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>Save
+			</button>
 
 		</div>
 
@@ -73,7 +77,7 @@
 				<div class="collapse" id="toolbox_level_graph_nodes" style="margin: 0px; padding: 0px; width: 100%">
 					<ul style="padding: 5px" id="levelGraphSpezialNodeList" class="  list-group">
 						<li class="fragmentType w3-round" draggable="true" *ngFor="let fragmentType of levelGraphNodeTypes"
-							(drag)="onDrag($event, fragmentType, 'FragmentNode')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							(drag)="onDrag($event, fragmentType, 'FRAGMENTNODE')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
 							<h3>Fragment Node</h3></li>
 					</ul>
 				</div>
@@ -111,7 +115,7 @@
 					<ul style="padding: 5px" id="nodeTypesList" class=" list-group">
 
 						<li class="nodeType w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList"
-							(drag)="onDrag($event, nodeType, 'NodeType')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							(drag)="onDrag($event, nodeType, 'NODETYPE')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
 							<h3>{{nodeType.name}}</h3></li>
 
 					</ul>
@@ -128,7 +132,7 @@
 				<div class="collapse toolbox" id="toolbox_relations" style="margin: 0px; padding: 0px; width: 100%">
 					<ul style="padding: 5px" id="relationTypesList" class="  list-group">
 						<li class="relationType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList"
-							(drag)="onDrag($event, relationshipType, 'RelationshipType')" (dragover)="onDragOver($event)"><img
+							(drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img
 							src="http://lorempixum.com/100/100/nature/1" />
 							<h3>{{relationshipType.name}}</h3></li>
 					</ul>
@@ -140,14 +144,21 @@
 
 		</div>
 
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;">
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mousemove)="drawEdge($event)"
+			(mouseup)="mouseUpOnDrawArea()">
 
 			<svg id="parent">
+				
+				<defs>
+   					 <marker id="Triangle" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    				  <path d="M 0 0 L 10 5 L 0 10 z" />
+   					 </marker>
+ 					 </defs>
 				
 				<g *ngFor="let level of activeLevels">
 				   
 				   <rect [attr.x]="0" [attr.y]="level.y" [attr.width]="40" [attr.height]="level.height" fill="blue"></rect>
-                   <text [attr.x]="40" [attr.y]="level.y" font-family="Verdana" font-size="35" fill="red">Hello</text> 
+                   <text [attr.x]="40" [attr.y]="level.y" font-family="Verdana" font-size="35" fill="red">Level {{level.value}}</text> 
 				   <rect class="level_content" [attr.x]="0" [attr.y]="level.y + level.height + 10" [attr.height]="20" (mousedown)="startChangeLevelHeight($event)"
 					(mousemove)="changeLevelHeight($event, level)" (mouseup)="stopChangeLevelHeight($event)"></rect>
 				
@@ -156,22 +167,52 @@
 					 <rect class="level_content" [attr.id]="level.value" [attr.x]="0" [attr.y]="0" [attr.height]="level.height" fill="green"
 						(dragover)="onDragOver($event)" (drop)="onDrop($event, level)">
 					 </rect>
-					
-					<g *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-						<rect *ngIf="levelGraphNode.level.value === level.value" rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x"
-						[attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height"
-						style="fill:red;stroke:black;stroke-width:5;" (mousedown)="startMovingNode($event, level)" (mousemove)="moveNode($event, levelGraphNode)"
-						(mouseup)="stopMovingNode($event, level)" />	
+					 
+					 <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
+						*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
+					    <polyline *ngIf="(levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO_RELATION') && (levelGraphRelation.sourceLevel.id === level.id)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:3" marker-end="url(#Triangle)" />
 					</g>
 					
-				<!-- 	 <polyline *ngIf="drawHostedOnRelation" [attr.points]="leveGraphHostedOnRelation.path"
-						style="fill:none;stroke:black;stroke-width:3" />
-
-					 <polyline *ngIf="drawConnectedToRelation" points="20,100 70,80 100,20"
-						style="fill:none;stroke:black;stroke-width:3" />
-					 -->
+				    <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
+						*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
+					    <polyline *ngIf="(levelGraphRelation.levelGraphRelationType === 'HOSTED_ON_RELATION') && (levelGraphRelation.sourceLevel.id === level.id)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:3" marker-end="url(#Triangle)" />
+					</g>
+					
+					
+					<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
+						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
+						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'FRAGMENTNODE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
+						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" style="fill:red;stroke:black;stroke-width:5;" (mousedown)="mouseDownOnNode($event, level, levelGraphNode)"
+						(mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+					</g>
+					
+				 	<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
+						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
+						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
+						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" style="fill:red;stroke:black;stroke-width:5;" (mousedown)="mouseDownOnNode($event, level, levelGraphNode)"
+						(mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+					</g>
+					
+					<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
+						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
+						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
+						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" style="fill:red;stroke:black;stroke-width:5;" (mousedown)="mouseDownOnNode($event, level, levelGraphNode)"
+						(mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+					</g>
+					
+					
+					<polyline *ngIf="drawRelation && drawRelation" [attr.points]="currentDrawRelation.path.pathDataString"
+						style="fill:none;stroke:black;stroke-width:3" marker-end="url(#Triangle)" />
+					
+				
+					
+					
 					
 					</svg>
+
 
 				</g>
 				
@@ -183,3 +224,22 @@
 
 </div>
 
+<contextmenu #levelGraphNodeContextMenu>
+<div class="dropdown open">
+	<div class="dropdown-menu">
+		<a class="dropdown-item" (click)="viewDetails(levelGraphNodeTypeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>View
+			Details</a> <a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeTypeContextMenu.get('levelGraphNode'))"><i class="fa fa-trash"
+			aria-hidden="true"></i>Delete</a>
+	</div>
+</div>
+</contextmenu>
+
+<contextmenu #levelGraphRelationContextMenu>
+<div class="dropdown open">
+	<div class="dropdown-menu">
+		<a class="dropdown-item" (click)="viewDetails(levelGraphNodeTypeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>View
+			Details</a> <a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeTypeContextMenu.get('levelGraphNode'))"><i class="fa fa-trash"
+			aria-hidden="true"></i>Delete</a>
+	</div>
+</div>
+</contextmenu>

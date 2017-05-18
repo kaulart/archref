@@ -63,7 +63,7 @@ public class LevelGraphController {
       
     }
 
-   @RequestMapping(value = "/api/levelgraph{id}", method = RequestMethod.PUT)
+   @RequestMapping(value = "/api/levelgraph/{id}", method = RequestMethod.PUT)
    public ResponseEntity<LevelGraph> updateLevelGraph(@PathVariable("id") long id, @RequestBody LevelGraph levelGraph) {
 
 	   LevelGraph currentLevelGraph = levelGraphService.findById(id);
@@ -72,7 +72,7 @@ public class LevelGraphController {
        	     throw new LevelGraphNotFoundException("LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id + " not found.");          
        }
 
-       currentLevelGraph.setName(levelGraph.getName());
+       currentLevelGraph = levelGraph;
 
        levelGraphService.update(currentLevelGraph);
        return ResponseEntity.ok().body(currentLevelGraph);

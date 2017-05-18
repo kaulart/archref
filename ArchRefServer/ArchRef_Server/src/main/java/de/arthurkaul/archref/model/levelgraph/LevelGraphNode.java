@@ -4,34 +4,31 @@ import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="LEVELGRAPHNODE_TYPE")
+@Table(name="LEVELGRAPHNODE")
 public class LevelGraphNode {
 
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")
 	private Long id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "LEVEL_NODE_ID")
-	@JsonBackReference (value="level-levelGraphNode")
-	private Level level;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "LEVELGRAP_NODE_ID")
-	@JsonBackReference (value="levelgraph-levelgraphnodes")
-	private LevelGraph levelGraph;
 
 	@Column(name = "X_POSITION")
 	private Integer x;
@@ -52,6 +49,21 @@ public class LevelGraphNode {
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevelGraphNode")
 	@JsonManagedReference (value="levelgraphrelation-sourcelevelgraphnodes")
 	private Collection<LevelGraphRelation> outLevelGraphRelation;
+	
+	@Column(name = "TYPE")
+	private String levelGraphNodeType;
+	
+	@Column(name = "TYPEREF")
+	private long typeRef;
+	
+	@Column(name = "Level_ID")
+	private Long levelId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LEVELGRAPH_ID")
+	@JsonBackReference (value="levelgraph-levelgraphnodes")
+	private LevelGraph levelGraph;
+
 
 	public Long getId() {
 		return id;
@@ -60,15 +72,6 @@ public class LevelGraphNode {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Level getLevel() {
-		return level;
-	}
-
-	public void setLevel(Level level) {
-		this.level = level;
-	}
-
 
 	public Integer getY() {
 		return y;
@@ -94,14 +97,6 @@ public class LevelGraphNode {
 		this.height = height;
 	}
 
-	public LevelGraph getLevelGraph() {
-		return levelGraph;
-	}
-
-	public void setLevelGraph(LevelGraph levelGraph) {
-		this.levelGraph = levelGraph;
-	}
-
 	public Integer getX() {
 		return x;
 	}
@@ -124,6 +119,38 @@ public class LevelGraphNode {
 
 	public void setOutLevelGraphRelation(Collection<LevelGraphRelation> outLevelGraphRelation) {
 		this.outLevelGraphRelation = outLevelGraphRelation;
+	}
+
+	public String getLevelGraphNodeType() {
+		return levelGraphNodeType;
+	}
+
+	public void setLevelGraphNodeType(String levelGraphNodeType) {
+		this.levelGraphNodeType = levelGraphNodeType;
+	}
+
+	public long getTypeRef() {
+		return typeRef;
+	}
+
+	public void setTypeRef(long typeRef) {
+		this.typeRef = typeRef;
+	}
+
+	public Long getLevelId() {
+		return levelId;
+	}
+
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+
+	public LevelGraph getLevelGraph() {
+		return levelGraph;
+	}
+
+	public void setLevelGraph(LevelGraph levelGraph) {
+		this.levelGraph = levelGraph;
 	}
 
 	

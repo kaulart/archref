@@ -28,7 +28,7 @@ export class LevelGraphNodeService {
 
   public createLevelGraphNode(levelGraphNode: LevelGraphNode): Observable<LevelGraphNode> {
     Logger.info('[REQUEST]: Send POST Request Level Graph Node', LevelGraphNodeService.name);
-    Logger.data('[LEVEL GRAPH]: ' + JSON.stringify(levelGraphNode), LevelGraphNodeService.name);
+    Logger.data('[LEVEL GRAPH NODE ]: ' + JSON.stringify(levelGraphNode), LevelGraphNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.levelGraphNodeUrl, levelGraphNode, options)
@@ -58,9 +58,9 @@ export class LevelGraphNodeService {
     Logger.info('Extract Level Graph Node Data List', LevelGraphNodeService.name);
     let body = res.json();
     let levelGraphList: LevelGraphNode[] = [];
-    Logger.info('[RESPONSE][LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphNodeService.name);
+    Logger.info('[RESPONSE][LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
     for (let levelGraphNode of body) {
-      let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode(levelGraphNode.x, levelGraphNode.y, levelGraphNode.width, levelGraphNode.height, levelGraphNode.level);
+      let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode(levelGraphNode.x, levelGraphNode.y, levelGraphNode.width, levelGraphNode.height, levelGraphNode.levelId, levelGraphNode.levelGraphNodeType, levelGraphNode.typeRef, levelGraphNode.levelGraph);
        tempLevelGraphNode.inLevelGraphRelations = levelGraphNode.inLevelGraphRelations;
     tempLevelGraphNode.outLevelGraphRelations = levelGraphNode.outLevelGraphRelations;
       tempLevelGraphNode.id = levelGraphNode.id;
@@ -75,8 +75,8 @@ export class LevelGraphNodeService {
   private extractLevelGraphNode(res: Response) {
     Logger.info('Extract Level Graph Data', LevelGraphNodeService.name);
     let body = res.json();
-    Logger.info('[RESPONSE][LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphNodeService.name);
-    let levelGraphNode: LevelGraphNode = new LevelGraphNode(body.x, body.y, body.width, body.height, body.level);
+    Logger.info('[RESPONSE][LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
+    let levelGraphNode: LevelGraphNode = new LevelGraphNode(body.x, body.y, body.width, body.height, body.levelId, body.levelGraphNodeType, body.typeRef, body.levelGraph);
     levelGraphNode.inLevelGraphRelations = body.inLevelGraphRelations;
     levelGraphNode.outLevelGraphRelations = body.outLevelGraphRelations;
     levelGraphNode.id = body.id;

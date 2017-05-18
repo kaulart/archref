@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.topologyTemplate.TopologyTemplate;
+
 @Entity
 public class LevelGraph {
 	
@@ -39,7 +41,12 @@ public class LevelGraph {
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
 	@JsonManagedReference (value="levelgraph-levelgraphrelation")
 	private Collection<LevelGraphRelation> levelGraphRelations;
-
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
+	@JsonManagedReference (value="levelgraph-topologytemplate")
+	private Collection<TopologyTemplate> topologyTemplates;
+	
+	
 	public Long getId() {
 		return id;
 	}

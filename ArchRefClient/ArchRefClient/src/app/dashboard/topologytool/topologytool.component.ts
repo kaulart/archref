@@ -1,5 +1,7 @@
 import { TopologyTemplate } from '../../shared/datamodel/topologymodel/topologytemplate';
 import { TopologyTemplateService } from '../../shared/dataservices/topologytemplate.service';
+
+import { LevelGraphService } from '../../shared/dataservices/levelgraph.service';
 import { Component, OnInit } from '@angular/core';
 import { Utility } from '../../utility';
 
@@ -12,20 +14,24 @@ export class TopologyToolComponent implements OnInit {
 
   topologyTemplates: TopologyTemplate[] = [];
   createdTopologyTemplate: TopologyTemplate;
-  editedTopologyTemplate: TopologyTemplate;
+  editedTopologyTemplate: TopologyTemplate = new TopologyTemplate('');
 
-
-  constructor(private topologyTemplateService: TopologyTemplateService) {
+  constructor(private topologyTemplateService: TopologyTemplateService, private levelGraphService: LevelGraphService) {
 
   }
 
   ngOnInit() {
 
     this.loadTopologyTemplates();
+    this.loadLevelGraphs();
   }
 
   loadTopologyTemplates() {
     this.topologyTemplateService.getTopologyTemplates().subscribe(topologyTemplateResponse => this.topologyTemplates = topologyTemplateResponse);
+  }
+  
+  loadLevelGraphs() {
+    this
   }
 
   createTopologyTemplate(name: string) {

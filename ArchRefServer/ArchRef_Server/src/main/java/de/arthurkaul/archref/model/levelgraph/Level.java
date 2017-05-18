@@ -57,9 +57,9 @@ public class Level {
 	@JsonManagedReference (value="level-sourceLevelGraphRelation")
 	private Collection<LevelGraphRelation> inLevelGraphRelations;
 	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="level")
-	@JsonManagedReference (value="level-levelGraphNode")
-	private Collection<LevelGraphNode> levelGraphNodes;
+//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="level")
+//	@JsonManagedReference (value="level-levelGraphNode")
+//	private Collection<LevelGraphNode> levelGraphNodes;
 	
 	
 	public Long getId() {
@@ -118,11 +118,11 @@ public class Level {
 	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
 		this.inLevelGraphRelations = inLevelGraphRelations;
 	}
-	public Collection<LevelGraphNode> getLevelGraphNodes() {
-		return levelGraphNodes;
-	}
-	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
-		this.levelGraphNodes = levelGraphNodes;
-	}
+//	public Collection<LevelGraphNode> getLevelGraphNodes() {
+//		return levelGraphNodes;
+//	}
+//	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+//		this.levelGraphNodes = levelGraphNodes;
+//	}
 	
 }

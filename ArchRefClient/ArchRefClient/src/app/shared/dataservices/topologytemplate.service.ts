@@ -38,9 +38,10 @@ export class TopologyTemplateService {
 
   public updateTopologyTemplate(topologyTemplate: TopologyTemplate): Observable<TopologyTemplate> {
     Logger.info('[REQUEST]: Send PUT Request Topology Template', TopologyTemplateService.name);
+    Logger.data('[LEVEL GRAPH]: ' + JSON.stringify(topologyTemplate), TopologyTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.topologyTemplateURL, topologyTemplate, options)
+    return this.http.put(this.topologyTemplateURL + '/' + topologyTemplate.getId(), topologyTemplate, options)
       .map(this.extractTopologyTemplate)
       .catch(this.handleError);
   }

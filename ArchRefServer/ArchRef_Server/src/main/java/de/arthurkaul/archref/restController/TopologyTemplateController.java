@@ -64,7 +64,7 @@ public class TopologyTemplateController {
       
     }
 
-   @RequestMapping(value = "/api/topologytemplates{id}", method = RequestMethod.PUT)
+   @RequestMapping(value = "/api/topologytemplates/{id}", method = RequestMethod.PUT)
    public ResponseEntity<?> updateTopologyTemplate(@PathVariable("id") long id, @RequestBody TopologyTemplate topologyTemplate) {
 
 	   TopologyTemplate currentTopologyTemplate = topologyTemplateService.findById(id);

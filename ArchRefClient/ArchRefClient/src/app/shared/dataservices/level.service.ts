@@ -12,20 +12,20 @@ export class LevelService {
 
   constructor(private http: Http) { }
 
-//  public getLevels(): Observable<Level[]> {
-//    Logger.info('[REQUEST]: Send GET Request Level Graphs', LevelGraphService.name);
-//    return this.http.get(this.levelUrl)
-//      .map(this.extractLevelGraphDataList)
-//      .catch(this.handleError);
-//
-//  }
+  //  public getLevels(): Observable<Level[]> {
+  //    Logger.info('[REQUEST]: Send GET Request Level Graphs', LevelGraphService.name);
+  //    return this.http.get(this.levelUrl)
+  //      .map(this.extractLevelGraphDataList)
+  //      .catch(this.handleError);
+  //
+  //  }
 
-//  public getLevelGraph(id: number): Observable<LevelGraph> {
-//    Logger.info('[REQUEST]: Send GET Request Level Graph with ID: ' + id, LevelGraphService.name);
-//    return this.http.get(this.levelUrl + '/' + id)
-//      .map(this.extractLevelGraph)
-//      .catch(this.handleError);
-//  }
+  //  public getLevelGraph(id: number): Observable<LevelGraph> {
+  //    Logger.info('[REQUEST]: Send GET Request Level Graph with ID: ' + id, LevelGraphService.name);
+  //    return this.http.get(this.levelUrl + '/' + id)
+  //      .map(this.extractLevelGraph)
+  //      .catch(this.handleError);
+  //  }
 
   public createLevel(level: Level): Observable<Level> {
     Logger.info('[REQUEST]: Send POST Request Level', LevelService.name);
@@ -61,7 +61,7 @@ export class LevelService {
     let levelList: Level[] = [];
     Logger.info('[RESPONSE][LEVEL]: ' + JSON.stringify(body), LevelService.name);
     for (let level of body) {
-      let tempLevelGraph: Level= new Level(level.name, level.id, level.checked, level.y, level.height, level.levelGraph);
+      let tempLevelGraph: Level = new Level(level.name, level.value, level.checked, level.y, level.height, level.levelGraph);
       tempLevelGraph.id = level.id;
       levelList.push(tempLevelGraph);
 
@@ -75,7 +75,7 @@ export class LevelService {
     Logger.info('Extract Level Data', LevelService.name);
     let body = res.json();
     Logger.info('[RESPONSE][LEVEL]: ' + JSON.stringify(body), LevelService.name);
-    let level: Level = new Level(body.name, body.id, body.checked, body.y, body.height, body.levelGraph);
+    let level: Level = new Level(body.name, body.value, body.checked, body.y, body.height, body.levelGraph);
     level.id = body.id;
     return level || {};
   }

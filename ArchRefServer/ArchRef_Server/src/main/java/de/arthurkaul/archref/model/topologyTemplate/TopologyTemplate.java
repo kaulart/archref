@@ -12,7 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.arthurkaul.archref.model.Repository;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import de.arthurkaul.archref.model.levelgraph.LevelGraph;
+
 
 @Entity
 @Table(name="TOPOLOGY_TEMPLATE")
@@ -26,16 +29,16 @@ public class TopologyTemplate {
 	@Column(name="NAME")
 	private String name;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="REPOSITORY_ID")
-	private Repository repository;
-	
-	
-	@OneToMany (mappedBy="topologyTemplate")
-	private Collection<NodeTemplate> nodeTemplateList;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "LEVELGRAPH_TOPOLOGYTEMPLATE_ID")
+	@JsonBackReference (value="levelgraph-topologytemplate")
+	private LevelGraph levelGraph;
 	
 	@OneToMany (mappedBy="topologyTemplate")
-	private Collection<RelationshipTemplate> relationshipTemplateList;
+	private Collection<NodeTemplate> nodeTemplates;
+	
+	@OneToMany (mappedBy="topologyTemplate")
+	private Collection<RelationshipTemplate> relationshipTemplates;
 
 	public Long getId() {
 		return id;
@@ -51,6 +54,30 @@ public class TopologyTemplate {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public LevelGraph getLevelGraph() {
+		return levelGraph;
+	}
+
+	public void setLevelGraph(LevelGraph levelGraph) {
+		this.levelGraph = levelGraph;
+	}
+
+	public Collection<NodeTemplate> getNodeTemplates() {
+		return nodeTemplates;
+	}
+
+	public void setNodeTemplates(Collection<NodeTemplate> nodeTemplates) {
+		this.nodeTemplates = nodeTemplates;
+	}
+
+	public Collection<RelationshipTemplate> getRelationshipTemplates() {
+		return relationshipTemplates;
+	}
+
+	public void setRelationshipTemplates(Collection<RelationshipTemplate> relationshipTemplates) {
+		this.relationshipTemplates = relationshipTemplates;
 	}
 	
 }

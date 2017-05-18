@@ -3,18 +3,23 @@ package de.arthurkaul.archref.model.node;
 import java.net.URI;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import de.arthurkaul.archref.model.Repository;
+import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
 
 @Entity
-public class NodeType {
+@DiscriminatorValue("NODETYPE")
+@Table(name="NODETYPE")
+public class NodeType extends LevelGraphNode{
 		
 	@Id
 	@GeneratedValue()

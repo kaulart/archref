@@ -4,14 +4,17 @@
  * @author Arthur Kaul
  *
  */
+import { LevelGraph } from '../levelgraphmodel/levelgraph';
 import { NodeTemplate } from './nodetemplate';
 import { RelationshipTemplate } from './relationshiptemplate';
+
 export class TopologyTemplate {
 
   private id: number;
   private name: string;
   private nodeTemplates: NodeTemplate[];
   private relationshipTemplates: RelationshipTemplate[];
+  private levelGraph: LevelGraph;
 
   constructor(name) {
     this.name = name;
@@ -40,6 +43,10 @@ export class TopologyTemplate {
     return this.relationshipTemplates;
   }
 
+  public getLevelGraph(): LevelGraph {
+    return this.levelGraph;
+  }
+
   /**
    *
    * Setter for TopologyTemplate
@@ -59,6 +66,10 @@ export class TopologyTemplate {
 
   public setRelationshipTemplates(relationshipTemplates: RelationshipTemplate[]) {
     this.relationshipTemplates = relationshipTemplates;
+  }
+
+  public setLevelGraph(levelGraph: LevelGraph) {
+    this.levelGraph = levelGraph;
   }
 
   public addNodeTemplate(nodeTemplate: NodeTemplate) {

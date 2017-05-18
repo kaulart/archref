@@ -1,7 +1,7 @@
 import { Level } from '../../shared/datamodel/levelgraphmodel/level';
 import { LevelGraph } from '../../shared/datamodel/levelgraphmodel/levelgraph';
 import { LevelService } from '../../shared/dataservices/level.service';
-import { LevelGraphService } from '../../shared/dataservices/levelgraphservice';
+import { LevelGraphService } from '../../shared/dataservices/levelgraph.service';
 
 import { Utility } from '../../utility';
 import { Component, OnInit } from '@angular/core';
@@ -48,8 +48,8 @@ export class LevelGraphToolComponent implements OnInit {
     this.levelGraphs.push(levelGraph);
   }
 
-  updateLevelGraph(id: string) {
-
+  updateLevelGraph(id: number) {
+    //this.levelGraphService.deleteLevelGraph(id).subscribe(res => this.levelGraphs = Utility.deleteElementFromArry(id, this.levelGraphs));
   }
 
   deleteLevelGraph(id: number) {

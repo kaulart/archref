@@ -1,26 +1,32 @@
-import { Level } from './level';
+
 import { LevelGraph } from './levelgraph';
 import { LevelGraphRelation } from './levelgraphrelation';
 export class LevelGraphNode {
 
   id: number;
-  level: Level;
+  levelId: number;
   levelGraph: LevelGraph;
   x: number;
   y: number;
   width: number;
   height: number;
 
+  levelGraphNodeType: string;
+  typeRef: number;
+
   inLevelGraphRelations: LevelGraphRelation[] = [];
   outLevelGraphRelations: LevelGraphRelation[] = [];
 
-  constructor(x: number, y: number, width: number, height: number, level: Level) {
+  constructor(x: number, y: number, width: number, height: number, levelId: number, levelGraphNodeType: string, typeRef: number, levelGraph: LevelGraph) {
 
-    this.level = level;
+    this.levelId = levelId;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.levelGraphNodeType = levelGraphNodeType;
+    this.typeRef = typeRef;
+    this.levelGraph = levelGraph;
 
   }
 

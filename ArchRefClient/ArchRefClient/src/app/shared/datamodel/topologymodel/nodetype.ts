@@ -1,4 +1,5 @@
 
+import { LevelGraphNode } from '../levelgraphmodel/levelgraphnode';
 import { Repository } from '../repository';
 import { CapabilityDefinition } from '../sharedmodel/capabilitydefinition';
 import { RequirementDefinition } from '../sharedmodel/requirementdefinition';

@@ -19,17 +19,20 @@ import { CapabilityTypeComponent } from './administration/repository/capabilityt
 import { TopologytemplateComponent } from './administration/topologytemplate/topologytemplate.component';
 import { LevelgraphComponent } from './administration/levelgraph/levelgraph.component';
 import { TopologyToolComponent } from './topologytool/topologytool.component';
+import { TopologmodellerComponent } from './topologytool/topologmodeller/topologmodeller.component';
+import { ContextmenuModule } from 'ng2-contextmenu';
 
 
 
 @NgModule({
     imports: [
+      ContextmenuModule,
       CommonModule,
       RouterModule,
       Ng2BootstrapModule.forRoot(),
       FileUploadModule
     ],
-    declarations: [DashboardComponent, TopNavComponent, SidebarComponent, LevelGraphToolComponent, AdministrationComponent, RepositoryComponent, LevelGraphModellerComponent, NodeTypeComponent, RelationshipTypeComponent, PolicyTypeComponent, ArtifactTypeComponent, RequirementTypeComponent, CapabilityTypeComponent, TopologytemplateComponent, LevelgraphComponent, TopologyToolComponent],
+    declarations: [DashboardComponent, TopNavComponent, SidebarComponent, LevelGraphToolComponent, AdministrationComponent, RepositoryComponent, LevelGraphModellerComponent, NodeTypeComponent, RelationshipTypeComponent, PolicyTypeComponent, ArtifactTypeComponent, RequirementTypeComponent, CapabilityTypeComponent, TopologytemplateComponent, LevelgraphComponent, TopologyToolComponent, TopologmodellerComponent],
     exports: [DashboardComponent, TopNavComponent, SidebarComponent]
 })
 
