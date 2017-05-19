@@ -5,19 +5,19 @@ import { LevelGraphNode } from './levelgraphnode';
 export class LevelGraphRelation {
 
   id: number;
-  sourceLevel: Level;
-  targetLevel: Level;
-   sourceLevelGraphNode: LevelGraphNode;
-  targetLevelGraphNpde: LevelGraphNode;
+  sourceLevelValue: number;
+  targetLevelValue: number;
+  sourceLevelGraphNode: LevelGraphNode;
+  targetLevelGraphNode: LevelGraphNode;
   levelGraph: LevelGraph;
   path: Path;
   levelGraphRelationType: string;
 
-  constructor(sourceLevel: Level, targetLevel: Level, sourceLevelGraphNode: LevelGraphNode, targetLevelGraphNpde: LevelGraphNode, levelGraph: LevelGraph, path: Path, levelGraphRelationType: string) {
-    this.sourceLevel = sourceLevel;
-    this.targetLevel = targetLevel;
+  constructor(sourceLevelValue: number, targetLevelValue: number, sourceLevelGraphNode: LevelGraphNode, targetLevelGraphNode: LevelGraphNode, levelGraph: LevelGraph, path: Path, levelGraphRelationType: string) {
+    this.sourceLevelValue = sourceLevelValue;
+    this.targetLevelValue = targetLevelValue;
     this.sourceLevelGraphNode = sourceLevelGraphNode;
-    this.targetLevelGraphNpde = targetLevelGraphNpde;
+    this.targetLevelGraphNode = targetLevelGraphNode;
     this.levelGraph = levelGraph;
     this.path = path;
     this.levelGraphRelationType = levelGraphRelationType;

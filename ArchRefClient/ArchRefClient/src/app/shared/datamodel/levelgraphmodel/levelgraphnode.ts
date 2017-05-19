@@ -14,8 +14,8 @@ export class LevelGraphNode {
   levelGraphNodeType: string;
   typeRef: number;
 
-  inLevelGraphRelations: LevelGraphRelation[] = [];
-  outLevelGraphRelations: LevelGraphRelation[] = [];
+  inLevelGraphRelation: LevelGraphRelation[] = [];
+  outLevelGraphRelation: LevelGraphRelation[] = [];
 
   constructor(x: number, y: number, width: number, height: number, levelId: number, levelGraphNodeType: string, typeRef: number, levelGraph: LevelGraph) {
 

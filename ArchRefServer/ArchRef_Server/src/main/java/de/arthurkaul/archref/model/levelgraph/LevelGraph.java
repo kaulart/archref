@@ -42,9 +42,9 @@ public class LevelGraph {
 	@JsonManagedReference (value="levelgraph-levelgraphrelation")
 	private Collection<LevelGraphRelation> levelGraphRelations;
 	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
-	@JsonManagedReference (value="levelgraph-topologytemplate")
-	private Collection<TopologyTemplate> topologyTemplates;
+//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraph")
+//	@JsonManagedReference (value="levelgraph-topologytemplate")
+//	private Collection<TopologyTemplate> topologyTemplates;
 	
 	
 	public Long getId() {

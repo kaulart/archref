@@ -1,6 +1,18 @@
 .modal-backdrop {
 	z-index: -100;
 }
+
+.navbar-item {
+	color:white;
+	padding:5px;
+	margin:10px;
+	vertical-align: middle;
+	display:inline-block;
+	float:left;
+	
+}
+
+.navbar-item
 /******************************
 *
 * Style for headingline

@@ -1,4 +1,4 @@
-<div class="tab_panel">
+<div class="tab_panel rounded">
 
 	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area">
 
@@ -23,14 +23,11 @@
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createRelationshipTypeFieldsArea">
 				<form>
 					<div class="form-group">
-						<label for="nameRelationshipType">Name: </label> <input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType"
-							value="Unnamed" required>
+						<label for="nameRelationshipType">Name: </label> <input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType" value="Unnamed" required>
 					</div>
-
 					<div class="form-group">
 						<input type="file" ng2FileSelect [uploader]="uploader" />
 					</div>
-
 					<button type="submit" class="btn btn-success" (click)=(createRelationshipType(nameRelationshipType.value))>Create</button>
 				</form>
 			</div>
@@ -47,7 +44,6 @@
 					<button type="submit" class="btn btn-success" (click)=(importNodeType())>Import</button>
 				</form>
 			</div>
-
 		</div>
 
 		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">

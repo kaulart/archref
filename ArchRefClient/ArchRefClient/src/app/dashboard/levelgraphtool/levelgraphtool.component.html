@@ -86,7 +86,7 @@
 						<td routerLink="/dashboard/levelgraphmodeller" [queryParams]="{name: levelGraph.name, id: levelGraph.id}">{{ levelGraph.name }}</td>
 						<td routerLink="/dashboard/levelgraphmodeller" [queryParams]="{name: levelGraph.name, id: levelGraph.id}">{{ levelGraph.id }}</td>
 						<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editLevelGraphModal"
-								(click)="editRepository(levelGraph.id)">
+								(click)="setEditedLevelGraph(levelGraph)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
 						<td><button class=" btn" (click)="exportRepository(levelGraph.id)">
@@ -120,10 +120,10 @@
 			<div class="  input-panel">
 				<form>
 					<div class="form-group">
-						<label for="name">Name: </label> <input type="text" class="form-control" id="name" value="" required>
+						<label for="name">Name: </label> <input #editName type="text" class="form-control" id="name" value="{{editedLevelGraph.name}}" required>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="editRepository(repository.id, name.value)">Save</button>
+					<button type="button" class="btn btn-primary" (click)="updateLevelGraph( editName.value)" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

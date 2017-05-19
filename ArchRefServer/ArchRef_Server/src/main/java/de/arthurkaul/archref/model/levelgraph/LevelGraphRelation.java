@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.Path;
 
@@ -24,21 +25,16 @@ public class LevelGraphRelation {
 	@Column(name = "ID")
 	private Long id;
 
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVEL_GRAPH_RELATION_ID")
 	@JsonBackReference (value="levelgraph-levelgraphrelation")
 	private LevelGraph levelGraph;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_LEVEL_ID")
-	@JsonBackReference (value="level-sourceLevelGraphRelation")
-	private Level sourceLevel;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_LEVEL_ID")
-	@JsonBackReference  (value="level-targetLevelGraphRelation")
-	private Level targetLevel;
+	@Column(name = "SOURCE_LEVEL_VALUE")
+	private Integer sourceLevelValue;
+	
+	@Column(name = "TARGET_LEVEL_VALUE")
+	private Integer targetLevelValue;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SOURCE_LEVEL_GRAPH_NODE_ID")
@@ -54,26 +50,10 @@ public class LevelGraphRelation {
 	private String levelGraphRelationType;
 
 	
-	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="PATH_ID")
+	@JsonManagedReference (value="levelgraphrelation-path")
 	private Path path;
-
-
-	public Level getSourceLevel() {
-		return sourceLevel;
-	}
-
-	public void setSourceLevel(Level sourceLevel) {
-		this.sourceLevel = sourceLevel;
-	}
-
-	public Level getTargetLevel() {
-		return targetLevel;
-	}
-
-	public void setTargetLevel(Level targetLevel) {
-		this.targetLevel = targetLevel;
-	}
 
 	public LevelGraphNode getSourceLevelGraphNode() {
 		return sourceLevelGraphNode;
@@ -121,6 +101,22 @@ public class LevelGraphRelation {
 
 	public void setLevelGraphRelationType(String levelGraphRelationType) {
 		this.levelGraphRelationType = levelGraphRelationType;
+	}
+
+	public Integer getSourceLevelValue() {
+		return sourceLevelValue;
+	}
+
+	public void setSourceLevelValue(Integer sourceLevelValue) {
+		this.sourceLevelValue = sourceLevelValue;
+	}
+
+	public Integer getTargetLevelValue() {
+		return targetLevelValue;
+	}
+
+	public void setTargetLevelValue(Integer targetLevelValue) {
+		this.targetLevelValue = targetLevelValue;
 	}
 
 

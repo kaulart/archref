@@ -1,0 +1,8 @@
+.dashboard-container{
+	margin-top: 60px;
+}
+
+.dashboard-router-outlet{
+	padding:5px; 
+	margin:0px
+}

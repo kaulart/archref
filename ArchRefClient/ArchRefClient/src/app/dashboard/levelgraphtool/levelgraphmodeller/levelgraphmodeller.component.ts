@@ -273,7 +273,7 @@ export class LevelGraphModellerComponent implements OnInit {
    **************************************************************************************************************************************/
 
   mouseDownOnNode(event: MouseEvent, level: Level, levelGraphNode: LevelGraphNode) {
-    Logger.info("Call MOUSEDOWN Event", LevelGraphModellerComponent.name);
+
     this.mousedownOnLevelGraphNode = true;
     this.lastMousePositionY = event.offsetY;
     this.lastMousePositionX = event.offsetX;
@@ -290,19 +290,24 @@ export class LevelGraphModellerComponent implements OnInit {
       levelGraphRelationType = LEVELGRAPHRELATIONTYPE.NOTYPE;
     }
 
-
     if (this.toolList[1].checked || this.toolList[2].checked || this.toolList[3].checked) {
-      Logger.info("ConnectedTo Tool Selected", LevelGraphModellerComponent.name);
 
-      let startPoint = new Point(levelGraphNode.x + levelGraphNode.width / 2, levelGraphNode.y + levelGraphNode.height / 2);
-      let endPoint = new Point(levelGraphNode.x + levelGraphNode.width / 2, levelGraphNode.y + levelGraphNode.height / 2);
+      let startPoint: Point;
+      let endPoint: Point;
+
+      if (this.toolList[3].checked) {
+        startPoint = new Point(this.lastMousePositionX, this.lastMousePositionY);
+        endPoint = new Point(this.lastMousePositionX - 5, this.lastMousePositionY - 5);
+      } else {
+        startPoint = new Point(this.lastMousePositionX - 50, this.lastMousePositionY - level.y);
+        endPoint = new Point(this.lastMousePositionX - 50 - 5, this.lastMousePositionY - level.y - 5);
+      }
       let tempPoints: Point[] = [];
       tempPoints.push(startPoint);
       tempPoints.push(endPoint);
+
       let tempPath = new Path(tempPoints);
-
-      this.currentDrawRelation = new LevelGraphRelation(level, level, levelGraphNode, levelGraphNode, this.currentLevelGraph, tempPath, levelGraphRelationType);
-
+      this.currentDrawRelation = new LevelGraphRelation(level.value, level.value, levelGraphNode, levelGraphNode, this.currentLevelGraph, tempPath, levelGraphRelationType);
       this.drawRelation = true;
 
     } else {
@@ -319,21 +324,41 @@ export class LevelGraphModellerComponent implements OnInit {
     let deltaY = (newMousePositionY - this.lastMousePositionY);
     let deltaX = (newMousePositionX - this.lastMousePositionX);
 
-    Logger.info('Selected Tool: Moving Tool -->' + this.toolList[0].checked + 'ConnectedTo Tool -->' + this.toolList[1].checked + 'HostedOn Tool -->' + this.toolList[2].checked + 'RefineTo Tool -->' + this.toolList[3].checked, LevelGraphModellerComponent.name);
-
     if (this.mousedownOnLevelGraphNode === true) {
 
       if (this.toolList[1].checked || this.toolList[2].checked || this.toolList[3].checked) {
 
-        Logger.info('TEst: ' + this.currentDrawRelation.path.pathDataString, LevelGraphModellerComponent.name);
         this.currentDrawRelation.path.points[1].x = this.currentDrawRelation.path.points[1].x + deltaX;
         this.currentDrawRelation.path.points[1].y = this.currentDrawRelation.path.points[1].y + deltaY;
         this.currentDrawRelation.path.updatePath();
-        Logger.info('TEst: ' + this.currentDrawRelation.path.pathDataString, LevelGraphModellerComponent.name);
+
       } else if (this.toolList[0].checked) {
 
         this.moveNode.y = this.moveNode.y + deltaY;
         this.moveNode.x = this.moveNode.x + deltaX;
+
+        for (let relationOutNode of this.moveNode.outLevelGraphRelation) {
+          for (let relationOutGraph of this.currentLevelGraph.levelGraphRelations) {
+            if (relationOutNode.id === relationOutGraph.id) {
+              relationOutGraph.path.points[0].x = relationOutGraph.path.points[0].x + deltaX;
+              relationOutGraph.path.points[0].y = relationOutGraph.path.points[0].y + deltaY;
+              let tempPath = new Path(relationOutGraph.path.points);
+              relationOutGraph.path = tempPath;
+            }
+          }
+        }
+
+        for (let relationInNode of this.moveNode.inLevelGraphRelation) {
+          for (let relationInGraph of this.currentLevelGraph.levelGraphRelations) {
+            if (relationInNode.id === relationInGraph.id) {
+              relationInGraph.path.points[1].x = relationInGraph.path.points[1].x + deltaX;
+              relationInGraph.path.points[1].y = relationInGraph.path.points[1].y + deltaY;
+              let tempPath = new Path(relationInGraph.path.points);
+              relationInGraph.path = tempPath;
+            }
+          }
+        }
+
       }
 
     }
@@ -343,22 +368,84 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
-  mouseUpOnNode(event, levelGraphNode: LevelGraphNode) {
+  mouseUpOnNode(event, level: Level, levelGraphNode: LevelGraphNode) {
 
-    let newMousePositionY = event.offsetY;
-    let newMousePositionX = event.offsetX;
-    let deltaY = (newMousePositionY - this.lastMousePositionY);
-    let deltaX = (newMousePositionX - this.lastMousePositionX);
+    if (this.isRelationDrawAllowed(levelGraphNode, level)) {
+      alert("Draw Allow");
+      let sourceCenterX = this.currentDrawRelation.sourceLevelGraphNode.x + this.currentDrawRelation.sourceLevelGraphNode.width / 2;
+      let sourceCenterY = this.currentDrawRelation.sourceLevelGraphNode.y + this.currentDrawRelation.sourceLevelGraphNode.height / 2;
+      let targetCenterX = levelGraphNode.x + levelGraphNode.width / 2;
+      let targetCenterY = levelGraphNode.y + levelGraphNode.height / 2;
 
-    if (this.toolList[1].checked || this.toolList[2].checked || this.toolList[3].checked) {
+      if (this.toolList[3].checked) {
+        this.currentDrawRelation.path.points[0].y = sourceCenterY;
+        this.currentDrawRelation.path.points[0].x = sourceCenterX+ 50;
+      } else {
+        this.currentDrawRelation.path.points[0].x = sourceCenterX;
+        this.currentDrawRelation.path.points[0].y = sourceCenterY;
+      }
 
-      Logger.info('TEst: ' + this.currentDrawRelation.path.pathDataString, LevelGraphModellerComponent.name);
-      this.currentDrawRelation.path.points[1].x = this.currentDrawRelation.path.points[1].x + deltaX;
-      this.currentDrawRelation.path.points[1].y = this.currentDrawRelation.path.points[1].y + deltaY;
+
+      //      let m_source_target = (sourceCenterY - targetCenterY) / (sourceCenterX - targetCenterX);
+      //      let m = levelGraphNode.height / levelGraphNode.width;
+
+      //      if ((sourceCenterX < targetCenterX) && (sourceCenterY < targetCenterY)) {
+      //
+      //        if (m < m_source_target) {
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY - levelGraphNode.height / 2;
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX;
+      //        } else {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX - levelGraphNode.width / 2;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY;
+      //        }
+      //
+      //      } else if ((sourceCenterX < targetCenterX) && (sourceCenterY > targetCenterY)) {
+      //
+      //        if (m * (-1) < m_source_target) {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX - levelGraphNode.width / 2;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY;
+      //        } else {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY + levelGraphNode.height / 2;
+      //        }
+      //
+      //      } else if ((sourceCenterX > targetCenterX) && (sourceCenterY < targetCenterY)) {
+      //
+      //        if (m * (-1) < m_source_target) {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX + levelGraphNode.width / 2;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY;
+      //        } else {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY - levelGraphNode.height / 2;
+      //        }
+      //
+      //      } else {
+      //
+      //        if (m < m_source_target) {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY + levelGraphNode.height / 2;
+      //        } else {
+      //          this.currentDrawRelation.path.points[1].x = targetCenterX + levelGraphNode.width / 2;
+      //          this.currentDrawRelation.path.points[1].y = targetCenterY;
+      //        }
+      //
+      //      }
+
+      if (this.toolList[3].checked) {
+        this.currentDrawRelation.path.points[1].y = targetCenterY;
+        this.currentDrawRelation.path.points[1].x = targetCenterX;
+      } else {
+        this.currentDrawRelation.path.points[1].y = targetCenterY;
+        this.currentDrawRelation.path.points[1].x = targetCenterX;
+      }
+
       this.currentDrawRelation.path.updatePath();
+      this.currentDrawRelation.targetLevelValue = level.value;
+      this.currentDrawRelation.targetLevelGraphNode = levelGraphNode;
 
-      this.levelGraphRelationService.createLevelGraphRelation(this.currentDrawRelation).subscribe(levelGraphRelationResponse => this.currentLevelGraph.levelGraphRelations.push(levelGraphRelationResponse));
-      Logger.info('TEst: ' + this.currentDrawRelation.path.pathDataString, LevelGraphModellerComponent.name);
+      this.levelGraphRelationService.createLevelGraphRelation(this.currentDrawRelation).subscribe(levelGraphRelationResponse => this.createLevelGraphRelation(levelGraphRelationResponse, this.currentDrawRelation.sourceLevelGraphNode, levelGraphNode));
+
+
     } else if (this.toolList[0].checked) {
 
     }
@@ -369,13 +456,90 @@ export class LevelGraphModellerComponent implements OnInit {
   }
 
 
+  createLevelGraphRelation(levelGraphRelation: LevelGraphRelation, levelGraphNodeSource: LevelGraphNode, levelGraphNodeTarget: LevelGraphNode) {
+    this.currentLevelGraph.levelGraphRelations.push(levelGraphRelation);
+    levelGraphNodeTarget.inLevelGraphRelation.push(levelGraphRelation);
+    levelGraphNodeSource.outLevelGraphRelation.push(levelGraphRelation);
+  }
+
   mouseUpOnDrawArea() {
     this.mousedownOnLevelGraphNode = false;
     this.drawRelation = false;
     this.mousedownOnLevelChangeView = false;
   }
 
+  isRelationDrawAllowed(levelGraphNode: LevelGraphNode, level: Level) {
 
+    if (this.toolList[1].checked) {
+
+      if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE) {
+
+        return true;
+
+      } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE) {
+
+        return true;
+
+      } else {
+
+        return false; //TODO: Warning Message
+
+      }
+
+    } else if (this.toolList[2].checked) {
+
+
+      if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE) {
+
+        return true;
+
+      } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE) {
+
+        return true;
+
+      } else {
+
+        return false; //TODO: Warning Message
+
+      }
+
+    } else if (this.toolList[3].checked) {
+      if (this.currentDrawRelation.sourceLevelValue < level.value) {
+        if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE) {
+
+          return true;
+
+        } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE) {
+
+          return true;
+
+        } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.FRAGMENTNODE) {
+
+          return true; //TODO: Warning Message
+
+        } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.FRAGMENTNODE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.RELATIONSHIPTYPE) {
+
+          return true;
+
+        } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.FRAGMENTNODE) {
+
+          return true;
+
+        } else if (this.currentDrawRelation.sourceLevelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.FRAGMENTNODE && levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPE.NODETYPE) {
+
+          return true;
+
+        } else {
+          return false;//TODO: Warning Message Case not Supported
+
+        }
+
+      } else {
+        return false; //TODO: Warning Message 
+      }
+
+    }
+  }
 
   changeTool(tool: any) {
 
@@ -407,9 +571,7 @@ export class LevelGraphModellerComponent implements OnInit {
   }
 
   onDrop(event, level: Level) {
-    Logger.info('[ONDROP]', LevelGraphModellerComponent.name);
     if (this.drag === true) {
-      Logger.data('Mouse x Position: ' + event.offsetX + ' Mouse y Position: ' + event.offsetY + ' Level Y: ' + level.y, LevelGraphModellerComponent.name);
       if (this.typeCurrentDragData === LEVELGRAPHNODETYPE.NODETYPE) {
 
         this.createLevelGraphNode(event.offsetX - 50, event.offsetY - level.y, 200, 100, level, LEVELGRAPHNODETYPE.NODETYPE, this.currentDragData.id);
@@ -458,9 +620,7 @@ export class LevelGraphModellerComponent implements OnInit {
 
     let newMousePositionY = event.offsetY;
     let delta = (newMousePositionY - this.lastMousePositionY);
-    Logger.info("[MOUSEMOVEEVENT] event OFFSETY: " + (newMousePositionY - this.lastMousePositionY), LevelGraphModellerComponent.name);
-
-    if (this.mousedownOnLevelChangeView === true) {
+    if (this.mousedownOnLevelChangeView === true && (level.height + delta) >= 0) {
 
       level.height = level.height + delta;
 
@@ -471,7 +631,9 @@ export class LevelGraphModellerComponent implements OnInit {
       }
 
       this.updateLevelPosition(level, delta);
+
     }
+
 
     this.lastMousePositionY = newMousePositionY;
 
@@ -505,6 +667,12 @@ export class LevelGraphModellerComponent implements OnInit {
     } else {
       this.levelGraphNodeService.deleteLevelGraphNode(levelGraphNode.id).subscribe(response => this.currentLevelGraph.levelGraphNodes = Utility.deleteElementFromArry(levelGraphNode.id, this.currentLevelGraph.levelGraphNodes));
     }
+
+  }
+
+  deleteLevelGraphRelation(levelGraphRelation: LevelGraphRelation) {
+
+    this.levelGraphRelationService.deleteLevelGraphRelation(levelGraphRelation.id).subscribe(response => this.currentLevelGraph.levelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, this.currentLevelGraph.levelGraphRelations));
 
   }
 

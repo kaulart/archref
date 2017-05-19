@@ -22,7 +22,9 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     AppComponent,
   ],
   imports: [
-    BrowserModule,ContextmenuModule,
+    BrowserModule,
+   
+    ContextmenuModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
