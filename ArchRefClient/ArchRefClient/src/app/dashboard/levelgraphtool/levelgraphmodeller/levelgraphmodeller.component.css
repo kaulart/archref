@@ -85,7 +85,8 @@ svg{
 
 .level-panel{
     width:100%;
-	fill:white;	
+	fill:white;
+	fill-opacity:0.0;	
 	stroke-dasharray:10,20;
 	stroke-width:8;
 	stroke:black;

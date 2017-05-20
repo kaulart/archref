@@ -22,17 +22,8 @@
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createTopologyTemplateArea">
 				<form>
-					<div class="col-sm-6 form-group">
+					<div class="col-sm-12 form-group">
 						<label for="name">Name:</label> <input #name type="text" class="form-control" id="name" value="Unnamed" required>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label for="name">Level Graph:</label>  <button #levelGraph class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">CSS</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
 					</div>
 
 					<button type="submit" class="btn btn-success" (click)="createTopologyTemplate(name.value)">Create</button>
@@ -72,12 +63,12 @@
 
 				<tbody>
 					<tr *ngFor="let topology of topologyTemplates">
-						<td routerLink="/dashboard/topologytemplatetool" [queryParams]="{name: topology.name, id: topology.id}"><i class="fa fa-folder-open-o"
+						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}"><i class="fa fa-folder-open-o"
 							aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/topologytemplatetool" [queryParams]="{name: topology.name, id: topology.id}">{{
+						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{
 							topologyTemplates.indexOf(topology) +1 }}</td>
-						<td routerLink="/dashboard/topologytemplatetool" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getName() }}</td>
-						<td routerLink="/dashboard/topologytemplatetool" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getId() }}</td>
+						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getName() }}</td>
+						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getId() }}</td>
 						<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal"
 								(click)="setEditTopologyTemplate(topology)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>

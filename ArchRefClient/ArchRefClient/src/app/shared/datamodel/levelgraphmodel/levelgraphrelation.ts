@@ -1,5 +1,4 @@
 import { Path } from '../path';
-import { Level } from './level';
 import { LevelGraph } from './levelgraph';
 import { LevelGraphNode } from './levelgraphnode';
 export class LevelGraphRelation {

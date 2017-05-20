@@ -3,7 +3,7 @@ import { PolicyType } from './policytype';
 export class Policy {
   name: string;
   policyType: PolicyType;
-  //policyTemplate: PolicyTemplate; 
+  // policyTemplate: PolicyTemplate;
 
   constructor(name: string, policyType: PolicyType) {
     this.name = name;

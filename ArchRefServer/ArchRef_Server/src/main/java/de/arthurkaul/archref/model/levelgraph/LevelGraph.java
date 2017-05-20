@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.topologyTemplate.TopologyTemplate;
-
 @Entity
 public class LevelGraph {
 	

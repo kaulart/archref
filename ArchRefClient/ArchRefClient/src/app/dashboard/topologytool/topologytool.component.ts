@@ -29,9 +29,9 @@ export class TopologyToolComponent implements OnInit {
   loadTopologyTemplates() {
     this.topologyTemplateService.getTopologyTemplates().subscribe(topologyTemplateResponse => this.topologyTemplates = topologyTemplateResponse);
   }
-  
+
   loadLevelGraphs() {
-    this
+
   }
 
   createTopologyTemplate(name: string) {

@@ -17,7 +17,7 @@ export class NodeTemplate {
   capabilities: Capability[] = [];
   requirements: Requirement[] = [];
   policies: Policy[] = [];
-  //deploymentArtifacts: DeploymentArtifact[] = [];
+  // deploymentArtifacts: DeploymentArtifact[] = [];
 
   constructor(name: string, nodeType: NodeType) {
     this.name = name;

@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.arthurkaul.archref.model.node.NodeType;
+import de.arthurkaul.archref.model.topologyTemplate.NodeType;
 import de.arthurkaul.archref.repositories.NodeTypeRepository;
 
 

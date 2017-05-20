@@ -5,7 +5,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class LevelGraphRelationService{
+export class LevelGraphRelationService {
 
    private levelGraphRelationUrl = '/api/levelgraphrelation';
 

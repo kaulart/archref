@@ -1,9 +1,10 @@
 import { Logger } from '../../../logger/logger';
 import { Repository } from '../../shared/datamodel/repository';
-import { AdministrationService } from '../../shared/dataservices/administration.service';
+import { RepositoryService } from '../../shared/dataservices/repository.service';
 import { Utility } from '../../utility';
 import { Component, OnInit } from '@angular/core';
-
+import { FlashMessageService } from 'angular2-flash-message';
+import { FlashMessage } from 'angular2-flash-message';
 
 @Component({
   selector: 'app-administration',
@@ -11,43 +12,126 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./administration.component.css']
 })
 
+/*****************************************************************************************************************
+ *
+ * AdministrationComponent Class - Overview of the repositories, levelgraphs and topologies data
+ *
+ *****************************************************************************************************************/
 export class AdministrationComponent implements OnInit {
 
   public repositories: Repository[] = [];
   public createdRepository: Repository;
   public editedRepository: Repository = new Repository('');
+  public flashMessage = new FlashMessage();
 
-  constructor(private administrationDataService: AdministrationService) { }
+  constructor(private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
 
   ngOnInit() {
     Logger.info('Iniitalize Administration Component', AdministrationComponent.name);
-    this.loadAdministrationData();
+    this.retrieveRepositoryData();
+    this.flashMessage.timeoutInMS = 4000;
   }
 
-  private createRepository(name: string) {
+  /****************************************************************************************************************
+   *
+   *  Create Repository
+   *  @param name: string - Name of the repository
+   *
+   ****************************************************************************************************************/
+  createRepository(name: string) {
     Logger.info('Create Repository', AdministrationComponent.name);
     let repository: Repository = new Repository(name);
-    Logger.data(JSON.stringify(repository), AdministrationComponent.name);
-    this.administrationDataService.addRepository(repository).subscribe(repositoryCreated => this.repositories.push(repositoryCreated));
+    this.repositoryService.createRepository(repository)
+      .subscribe(repositoryResponse => {
+        this.repositories.push(repositoryResponse);
+        this.flashMessage.message = 'Info: Repository with name: ' + repositoryResponse.name + ' was created sucessfully with id: ' + repositoryResponse.id;
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Repository with name: ' + repositoryResponse.name + ' was created sucessfully with id: ' + repositoryResponse.id, AdministrationComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+        });
   }
 
-  private deleteRepository(id: number, event) {
-    Logger.info('Delete Repository', AdministrationComponent.name);
-    this.administrationDataService.deleteRepository(id).subscribe(res => this.repositories = Utility.deleteElementFromArry(id, this.repositories));
+  /****************************************************************************************************************
+   *
+   * Retrieve Repository Data - Load all data from database
+   *
+   ****************************************************************************************************************/
+  private retrieveRepositoryData() {
+    Logger.info('Retrieve Repository Data', AdministrationComponent.name);
+    this.repositoryService.getRepositories()
+      .subscribe(repositoriesResponse => {
+        this.repositories = repositoriesResponse;
+        this.flashMessage.message = 'Repositories retrieved sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Repositories sucessfully retrieved.', AdministrationComponent.name);
+      },
+       (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+        });
   }
 
-  private updateRepository(name: string) {
+  /*****************************************************************************************************************
+  *
+  * Update Repository - Update the repository data
+  * @param name - New name of the Repository
+  *
+  *****************************************************************************************************************/
+  updateRepository(name: string) {
     Logger.info('Update Repository', AdministrationComponent.name);
     this.editedRepository.name = name;
-    this.administrationDataService.updateRepository(this.editedRepository).subscribe(res => this.repositories = Utility.updateElementInArry(res, this.repositories));
+    this.repositoryService.updateRepository(this.editedRepository)
+      .subscribe(repositoryResponse => {
+        this.repositories = Utility.updateElementInArry(repositoryResponse, this.repositories);
+        this.flashMessage.message = 'Repository with id: ' + repositoryResponse.id + ' and name: ' + repositoryResponse.name + ' was updated sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Repository with id: ' + repositoryResponse.id + ' and name:' + repositoryResponse.name + ' was updated sucessfully.', AdministrationComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+        });
   }
 
-  private loadAdministrationData() {
-    Logger.info('Load Repository Data', AdministrationComponent.name);
-    this.administrationDataService.getRepositories().subscribe(repositories => this.repositories = repositories);
+  /****************************************************************************************************************
+   *
+   * Delete Repository
+   * @param id: number - ID of the repository witch should be deleted from the database
+   *
+   ****************************************************************************************************************/
+  deleteRepository(id: number, event) {
+    Logger.info('Delete Repository', AdministrationComponent.name);
+    this.repositoryService.deleteRepository(id)
+      .subscribe(repositoryResponse => {
+        this.repositories = Utility.deleteElementFromArry(id, this.repositories);
+        this.flashMessage.message = 'Repository with id: ' + id + ' was deleted sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Repository with id: ' + id + ' was deleted sucessfully.', AdministrationComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+        });
   }
 
-  private setEditRepositoryData(repository) {
+  /*****************************************************************************************************************
+   *
+   * Set the editable Repository Data
+   * @param repository - The repository witch should be edit
+   *
+   ****************************************************************************************************************/
+  setEditRepositoryData(repository) {
     Logger.info('Set Edit Repository Data', AdministrationComponent.name);
     this.editedRepository = repository;
   }

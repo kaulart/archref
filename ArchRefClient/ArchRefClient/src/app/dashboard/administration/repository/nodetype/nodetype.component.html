@@ -22,11 +22,11 @@
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
 				<form>
-					<div class="form-group">
+					<div class="col-sm-6 form-group">
 						<label for="nameNodeType">Name: </label> <input #nameNodeType type="text" class="form-control" id="nameNodeType" value="Unnamed" required>
 					</div>
-					<div class="form-group">
-						<input type="file" ng2FileSelect [uploader]="uploader" />
+					<div class="col-sm-6 form-group">
+						<label for="icon">Icon: </label> <input #icon type="file" ng2FileSelect [uploader]="uploader" />
 					</div>
 					<button type="submit" class="btn btn-success" (click)=(createNodeType(nameNodeType.value))>Create</button>
 				</form>
@@ -34,10 +34,10 @@
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importNodeTypeFieldsArea">
 				<form>
-					<div class="form-group">
+					<div class="cols-sm-6 form-group">
 						<label for="nameNodeType">Name: </label> <input type="text" class="form-control" id="nameNodeType" required>
 					</div>
-					<div class="form-group">
+					<div class="col-sm-6 form-group">
 						<label for="name">File: </label> <input type="text" class="form-control" id="name" required>
 					</div>
 
@@ -66,7 +66,7 @@
 						<td>{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
 						<td>{{ nodeType.name }}</td>
 						<td>{{ nodeType.id }}</td>
-						<td><button class="btn w3-blue" (click)="editNodeType(nodeType.id)">
+						<td><button type="button" data-toggle="modal" data-target="#editNodeTypeModal" class="w3-blue btn" (click)="setEditNodeType(nodeType)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
 						<td><button class="btn" disabled (click)="exportNodeType(nodeType.id)">
@@ -78,6 +78,32 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal for Edit Repository-->
+<div class="modal fade modal-position" id="editNodeTypeModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Node Type</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="form-group">
+						<label for="name">Name: </label> <input #editName type="text" class="form-control" id="name" value="{{editNodeType.name}}" required>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="updateNodeType(editName.value)"  data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

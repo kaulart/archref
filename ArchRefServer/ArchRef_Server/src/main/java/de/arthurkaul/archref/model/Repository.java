@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.node.NodeType;
-import de.arthurkaul.archref.model.relation.RelationshipType;
+import de.arthurkaul.archref.model.topologyTemplate.NodeType;
+import de.arthurkaul.archref.model.topologyTemplate.RelationshipType;
 
 @Entity
 @Table(name="REPOSITORY")

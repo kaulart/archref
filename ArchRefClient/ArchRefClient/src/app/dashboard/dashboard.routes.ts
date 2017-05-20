@@ -4,18 +4,21 @@ import { AdministrationRoutes } from './administration/administration.routes';
 import { RepositoryRoutes } from './administration/repository/repository.routes';
 import { LevelGraphModellerRoutes } from './levelgraphtool/levelgraphmodeller/levelgraphmodeller.routes';
 import { LevelGraphToolRoutes } from './levelgraphtool/levelgraphtool.routes';
+import { TopologyModellerRoutes } from './topologytool/topologmodeller/topologymodeller.routes';
 import { TopologyToolRoutes } from './topologytool/topologytool.routes';
 
 export const DashboardRoutes: Route[] = [
-    {
-      path: 'dashboard',
-      component: DashboardComponent,
-      children: [
-        ...AdministrationRoutes,
-        ...RepositoryRoutes,
-        ...LevelGraphToolRoutes,
-        ...TopologyToolRoutes,
-        ...LevelGraphModellerRoutes
-      ]
-    }
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      ...AdministrationRoutes,
+      ...RepositoryRoutes,
+      ...LevelGraphToolRoutes,
+      ...TopologyToolRoutes,
+      ...LevelGraphModellerRoutes,
+      ...TopologyToolRoutes,
+      ...TopologyModellerRoutes
+    ]
+  }
 ];

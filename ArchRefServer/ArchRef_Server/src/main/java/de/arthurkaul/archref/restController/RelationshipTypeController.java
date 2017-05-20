@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RelationshipTypeAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RelationshipTypeNotFoundException;
-import de.arthurkaul.archref.model.relation.RelationshipType;
+import de.arthurkaul.archref.model.topologyTemplate.RelationshipType;
 import de.arthurkaul.archref.services.RelationshipService;
 
 @RestController
@@ -53,7 +53,7 @@ public class RelationshipTypeController {
 	
 	@RequestMapping(value = "/api/relationshiptype", method = RequestMethod.POST)
    public ResponseEntity<RelationshipType> createRelationshipType(@RequestBody RelationshipType relationshipType, UriComponentsBuilder ucBuilder) {
-		System.out.println("RELType");
+	
 		if (relationshipType.getId() != null) {
 			throw new RelationshipTypeAlreadyExistException("RelationshipTypeAlreadyExistException: Unable to create NodeType. RelationshipType with id " + relationshipType.getId() + " already exist.");          	
         }
@@ -63,19 +63,19 @@ public class RelationshipTypeController {
       
     }
 
-   @RequestMapping(value = "/api/relationshiptype{id}", method = RequestMethod.PUT)
+   @RequestMapping(value = "/api/relationshiptype/{id}", method = RequestMethod.PUT)
    public ResponseEntity<RelationshipType> updateRelationshipType(@PathVariable("id") long id, @RequestBody RelationshipType relationshipType) {
 
-	   RelationshipType currentNodeType = relationTypeService.findById(id);
+	   RelationshipType currentRelationshipType = relationTypeService.findById(id);
 
-       if (currentNodeType == null) {
+       if (currentRelationshipType == null) {
        	     throw new RelationshipTypeNotFoundException("RelationshipTypeNotFoundException: Unable to update RelationshipType. RelationshipType with id " + id + " not found.");          
        }
 
-       currentNodeType.setName(relationshipType.getName());
+       currentRelationshipType = relationshipType;
 
-       relationTypeService.update(currentNodeType);
-       return ResponseEntity.ok().body(currentNodeType);
+       relationTypeService.update(currentRelationshipType);
+       return ResponseEntity.ok().body(currentRelationshipType);
    }
 
 

@@ -113,8 +113,8 @@
 					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 				</button>
 
-				<div class="  collapse toolbox" id="toolbox_nodes" style="margin: 0px; padding: 0px; width: 100%">
-					<ul style="padding: 5px" id="nodeTypesList" class=" list-group">
+				<div class="  collapse toolbox" id="toolbox_nodes" style="margin: 0px; padding: 0px; width: 100%; ">
+					<ul style="padding: 5px" id="nodeTypesList" class=" list-group"  style="height:300px; overflow: auto" >
 						<li *ngIf="repositories.length < 1" disabled>NO REPOSITORY AVAILABLE</li>
 
 						<li *ngIf="selectedRepository.nodeTypeList.length < 1" disabled>NO REPOSITORY SELECTED OR NO NODETYPES AVAILABLE</li>
@@ -134,7 +134,7 @@
 				</button>
 
 				<div class="collapse toolbox" id="toolbox_relations" style="margin: 0px; padding: 0px; width: 100%">
-					<ul style="padding: 5px" id="relationTypesList" class="  list-group">
+					<ul style="padding: 5px" id="relationTypesList" class="  list-group"  style="height:300px; overflow: auto">
 						<li *ngIf="repositories.length < 1" disabled>NO REPOSITORY AVAILABLE</li>
 						<li *ngIf="repositories.length > 0 &&  selectedRepository.relationshipTypeList.length < 1" disabled>NO RELATIONSHIPTYPES AVAILABLE</li>
 						<li class="relationType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList"
@@ -150,13 +150,20 @@
 
 		</div>
 
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mousemove)="drawEdge($event)" (mouseup)="mouseUpOnDrawArea()"
-			>
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mousemove)="drawEdge($event)"
+			(mouseup)="mouseUpOnDrawArea()">
 
 			<svg id="parent">
 				
 				<defs>
    					<marker id="Triangle" viewBox="0 0 10 10" refX="50" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					</marker>
+ 				</defs>
+ 					 
+ 					 
+ 					 	<defs>
+   					<marker id="TriangleDraw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 0 0 L 10 5 L 0 10 z" />
    					</marker>
  				</defs>
@@ -193,7 +200,16 @@
 					</linearGradient> 
 				</defs>
 				
-				<g *ngFor="let level of activeLevels">
+				<polyline *ngIf="drawRelation && currentDrawRelation.levelGraphRelationType === 'REFINE_TO_RELATION'"
+					[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#TriangleDraw)" />
+						
+				    <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
+					*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
+					    <polyline *ngIf="(levelGraphRelationTypes[2].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO_RELATION')"
+					[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#Triangle)" />
+					</g>
+				
+				<g *ngFor="let level of activeLevels.reverse()">
 				   
 				   <rect [attr.x]="0" [attr.y]="level.y" [attr.width]="40" [attr.height]="level.height" fill="url(#lgrad)"></rect>
                    <text [attr.x]="20" [attr.y]="level.y + level.height/2" writing-mode="tb" font-family="Verdana" font-size="35" fill="white"
@@ -223,53 +239,50 @@
 				
 					<polyline
 						*ngIf="drawRelation && currentDrawRelation.sourceLevelValue === level.value  && currentDrawRelation.levelGraphRelationType === 'CONNECTED_TO_RELATION'"
-						[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
+						[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#TriangleDraw)" />
 						
 				    <polyline
 						*ngIf="drawRelation && currentDrawRelation.sourceLevelValue === level.value && currentDrawRelation.levelGraphRelationType === 'HOSTED_ON_RELATION'"
-						[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#Triangle)" />	
+						[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#TriangleDraw)" />	
 					
 					<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
 						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'FRAGMENTNODE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
-						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
-						[attr.height]="levelGraphNode.height" fill="url(#lgradFragmentNode)" style="stroke:black;stroke-width:5;"
-						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+						<g *ngIf="((levelGraphNode.levelGraphNodeType === 'FRAGMENTNODE') && (levelGraphNode.levelId === level.id))"
+						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)">
+							<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" fill="url(#lgradFragmentNode)" style="stroke:black;stroke-width:5;" />
+							<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana"
+						font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>
+						</g> 	
 					</g>
 					
 				 	<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
 						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
-						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
-						[attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;"
-						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+						<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))"
+						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)">
+						<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
+						<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana"
+						font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text> 		
+						</g>
 					</g>
 					
 					<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]"
 						*ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-						<rect *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" rx="20" ry="20"
-						[attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
-						[attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;"
-						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)" />	
+						<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))"
+						(mousedown)="mouseDownOnNode($event, level, levelGraphNode)" (mouseup)="mouseUpOnNode($event, level, levelGraphNode)">
+							<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width"
+						[attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />
+							<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana"
+						font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text> 	
+						</g>
 					</g>
 					
-		
-					
-					
-				
-				
 					</svg>
 					
 				</g>
 				
-				<polyline *ngIf="drawRelation && currentDrawRelation.levelGraphRelationType === 'REFINE_TO_RELATION'"
-					[attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#Triangle)" />
-						
-				    <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
-					*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
-					    <polyline *ngIf="(levelGraphRelationTypes[2].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO_RELATION')"
-					[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#Triangle)" />
-					</g>
+				
            </svg>
 
 		</div>

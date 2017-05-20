@@ -26,7 +26,6 @@ public class LevelGraphController {
 	
 	@RequestMapping(value="/api/levelgraph", method = RequestMethod.GET)
 	public ResponseEntity<Collection<LevelGraph>> getAllLevelGraphs() {
-		 System.out.println("CALL API");
 		Collection<LevelGraph> levelGraphs =  levelGraphService.findAllLevelGraphs();
 		
 		  if (levelGraphs.isEmpty()) {

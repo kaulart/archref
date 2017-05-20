@@ -8,7 +8,7 @@ import { TopologyTemplateService } from '../../../shared/dataservices/topologyte
   templateUrl: './topologmodeller.component.html',
   styleUrls: ['./topologmodeller.component.css']
 })
-export class TopologmodellerComponent implements OnInit {
+export class TopologyModellerComponent implements OnInit {
 
   currentTopologyTemplate = new TopologyTemplate('');
   currentTopologyTemplateId: number;

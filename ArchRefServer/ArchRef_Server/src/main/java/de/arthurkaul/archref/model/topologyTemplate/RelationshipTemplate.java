@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
 import de.arthurkaul.archref.model.RelationshipConstraint;
-import de.arthurkaul.archref.model.relation.RelationshipType;
 
 @Entity
 @Table(name="RELATIONSSHIP_TEMPLATE")

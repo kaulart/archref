@@ -20,7 +20,6 @@ import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
 import de.arthurkaul.archref.model.Requirement;
 import de.arthurkaul.archref.model.capability.Capability;
-import de.arthurkaul.archref.model.node.NodeType;
 
 
 @Entity

@@ -5,8 +5,9 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
+import { FlashMessageModule } from 'angular2-flash-message';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { AdministrationService } from './shared/dataservices/administration.service';
+import { RepositoryService } from './shared/dataservices/repository.service';
 import { FragmentNodeService } from './shared/dataservices/fragmentnode.service';
 import { LevelService } from './shared/dataservices/level.service';
 import { LevelGraphNodeService } from './shared/dataservices/levelgraphnode.service';
@@ -23,14 +24,14 @@ import { ContextmenuModule } from 'ng2-contextmenu';
   ],
   imports: [
     BrowserModule,
-   
+    FlashMessageModule,
     ContextmenuModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [AdministrationService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
+  providers: [RepositoryService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,7 +13,7 @@ export class RelationshipType {
   derivedFromRelationType: RelationshipType;
   validdSources: NodeType[];
   validTargets: NodeType[];
-  //instancesStates: InstanceState[] = [];
+  // instancesStates: InstanceState[] = [];
   interfaces: Interface[] = [];
 
   constructor(name: string, repository: Repository) {

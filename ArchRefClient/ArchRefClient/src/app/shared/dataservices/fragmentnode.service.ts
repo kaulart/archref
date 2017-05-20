@@ -11,7 +11,7 @@ export class FragmentNodeService {
 
   constructor(private http: Http) { }
 
-  //GET
+  // GET
   public getFragmentNodes(): Observable<FragmentNode[]> {
     Logger.info('Send GET FragmentNodes Request', FragmentNodeService.name);
     return this.http.get(this.fragmentnodesUrl).map(this.extractFragmentNodeDataList).catch(this.handleError);
@@ -25,7 +25,7 @@ export class FragmentNodeService {
       .catch(this.handleError);
   }
 
-  //CREATE
+  // CREATE
   public createFragmentNode(fragmentNode: FragmentNode): Observable<FragmentNode> {
 
     Logger.info('Send POST FragmentNode Request', FragmentNodeService.name);
@@ -37,7 +37,7 @@ export class FragmentNodeService {
       .catch(this.handleError);
   }
 
-  //UPDATE
+  // UPDATE
   public updateFragmentNode(fragmentNode: FragmentNode): Observable<FragmentNode> {
     Logger.info('Send PUT Request FragmentNode', FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -48,7 +48,7 @@ export class FragmentNodeService {
   }
 
 
-  //DELETE
+  // DELETE
   public deleteFragmentNode(id: number): Observable<FragmentNode> {
     Logger.info('Send DELETE Repository Request with ID: ' + id, FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });

@@ -1,5 +1,4 @@
 
-import { LevelGraphNode } from '../levelgraphmodel/levelgraphnode';
 import { Repository } from '../repository';
 import { CapabilityDefinition } from '../sharedmodel/capabilitydefinition';
 import { RequirementDefinition } from '../sharedmodel/requirementdefinition';
@@ -15,7 +14,7 @@ export class NodeType {
   derivedFromNodeType: NodeType;
   requirementDefinitions: RequirementDefinition[] = [];
   capabilityDefinitions: CapabilityDefinition[] = [];
-  //instancesStates: InstanceState[] = [];
+  // instancesStates: InstanceState[] = [];
   interfaces: Interface[] = [];
 
   constructor(name: string, repositoryNodeType: Repository) {
