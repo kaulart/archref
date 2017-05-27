@@ -13,7 +13,7 @@ import { LevelGraphToolComponent } from './levelgraphtool/levelgraphtool.compone
 import { NodeTypeComponent } from './administration/repository/nodetype/nodetype.component';
 import { RelationshipTypeComponent } from './administration/repository/relationshiptype/relationshiptype.component';
 import { TopologyToolComponent } from './topologytool/topologytool.component';
-import { TopologyModellerComponent } from './topologytool/topologmodeller/topologmodeller.component';
+import { TopologyModellerComponent } from './topologytool/topologymodeller/topologymodeller.component';
 import { ContextmenuModule } from 'ng2-contextmenu';
 
 @NgModule({

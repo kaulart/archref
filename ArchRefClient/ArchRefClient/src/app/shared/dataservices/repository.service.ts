@@ -16,7 +16,7 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class RepositoryService {
 
-  // URL of the REST End-Point
+  // URL of the REST Interface End-Point
   private repositoriesUrl = '/api/repositories';
 
   constructor(private http: Http) { }
@@ -38,9 +38,7 @@ export class RepositoryService {
    ******************************************************************************************************************/
   public getRepository(id: number): Observable<Repository> {
     Logger.info('[REQUEST - REPOSITORY] Send GET Repository Request with ID:' + id, RepositoryService.name);
-    return this.http.get(this.repositoriesUrl + '/' + id)
-      .map(this.extractRepositoryData)
-      .catch(this.handleError);
+    return this.http.get(this.repositoriesUrl + '/' + id).map(this.extractRepositoryData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -53,9 +51,7 @@ export class RepositoryService {
     Logger.data('[REQUEST - REPOSITORY]' + JSON.stringify(repository), RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.repositoriesUrl, repository, options)
-      .map(this.extractRepositoryData)
-      .catch(this.handleError);
+    return this.http.post(this.repositoriesUrl, repository, options).map(this.extractRepositoryData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -68,9 +64,7 @@ export class RepositoryService {
     Logger.data('[REQUEST - REPOSITORY] ' + JSON.stringify(repository), RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.repositoriesUrl + '/' + repository.id, repository, options)
-      .map(this.extractRepositoryData)
-      .catch(this.handleError);
+    return this.http.put(this.repositoriesUrl + '/' + repository.id, repository, options).map(this.extractRepositoryData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -82,9 +76,7 @@ export class RepositoryService {
     Logger.info('[REQUEST - REPOSITORY] Send DELETE Repository Request with ID: ' + id, RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.repositoriesUrl + '/' + id, options)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.delete(this.repositoriesUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -94,23 +86,17 @@ export class RepositoryService {
    ******************************************************************************************************************/
   private extractRepositoryDataList(res: Response) {
     Logger.info('[RESPONSE - REPOSITORIES]: Extract Data of Response Body', RepositoryService.name);
-
     let body = res.json();
     let repoList: Repository[] = [];
-
     Logger.data('[RESPONSE - REPOSITORIES]: ' + JSON.stringify(body), RepositoryService.name);
-
     for (let repository of body) {
-
       let tempRepository: Repository = new Repository(repository.name);
       tempRepository.id = repository.id;
       tempRepository.id = repository.id;
       tempRepository.nodeTypeList = repository.nodeTypeList;
       tempRepository.relationshipTypeList = repository.relationshipTypeList;
       repoList.push(tempRepository);
-
     }
-
     return repoList || {};
   }
 
@@ -144,10 +130,7 @@ export class RepositoryService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-
     console.error(errMsg);
-
     return Observable.throw(errMsg);
   }
-
 }

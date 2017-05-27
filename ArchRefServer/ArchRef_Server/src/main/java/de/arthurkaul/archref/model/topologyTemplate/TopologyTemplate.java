@@ -2,6 +2,7 @@ package de.arthurkaul.archref.model.topologyTemplate;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 
@@ -34,10 +36,12 @@ public class TopologyTemplate {
 	@JsonBackReference (value="levelgraph-topologytemplate")
 	private LevelGraph levelGraph;
 	
-	@OneToMany (mappedBy="topologyTemplate")
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="topologyTemplate")
+	@JsonManagedReference (value="topologyTemplate-nodeTemplate")
 	private Collection<NodeTemplate> nodeTemplates;
 	
-	@OneToMany (mappedBy="topologyTemplate")
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="topologyTemplate")
+	@JsonManagedReference (value="topologyTemplate-relationshipTemplate")
 	private Collection<RelationshipTemplate> relationshipTemplates;
 
 	public Long getId() {

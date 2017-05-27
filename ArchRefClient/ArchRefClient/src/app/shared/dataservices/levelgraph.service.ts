@@ -4,31 +4,50 @@ import { Injectable } from '@angular/core';
 import { Response, Headers, RequestOptions, Http } from '@angular/http';
 import { Observable } from 'rxjs';
 
+/********************************************************************************************************************
+ *
+ * LevelGraph Service implements the calls to the rest interface of the application server and
+ * handle the request construction and response extraction for Level Graphs
+ *
+ ********************************************************************************************************************/
 @Injectable()
 export class LevelGraphService {
 
-  private levelGraphUrl = '/api/levelgraph';
+  // URL of the REST Interface End-Point
+  private levelGraphUrl = '/api/levelgraphs';
 
   constructor(private http: Http) { }
 
+  /******************************************************************************************************************
+   *
+   * Send GET all Level Graphs REQUEST
+   *
+   ******************************************************************************************************************/
   public getLevelGraphs(): Observable<LevelGraph[]> {
-    Logger.info('[REQUEST]: Send GET Request Level Graphs', LevelGraphService.name);
-    return this.http.get(this.levelGraphUrl)
-      .map(this.extractLevelGraphDataList)
-      .catch(this.handleError);
-
+    Logger.info('[REQUEST - LEVELGRAPH]: Send GET Request Level Graphs', LevelGraphService.name);
+    return this.http.get(this.levelGraphUrl).map(this.extractLevelGraphDataList).catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Send GET Level Graph REQUEST
+   *
+   ******************************************************************************************************************/
   public getLevelGraph(id: number): Observable<LevelGraph> {
-    Logger.info('[REQUEST]: Send GET Request Level Graph with ID: ' + id, LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Send GET Request Level Graph with ID: ' + id, LevelGraphService.name);
     return this.http.get(this.levelGraphUrl + '/' + id)
       .map(this.extractLevelGraph)
       .catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Send POST Repository REQUEST
+   *
+   ******************************************************************************************************************/
   public createLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
-    Logger.info('[REQUEST]: Send POST Request Level Graph', LevelGraphService.name);
-    Logger.data('[LEVEL GRAPH]: ' + JSON.stringify(levelGraph), LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Send POST Request Level Graph', LevelGraphService.name);
+    Logger.data('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(levelGraph), LevelGraphService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.levelGraphUrl, levelGraph, options)
@@ -36,8 +55,13 @@ export class LevelGraphService {
       .catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Send PUT Repository REQUEST
+   *
+   ******************************************************************************************************************/
   public updateLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
-    Logger.info('[REQUEST]: Send PUT Request Level Graph', LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Send PUT Request Level Graph', LevelGraphService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.put(this.levelGraphUrl + '/' + levelGraph.id, levelGraph, options)
@@ -45,8 +69,13 @@ export class LevelGraphService {
       .catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Send DELETE Repository REQUEST
+   *
+   ******************************************************************************************************************/
   public deleteLevelGraph(id: number): Observable<LevelGraph> {
-    Logger.info('[REQUEST]: Send DELETE Request Level Graph', LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Send DELETE Request Level Graph', LevelGraphService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.delete(this.levelGraphUrl + '/' + id, options)
@@ -54,11 +83,16 @@ export class LevelGraphService {
       .catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Extract data from response data list
+   *
+   ******************************************************************************************************************/
   public extractLevelGraphDataList(res) {
-    Logger.info('Extract Level Graph Data List', LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Extract Level Graph Data List', LevelGraphService.name);
     let body = res.json();
     let levelGraphList: LevelGraph[] = [];
-    Logger.info('[RESPONSE][LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     for (let levelGraph of body) {
       let tempLevelGraph: LevelGraph = new LevelGraph(levelGraph.name, levelGraph.numberOfLevels);
       tempLevelGraph.levels = levelGraph.levels;
@@ -73,18 +107,28 @@ export class LevelGraphService {
 
   }
 
+  /******************************************************************************************************************
+   *
+   *  Extract data from response data object
+   *
+   ******************************************************************************************************************/
   private extractLevelGraph(res: Response) {
-     Logger.info('Extract Level Graph Data', LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: Extract Level Graph Data', LevelGraphService.name);
     let body = res.json();
-    Logger.info('[RESPONSE][LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
+    Logger.info('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     let levelGraph: LevelGraph = new LevelGraph(body.name, body.numberOfLevels);
     levelGraph.levels = body.levels;
     levelGraph.levelGraphNodes = body.levelGraphNodes;
-      levelGraph.levelGraphRelations = body.levelGraphRelations;
+    levelGraph.levelGraphRelations = body.levelGraphRelations;
     levelGraph.id = body.id;
     return levelGraph || {};
   }
 
+  /******************************************************************************************************************
+   *
+   *  Error Handling
+   *
+   ******************************************************************************************************************/
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {

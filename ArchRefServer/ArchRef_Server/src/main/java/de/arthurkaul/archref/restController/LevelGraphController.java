@@ -24,12 +24,12 @@ public class LevelGraphController {
 	LevelGraphService levelGraphService;
 	
 	
-	@RequestMapping(value="/api/levelgraph", method = RequestMethod.GET)
+	@RequestMapping(value="/api/levelgraphs", method = RequestMethod.GET)
 	public ResponseEntity<Collection<LevelGraph>> getAllLevelGraphs() {
 		Collection<LevelGraph> levelGraphs =  levelGraphService.findAllLevelGraphs();
 		
 		  if (levelGraphs.isEmpty()) {
-			  System.out.println("THorw LevelGraphNotFoundException");
+			 
 			  throw new LevelGraphNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");  
          
       }
@@ -37,7 +37,7 @@ public class LevelGraphController {
 	}
 	
 
-	@RequestMapping(value="/api/levelgraph/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/api/levelgraphs/{id}", method = RequestMethod.GET)
 	public ResponseEntity<LevelGraph> getLevelGraph(@PathVariable("id") long id) {
 
 		LevelGraph levelGraph = levelGraphService.findById(id);
@@ -50,9 +50,9 @@ public class LevelGraphController {
 	}
 	
 	
-	@RequestMapping(value = "/api/levelgraph", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/levelgraphs", method = RequestMethod.POST)
    public ResponseEntity<LevelGraph> createLevelGraph(@RequestBody LevelGraph levelGraph, UriComponentsBuilder ucBuilder) {
-		 System.out.println("CALL API");
+		
 		if (levelGraph.getId() != null) {
 			throw new LevelGraphAlreadyExistException("LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + levelGraph.getId() + " already exist.");          	
         }
@@ -62,7 +62,7 @@ public class LevelGraphController {
       
     }
 
-   @RequestMapping(value = "/api/levelgraph/{id}", method = RequestMethod.PUT)
+   @RequestMapping(value = "/api/levelgraphs/{id}", method = RequestMethod.PUT)
    public ResponseEntity<LevelGraph> updateLevelGraph(@PathVariable("id") long id, @RequestBody LevelGraph levelGraph) {
 
 	   LevelGraph currentLevelGraph = levelGraphService.findById(id);
@@ -78,7 +78,7 @@ public class LevelGraphController {
    }
 
 
-   @RequestMapping(value = "/api/levelgraph/{id}", method = RequestMethod.DELETE)
+   @RequestMapping(value = "/api/levelgraphs/{id}", method = RequestMethod.DELETE)
    public ResponseEntity<Void> deleteLevelGraph(@PathVariable("id") Long id) {
 
 	   LevelGraph levelGraph = levelGraphService.findById(id);
@@ -92,7 +92,7 @@ public class LevelGraphController {
        return ResponseEntity.noContent().build();
    }
 
-   @RequestMapping(value = "api/levelgraph", method = RequestMethod.DELETE)
+   @RequestMapping(value = "api/levelgraphs", method = RequestMethod.DELETE)
    public ResponseEntity<Void> deleteAllLevelGraphs() {
 
 	   levelGraphService.deleteAllNodeTypes();

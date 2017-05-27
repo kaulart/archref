@@ -8,14 +8,14 @@ import { Observable } from 'rxjs';
 /********************************************************************************************************************
  *
  * NodeType Service implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for NodeTypes
+ * handle the request construction and response extraction for Node Types
  *
  ********************************************************************************************************************/
 @Injectable()
 export class NodeTypeService {
 
-  // URL of the REST End-Point
-  private nodetypeUrl = '/api/nodetype';
+  // URL of the REST Interface End-Point
+  private nodetypeUrl = '/api/nodetypes';
 
   constructor(private http: Http) { }
 
@@ -26,9 +26,7 @@ export class NodeTypeService {
    ******************************************************************************************************************/
   public getNodeTypes(): Observable<NodeType[]> {
     Logger.info('[REQUEST - NODETYPE] Send GET Node Types Request', NodeTypeService.name);
-    return this.http.get(this.nodetypeUrl)
-      .map(this.extractNodeTypesDataList)
-      .catch(this.handleError);
+    return this.http.get(this.nodetypeUrl).map(this.extractNodeTypesDataList).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -41,9 +39,7 @@ export class NodeTypeService {
     Logger.data('[REQUEST - NODETYPE]' + JSON.stringify(nodeType), NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.nodetypeUrl, nodeType, options)
-      .map(this.extractNodeTypesData)
-      .catch(this.handleError);
+    return this.http.post(this.nodetypeUrl, nodeType, options).map(this.extractNodeTypesData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -56,9 +52,7 @@ export class NodeTypeService {
     Logger.data('[REQUEST - NODETYPE] ' + JSON.stringify(nodeType), NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.nodetypeUrl + '/' + nodeType.id, nodeType, options)
-      .map(this.extractNodeTypesData)
-      .catch(this.handleError);
+    return this.http.put(this.nodetypeUrl + '/' + nodeType.id, nodeType, options).map(this.extractNodeTypesData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -70,9 +64,7 @@ export class NodeTypeService {
     Logger.info('[REQUEST - NODETYPE] Send DELETE NodeType Request with ID: ' + id, NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.nodetypeUrl + '/' + id, options)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.delete(this.nodetypeUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
   /******************************************************************************************************************

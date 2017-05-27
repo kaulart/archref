@@ -19,9 +19,19 @@ export class NodeTemplate {
   policies: Policy[] = [];
   // deploymentArtifacts: DeploymentArtifact[] = [];
 
-  constructor(name: string, nodeType: NodeType) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+
+  constructor(name: string, nodeType: NodeType, x: number, y: number, width: number, height: number) {
     this.name = name;
     this.nodeType = nodeType;
+
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
   }
 
   public getId(): number {
@@ -60,9 +70,9 @@ export class NodeTemplate {
     return this.policies;
   }
 
-//  public getDeploymentArtifacts(): DeploymentArtifact[] {
-//    return this.deploymentArtifacts;
-//  }
+  //  public getDeploymentArtifacts(): DeploymentArtifact[] {
+  //    return this.deploymentArtifacts;
+  //  }
 
   public setId(id: number) {
     this.id = id;
@@ -100,7 +110,7 @@ export class NodeTemplate {
     this.policies = policies;
   }
 
-//  public setDeploymentArtifacts(deploymentArtifacts: DeploymentArtifact[]) {
-//    this.deploymentArtifacts = deploymentArtifacts;
-//  }
+  //  public setDeploymentArtifacts(deploymentArtifacts: DeploymentArtifact[]) {
+  //    this.deploymentArtifacts = deploymentArtifacts;
+  //  }
 }

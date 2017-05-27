@@ -23,13 +23,12 @@ public class LevelController {
 	@Autowired
 	LevelService levelService;
 
-	@RequestMapping(value = "/api/level", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levels", method = RequestMethod.GET)
 	public ResponseEntity<Collection<Level>> getAllLevels() {
 
 		Collection<Level> levels = levelService.findAllLevels();
 
 		if (levels.isEmpty()) {
-			System.out.println("THorw LevelGraphNotFoundException");
 			throw new LevelGraphNotFoundException(
 					"LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
 
@@ -37,7 +36,7 @@ public class LevelController {
 		return ResponseEntity.ok().body(levels);
 	}
 
-	@RequestMapping(value = "/api/level/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Level> getLevel(@PathVariable("id") long id) {
 
 		Level level = levelService.findById(id);
@@ -50,9 +49,9 @@ public class LevelController {
 		return ResponseEntity.ok().body(level);
 	}
 
-	@RequestMapping(value = "/api/level", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/levels", method = RequestMethod.POST)
 	public ResponseEntity<Level> createLevel(@RequestBody Level level, UriComponentsBuilder ucBuilder) {
-		System.out.println("level" + level);
+
 		if (level.getId() != null) {
 			throw new LevelGraphAlreadyExistException(
 					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + level.getId()
@@ -65,7 +64,7 @@ public class LevelController {
 
 	}
 
-	@RequestMapping(value = "/api/level{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Level> updateLevel(@PathVariable("id") long id, @RequestBody Level level) {
 
 		Level currentLevel = levelService.findById(id);
@@ -82,7 +81,7 @@ public class LevelController {
 		return ResponseEntity.ok().body(currentLevel);
 	}
 
-	@RequestMapping(value = "/api/level/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteLevel(@PathVariable("id") Long id) {
 
 		Level level = levelService.findById(id);
@@ -98,7 +97,7 @@ public class LevelController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/level", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/levels", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllLevels() {
 
 		levelService.deleteAllLevels();

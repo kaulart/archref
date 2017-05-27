@@ -95,7 +95,7 @@ public class TopologyTemplateController {
    }
 
 
-   @RequestMapping(value = "/topologytemplates/", method = RequestMethod.DELETE)
+   @RequestMapping(value = "/api/topologytemplates", method = RequestMethod.DELETE)
    public ResponseEntity<Void> deleteAllRepositories() {
 
 	   topologyTemplateService.deleteAllTopologyTemplates();
@@ -106,7 +106,6 @@ public class TopologyTemplateController {
 	@ExceptionHandler(RepositoryNotFoundException.class)  
 	 
 	public String exceptionHandler(Exception e){  
-		System.out.println("THROW ERROR HANDLER");
 		return e.getMessage();     	        
 	}  
 

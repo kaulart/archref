@@ -9,14 +9,14 @@ import { Observable } from 'rxjs';
 /********************************************************************************************************************
  *
  * RelationshipTypeService implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for RelationshipType
+ * handle the request construction and response extraction for RelationshipTypes
  *
  ********************************************************************************************************************/
 @Injectable()
 export class RelationshipTypeService {
 
-  // URL of the REST End-Point
-  private relationshipTypeUrl = '/api/relationshiptype';
+  // URL of the REST Interface End-Point
+  private relationshipTypeUrl = '/api/relationshiptypes';
 
   constructor(private http: Http) { }
 
@@ -27,9 +27,7 @@ export class RelationshipTypeService {
    ******************************************************************************************************************/
   public getRelationshipTypes(): Observable<RelationshipType[]> {
     Logger.info('[REQUEST - RELATIONSHIPTYPE] Send GET Relationship Types Request', RelationshipTypeService.name);
-    return this.http.get(this.relationshipTypeUrl)
-      .map(this.extractRelationshipTypesDataList)
-      .catch(this.handleError);
+    return this.http.get(this.relationshipTypeUrl).map(this.extractRelationshipTypesDataList).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -42,14 +40,12 @@ export class RelationshipTypeService {
     Logger.data('[REQUEST - RELATIONSHIPTYPE]' + JSON.stringify(relationshipType), RelationshipTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.relationshipTypeUrl, relationshipType, options)
-      .map(this.extractRelationshipTypeData)
-      .catch(this.handleError);
+    return this.http.post(this.relationshipTypeUrl, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
    *
-   * Send PUT Repository REQUEST
+   * Send PUT RelationshipType REQUEST
    *
    ******************************************************************************************************************/
   public updateRelationshipType(relationshipType: RelationshipType): Observable<RelationshipType> {
@@ -57,23 +53,19 @@ export class RelationshipTypeService {
     Logger.data('[REQUEST - RELATIONSHIPTYPE] ' + JSON.stringify(relationshipType), RelationshipTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.relationshipTypeUrl + '/' + relationshipType.id, relationshipType, options)
-      .map(this.extractRelationshipTypeData)
-      .catch(this.handleError);
+    return this.http.put(this.relationshipTypeUrl + '/' + relationshipType.id, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
    *
-   * Send DELETE Repository REQUEST
+   * Send DELETE RelationshipType REQUEST
    *
    ******************************************************************************************************************/
   public deleteRelationshipType(id: number): Observable<RelationshipType> {
     Logger.info('[REQUEST - RELATIONSHIPTYPE] Send DELETE RelationshipType Request with ID: ' + id, RelationshipTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.relationshipTypeUrl + '/' + id, options)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.delete(this.relationshipTypeUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
   /******************************************************************************************************************

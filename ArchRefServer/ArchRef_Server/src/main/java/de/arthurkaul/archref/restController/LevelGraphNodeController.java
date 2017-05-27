@@ -23,7 +23,7 @@ public class LevelGraphNodeController {
 	@Autowired
 	LevelGraphNodeService levelGraphNodeService;
 
-	@RequestMapping(value = "/api/levelgraphnode", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levelgraphnodes", method = RequestMethod.GET)
 	public ResponseEntity<Collection<LevelGraphNode>> getAllLevelGraphNodes() {
 
 		Collection<LevelGraphNode> levelGraphNodes = levelGraphNodeService.findAllLevelGraphNodes();
@@ -36,7 +36,7 @@ public class LevelGraphNodeController {
 		return ResponseEntity.ok().body(levelGraphNodes);
 	}
 
-	@RequestMapping(value = "/api/levelgraphnode/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levelgraphnodes/{id}", method = RequestMethod.GET)
 	public ResponseEntity<LevelGraphNode> getLevelGraphNode(@PathVariable("id") long id) {
 
 		LevelGraphNode levelGraphNode = levelGraphNodeService.findById(id);
@@ -49,7 +49,7 @@ public class LevelGraphNodeController {
 		return ResponseEntity.ok().body(levelGraphNode);
 	}
 
-	@RequestMapping(value = "/api/levelgraphnode", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/levelgraphnodes", method = RequestMethod.POST)
 	public ResponseEntity<LevelGraphNode> createLevelGraphNode(@RequestBody LevelGraphNode levelGraphNode,
 			UriComponentsBuilder ucBuilder) {
 	
@@ -65,7 +65,7 @@ public class LevelGraphNodeController {
 
 	}
 
-	@RequestMapping(value = "/api/levelgraphnode{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/api/levelgraphnodes/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<LevelGraphNode> updateLevelGraphNode(@PathVariable("id") long id,
 			@RequestBody LevelGraphNode levelGraphNode) {
 
@@ -82,7 +82,7 @@ public class LevelGraphNodeController {
 		return ResponseEntity.ok().body(currentLevelGraphNode);
 	}
 
-	@RequestMapping(value = "/api/levelgraphnode/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/levelgraphnodes/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteLevelGraphNode(@PathVariable("id") Long id) {
 
 		LevelGraphNode levelGraphNode = levelGraphNodeService.findById(id);
@@ -98,7 +98,7 @@ public class LevelGraphNodeController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/levelgraphnode", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/levelgraphnodes", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllLevelGraphNodes() {
 
 		levelGraphNodeService.deleteAllLevelGraphNodes();

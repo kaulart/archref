@@ -23,7 +23,7 @@ public class NodeTypeController {
 	@Autowired
 	NodeTypeService nodeTypeService;
 
-	@RequestMapping(value = "/api/nodetype", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.GET)
 	public ResponseEntity<Collection<NodeType>> getAllNodeTypes() {
 
 		Collection<NodeType> nodeTypes = nodeTypeService.findAllNodeTypes();
@@ -36,7 +36,7 @@ public class NodeTypeController {
 		return ResponseEntity.ok().body(nodeTypes);
 	}
 
-	@RequestMapping(value = "/api/nodetype/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.GET)
 	public ResponseEntity<NodeType> getNodeType(@PathVariable("id") long id) {
 
 		NodeType nodeType = nodeTypeService.findById(id);
@@ -49,7 +49,7 @@ public class NodeTypeController {
 		return ResponseEntity.ok().body(nodeType);
 	}
 
-	@RequestMapping(value = "/api/nodetype", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.POST)
 	public ResponseEntity<NodeType> createNodeType(@RequestBody NodeType nodeType, UriComponentsBuilder ucBuilder) {
 
 		if (nodeType.getId() != null) {
@@ -59,13 +59,12 @@ public class NodeTypeController {
 		}
 		NodeType saved = nodeTypeService.create(nodeType);
 
-		System.out.println("TEST");
 		return ResponseEntity.created(ucBuilder.path("/api/nodetype/{id}").buildAndExpand(nodeType.getId()).toUri())
 				.body(saved);
 
 	}
 
-	@RequestMapping(value = "/api/nodetype/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<NodeType> updateNodeType(@PathVariable("id") long id, @RequestBody NodeType nodeType) {
 
 		NodeType currentNodeType = nodeTypeService.findById(id);
@@ -81,7 +80,7 @@ public class NodeTypeController {
 		return ResponseEntity.ok().body(currentNodeType);
 	}
 
-	@RequestMapping(value = "/api/nodetype/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteNodeType(@PathVariable("id") Long id) {
 
 		NodeType nodeType = nodeTypeService.findById(id);
@@ -96,7 +95,7 @@ public class NodeTypeController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/nodetype/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllNodeTypes() {
 
 		nodeTypeService.deleteAllNodeTypes();

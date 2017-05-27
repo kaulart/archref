@@ -63,7 +63,7 @@ public ResponseEntity<RelationshipTemplate> createRelationshipTemplate(@RequestB
    
  }
 
-@RequestMapping(value = "/api/relationshiptemplates{id}", method = RequestMethod.PUT)
+@RequestMapping(value = "/api/relationshiptemplates/{id}", method = RequestMethod.PUT)
 public ResponseEntity<?> updateRelationshipTemplate(@PathVariable("id") long id, @RequestBody RelationshipTemplate relationshiptemplate) {
 
 	RelationshipTemplate currentNodeTemplate = relationshipTemplateService.findById(id);
@@ -94,7 +94,7 @@ public ResponseEntity<Void> deleteRelationshipTemplate(@PathVariable("id") Long 
 }
 
 
-@RequestMapping(value = "/relationshiptemplates/", method = RequestMethod.DELETE)
+@RequestMapping(value = "/api/relationshiptemplates", method = RequestMethod.DELETE)
 public ResponseEntity<Void> deleteAllRelationshipTemplates() {
 
 	relationshipTemplateService.deleteAllRelationshipTemplates();
@@ -105,7 +105,6 @@ public ResponseEntity<Void> deleteAllRelationshipTemplates() {
 	@ExceptionHandler(RepositoryNotFoundException.class)  
 	 
 	public String exceptionHandler(Exception e){  
-		System.out.println("THROW ERROR HANDLER");
 		return e.getMessage();     	        
 	}  
 

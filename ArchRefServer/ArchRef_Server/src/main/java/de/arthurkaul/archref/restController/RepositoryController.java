@@ -103,7 +103,7 @@ public class RepositoryController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/repositories/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/repositories", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllRepositories() {
 
 		repositoryService.deleteAllRepositories();

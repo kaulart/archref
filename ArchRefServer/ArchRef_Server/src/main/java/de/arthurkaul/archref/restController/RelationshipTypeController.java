@@ -24,7 +24,7 @@ public class RelationshipTypeController {
 	RelationshipService relationTypeService;
 	
 
-	@RequestMapping(value="/api/relationshiptype", method = RequestMethod.GET)
+	@RequestMapping(value="/api/relationshiptypes", method = RequestMethod.GET)
 	public ResponseEntity<Collection<RelationshipType>> getAllRelationshipTypes() {
 	
 		Collection<RelationshipType> relationshipTypes =  relationTypeService.findAllRelationshipTypes();
@@ -38,7 +38,7 @@ public class RelationshipTypeController {
 	}
 	
 
-	@RequestMapping(value="/api/relationshiptype/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/api/relationshiptypes/{id}", method = RequestMethod.GET)
 	public ResponseEntity<RelationshipType> getRelationshipType(@PathVariable("id") long id) {
 
 		RelationshipType relationshipType = relationTypeService.findById(id);
@@ -51,7 +51,7 @@ public class RelationshipTypeController {
 	}
 	
 	
-	@RequestMapping(value = "/api/relationshiptype", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/relationshiptypes", method = RequestMethod.POST)
    public ResponseEntity<RelationshipType> createRelationshipType(@RequestBody RelationshipType relationshipType, UriComponentsBuilder ucBuilder) {
 	
 		if (relationshipType.getId() != null) {
@@ -63,7 +63,7 @@ public class RelationshipTypeController {
       
     }
 
-   @RequestMapping(value = "/api/relationshiptype/{id}", method = RequestMethod.PUT)
+   @RequestMapping(value = "/api/relationshiptypes/{id}", method = RequestMethod.PUT)
    public ResponseEntity<RelationshipType> updateRelationshipType(@PathVariable("id") long id, @RequestBody RelationshipType relationshipType) {
 
 	   RelationshipType currentRelationshipType = relationTypeService.findById(id);
@@ -79,7 +79,7 @@ public class RelationshipTypeController {
    }
 
 
-   @RequestMapping(value = "/api/relationshiptype/{id}", method = RequestMethod.DELETE)
+   @RequestMapping(value = "/api/relationshiptypes/{id}", method = RequestMethod.DELETE)
    public ResponseEntity<Void> deleteRelationshipType(@PathVariable("id") Long id) {
 
 	   RelationshipType relationshipTypes = relationTypeService.findById(id);
@@ -93,7 +93,7 @@ public class RelationshipTypeController {
        return ResponseEntity.noContent().build();
    }
 
-   @RequestMapping(value = "/relationshiptype/", method = RequestMethod.DELETE)
+   @RequestMapping(value = "/api/relationshiptypes", method = RequestMethod.DELETE)
    public ResponseEntity<Void> deleteAllRelationshipTypes() {
 
 	   relationTypeService.deleteAllRelationshipTypes();

@@ -28,8 +28,8 @@ export class AdministrationComponent implements OnInit {
 
   ngOnInit() {
     Logger.info('Iniitalize Administration Component', AdministrationComponent.name);
-    this.retrieveRepositoryData();
     this.flashMessage.timeoutInMS = 4000;
+    this.retrieveRepositoryData();
   }
 
   /****************************************************************************************************************
@@ -53,7 +53,7 @@ export class AdministrationComponent implements OnInit {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
-        });
+      });
   }
 
   /****************************************************************************************************************
@@ -71,11 +71,11 @@ export class AdministrationComponent implements OnInit {
         this.flashMessageService.display(this.flashMessage);
         Logger.info('Repositories sucessfully retrieved.', AdministrationComponent.name);
       },
-       (error) => {
+      (error) => {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
-        });
+      });
   }
 
   /*****************************************************************************************************************
@@ -99,7 +99,7 @@ export class AdministrationComponent implements OnInit {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
-        });
+      });
   }
 
   /****************************************************************************************************************
@@ -122,7 +122,7 @@ export class AdministrationComponent implements OnInit {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
-        });
+      });
   }
 
   /*****************************************************************************************************************

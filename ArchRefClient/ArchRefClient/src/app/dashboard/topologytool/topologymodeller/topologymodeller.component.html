@@ -1,0 +1,134 @@
+<div id="level_graph_tool" class="container-fluid w3-theme-l3">
+
+	<div class="row">
+
+		<div class="col-sm-12 w3-theme-d3 w3-card-4" style="margin-bottom: 0px;">
+			<H3 class="col-sm-5">Topology Template Name: {{currentTopologyTemplateName}}</H3>
+			<H3 class="col-sm-5">Topology Template ID: {{currentTopologyTemplateId}}</H3>
+			<button class=" w3-theme-d1 btn btn-primary w3-right" type="button" data-toggle="collapse" data-target="#control_topology_template_tool"
+				aria-expanded="false" aria-controls="control_topology_template_tool">
+				<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+			</button>
+			<button class="btn btn-primary w3-right w3-green" type="button" (click)="updateTopologyTemplate()">
+				<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
+			</button>
+
+		</div>
+
+		<div style="margin-top: 0px;" id="control_topology_template_tool" class="col-sm-12 w3-card-4 w3-theme collapse"></div>
+
+		<div style="margin-top: 0px;" id="control_topology_template_tool" class="col-sm-12 w3-card-4 w3-theme collapse"></div>
+
+		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme" style="margin: 0px; padding: 10px; margin-top: 10px;">
+
+			<h5 style="width: 100% w3-theme-d4">Toolbox</h5>
+			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%"></div>
+
+			<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes"
+				aria-expanded="false" aria-controls="toolbox_nodes">
+				NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+			</button>
+
+			<div class="  collapse toolbox" id="toolbox_nodes" style="margin: 0px; padding: 0px; width: 100%;">
+				<ul style="padding: 5px" id="nodeTypesList" class=" list-group" style="height:300px; overflow: auto">
+
+					<li *ngIf="nodeTypeList.length < 1" disabled>NO NODETYPES AVAILABLE</li>
+					<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of nodeTypeList" (drag)="onDrag($event, nodeType)"
+						(dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+						<h3>{{nodeType.name}}</h3></li>
+				</ul>
+			</div>
+
+			<hr>
+
+			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
+			
+					<div class="dropdown">
+					<label>Selected Level Graph:</label>
+					<button style="width: 100%" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedLevelGraph.name}}
+
+					</button>
+
+					<ul class="dropdown-menu">
+						<li class="repositoryListItem" *ngIf="levelGraphList.length < 1" disabled>NO LEVEL GRAPH AVAILABLE</li>
+						<li class="repositoryListItem" *ngFor="let levelGraph of levelGraphList" (click)="onSelectLevelGraph(levelGraph.id)">{{ levelGraph.name }}</li>
+					</ul>
+
+				</div>
+			
+			</div>
+
+		</div>
+
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;"  (mousemove)="onMoveNode($event)">
+
+
+			<svg id="parent" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+				
+			
+				<defs>
+   					<marker id="Triangle" viewBox="0 0 10 10" refX="50" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					</marker>
+ 				</defs>
+ 					 
+ 				<defs>
+   					<marker id="TriangleDraw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					</marker>
+ 				</defs>
+ 				
+ 				<defs> 
+					<linearGradient id="nodeTemplate" x1="50%" y1="100%" x2="50%" y2="0%"> 
+						<stop offset="0%" style="stop-color:rgb(0,51,51);stop-opacity:1" />
+						<stop offset="25%" style="stop-color:rgb(4,148,196);stop-opacity:1" />
+						<stop offset="50%" style="stop-color:rgb(5,193,255);stop-opacity:1" />
+						<stop offset="75%" style="stop-color:rgb(4,148,196);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgb(0,51,51);stop-opacity:1" />
+					</linearGradient> 
+				</defs>
+				
+			<!-- 	 <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
+						*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
+					    <polyline
+						*ngIf="(levelGraphRelationTypes[0].checked == true) && (level.value === levelGraphRelation.sourceLevelValue) && (levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO_RELATION')"
+						[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
+					</g>-->
+				
+				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mousedown)="mouseDownOnNode($event, nodeTemplate)" (mouseup)="mouseUpOnNode($event)">
+						
+					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width"
+					[attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
+							<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/2" font-family="Verdana" font-size="35"
+					fill="white" text-anchor="middle">{{nodeTemplate.name}}</text>
+						
+				</g>
+				
+           </svg>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+<contextmenu #nodeTemplateContextMenu>
+<div class="dropdown open">
+	<div class="dropdown-menu">
+		<a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View
+			Details</a> <a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash"
+			aria-hidden="true"></i>Delete</a>
+	</div>
+</div>
+</contextmenu>
+
+<contextmenu #relationshipTemplateContextMenu>
+<div class="dropdown open">
+	<div class="dropdown-menu">
+		<a class="dropdown-item" (click)="viewDetails(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye"
+			aria-hidden="true"></i>View Details</a> <a class="dropdown-item"
+			(click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+	</div>
+</div>
+</contextmenu>

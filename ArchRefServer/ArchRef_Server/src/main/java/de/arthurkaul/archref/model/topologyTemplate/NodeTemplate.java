@@ -15,59 +15,73 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import de.arthurkaul.archref.model.Policy;
 import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
 import de.arthurkaul.archref.model.Requirement;
 import de.arthurkaul.archref.model.capability.Capability;
 
-
 @Entity
 @Table(name = "NODE_TEMPLATE")
 public class NodeTemplate {
-	
+
 	@Id
 	@GeneratedValue()
-	@Column(name="ID")
+	@Column(name = "ID")
 	private Long id;
-	
-	@Column(name="NAME")
+
+	@Column(name = "NAME")
 	private String name;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="NODETYPE_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "NODETYPE_ID")
 	private NodeType nodeType;
-	
-	@Column(name="MININSTANCES")
+
+	@Column(name = "MININSTANCES")
 	private Integer minInstances;
-	
-	@Column(name="MAXINSTANCES")
+
+	@Column(name = "MAXINSTANCES")
 	private Integer maxInstances1;
-	
+
 	@ManyToMany
-	@JoinTable(name="NODETEMPLATE_PROPERTY", joinColumns=@JoinColumn(name="NODETEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="PROPERTY_ID", referencedColumnName="ID"))
+	@JoinTable(name = "NODETEMPLATE_PROPERTY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PROPERTY_ID", referencedColumnName = "ID"))
 	private Collection<Property> propertyList;
-	
+
 	@ManyToMany
-	@JoinTable(name="NODETEMPLATE_PROPERTYCONSTRAINT", joinColumns=@JoinColumn(name="NODETEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="PROPERTYCONSTRAINT_ID", referencedColumnName="ID"))
+	@JoinTable(name = "NODETEMPLATE_PROPERTYCONSTRAINT", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PROPERTYCONSTRAINT_ID", referencedColumnName = "ID"))
 	private Collection<PropertyConstraint> propertyConstraintList;
-	
+
 	@ManyToMany
-	@JoinTable(name="NODETEMPLATE_REQUIREMENT", joinColumns=@JoinColumn(name="NODETEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="REQUIREMENT_ID", referencedColumnName="ID"))
+	@JoinTable(name = "NODETEMPLATE_REQUIREMENT", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "REQUIREMENT_ID", referencedColumnName = "ID"))
 	private Collection<Requirement> requirementList;
-	
+
 	@ManyToMany
-	@JoinTable(name="NODETEMPLATE_CAPABILITY", joinColumns=@JoinColumn(name="NODETEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="CAPABILITY_ID", referencedColumnName="ID"))
+	@JoinTable(name = "NODETEMPLATE_CAPABILITY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "CAPABILITY_ID", referencedColumnName = "ID"))
 	private Collection<Capability> capabilityList;
-	
+
 	@ManyToMany
-	@JoinTable(name="NODETEMPLATE_POLICY", joinColumns=@JoinColumn(name="NODETEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="POLICY_ID", referencedColumnName="ID"))
+	@JoinTable(name = "NODETEMPLATE_POLICY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "POLICY_ID", referencedColumnName = "ID"))
 	private Collection<Policy> policyList;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TOPOLOGYTEMPLATE_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference(value="topologyTemplate-nodeTemplate")
+	@JoinColumn(name = "TOPOLOGYTEMPLATE_ID")
 	private TopologyTemplate topologyTemplate;
-	
+
+	@Column(name = "X")
+	private Integer x;
+
+	@Column(name = "Y")
+	private Integer y;
+
+	@Column(name = "WIDTH")
+	private Integer width;
+
+	@Column(name = "HEIGHT")
+	private Integer height;
+
 	public Long getId() {
 		return id;
 	}
@@ -91,7 +105,7 @@ public class NodeTemplate {
 	public void setNodeType(NodeType nodeType) {
 		this.nodeType = nodeType;
 	}
-	
+
 	public Integer getMinInstances() {
 		return minInstances;
 	}
@@ -148,5 +162,36 @@ public class NodeTemplate {
 		this.policyList = policyList;
 	}
 
-	
+	public Integer getX() {
+		return x;
+	}
+
+	public void setX(Integer x) {
+		this.x = x;
+	}
+
+	public Integer getY() {
+		return y;
+	}
+
+	public void setY(Integer y) {
+		this.y = y;
+	}
+
+	public Integer getWidth() {
+		return width;
+	}
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
 }

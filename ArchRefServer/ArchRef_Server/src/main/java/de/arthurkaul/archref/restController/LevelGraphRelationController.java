@@ -24,7 +24,7 @@ public class LevelGraphRelationController {
 	@Autowired
 	LevelGraphRelationService levelGraphRelationService;
 
-	@RequestMapping(value = "/api/levelgraphrelation", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levelgraphrelations", method = RequestMethod.GET)
 	public ResponseEntity<Collection<LevelGraphRelation>> getAllLevelGraphRelations() {
 
 		Collection<LevelGraphRelation> levelGraphRelations = levelGraphRelationService.findAllLevelGraphRelations();
@@ -37,7 +37,7 @@ public class LevelGraphRelationController {
 		return ResponseEntity.ok().body(levelGraphRelations);
 	}
 
-	@RequestMapping(value = "/api/levelgraphrelation/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/levelgraphrelations/{id}", method = RequestMethod.GET)
 	public ResponseEntity<LevelGraphRelation> getLevelGraphRelation(@PathVariable("id") long id) {
 
 		LevelGraphRelation levelGraphRelation = levelGraphRelationService.findById(id);
@@ -50,7 +50,7 @@ public class LevelGraphRelationController {
 		return ResponseEntity.ok().body(levelGraphRelation);
 	}
 
-	@RequestMapping(value = "/api/levelgraphrelation", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/levelgraphrelations", method = RequestMethod.POST)
 	public ResponseEntity<LevelGraphRelation> createLevelGraphRelation(@RequestBody LevelGraphRelation levelGraphRelation,
 			UriComponentsBuilder ucBuilder) {
 	
@@ -66,7 +66,7 @@ public class LevelGraphRelationController {
 
 	}
 
-	@RequestMapping(value = "/api/levelgraphrelation{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/api/levelgraphrelations/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<LevelGraphRelation> updateLevelGraphRelation(@PathVariable("id") long id,
 			@RequestBody LevelGraphRelation levelGraphRelation) {
 
@@ -83,7 +83,7 @@ public class LevelGraphRelationController {
 		return ResponseEntity.ok().body(currentLevelGraphRelation);
 	}
 
-	@RequestMapping(value = "/api/levelgraphrelation/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/levelgraphrelations/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteLevelGraphRelation(@PathVariable("id") Long id) {
 
 		LevelGraphRelation levelGraphRelation = levelGraphRelationService.findById(id);
@@ -99,7 +99,7 @@ public class LevelGraphRelationController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/levelgraphrelation", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/levelgraphrelations", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllLevelGraphRelations() {
 
 		levelGraphRelationService.deleteAllLevelGraphRelations();

@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
 import de.arthurkaul.archref.model.RelationshipConstraint;
@@ -65,6 +67,7 @@ public class RelationshipTemplate {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="TOPOLOGYTEMPLATE_ID")
+	@JsonBackReference(value="topologyTemplate-relationshipTemplate")
 	private TopologyTemplate topologyTemplate;
 
 	public Long getId() {

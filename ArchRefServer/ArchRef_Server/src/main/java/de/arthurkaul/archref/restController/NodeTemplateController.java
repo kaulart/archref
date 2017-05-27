@@ -64,7 +64,7 @@ public class NodeTemplateController {
      
    }
 
-  @RequestMapping(value = "/api/nodetemplates{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/api/nodetemplates/{id}", method = RequestMethod.PUT)
   public ResponseEntity<?> updateNodeTemplate(@PathVariable("id") long id, @RequestBody NodeTemplate nodeTemplate) {
 
 	  NodeTemplate currentNodeTemplate = nodeTemplateService.findById(id);
@@ -106,7 +106,6 @@ public class NodeTemplateController {
 	@ExceptionHandler(RepositoryNotFoundException.class)  
 	 
 	public String exceptionHandler(Exception e){  
-		System.out.println("THROW ERROR HANDLER");
 		return e.getMessage();     	        
 	}  
 

@@ -16,6 +16,8 @@ import { NodeTypeService } from './shared/dataservices/nodetype.service';
 import { RelationshipTypeService } from './shared/dataservices/relationshiptype.service';
 import { TopologyTemplateService } from './shared/dataservices/topologytemplate.service';
 import { LevelGraphRelationService } from './shared/dataservices/levelgraphrelation.service';
+import { NodeTemplateService } from './shared/dataservices/nodetemplate.service';
+import { RelationshipTemplateService } from './shared/dataservices/relationshiptemplate.service';
 import { ContextmenuModule } from 'ng2-contextmenu';
 
 @NgModule({
@@ -31,7 +33,7 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [RepositoryService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
+  providers: [RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

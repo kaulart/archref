@@ -4,79 +4,100 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
+/********************************************************************************************************************
+ *
+ * FragmentNode Service implements the calls to the rest interface of the application server and
+ * handle the request construction and response extraction for FragmentNodes
+ *
+ ********************************************************************************************************************/
 @Injectable()
 export class FragmentNodeService {
 
+  // URL of the REST Interface End-Point
   private fragmentnodesUrl = '/api/fragmentnodes';
 
   constructor(private http: Http) { }
 
-  // GET
+  /******************************************************************************************************************
+   *
+   * Send GET all FragmentNodes REQUEST
+   *
+   ******************************************************************************************************************/
   public getFragmentNodes(): Observable<FragmentNode[]> {
-    Logger.info('Send GET FragmentNodes Request', FragmentNodeService.name);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send GET FragmentNodes Request', FragmentNodeService.name);
     return this.http.get(this.fragmentnodesUrl).map(this.extractFragmentNodeDataList).catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Send GET FragmentNode REQUEST
+   *
+   ******************************************************************************************************************/
   public getFragmentNode(id: number): Observable<FragmentNode> {
-
-    Logger.info('Send GET FragmentNode Request with ID:' + id, FragmentNodeService.name);
-    return this.http.get(this.fragmentnodesUrl + '/' + id)
-      .map(this.extractFragmentNodeData)
-      .catch(this.handleError);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send GET FragmentNode Request with ID:' + id, FragmentNodeService.name);
+    return this.http.get(this.fragmentnodesUrl + '/' + id).map(this.extractFragmentNodeData).catch(this.handleError);
   }
 
-  // CREATE
+  /******************************************************************************************************************
+   *
+   * Send POST FragmentNode REQUEST
+   *
+   ******************************************************************************************************************/
   public createFragmentNode(fragmentNode: FragmentNode): Observable<FragmentNode> {
-
-    Logger.info('Send POST FragmentNode Request', FragmentNodeService.name);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send POST FragmentNode Request', FragmentNodeService.name);
     Logger.data(JSON.stringify(fragmentNode), FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.fragmentnodesUrl, fragmentNode, options)
-      .map(this.extractFragmentNodeData)
-      .catch(this.handleError);
+    return this.http.post(this.fragmentnodesUrl, fragmentNode, options).map(this.extractFragmentNodeData).catch(this.handleError);
   }
 
-  // UPDATE
+  /******************************************************************************************************************
+   *
+   * Send PUT FragmentNode REQUEST
+   *
+   ******************************************************************************************************************/
   public updateFragmentNode(fragmentNode: FragmentNode): Observable<FragmentNode> {
-    Logger.info('Send PUT Request FragmentNode', FragmentNodeService.name);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send PUT Request FragmentNode', FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.fragmentnodesUrl, fragmentNode, options)
-      .map(this.extractFragmentNodeData)
-      .catch(this.handleError);
+    return this.http.post(this.fragmentnodesUrl, fragmentNode, options).map(this.extractFragmentNodeData).catch(this.handleError);
   }
 
-
-  // DELETE
+  /******************************************************************************************************************
+   *
+   * Send DELETE FragmentNode REQUEST
+   *
+   ******************************************************************************************************************/
   public deleteFragmentNode(id: number): Observable<FragmentNode> {
-    Logger.info('Send DELETE Repository Request with ID: ' + id, FragmentNodeService.name);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send DELETE Repository Request with ID: ' + id, FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.delete(this.fragmentnodesUrl + '/' + id, options)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.delete(this.fragmentnodesUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
+  /******************************************************************************************************************
+   *
+   * Extract data from response data list
+   *
+   ******************************************************************************************************************/
   private extractFragmentNodeDataList(res: Response) {
-    Logger.info('Extract Data of Response Body', FragmentNodeService.name);
-
+    Logger.info('[RESPONSE - FRAGMENTNODE]: Extract Data of Response Body', FragmentNodeService.name);
     let body = res.json();
     let fragmetnNodesList: FragmentNode[] = [];
-
-    Logger.data('[RESPONSE][FragmentNodes]: ' + JSON.stringify(body), FragmentNodeService.name);
-
+    Logger.data('[RESPONSE - FRAGMENTNODE]: ' + JSON.stringify(body), FragmentNodeService.name);
     for (let fragmentNode of body) {
-
       let tempFragmentNode: FragmentNode = new FragmentNode();
       tempFragmentNode.setId(fragmentNode.id);
       fragmetnNodesList.push(tempFragmentNode);
-
     }
-
     return fragmetnNodesList || {};
   }
 
+  /******************************************************************************************************************
+   *
+   *  Extract data from response data object
+   *
+   ******************************************************************************************************************/
   private extractFragmentNodeData(res: Response) {
     Logger.info('Extract Data of Response Body', FragmentNodeService.name);
     let body = res.json();
@@ -86,6 +107,11 @@ export class FragmentNodeService {
     return fragmentNode || {};
   }
 
+  /******************************************************************************************************************
+   *
+   *  Error Handling
+   *
+   ******************************************************************************************************************/
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
