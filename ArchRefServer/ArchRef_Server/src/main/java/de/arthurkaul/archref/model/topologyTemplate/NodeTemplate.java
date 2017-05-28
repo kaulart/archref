@@ -66,8 +66,8 @@ public class NodeTemplate {
 	private Collection<Policy> policyList;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TOPOLOGYTEMPLATE_NODE_ID")
 	@JsonBackReference(value="topologyTemplate-nodeTemplate")
-	@JoinColumn(name = "TOPOLOGYTEMPLATE_ID")
 	private TopologyTemplate topologyTemplate;
 
 	@Column(name = "X")

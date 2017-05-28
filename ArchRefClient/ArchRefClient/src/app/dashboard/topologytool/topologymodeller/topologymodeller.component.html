@@ -12,7 +12,6 @@
 			<button class="btn btn-primary w3-right w3-green" type="button" (click)="updateTopologyTemplate()">
 				<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
 			</button>
-
 		</div>
 
 		<div style="margin-top: 0px;" id="control_topology_template_tool" class="col-sm-12 w3-card-4 w3-theme collapse"></div>
@@ -42,25 +41,58 @@
 			<hr>
 
 			<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
-			
-					<div class="dropdown">
+
+				<div class="dropdown">
 					<label>Selected Level Graph:</label>
 					<button style="width: 100%" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedLevelGraph.name}}
 
 					</button>
 
 					<ul class="dropdown-menu">
-						<li class="repositoryListItem" *ngIf="levelGraphList.length < 1" disabled>NO LEVEL GRAPH AVAILABLE</li>
-						<li class="repositoryListItem" *ngFor="let levelGraph of levelGraphList" (click)="onSelectLevelGraph(levelGraph.id)">{{ levelGraph.name }}</li>
+						<li *ngIf="levelGraphList.length < 1" disabled>NO LEVEL GRAPH AVAILABLE</li>
+						<li *ngFor="let levelGraph of levelGraphList" (click)="onSelectLevelGraph(levelGraph.id)">{{ levelGraph.name }}</li>
 					</ul>
 
 				</div>
-			
+
+				<div>
+					<label for="level">Level:</label>
+					<div>
+
+						<button (click)="prevLevel()">
+							<i class="fa fa-arrow-left" aria-hidden="true"></i>
+						</button>
+
+						<input #level readonly style="width: 100px" id="number_of_levels" type="number" class="w3-center " value="{{abstractionLevel}}" min="1"
+							max="selectedLevelGraph.numberOfLevels">
+						<button (click)="nextLevel()">
+							<i class="fa fa-arrow-right" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+				<label>NodeTypes of Level {{abstractionLevel}} of Level Graph:</label>
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse"
+					data-target="#levelGraph_nodeTypes" aria-expanded="false" aria-controls="levelGraph_nodeTypes">
+					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="collapse toolbox" id="levelGraph_nodeTypes" style="margin: 0px; padding: 0px; width: 100%;">
+					<ul style="padding: 5px" id="nodeTypesList" class=" list-group" style="height:300px; overflow: auto">
+
+						<ng-container *ngFor="let levelGraphNode of selectedLevelGraph.levelGraphNodes">
+						<li *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode)" class="nodeTemplate w3-round" draggable="true" (drag)="onDrag($event, levelGraphNode.nodeType)" (dragover)="onDragOver($event)"><img
+							src="http://lorempixum.com/100/100/nature/1" />
+							<h3>{{levelGraphNode.name}}</h3></li>
+						</ng-container>
+					</ul>
+				</div>
+
 			</div>
 
 		</div>
 
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;"  (mousemove)="onMoveNode($event)">
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mouseup)="mouseUpOnDrawArea()"
+			(mousemove)="onMoveNode($event)">
 
 
 			<svg id="parent" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
@@ -95,7 +127,8 @@
 						[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
 					</g>-->
 				
-				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mousedown)="mouseDownOnNode($event, nodeTemplate)" (mouseup)="mouseUpOnNode($event)">
+				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates"
+					(mousedown)="mouseDownOnNode($event, nodeTemplate)" (mouseup)="mouseUpOnNode($event)">
 						
 					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width"
 					[attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />

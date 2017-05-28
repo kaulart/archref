@@ -5,6 +5,7 @@ import { PropertyConstraint } from '../sharedmodel/propertyconstraint';
 import { Requirement } from '../sharedmodel/requirement';
 import { NodeType } from './nodetype';
 import { Property } from './property';
+import { TopologyTemplate } from './topologytemplate';
 export class NodeTemplate {
 
   id: number;
@@ -19,6 +20,8 @@ export class NodeTemplate {
   policies: Policy[] = [];
   // deploymentArtifacts: DeploymentArtifact[] = [];
 
+  topologyTemplate: TopologyTemplate;
+
   x: number;
   y: number;
   width: number;
@@ -27,7 +30,7 @@ export class NodeTemplate {
   constructor(name: string, nodeType: NodeType, x: number, y: number, width: number, height: number) {
     this.name = name;
     this.nodeType = nodeType;
-
+    
     this.x = x;
     this.y = y;
     this.width = width;

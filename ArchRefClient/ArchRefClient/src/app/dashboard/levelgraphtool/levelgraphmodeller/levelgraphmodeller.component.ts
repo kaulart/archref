@@ -290,13 +290,6 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
-  /***************************************************************************************************************************************
-   *
-   * Section for handling drawing of level graph relations and moving of level graph nodes
-   *
-   *
-   **************************************************************************************************************************************/
-
   mouseDownOnNode(event: MouseEvent, level: Level, levelGraphNode: LevelGraphNode) {
 
     this.mousedownOnLevelGraphNode = true;
@@ -342,6 +335,11 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * mouseUpOnNode is called onMouseUp Event on a level graph node to create a new level graph relation or two set the new node position
+   *
+   ****************************************************************************************************************************************/
   drawEdge(event: MouseEvent) {
 
     let newMousePositionY = event.offsetY;
@@ -408,6 +406,11 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * mouseUpOnNode is called onMouseUp Event on a level graph node to create a new level graph relation or two set the new node position
+   *
+   ****************************************************************************************************************************************/
   mouseUpOnNode(event, level: Level, levelGraphNode: LevelGraphNode) {
 
     if (this.isRelationDrawAllowed(levelGraphNode, this.currentDrawRelation.sourceLevelGraphNode, level) && !this.isRelationExist(levelGraphNode, this.currentDrawRelation.sourceLevelGraphNode)) {
@@ -418,15 +421,15 @@ export class LevelGraphModellerComponent implements OnInit {
       let targetCenterY = levelGraphNode.y + levelGraphNode.height / 2;
 
       if (this.toolList[3].checked) {
-        this.currentDrawRelation.path.points[0].y;
-        this.currentDrawRelation.path.points[0].x;
+        this.currentDrawRelation.path.points[0].x = sourceCenterX + LEVELGRAPHCONSTANTS.LEVELOFFSETBETWEENLEVELAREAANDLABEL;
       } else {
         this.currentDrawRelation.path.points[0].x = sourceCenterX;
         this.currentDrawRelation.path.points[0].y = sourceCenterY;
       }
 
       if (this.toolList[3].checked) {
-
+        this.currentDrawRelation.path.points[1].y = targetCenterY + level.y;
+        this.currentDrawRelation.path.points[1].x = targetCenterX + LEVELGRAPHCONSTANTS.LEVELOFFSETBETWEENLEVELAREAANDLABEL;
       } else {
         this.currentDrawRelation.path.points[1].y = targetCenterY;
         this.currentDrawRelation.path.points[1].x = targetCenterX;
@@ -436,51 +439,60 @@ export class LevelGraphModellerComponent implements OnInit {
       this.currentDrawRelation.targetLevelValue = level.value;
       this.currentDrawRelation.targetLevelGraphNode = levelGraphNode;
 
-      this.levelGraphRelationService.createLevelGraphRelation(this.currentDrawRelation)
-        .subscribe(levelGraphRelationResponse => {
-          this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(res => this.currentLevelGraph = res);
-          this.flashMessage.message = 'Level Graph Relation created sucessfully.';
-          this.flashMessage.isSuccess = true;
-          this.flashMessageService.display(this.flashMessage);
-          Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
-        },
-        (error) => {
-          this.flashMessage.message = error;
-          this.flashMessage.isSuccess = false;
-          this.flashMessage.isError = true;
-          this.flashMessageService.display(this.flashMessage);
-        });
+      this.createLevelGraphRelation(this.currentDrawRelation);
+
+    } else {
+      this.updateLevelGraph();
     }
+
     this.mousedownOnLevelGraphNode = false;
     this.lastMousePositionY = event.offsetY;
     this.lastMousePositionX = event.offsetX;
     this.drawRelation = false;
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * mouseUpOnDrawArea is called onMouseUp Event on the draw area and set all flags to false
+   *
+   ****************************************************************************************************************************************/
   mouseUpOnDrawArea() {
     this.mousedownOnLevelGraphNode = false;
     this.drawRelation = false;
     this.mousedownOnLevelChangeView = false;
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * isRelationExist is called to check if already a relation between the to nodes exist
+   *
+   ****************************************************************************************************************************************/
   isRelationExist(levelGraphNode: LevelGraphNode, levelGraphNodeSource: LevelGraphNode) {
 
-    for (let relation of levelGraphNode.inLevelGraphRelation) {
-      //      if (relation.sourceLevelGraphNode.id === levelGraphNodeSource.id) {
-      //        this.flashMessage.message = 'There already exist a relation between this nodes!';
-      //        this.flashMessage.isSuccess = false;
-      //        this.flashMessage.isError = true;
-      //        this.flashMessageService.display(this.flashMessage);
-      //        return true;
-      //      }
+    for (let inRelation of levelGraphNode.inLevelGraphRelation) {
+      for (let outRelation of levelGraphNodeSource.outLevelGraphRelation) {
+        if (inRelation.id === outRelation.id) {
+          this.flashMessage.message = 'There already exist a relation between this nodes!';
+          this.flashMessage.isSuccess = false;
+          this.flashMessage.isError = true;
+          this.flashMessageService.display(this.flashMessage);
+          return true;
+        }
+      }
+
     }
     return false;
 
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * isRelationDrawAllowed is called to check if it is allow to draw the level graph relation of the currently selected type
+   *
+   ****************************************************************************************************************************************/
   isRelationDrawAllowed(levelGraphNode: LevelGraphNode, levelGraphNodeSource: LevelGraphNode, level: Level) {
     if (!this.toolList[0].checked) {
-      if (levelGraphNode.id != levelGraphNodeSource.id) {
+      if (levelGraphNode.id !== levelGraphNodeSource.id) {
 
         if (this.toolList[1].checked) {
           if (this.currentDrawRelation.sourceLevelGraphNode.levelId === levelGraphNode.levelId) {
@@ -594,14 +606,18 @@ export class LevelGraphModellerComponent implements OnInit {
     }
   }
 
+  /*****************************************************************************************************************************************
+   *
+   * changeTool change the selected tool for modelling a level graph
+   *
+   ****************************************************************************************************************************************/
   changeTool(tool: any) {
 
-    for (let tool of this.toolList) {
-      tool.checked = false;
+    for (let t of this.toolList) {
+      t.checked = false;
     }
     tool.checked = true;
   }
-
 
   /*****************************************************************************************************************************************
    *
@@ -679,7 +695,7 @@ export class LevelGraphModellerComponent implements OnInit {
     if (x < 0) {
       x = 0;
     }
-     if (y < 0) {
+    if (y < 0) {
       y = 0;
     }
 
@@ -699,6 +715,30 @@ export class LevelGraphModellerComponent implements OnInit {
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
       });
+  }
+
+  /****************************************************************************************************
+   *
+   * createLevelGraphRelation - Create level graph relation and update the level graph
+   *
+   ****************************************************************************************************/
+  createLevelGraphRelation(levelGraphRelation: LevelGraphRelation) {
+
+    this.levelGraphRelationService.createLevelGraphRelation(levelGraphRelation)
+      .subscribe(levelGraphRelationResponse => {
+        this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(res => this.currentLevelGraph = res);
+        this.flashMessage.message = 'Level Graph Relation created sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isSuccess = false;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+
   }
 
   /****************************************************************************************************
@@ -738,9 +778,7 @@ export class LevelGraphModellerComponent implements OnInit {
         if (relation.levelGraphRelationType === 'REFINE_TO_RELATION') {
 
           if (relation.sourceLevelValue > level.value) {
-
             relation.path.points[0].y = relation.path.points[0].y + delta;
-
           }
 
           if (relation.targetLevelValue > level.value) {
@@ -772,6 +810,11 @@ export class LevelGraphModellerComponent implements OnInit {
     for (let activeLevel of this.activeLevels) {
       if (activeLevel.value > level.value) {
         activeLevel.y = activeLevel.y + delta;
+        for (let l of this.currentLevelGraph.levels) {
+          if (activeLevel.id === l.id) {
+            l.y = activeLevel.y;
+          }
+        }
       }
     }
 
@@ -785,7 +828,6 @@ export class LevelGraphModellerComponent implements OnInit {
    ****************************************************************************************************/
   stopChangeLevelHeight(event: MouseEvent) {
     this.updateLevelGraph();
-    // TODO Bug Fix 
     this.mousedownOnLevelChangeView = false;
     this.lastMousePositionY = event.offsetY;
   }

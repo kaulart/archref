@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LevelGraph>
+
+	<LevelGraphNodes>
+		<LevelGraphNode id="1" name="DB">
+
+		</LevelGraphNode>
+	</LevelGraphNodes>
+
+	<LevelGraphRelations>
+		<LevelGraphRelation id="1" type="ConnectedToRelation">
+
+		</LevelGraphRelation>
+		<LevelGraphRelation id="2" type="HostedOnRelation">
+
+		</LevelGraphRelation>
+		<LevelGraphRelation id="3" type="RefineToRelation">
+
+		</LevelGraphRelation>
+	</LevelGraphRelations>
+
+</LevelGraph>

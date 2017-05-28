@@ -89,7 +89,10 @@ export class TopologyTemplateService {
     for (let topologytemplate of body) {
       let tempTopologyTemplate: TopologyTemplate = new TopologyTemplate(topologytemplate.name);
       tempTopologyTemplate.setId(topologytemplate.id);
+      tempTopologyTemplate.setNodeTemplates(topologytemplate.nodeTemplates);
+      tempTopologyTemplate.setRelationshipTemplates(topologytemplate.relationshipTemplates);
       topologyTemplateList.push(tempTopologyTemplate);
+
     }
     return topologyTemplateList || {};
   }
@@ -105,6 +108,8 @@ export class TopologyTemplateService {
     Logger.info('[RESPONSE - TOPOLOGYTEMPLATE]: ' + JSON.stringify(body), TopologyTemplateService.name);
     let topologyTemplate: TopologyTemplate = new TopologyTemplate(body.name);
     topologyTemplate.setId(body.id);
+    topologyTemplate.setNodeTemplates(body.nodeTemplates);
+    topologyTemplate.setRelationshipTemplates(body.relationshipTemplates);
     return topologyTemplate || {};
   }
 

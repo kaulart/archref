@@ -26,10 +26,11 @@ public class NodeTemplateService implements NodeTemplateInterface{
 
 	@Override
 	public NodeTemplate create(NodeTemplate nodeTemplate) {
-		
+
 		if (nodeTemplate.getId() != null) {
 			return null;
         }		
+	
 		return nodeTemplateRepository.save(nodeTemplate);
 	}
 

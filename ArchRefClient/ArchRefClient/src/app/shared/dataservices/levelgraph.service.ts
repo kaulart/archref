@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class LevelGraphService {
 
+ 
+
   // URL of the REST Interface End-Point
   private levelGraphUrl = '/api/levelgraphs';
 
@@ -42,7 +44,7 @@ export class LevelGraphService {
 
   /******************************************************************************************************************
    *
-   * Send POST Repository REQUEST
+   * Send POST Level Graph REQUEST
    *
    ******************************************************************************************************************/
   public createLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
@@ -57,7 +59,7 @@ export class LevelGraphService {
 
   /******************************************************************************************************************
    *
-   * Send PUT Repository REQUEST
+   * Send PUT Level Graph REQUEST
    *
    ******************************************************************************************************************/
   public updateLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
@@ -71,7 +73,7 @@ export class LevelGraphService {
 
   /******************************************************************************************************************
    *
-   * Send DELETE Repository REQUEST
+   * Send DELETE Level Graph REQUEST
    *
    ******************************************************************************************************************/
   public deleteLevelGraph(id: number): Observable<LevelGraph> {
@@ -89,10 +91,10 @@ export class LevelGraphService {
    *
    ******************************************************************************************************************/
   public extractLevelGraphDataList(res) {
-    Logger.info('[REQUEST - LEVELGRAPH]: Extract Level Graph Data List', LevelGraphService.name);
+    Logger.info('[RESPONSE - LEVELGRAPH]: Extract Level Graph Data List', LevelGraphService.name);
     let body = res.json();
     let levelGraphList: LevelGraph[] = [];
-    Logger.info('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
+    Logger.info('[RESPONSE - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     for (let levelGraph of body) {
       let tempLevelGraph: LevelGraph = new LevelGraph(levelGraph.name, levelGraph.numberOfLevels);
       tempLevelGraph.levels = levelGraph.levels;
@@ -113,9 +115,9 @@ export class LevelGraphService {
    *
    ******************************************************************************************************************/
   private extractLevelGraph(res: Response) {
-    Logger.info('[REQUEST - LEVELGRAPH]: Extract Level Graph Data', LevelGraphService.name);
+    Logger.info('[RESPONSE - LEVELGRAPH]: Extract Level Graph Data', LevelGraphService.name);
     let body = res.json();
-    Logger.info('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
+    Logger.info('[RESPONSE - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     let levelGraph: LevelGraph = new LevelGraph(body.name, body.numberOfLevels);
     levelGraph.levels = body.levels;
     levelGraph.levelGraphNodes = body.levelGraphNodes;

@@ -60,7 +60,7 @@ export class FragmentNodeService {
     Logger.info('[REQUEST - FRAGMENTNODE]: Send PUT Request FragmentNode', FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.fragmentnodesUrl, fragmentNode, options).map(this.extractFragmentNodeData).catch(this.handleError);
+    return this.http.put(this.fragmentnodesUrl + '/' + fragmentNode.getId(), fragmentNode, options).map(this.extractFragmentNodeData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -69,7 +69,7 @@ export class FragmentNodeService {
    *
    ******************************************************************************************************************/
   public deleteFragmentNode(id: number): Observable<FragmentNode> {
-    Logger.info('[REQUEST - FRAGMENTNODE]: Send DELETE Repository Request with ID: ' + id, FragmentNodeService.name);
+    Logger.info('[REQUEST - FRAGMENTNODE]: Send DELETE FragmentNode Request with ID: ' + id, FragmentNodeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.delete(this.fragmentnodesUrl + '/' + id, options).map(res => res).catch(this.handleError);
@@ -101,7 +101,7 @@ export class FragmentNodeService {
   private extractFragmentNodeData(res: Response) {
     Logger.info('Extract Data of Response Body', FragmentNodeService.name);
     let body = res.json();
-    Logger.data('[RESPONSE][FragmetnNode]: ' + JSON.stringify(body), FragmentNodeService.name);
+    Logger.data('[RESPONSE - FRAGMENTNODE]: ' + JSON.stringify(body), FragmentNodeService.name);
     let fragmentNode: FragmentNode = new FragmentNode();
     fragmentNode.setId(body.id);
     return fragmentNode || {};

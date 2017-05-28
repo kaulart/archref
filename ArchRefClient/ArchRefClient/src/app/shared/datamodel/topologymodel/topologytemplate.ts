@@ -19,7 +19,7 @@ export class TopologyTemplate {
   constructor(name) {
     this.name = name;
     this.nodeTemplates = [];
-    this.nodeTemplates = [];
+    this.relationshipTemplates = [];
   }
 
   /**

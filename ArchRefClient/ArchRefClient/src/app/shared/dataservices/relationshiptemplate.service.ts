@@ -33,7 +33,7 @@ export class RelationshipTemplateService {
    * Send POST RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
-  public createNodeTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
+  public createRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
     Logger.info('[REQUEST - RELATIONSHIPTEMPLATE] Send POST Relationship Templates Request', RelationshipTemplateService.name);
     Logger.data('[REQUEST - RELATIONSHIPTEMPLATE]' + JSON.stringify(relationshipTemplate), RelationshipTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -46,7 +46,7 @@ export class RelationshipTemplateService {
    * Send PUT RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
-  public updateNodeTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
+  public updateRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
     Logger.info('[REQUEST - RELATIONSHIPTEMPLATE] Send PUT Request Relationship Template', RelationshipTemplateService.name);
     Logger.data('[REQUEST - RELATIONSHIPTEMPLATE] ' + JSON.stringify(relationshipTemplate), RelationshipTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -59,7 +59,7 @@ export class RelationshipTemplateService {
    * Send DELETE RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
-  public deleteNodeTemplate(id: number): Observable<RelationshipTemplate> {
+  public deleteRelationshipTemplate(id: number): Observable<RelationshipTemplate> {
     Logger.info('[REQUEST - RELATIONSHIPTEMPLATE] Send DELETE Relationship Templates Request with ID: ' + id, RelationshipTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });

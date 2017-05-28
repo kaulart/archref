@@ -9,8 +9,6 @@ export class Utility {
     return array;
 
   }
-
-
   static updateElementInArry(res: any, array: any[]) {
 
     for (let i = 0; i < array.length; i++) {

@@ -30,14 +30,14 @@
 						<label for="numberOfLevels">Number of Levels:</label>
 						<div>
 						
-						<button >
-							<i class="fa fa-minus" aria-hidden="true" (click)=removeLevel()></i>
+						<button (click)="removeLevel()">
+							<i class="fa fa-minus" aria-hidden="true" ></i>
 						</button>
 					
 						<input #numberOfLevels readonly style="width: 100px" id="number_of_levels" type="number" class="w3-center "
 							value="{{levels}}" min="1" >
-							<button>
-							<i class="fa fa-plus" aria-hidden="true" (click)=addLevel()></i>
+							<button (click)="addLevel()">
+							<i class="fa fa-plus" aria-hidden="true"></i>
 						</button>
 						</div>
 					</div>

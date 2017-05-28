@@ -3,6 +3,7 @@ import { TOPOLOGYTEMPLATECONSTANTS } from '../../../constants/topologytemplateco
 import { LevelGraph } from '../../../shared/datamodel/levelgraphmodel/levelgraph';
 import { NodeTemplate } from '../../../shared/datamodel/topologymodel/nodetemplate';
 import { NodeType } from '../../../shared/datamodel/topologymodel/nodetype';
+import { RelationshipTemplate } from '../../../shared/datamodel/topologymodel/relationshiptemplate';
 import { RelationshipType } from '../../../shared/datamodel/topologymodel/relationshiptype';
 import { TopologyTemplate } from '../../../shared/datamodel/topologymodel/topologytemplate';
 import { LevelGraphService } from '../../../shared/dataservices/levelgraph.service';
@@ -30,6 +31,8 @@ export class TopologyModellerComponent implements OnInit {
   selectedLevelGraph: LevelGraph = new LevelGraph('Select Level Graph', 0);
 
   moveNode: NodeTemplate;
+
+  abstractionLevel = 1;
 
   lastMousePositionY = 0;
   lastMousePositionX = 0;
@@ -151,7 +154,8 @@ export class TopologyModellerComponent implements OnInit {
    ****************************************************************************************************************************************/
   onDrop(event) {
     if (this.drag === true) {
-      let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, this.currentDragData, event.offsetX, event.offsetY, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT);
+      let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, this.currentDragData, event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT);
+      tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
       this.createNodeTemplate(tempNodeTemplate);
       this.drag = false;
     }
@@ -186,37 +190,6 @@ export class TopologyModellerComponent implements OnInit {
         this.moveNode.y = (this.moveNode.y + deltaY);
       }
 
-      //    for (let relationTemplate of this.moveNode.outRelationTemplates) {
-      //      for (let relationOutGraph of this.currentLevelGraph.levelGraphRelations) {
-      //        if (relationOutNode.id === relationOutGraph.id) {
-      //          if ((relationOutGraph.path.points[0].x + deltaX) > 0 + LEVELGRAPHCONSTANTS.LEVELGRAPHNODEWIDTH / 2) {
-      //            relationOutGraph.path.points[0].x = relationOutGraph.path.points[0].x + deltaX;
-      //          }
-      //          if ((relationOutGraph.path.points[0].y + deltaY) > 0 + LEVELGRAPHCONSTANTS.LEVELGRAPHNODEHEIGHT / 2) {
-      //            relationOutGraph.path.points[0].y = relationOutGraph.path.points[0].y + deltaY;
-      //          }
-      //          let tempPath = new Path(relationOutGraph.path.points);
-      //          relationOutGraph.path = tempPath;
-      //        }
-      //      }
-      //    }
-
-      //    for (let relationInNode of this.moveNode.inLevelGraphRelation) {
-      //      for (let relationInGraph of this.currentLevelGraph.levelGraphRelations) {
-      //        if (relationInNode.id === relationInGraph.id) {
-      //          if ((relationInGraph.path.points[1].x + deltaX) > (0 + (LEVELGRAPHCONSTANTS.LEVELGRAPHNODEWIDTH / 2))) {
-      //            relationInGraph.path.points[1].x = relationInGraph.path.points[1].x + deltaX;
-      //          }
-      //
-      //          if ((relationInGraph.path.points[1].y + deltaY) > (0 + (LEVELGRAPHCONSTANTS.LEVELGRAPHNODEHEIGHT / 2))) {
-      //            relationInGraph.path.points[1].y = relationInGraph.path.points[1].y + deltaY;
-      //          }
-      //          let tempPath = new Path(relationInGraph.path.points);
-      //          relationInGraph.path = tempPath;
-      //        }
-      //      }
-      //    }
-
       this.lastMousePositionY = newMousePositionY;
       this.lastMousePositionX = newMousePositionX;
     }
@@ -228,11 +201,15 @@ export class TopologyModellerComponent implements OnInit {
     this.lastMousePositionX = event.offsetX;
   }
 
+  mouseUpOnDrawArea() {
+    this.mousedownOnNodeTemplate = false;
+  }
+
   createNodeTemplate(nodeTemplate: NodeTemplate) {
 
     this.nodeTemplateService.createNodeTemplate(nodeTemplate)
       .subscribe(nodeTemplateResponse => {
-        this.currentTopologyTemplate.addNodeTemplate(nodeTemplateResponse);
+        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
         this.flashMessage.message = 'Node Template was sucessfully created with id: ' + nodeTemplateResponse.id;
         this.flashMessage.isSuccess = true;
         this.flashMessageService.display(this.flashMessage);
@@ -275,12 +252,52 @@ export class TopologyModellerComponent implements OnInit {
     // TODO
   }
 
-  deleteNodeTemplate() {
-    // TODO
+  deleteNodeTemplate(nodeTemplate: NodeTemplate) {
+    this.nodeTemplateService.deleteNodeTemplate(nodeTemplate.id).subscribe(nodeTemplateResponse => {
+      this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
+      this.flashMessage.message = 'Node Template with id: ' + nodeTemplate.id + ' deleted sucessfully.';
+      this.flashMessage.isSuccess = true;
+      this.flashMessage.isError = false;
+      this.flashMessageService.display(this.flashMessage);
+      Logger.info('Node Template with id: ' + nodeTemplate.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
+    },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isSuccess = false;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
   }
 
-  deleteRelationshipTemplate() {
-    // TODO
+  deleteRelationshipTemplate(relationshipTemplate: RelationshipTemplate) {
+    this.relationshipTemplateService.deleteRelationshipTemplate(relationshipTemplate.id)
+      .subscribe(relationshipTemplateResponse => {
+        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
+        this.flashMessage.message = 'Relationship Template with id: ' + relationshipTemplateResponse.id + ' deleted sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessage.isError = false;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Relationship Template with  id: ' + relationshipTemplateResponse.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isSuccess = false;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
   }
 
+  prevLevel() {
+
+    if (this.abstractionLevel > 1) {
+      this.abstractionLevel--;
+    }
+
+  }
+
+  nextLevel() {
+    if (this.abstractionLevel < this.selectedLevelGraph.numberOfLevels) {
+      this.abstractionLevel++;
+    }
+  }
 }
