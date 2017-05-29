@@ -17,14 +17,18 @@ import { RelationshipTypeService } from './shared/dataservices/relationshiptype.
 import { TopologyTemplateService } from './shared/dataservices/topologytemplate.service';
 import { LevelGraphRelationService } from './shared/dataservices/levelgraphrelation.service';
 import { NodeTemplateService } from './shared/dataservices/nodetemplate.service';
+import { PropertyService } from './shared/dataservices/property.service';
 import { RelationshipTemplateService } from './shared/dataservices/relationshiptemplate.service';
+
 import { ContextmenuModule } from 'ng2-contextmenu';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+
     BrowserModule,
     FlashMessageModule,
     ContextmenuModule,
@@ -33,7 +37,7 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
+  providers: [PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

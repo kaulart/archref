@@ -31,6 +31,7 @@ public class NodeTemplate {
 	@GeneratedValue()
 	@Column(name = "ID")
 	private Long id;
+	
 
 	@Column(name = "NAME")
 	private String name;

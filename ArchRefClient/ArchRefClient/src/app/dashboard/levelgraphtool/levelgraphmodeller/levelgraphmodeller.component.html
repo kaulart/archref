@@ -78,7 +78,7 @@
 				<div class="collapse" id="toolbox_level_graph_nodes" style="margin: 0px; padding: 0px; width: 100%">
 					<ul style="padding: 5px" id="levelGraphSpezialNodeList" class="  list-group">
 						<li class="fragmentType w3-round" draggable="true" *ngFor="let fragmentType of levelGraphNodeTypes"
-							(drag)="onDrag($event, fragmentType, 'FRAGMENTNODE')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							(drag)="onDrag($event, fragmentType, 'FRAGMENTNODE')" (dragover)="onDragOver($event)">
 							<h3>Fragment Node</h3></li>
 					</ul>
 				</div>
@@ -119,7 +119,7 @@
 
 						<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.nodeTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY SELECTED OR NO NODETYPES AVAILABLE</li>
 						<li class="nodeType w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList"
-							(drag)="onDrag($event, nodeType, 'NODETYPE')" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							(drag)="onDrag($event, nodeType, 'NODETYPE')" (dragover)="onDragOver($event)"><img style="width:32px;height:32px"src="{{nodeType.icon}}" />
 							<h3>{{nodeType.name}}</h3></li>
 
 					</ul>
@@ -138,8 +138,7 @@
 						<li class="warning-item, w3-pale-yellow"  *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
 						<li  class="warning-item, w3-pale-yellow" *ngIf="repositories.length > 0 &&  selectedRepository.relationshipTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RELATIONSHIPTYPES AVAILABLE</li>
 						<li class="relationType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList"
-							(drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img
-							src="http://lorempixum.com/100/100/nature/1" />
+							(drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img style="width:32px;height:32px"src="{{relationshipType.icon}}" />
 							<h3>{{relationshipType.name}}</h3></li>
 					</ul>
 				</div>

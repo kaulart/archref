@@ -37,7 +37,7 @@ var Editor = (function () {
                 toolbar: toolbarElement
             },
             placeholder: this.placeholder,
-            readOnly: this.readOnly,
+            readOnly: this.readonly,
             theme: 'snow',
             formats: this.formats
         });
@@ -113,7 +113,7 @@ __decorate([
 __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
-], Editor.prototype, "readOnly", void 0);
+], Editor.prototype, "readonly", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Array)

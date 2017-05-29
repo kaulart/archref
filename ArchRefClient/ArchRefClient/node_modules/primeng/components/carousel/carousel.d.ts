@@ -1,6 +1,6 @@
-import { ElementRef, OnInit, AfterViewInit, AfterViewChecked, EventEmitter, OnDestroy, TemplateRef, QueryList, Renderer } from '@angular/core';
+import { ElementRef, AfterViewInit, AfterViewChecked, EventEmitter, OnDestroy, TemplateRef, QueryList, Renderer } from '@angular/core';
 import { DomHandler } from '../dom/domhandler';
-export declare class Carousel implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy {
+export declare class Carousel implements AfterViewChecked, AfterViewInit, OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer;
@@ -17,6 +17,7 @@ export declare class Carousel implements OnInit, AfterViewChecked, AfterViewInit
     style: any;
     styleClass: string;
     onPage: EventEmitter<any>;
+    containerViewChild: ElementRef;
     templates: QueryList<any>;
     _value: any[];
     itemTemplate: TemplateRef<any>;
@@ -40,13 +41,13 @@ export declare class Carousel implements OnInit, AfterViewChecked, AfterViewInit
     value: any[];
     handleDataChange(): void;
     ngAfterViewChecked(): void;
-    ngOnInit(): void;
     ngAfterViewInit(): void;
     updateLinks(): void;
     updateDropdown(): void;
     updateMobileDropdown(): void;
     render(): void;
     calculateItemWidths(): void;
+    calculateColumns(): void;
     onNextNav(): void;
     onPrevNav(): void;
     setPageWithLink(event: any, p: number): void;

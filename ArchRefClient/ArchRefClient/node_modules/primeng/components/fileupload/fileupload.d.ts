@@ -9,6 +9,7 @@ export declare class FileUpload implements OnInit, AfterContentInit {
     accept: string;
     disabled: boolean;
     auto: boolean;
+    withCredentials: boolean;
     maxFileSize: number;
     invalidFileSizeMessageSummary: string;
     invalidFileSizeMessageDetail: string;

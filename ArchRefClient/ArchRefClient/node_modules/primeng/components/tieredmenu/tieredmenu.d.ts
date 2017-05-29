@@ -6,8 +6,8 @@ export declare class TieredMenuSub {
     item: MenuItem;
     root: boolean;
     constructor(domHandler: DomHandler);
-    activeItem: Element;
-    onItemMouseEnter(event: Event, item: HTMLElement, menuitem: MenuItem): void;
+    activeItem: HTMLLIElement;
+    onItemMouseEnter(event: Event, item: HTMLLIElement, menuitem: MenuItem): void;
     onItemMouseLeave(event: Event): void;
     itemClick(event: Event, item: MenuItem): boolean;
     listClick(event: Event): void;

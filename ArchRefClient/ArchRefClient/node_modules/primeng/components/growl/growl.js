@@ -18,6 +18,8 @@ var Growl = (function () {
         this.domHandler = domHandler;
         this.sticky = false;
         this.life = 3000;
+        this.onClose = new core_1.EventEmitter();
+        this.valueChange = new core_1.EventEmitter();
         this.zIndex = domhandler_1.DomHandler.zindex;
     }
     Growl.prototype.ngAfterViewInit = function () {
@@ -54,6 +56,8 @@ var Growl = (function () {
         this.domHandler.fadeOut(msgel, 250);
         setTimeout(function () {
             _this.value = _this.value.filter(function (val, i) { return i != index; });
+            _this.valueChange.emit(_this.value);
+            _this.onClose.emit({ message: _this.value[index] });
         }, 250);
     };
     Growl.prototype.removeAll = function () {
@@ -61,7 +65,9 @@ var Growl = (function () {
         if (this.value && this.value.length) {
             this.domHandler.fadeOut(this.container, 250);
             setTimeout(function () {
+                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
                 _this.value = [];
+                _this.valueChange.emit(_this.value);
             }, 250);
         }
     };
@@ -88,6 +94,14 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], Growl.prototype, "styleClass", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Growl.prototype, "onClose", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Growl.prototype, "valueChange", void 0);
 __decorate([
     core_1.ViewChild('container'),
     __metadata("design:type", core_1.ElementRef)

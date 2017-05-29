@@ -20,6 +20,7 @@ var OrderList = (function () {
         this.domHandler = domHandler;
         this.metaKeySelection = true;
         this.onReorder = new core_1.EventEmitter();
+        this.onSelectionChange = new core_1.EventEmitter();
     }
     OrderList.prototype.ngAfterViewInit = function () {
         this.listContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-orderlist-list');
@@ -73,6 +74,7 @@ var OrderList = (function () {
                 this.selectedItems.push(item);
             }
         }
+        this.onSelectionChange.emit({ originalEvent: event, value: this.selectedItems });
         this.itemTouched = false;
     };
     OrderList.prototype.onItemTouchEnd = function (event) {
@@ -200,6 +202,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], OrderList.prototype, "onReorder", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], OrderList.prototype, "onSelectionChange", void 0);
 __decorate([
     core_1.ContentChildren(shared_1.PrimeTemplate),
     __metadata("design:type", core_1.QueryList)

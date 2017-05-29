@@ -36,6 +36,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Co
     multiple: boolean;
     tabindex: number;
     dataKey: string;
+    emptyMessage: string;
     inputEL: ElementRef;
     multiInputEL: ElementRef;
     panelEL: ElementRef;
@@ -57,6 +58,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Co
     focus: boolean;
     filled: boolean;
     inputClick: boolean;
+    noResults: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     suggestions: any[];
     ngAfterContentInit(): void;

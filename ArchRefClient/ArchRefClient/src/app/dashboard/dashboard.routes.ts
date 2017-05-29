@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { DashboardComponent } from './index';
 import { AdministrationRoutes } from './administration/administration.routes';
+import { NodeTypeDetailsRoutes } from './administration/repository/nodetype/nodetypedetails/nodetypedetails.routes';
 import { RepositoryRoutes } from './administration/repository/repository.routes';
 import { LevelGraphModellerRoutes } from './levelgraphtool/levelgraphmodeller/levelgraphmodeller.routes';
 import { LevelGraphToolRoutes } from './levelgraphtool/levelgraphtool.routes';
@@ -17,7 +18,8 @@ export const DashboardRoutes: Route[] = [
       ...LevelGraphToolRoutes,
       ...TopologyToolRoutes,
       ...LevelGraphModellerRoutes,
-      ...TopologyModellerRoutes
+      ...TopologyModellerRoutes,
+      ...NodeTypeDetailsRoutes
     ]
   }
 ];

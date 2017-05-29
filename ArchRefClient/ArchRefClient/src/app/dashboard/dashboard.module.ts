@@ -11,13 +11,22 @@ import { RepositoryComponent } from './administration/repository/repository.comp
 import { LevelGraphModellerComponent } from './levelgraphtool/levelgraphmodeller/levelgraphmodeller.component';
 import { LevelGraphToolComponent } from './levelgraphtool/levelgraphtool.component';
 import { NodeTypeComponent } from './administration/repository/nodetype/nodetype.component';
+import { GeneralDataComponent } from './administration/repository/nodetype/nodetypedetails/generaldata/generaldata.component';
 import { RelationshipTypeComponent } from './administration/repository/relationshiptype/relationshiptype.component';
 import { TopologyToolComponent } from './topologytool/topologytool.component';
 import { TopologyModellerComponent } from './topologytool/topologymodeller/topologymodeller.component';
 import { ContextmenuModule } from 'ng2-contextmenu';
+import { MdSliderModule } from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NodeTypeDetailsComponent } from './administration/repository/nodetype/nodetypedetails/nodetypedetails.component';
+import { PropertyComponent } from './administration/repository/nodetype/nodetypedetails/property/property.component';
+
+
 
 @NgModule({
   imports: [
+BrowserAnimationsModule,
+    MdSliderModule,
     FlashMessageModule,
     ContextmenuModule,
     CommonModule,
@@ -25,7 +34,7 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     Ng2BootstrapModule.forRoot(),
     FileUploadModule
   ],
-  declarations: [ DashboardComponent, TopNavComponent, LevelGraphToolComponent, AdministrationComponent, RepositoryComponent, LevelGraphModellerComponent, NodeTypeComponent, RelationshipTypeComponent, TopologyToolComponent, TopologyModellerComponent],
+  declarations: [GeneralDataComponent, NodeTypeDetailsComponent, DashboardComponent, TopNavComponent, LevelGraphToolComponent, AdministrationComponent, RepositoryComponent, LevelGraphModellerComponent, NodeTypeComponent, RelationshipTypeComponent, TopologyToolComponent, TopologyModellerComponent, PropertyComponent],
   exports: [DashboardComponent, TopNavComponent]
 })
 

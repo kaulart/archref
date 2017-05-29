@@ -13,6 +13,7 @@ export declare class DataGrid implements AfterViewInit, AfterContentInit, Blocka
     style: any;
     styleClass: string;
     paginatorPosition: string;
+    trackBy: Function;
     onPage: EventEmitter<any>;
     header: any;
     footer: any;

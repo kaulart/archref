@@ -158,6 +158,7 @@ var FileUpload = (function () {
             'xhr': xhr,
             'formData': formData
         });
+        xhr.withCredentials = this.withCredentials;
         xhr.send(formData);
     };
     FileUpload.prototype.clear = function () {
@@ -229,6 +230,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
 ], FileUpload.prototype, "auto", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], FileUpload.prototype, "withCredentials", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Number)

@@ -217,6 +217,7 @@ var InputMask = (function () {
         }
     };
     InputMask.prototype.handleAndroidInput = function (e) {
+        var _this = this;
         var curVal = this.inputViewChild.nativeElement.value;
         var pos = this.caret();
         if (this.oldVal && this.oldVal.length && this.oldVal.length > curVal.length) {
@@ -231,10 +232,10 @@ var InputMask = (function () {
             this.caret(pos.begin, pos.begin);
         }
         else {
-            var pos2 = this.checkVal(true);
-            while (pos.begin < this.len && !this.tests[pos.begin])
+            this.checkVal(true);
+            while (pos.begin < this.len && !this.tests[pos.begin - 1])
                 pos.begin++;
-            this.caret(pos.begin, pos.begin);
+            setTimeout(function () { return _this.caret(pos.begin, pos.begin); });
         }
         if (this.isCompleted()) {
             this.onComplete.emit();

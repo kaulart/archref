@@ -14,7 +14,9 @@ export class TopologyTemplate {
   private name: string;
   private nodeTemplates: NodeTemplate[];
   private relationshipTemplates: RelationshipTemplate[];
-  private levelGraph: LevelGraph;
+
+  parentTopologyTemplate: TopologyTemplate;
+  childTopologyTemplates: TopologyTemplate[];
 
   constructor(name) {
     this.name = name;
@@ -43,10 +45,6 @@ export class TopologyTemplate {
     return this.relationshipTemplates;
   }
 
-  public getLevelGraph(): LevelGraph {
-    return this.levelGraph;
-  }
-
   /**
    *
    * Setter for TopologyTemplate
@@ -66,10 +64,6 @@ export class TopologyTemplate {
 
   public setRelationshipTemplates(relationshipTemplates: RelationshipTemplate[]) {
     this.relationshipTemplates = relationshipTemplates;
-  }
-
-  public setLevelGraph(levelGraph: LevelGraph) {
-    this.levelGraph = levelGraph;
   }
 
   public addNodeTemplate(nodeTemplate: NodeTemplate) {

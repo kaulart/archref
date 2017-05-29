@@ -8,6 +8,7 @@ import { RelationshipType } from '../../../shared/datamodel/topologymodel/relati
 import { TopologyTemplate } from '../../../shared/datamodel/topologymodel/topologytemplate';
 import { LevelGraphService } from '../../../shared/dataservices/levelgraph.service';
 import { NodeTemplateService } from '../../../shared/dataservices/nodetemplate.service';
+import { LevelService } from '../../../shared/dataservices/level.service';
 import { NodeTypeService } from '../../../shared/dataservices/nodetype.service';
 import { RelationshipTemplateService } from '../../../shared/dataservices/relationshiptemplate.service';
 import { RelationshipTypeService } from '../../../shared/dataservices/relationshiptype.service';
@@ -17,12 +18,15 @@ import { TopologyTemplateService } from '../../../shared/dataservices/topologyte
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
 
+
 @Component({
   selector: 'app-topologymodeller',
   templateUrl: './topologymodeller.component.html',
   styleUrls: ['./topologymodeller.component.css']
 })
 export class TopologyModellerComponent implements OnInit {
+
+  rootTopologyTemplate = new TopologyTemplate('');
 
   currentTopologyTemplate = new TopologyTemplate('');
   currentTopologyTemplateId: number;
@@ -47,7 +51,7 @@ export class TopologyModellerComponent implements OnInit {
   private sub: any;
   public flashMessage = new FlashMessage();
 
-  constructor(private flashMessageService: FlashMessageService, private route: ActivatedRoute, private router: Router, private topologyTemplateService: TopologyTemplateService, private nodeTypeService: NodeTypeService, private relationshipTypeService: RelationshipTypeService, private levelGraphService: LevelGraphService, private nodeTemplateService: NodeTemplateService, private relationshipTemplateService: RelationshipTemplateService) { }
+  constructor(private levelService: LevelService, private flashMessageService: FlashMessageService, private route: ActivatedRoute, private router: Router, private topologyTemplateService: TopologyTemplateService, private nodeTypeService: NodeTypeService, private relationshipTypeService: RelationshipTypeService, private levelGraphService: LevelGraphService, private nodeTemplateService: NodeTemplateService, private relationshipTemplateService: RelationshipTemplateService) { }
 
   ngOnInit() {
 
@@ -71,6 +75,7 @@ export class TopologyModellerComponent implements OnInit {
     this.topologyTemplateService.getTopologyTemplate(id)
       .subscribe(topologyTemplateResponse => {
         this.currentTopologyTemplate = topologyTemplateResponse;
+        this.rootTopologyTemplate = topologyTemplateResponse;
         this.flashMessage.message = 'Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name: ' + topologyTemplateResponse.getName() + 'was retrieved sucessfully.';
         this.flashMessage.isSuccess = true;
         this.flashMessageService.display(this.flashMessage);
@@ -140,6 +145,16 @@ export class TopologyModellerComponent implements OnInit {
 
   /*****************************************************************************************************************************************
    *
+   * onDragLevelGraphNode is called to start drag and drop of levelGraphNodes from toolbox to the draw area
+   *
+   ****************************************************************************************************************************************/
+  onDragLevelGraphNode(event, nodeTypeId: number) {
+    this.nodeTypeService.getNodeType(nodeTypeId).subscribe(nodeTypeResponse => this.currentDragData = nodeTypeResponse);
+    this.drag = true;
+  }
+
+  /*****************************************************************************************************************************************
+   *
    * onDragOver is called to allow a drag over between different div containers
    *
    ****************************************************************************************************************************************/
@@ -186,6 +201,7 @@ export class TopologyModellerComponent implements OnInit {
         this.moveNode.x = (this.moveNode.x + deltaX);
       }
 
+
       if ((this.moveNode.y + deltaY) > 0) {
         this.moveNode.y = (this.moveNode.y + deltaY);
       }
@@ -209,7 +225,9 @@ export class TopologyModellerComponent implements OnInit {
 
     this.nodeTemplateService.createNodeTemplate(nodeTemplate)
       .subscribe(nodeTemplateResponse => {
-        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
+        this.currentTopologyTemplate.addNodeTemplate(nodeTemplateResponse);
+        this.topologyTemplateService.updateTopologyTemplate(this.currentTopologyTemplate).subscribe();
+        //     this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
         this.flashMessage.message = 'Node Template was sucessfully created with id: ' + nodeTemplateResponse.id;
         this.flashMessage.isSuccess = true;
         this.flashMessageService.display(this.flashMessage);
@@ -287,17 +305,42 @@ export class TopologyModellerComponent implements OnInit {
       });
   }
 
-  prevLevel() {
+  //  prevLevel() {
+  //
+  //    if (this.abstractionLevel > 1) {
+  //      this.abstractionLevel--;
+  //    }
+  //
+  //  }
 
-    if (this.abstractionLevel > 1) {
-      this.abstractionLevel--;
-    }
+  prevTopology() {
 
   }
 
-  nextLevel() {
-    if (this.abstractionLevel < this.selectedLevelGraph.numberOfLevels) {
-      this.abstractionLevel++;
+  nextTopology() {
+
+  }
+
+  //  nextLevel() {
+  //    if (this.abstractionLevel < this.selectedLevelGraph.numberOfLevels) {
+  //      this.abstractionLevel++;
+  //    }
+  //  }
+
+  isNodeTypeEqual(nodeTypeId: number, nodeTemplate: NodeTemplate) {
+    alert(nodeTypeId + " " + JSON.stringify(nodeTemplate));
+
+  }
+
+  isInCurrentLevel(levelId: number) {
+    for (let level of this.selectedLevelGraph.levels) {
+      if (level.id === levelId) {
+        if (level.value === this.abstractionLevel) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   }
 }

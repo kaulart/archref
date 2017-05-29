@@ -55,6 +55,7 @@ var Menu = (function () {
         this.container.style.display = 'block';
         this.domHandler.absolutePosition(this.container, target);
         this.domHandler.fadeIn(this.container, 250);
+        this.preventDocumentDefault = true;
     };
     Menu.prototype.hide = function () {
         this.container.style.display = 'none';

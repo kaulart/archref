@@ -1,19 +1,16 @@
-import { PropertyConstraint } from '../sharedmodel/propertyconstraint';
-import { RelationshipConstraints } from '../sharedmodel/relationshipconstraints';
 import { NodeTemplate } from './nodetemplate';
 import { Property } from './property';
 import { RelationshipType } from './relationshiptype';
 export class RelationshipTemplate {
 
-  id: number;
+  id: number = null;
   name: string;
   relationType: RelationshipType;
 
-  properties: Property[] = [];
-  propertyConstraints: PropertyConstraint[] = [];
+  expectedProperties: Property[] = [];
+
   sourceElement: NodeTemplate;
   targetElement: NodeTemplate;
-  relationshipConstraints: RelationshipConstraints[] = [];
 
   constructor(name: string, relationType: RelationshipType) {
     this.name = name;
@@ -28,28 +25,12 @@ export class RelationshipTemplate {
     return this.name;
   }
 
-  public getProperties(): Property[] {
-    return this.properties;
-  }
-
-  public getPropertyConstrains(): PropertyConstraint[] {
-    return this.propertyConstraints;
-  }
-
   public setId(id: number) {
     this.id = id;
   }
 
   public setName(name: string) {
     this.name = name;
-  }
-
-  public setProperties(properties: Property[]) {
-    this.properties = properties;
-  }
-
-  public setPropertyConstrains(propertyConstraints: PropertyConstraint[]) {
-    this.propertyConstraints = propertyConstraints;
   }
 
 }

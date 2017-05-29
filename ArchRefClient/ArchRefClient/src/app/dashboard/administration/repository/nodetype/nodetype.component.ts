@@ -28,6 +28,9 @@ export class NodeTypeComponent implements OnInit {
   @Input()
   currentRepository: Repository;
 
+  submitted = false;
+
+  public nodeType: NodeType = new NodeType("Unnamed", null);
   public editNodeType: NodeType = new NodeType(null, null);
   public flashMessage = new FlashMessage();
 
@@ -43,10 +46,11 @@ export class NodeTypeComponent implements OnInit {
    *  @param name: string - Name of the NodeType
    *
    ****************************************************************************************************************/
-  createNodeType(name: string) {
+  createNodeType() {
+
     Logger.info('Create NodeType', NodeTypeComponent.name);
-    let nodeType: NodeType = new NodeType(name, this.currentRepository);
-    this.nodeTypeService.createNodeType(nodeType)
+    this.nodeType.setRepository(this.currentRepository);
+    this.nodeTypeService.createNodeType(this.nodeType)
       .subscribe(nodeTypeResponse => {
         this.currentRepository.nodeTypeList.push(nodeTypeResponse);
         this.flashMessage.message = 'Info: NodeType with name: ' + nodeTypeResponse.name + ' was created sucessfully with id: ' + nodeTypeResponse.id;
@@ -82,7 +86,7 @@ export class NodeTypeComponent implements OnInit {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
-        });
+      });
   }
 
   /****************************************************************************************************************

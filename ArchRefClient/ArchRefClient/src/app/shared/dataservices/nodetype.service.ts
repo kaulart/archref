@@ -31,6 +31,16 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
+   * Send GET Node Type REQUEST
+   *
+   ******************************************************************************************************************/
+  public getNodeType(id: number): Observable<NodeType> {
+    Logger.info('[REQUEST - NODETYPE] Send GET Node Type Request with ID:' + id, NodeTypeService.name);
+    return this.http.get(this.nodetypeUrl + '/' + id).map(this.extractNodeTypesData).catch(this.handleError);
+  }
+
+  /******************************************************************************************************************
+   *
    * Send POST NodeType REQUEST
    *
    ******************************************************************************************************************/

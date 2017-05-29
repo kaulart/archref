@@ -12,7 +12,6 @@ export class LevelGraph {
   levelGraphRelations: LevelGraphRelation[] = [];
   levelGraphNodes: LevelGraphNode[] = [];
 
-
   constructor(name: string, numberOfLevels: number) {
     this.name = name;
     this.numberOfLevels = numberOfLevels;

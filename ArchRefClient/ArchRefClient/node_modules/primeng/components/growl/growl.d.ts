@@ -1,4 +1,4 @@
-import { ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { ElementRef, AfterViewInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Message } from '../common/api';
 import { DomHandler } from '../dom/domhandler';
 export declare class Growl implements AfterViewInit, OnDestroy {
@@ -8,6 +8,8 @@ export declare class Growl implements AfterViewInit, OnDestroy {
     life: number;
     style: any;
     styleClass: string;
+    onClose: EventEmitter<any>;
+    valueChange: EventEmitter<Message[]>;
     containerViewChild: ElementRef;
     _value: Message[];
     zIndex: number;

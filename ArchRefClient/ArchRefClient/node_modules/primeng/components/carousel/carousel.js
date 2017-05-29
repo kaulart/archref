@@ -64,29 +64,12 @@ var Carousel = (function () {
             this.setPage(0);
         }
         this.valuesChanged = true;
-        if (this.autoplayInterval) {
-            this.stopAutoplay();
-        }
-        this.updateMobileDropdown();
-        this.updateLinks();
-        this.updateDropdown();
     };
     Carousel.prototype.ngAfterViewChecked = function () {
-        if (this.valuesChanged) {
+        if (this.valuesChanged && this.containerViewChild.nativeElement.offsetParent) {
             this.render();
             this.valuesChanged = false;
         }
-    };
-    Carousel.prototype.ngOnInit = function () {
-        if (window.innerWidth <= this.breakpoint) {
-            this.shrinked = true;
-            this.columns = 1;
-        }
-        else {
-            this.shrinked = false;
-            this.columns = this.numVisible;
-        }
-        this.page = Math.floor(this.firstVisible / this.columns);
     };
     Carousel.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -97,9 +80,6 @@ var Carousel = (function () {
             this.documentResponsiveListener = this.renderer.listenGlobal('window', 'resize', function (event) {
                 _this.updateState();
             });
-        }
-        if (this.value && this.value.length) {
-            this.render();
         }
     };
     Carousel.prototype.updateLinks = function () {
@@ -121,7 +101,11 @@ var Carousel = (function () {
         }
     };
     Carousel.prototype.render = function () {
+        if (this.autoplayInterval) {
+            this.stopAutoplay();
+        }
         this.items = this.domHandler.find(this.itemsContainer, 'li');
+        this.calculateColumns();
         this.calculateItemWidths();
         if (!this.responsive) {
             this.container.style.width = (this.domHandler.width(this.container)) + 'px';
@@ -130,6 +114,9 @@ var Carousel = (function () {
             this.circular = true;
             this.startAutoplay();
         }
+        this.updateMobileDropdown();
+        this.updateLinks();
+        this.updateDropdown();
     };
     Carousel.prototype.calculateItemWidths = function () {
         var firstItem = (this.items && this.items.length) ? this.items[0] : null;
@@ -138,6 +125,17 @@ var Carousel = (function () {
                 this.items[i].style.width = ((this.domHandler.innerWidth(this.viewport) - (this.domHandler.getHorizontalMargin(firstItem) * this.columns)) / this.columns) + 'px';
             }
         }
+    };
+    Carousel.prototype.calculateColumns = function () {
+        if (window.innerWidth <= this.breakpoint) {
+            this.shrinked = true;
+            this.columns = 1;
+        }
+        else {
+            this.shrinked = false;
+            this.columns = this.numVisible;
+        }
+        this.page = Math.floor(this.firstVisible / this.columns);
     };
     Carousel.prototype.onNextNav = function () {
         var lastPage = (this.page === (this.totalPages - 1));
@@ -287,6 +285,10 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], Carousel.prototype, "onPage", void 0);
 __decorate([
+    core_1.ViewChild('container'),
+    __metadata("design:type", core_1.ElementRef)
+], Carousel.prototype, "containerViewChild", void 0);
+__decorate([
     core_1.ContentChildren(shared_1.PrimeTemplate),
     __metadata("design:type", core_1.QueryList)
 ], Carousel.prototype, "templates", void 0);
@@ -298,7 +300,7 @@ __decorate([
 Carousel = __decorate([
     core_1.Component({
         selector: 'p-carousel',
-        template: "\n        <div [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header ui-corner-all\">\n                <span class=\"ui-carousel-header-title\">{{headerText}}</span>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" (click)=\"setPageWithLink($event,i)\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <li *ngFor=\"let item of value\" class=\"ui-carousel-item ui-widget-content ui-corner-all\">\n                        <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
+        template: "\n        <div #container [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header ui-corner-all\">\n                <span class=\"ui-carousel-header-title\">{{headerText}}</span>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" (click)=\"setPageWithLink($event,i)\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <li *ngFor=\"let item of value\" class=\"ui-carousel-item ui-widget-content ui-corner-all\">\n                        <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
         providers: [domhandler_1.DomHandler]
     }),
     __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])

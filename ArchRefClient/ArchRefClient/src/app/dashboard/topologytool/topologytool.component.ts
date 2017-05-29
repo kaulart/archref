@@ -1,4 +1,5 @@
 import { Logger } from '../../../logger/logger';
+import { LevelGraph } from '../../shared/datamodel/levelgraphmodel/levelgraph';
 import { TopologyTemplate } from '../../shared/datamodel/topologymodel/topologytemplate';
 import { TopologyTemplateService } from '../../shared/dataservices/topologytemplate.service';
 
@@ -16,8 +17,8 @@ import { FlashMessage } from 'angular2-flash-message';
 export class TopologyToolComponent implements OnInit {
 
   topologyTemplates: TopologyTemplate[] = [];
-  createdTopologyTemplate: TopologyTemplate;
-  editedTopologyTemplate: TopologyTemplate = new TopologyTemplate('');
+  topologyTemplate: TopologyTemplate = new TopologyTemplate('Unnamed');
+  levelGraphs: LevelGraph[] = [];
 
   public flashMessage = new FlashMessage();
 
@@ -26,6 +27,7 @@ export class TopologyToolComponent implements OnInit {
   ngOnInit() {
     this.flashMessage.timeoutInMS = 4000;
     this.retrieveTopologyTemplates();
+    this.retrieveLevelGraphs();
   }
 
   /****************************************************************************************************************
@@ -34,10 +36,9 @@ export class TopologyToolComponent implements OnInit {
    *  @param name: string - Name of the TopologyTemplate
    *
    ****************************************************************************************************************/
-  createTopologyTemplate(name: string) {
+  createTopologyTemplate() {
 
-    let topologyTemplate: TopologyTemplate = new TopologyTemplate(name);
-    this.topologyTemplateService.createTopologyTemplate(topologyTemplate)
+    this.topologyTemplateService.createTopologyTemplate(this.topologyTemplate)
       .subscribe(topologyTemplateResponse => {
 
         this.topologyTemplates.push(topologyTemplateResponse);
@@ -52,6 +53,27 @@ export class TopologyToolComponent implements OnInit {
         this.flashMessageService.display(this.flashMessage);
       });
 
+  }
+
+  /****************************************************************************************************************
+   *
+   *  Retrieve Topology Template
+   *
+   ****************************************************************************************************************/
+  retrieveLevelGraphs() {
+    this.levelGraphService.getLevelGraphs()
+      .subscribe(levelGraphResponse => {
+        this.levelGraphs = levelGraphResponse;
+        this.flashMessage.message = 'Level Graphs retrieved sucessfully.';
+        this.flashMessage.isSuccess = true;
+        this.flashMessageService.display(this.flashMessage);
+        Logger.info('Level Graphs retrieved sucessfully.', TopologyToolComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
   }
 
   /****************************************************************************************************************
@@ -81,9 +103,9 @@ export class TopologyToolComponent implements OnInit {
    * @param name - New name of the Level Graph
    *
    *****************************************************************************************************************/
-  updateTopologyTemplate(name: string) {
-    this.editedTopologyTemplate.setName(name);
-    this.topologyTemplateService.updateTopologyTemplate(this.editedTopologyTemplate)
+  updateTopologyTemplate() {
+
+    this.topologyTemplateService.updateTopologyTemplate(this.topologyTemplate)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = Utility.updateElementInArry(topologyTemplateResponse, this.topologyTemplates);
         this.flashMessage.message = 'Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name: ' + topologyTemplateResponse.getName() + ' was updated sucessfully.';
@@ -128,7 +150,7 @@ export class TopologyToolComponent implements OnInit {
    *
    ****************************************************************************************************************/
   setEditTopologyTemplate(topologyTemplate: TopologyTemplate) {
-    this.editedTopologyTemplate = topologyTemplate;
+    this.topologyTemplate = topologyTemplate;
   }
 
 }

@@ -21,6 +21,16 @@ export class LevelService {
 
   /******************************************************************************************************************
    *
+   * Send GET Level REQUEST
+   *
+   ******************************************************************************************************************/
+  public getLevel(id: number): Observable<Level> {
+    Logger.info('[REQUEST - LEVEL]: Send GET Level Request with ID:' + id, LevelService.name);
+    return this.http.get(this.levelUrl + '/' + id).map(this.extractLevel).catch(this.handleError);
+  }
+
+  /******************************************************************************************************************
+   *
    * Send POST Level REQUEST
    *
    ******************************************************************************************************************/

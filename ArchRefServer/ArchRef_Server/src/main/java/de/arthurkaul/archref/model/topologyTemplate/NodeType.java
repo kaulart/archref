@@ -25,9 +25,13 @@ public class NodeType{
 	@NotNull
 	private String name;
 	
+	@Column(name="ICON_PATH")
+	@NotNull
+	private String icon;
+	
 //	private NodeType derivedFromNodeType;
-//	
-//	private URI targetNamespace;
+	
+//	private String targetnamespace;
 //	
 //	private boolean abstractNodeType;
 //	
@@ -68,9 +72,11 @@ public class NodeType{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 //	public NodeType getDerivedFromNodeType() {
 //		return derivedFromNodeType;
 //	}
+//	
 //	public void setDerivedFromNodeType(NodeType derivedFromNodeType) {
 //		this.derivedFromNodeType = derivedFromNodeType;
 //	}
@@ -83,6 +89,14 @@ public class NodeType{
 		
 	        this.repositoryNodeType = repositoryNodeType;
 	     
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 //	public NodeType getDerivedFromNodeType() {

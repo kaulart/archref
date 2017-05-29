@@ -35,10 +35,11 @@ var SelectButton = (function () {
     SelectButton.prototype.setDisabledState = function (val) {
         this.disabled = val;
     };
-    SelectButton.prototype.onItemClick = function (event, option) {
+    SelectButton.prototype.onItemClick = function (event, option, checkbox) {
         if (this.disabled) {
             return;
         }
+        checkbox.focus();
         if (this.multiple) {
             var itemIndex_1 = this.findItemIndex(option);
             if (itemIndex_1 != -1)
@@ -54,6 +55,13 @@ var SelectButton = (function () {
             originalEvent: event,
             value: this.value
         });
+    };
+    SelectButton.prototype.onFocus = function () {
+        this.focusedItem = event.target;
+    };
+    SelectButton.prototype.onBlur = function (event) {
+        this.focusedItem = null;
+        this.onModelTouched();
     };
     SelectButton.prototype.isSelected = function (option) {
         if (this.multiple)
@@ -106,7 +114,7 @@ __decorate([
 SelectButton = __decorate([
     core_1.Component({
         selector: 'p-selectButton',
-        template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options;\" class=\"ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-active':isSelected(option), 'ui-state-disabled':disabled}\" (click)=\"onItemClick($event,option)\">\n                <span class=\"ui-button-text ui-c\">{{option.label}}</span>\n            </div>\n        </div>\n    ",
+        template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options;\" class=\"ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-active':isSelected(option), 'ui-state-disabled':disabled, 'ui-state-focus': cbox == focusedItem}\" (click)=\"onItemClick($event,option,cbox)\">\n                <span class=\"ui-button-text ui-c\">{{option.label}}</span>\n                <div class=\"ui-helper-hidden-accessible\">\n                    <input #cbox type=\"checkbox\" [checked]=\"isSelected(option)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [attr.tabindex]=\"tabindex\" [attr.disabled]=\"disabled\">\n                </div>\n            </div>\n        </div>\n    ",
         providers: [exports.SELECTBUTTON_VALUE_ACCESSOR]
     })
 ], SelectButton);

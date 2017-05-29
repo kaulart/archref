@@ -14,6 +14,7 @@ var common_1 = require("@angular/common");
 var Messages = (function () {
     function Messages() {
         this.closable = true;
+        this.valueChange = new core_1.EventEmitter();
     }
     Messages.prototype.hasMessages = function () {
         return this.value && this.value.length > 0;
@@ -22,7 +23,8 @@ var Messages = (function () {
         return this.value[0].severity;
     };
     Messages.prototype.clear = function (event) {
-        this.value.splice(0, this.value.length);
+        this.value = [];
+        this.valueChange.emit(this.value);
         event.preventDefault();
     };
     Object.defineProperty(Messages.prototype, "icon", {
@@ -66,6 +68,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
 ], Messages.prototype, "closable", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Messages.prototype, "valueChange", void 0);
 Messages = __decorate([
     core_1.Component({
         selector: 'p-messages',

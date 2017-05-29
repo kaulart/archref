@@ -76,6 +76,8 @@ export declare class ScrollableView implements AfterViewInit, AfterViewChecked, 
     ngAfterViewInit(): void;
     ngAfterViewChecked(): void;
     initScrolling(): void;
+    hasVerticalOverflow(): boolean;
+    alignScrollBar(): void;
     readonly virtualTableHeight: string;
     ngOnDestroy(): void;
 }
@@ -101,6 +103,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     onRowUnselect: EventEmitter<any>;
     onRowDblclick: EventEmitter<any>;
     onHeaderCheckboxToggle: EventEmitter<any>;
+    headerCheckboxToggleAllPages: boolean;
     onContextMenuSelect: EventEmitter<any>;
     filterDelay: number;
     lazy: boolean;
@@ -132,6 +135,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     emptyMessage: string;
     paginatorPosition: string;
     metaKeySelection: boolean;
+    rowTrackBy: Function;
     onEditInit: EventEmitter<any>;
     onEditComplete: EventEmitter<any>;
     onEdit: EventEmitter<any>;

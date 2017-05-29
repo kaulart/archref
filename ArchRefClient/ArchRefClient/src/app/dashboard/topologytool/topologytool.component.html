@@ -21,14 +21,21 @@
 			</div>
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createTopologyTemplateArea">
-				<form>
-					<div class="col-sm-12 form-group">
-						<label for="name">Name:</label> <input #name type="text" class="form-control" id="name" value="Unnamed" required>
+				<form #createNodeTypeForm="ngForm">
+					<div class="col-sm-6 form-group">
+						<label for="name">Name:</label> <input #name #name="ngModel" name="name" type="text" [(ngModel)]="topologyTemplate.name" class="form-control"
+							id="name" value="{{topologyTemplate.name}}" required>
+						<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+							<div [hidden]="!name.errors.required">Name is required</div>
+
+						</div>
 					</div>
 
 					<button type="submit" class="btn btn-success" (click)="createTopologyTemplate(name.value)">Create</button>
 				</form>
 			</div>
+
+
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importTopologyTemplateArea">
 				<form>
@@ -65,8 +72,8 @@
 					<tr *ngFor="let topology of topologyTemplates">
 						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}"><i class="fa fa-folder-open-o"
 							aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{
-							topologyTemplates.indexOf(topology) +1 }}</td>
+						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topologyTemplates.indexOf(topology)
+							+1 }}</td>
 						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getName() }}</td>
 						<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getId() }}</td>
 						<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal"
@@ -91,8 +98,8 @@
 </div>
 
 <!-- Modal for Edit Level Graph MetaData-->
-<div class="modal fade modal-position" id="editTopologyTemplateModal" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+<div class="modal fade modal-position" id="editTopologyTemplateModal" tabindex="-1" role="dialog" data-backdrop="false"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
@@ -103,11 +110,16 @@
 			</div>
 			<div class="  input-panel">
 				<form>
-					<div class="form-group">
-						<label for="name">Name: </label> <input #editName type="text" class="form-control" value="{{editedTopologyTemplate.getName()}}" required>
+					<div class="col-sm-6 form-group">
+						<label for="name">Name:</label> <input #name #name="ngModel" name="name" type="text" [(ngModel)]="topologyTemplate.name" class="form-control"
+							id="name" value="{{topologyTemplate.name}}" required>
+						<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+							<div [hidden]="!name.errors.required">Name is required</div>
+
+						</div>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="updateTopologyTemplate(editName.value)" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-primary" (click)="updateTopologyTemplate()" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

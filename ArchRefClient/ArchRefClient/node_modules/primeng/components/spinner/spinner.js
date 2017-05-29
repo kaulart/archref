@@ -24,6 +24,7 @@ var Spinner = (function () {
         this.el = el;
         this.domHandler = domHandler;
         this.onChange = new core_1.EventEmitter();
+        this.onBlur = new core_1.EventEmitter();
         this.step = 1;
         this.decimalSeparator = '.';
         this.thousandSeparator = ',';
@@ -128,9 +129,10 @@ var Spinner = (function () {
         this.onModelChange(this.value);
         this.updateFilledState();
     };
-    Spinner.prototype.onBlur = function () {
-        this.onModelTouched();
+    Spinner.prototype.onInputBlur = function (event) {
         this.focus = false;
+        this.onModelTouched();
+        this.onBlur.emit(event);
     };
     Spinner.prototype.onFocus = function () {
         this.focus = true;
@@ -208,6 +210,10 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], Spinner.prototype, "onChange", void 0);
 __decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Spinner.prototype, "onBlur", void 0);
+__decorate([
     core_1.Input(),
     __metadata("design:type", Number)
 ], Spinner.prototype, "step", void 0);
@@ -262,7 +268,7 @@ __decorate([
 Spinner = __decorate([
     core_1.Component({
         selector: 'p-spinner',
-        template: "\n        <span class=\"ui-spinner ui-widget ui-corner-all\">\n            <input #in type=\"text\" [attr.id]=\"inputId\" class=\"ui-spinner-input\" [value]=\"valueAsString\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"\n            [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [attr.placeholder]=\"placeholder\" [disabled]=\"disabled\" [readonly]=\"readonly\"\n            (keydown)=\"onInputKeydown($event)\" (keyup)=\"onInput($event,in.value)\" (keypress)=\"onInputKeyPress($event)\" (blur)=\"onBlur()\" (change)=\"handleChange($event)\" (focus)=\"onFocus()\">\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onUpButtonMouseleave($event)\" (mousedown)=\"onUpButtonMousedown($event,in)\" (mouseup)=\"onUpButtonMouseup($event)\">\n                <span class=\"fa fa-caret-up\"></span>\n            </button>\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onDownButtonMouseleave($event)\" (mousedown)=\"onDownButtonMousedown($event,in)\" (mouseup)=\"onDownButtonMouseup($event)\">\n                <span class=\"fa fa-caret-down\"></span>\n            </button>\n        </span>\n    ",
+        template: "\n        <span class=\"ui-spinner ui-widget ui-corner-all\">\n            <input #in type=\"text\" [attr.id]=\"inputId\" class=\"ui-spinner-input\" [value]=\"valueAsString\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"\n            [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [attr.placeholder]=\"placeholder\" [disabled]=\"disabled\" [readonly]=\"readonly\"\n            (keydown)=\"onInputKeydown($event)\" (keyup)=\"onInput($event,in.value)\" (keypress)=\"onInputKeyPress($event)\" (blur)=\"onInputBlur($event)\" (change)=\"handleChange($event)\" (focus)=\"onFocus()\">\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onUpButtonMouseleave($event)\" (mousedown)=\"onUpButtonMousedown($event,in)\" (mouseup)=\"onUpButtonMouseup($event)\">\n                <span class=\"fa fa-caret-up\"></span>\n            </button>\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onDownButtonMouseleave($event)\" (mousedown)=\"onDownButtonMousedown($event,in)\" (mouseup)=\"onDownButtonMouseup($event)\">\n                <span class=\"fa fa-caret-down\"></span>\n            </button>\n        </span>\n    ",
         host: {
             '[class.ui-inputwrapper-filled]': 'filled',
             '[class.ui-inputwrapper-focus]': 'focus'
