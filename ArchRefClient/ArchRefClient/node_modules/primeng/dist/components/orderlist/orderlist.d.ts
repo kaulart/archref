@@ -11,6 +11,7 @@ export declare class OrderList implements AfterViewChecked, AfterContentInit {
     responsive: boolean;
     metaKeySelection: boolean;
     onReorder: EventEmitter<any>;
+    onSelectionChange: EventEmitter<any>;
     templates: QueryList<any>;
     itemTemplate: TemplateRef<any>;
     selectedItems: any[];

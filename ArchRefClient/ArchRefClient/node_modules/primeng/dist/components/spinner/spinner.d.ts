@@ -6,6 +6,7 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
     onChange: EventEmitter<any>;
+    onBlur: EventEmitter<any>;
     step: number;
     min: number;
     max: number;
@@ -42,7 +43,7 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     onInputKeydown(event: KeyboardEvent): void;
     onInputKeyPress(event: KeyboardEvent): void;
     onInput(event: Event, inputValue: string): void;
-    onBlur(): void;
+    onInputBlur(event: any): void;
     onFocus(): void;
     parseValue(val: string): number;
     formatValue(): void;

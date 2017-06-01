@@ -1,12 +1,14 @@
 import { Route } from '@angular/router';
 import { DashboardComponent } from './index';
 import { AdministrationRoutes } from './administration/administration.routes';
-import { NodeTypeDetailsRoutes } from './administration/repository/nodetype/nodetypedetails/nodetypedetails.routes';
-import { RepositoryRoutes } from './administration/repository/repository.routes';
+import { NodeTypeDetailsRoutes } from './administration/repositorydetails/nodetype/nodetypedetails/nodetypedetails.routes';
+import { RelationshipDetailsRoutes } from './administration/repositorydetails/relationshiptype/relationshiptypedetails/relationshipdetails.routes';
+import { RepositoryDetailsRoutes } from './administration/repositorydetails/repositorydetails.routes';
 import { LevelGraphModellerRoutes } from './levelgraphtool/levelgraphmodeller/levelgraphmodeller.routes';
 import { LevelGraphToolRoutes } from './levelgraphtool/levelgraphtool.routes';
 import { TopologyModellerRoutes } from './topologytool/topologymodeller/topologymodeller.routes';
-import { TopologyToolRoutes } from './topologytool/topologytool.routes';
+import { TopologyTemplateToolRoutes } from './topologytool/topologytemplatetool.routes';
+
 
 export const DashboardRoutes: Route[] = [
   {
@@ -14,12 +16,13 @@ export const DashboardRoutes: Route[] = [
     component: DashboardComponent,
     children: [
       ...AdministrationRoutes,
-      ...RepositoryRoutes,
       ...LevelGraphToolRoutes,
-      ...TopologyToolRoutes,
+      ...TopologyTemplateToolRoutes,
       ...LevelGraphModellerRoutes,
       ...TopologyModellerRoutes,
-      ...NodeTypeDetailsRoutes
+      ...RepositoryDetailsRoutes,
+      ...NodeTypeDetailsRoutes,
+      ...RelationshipDetailsRoutes
     ]
   }
 ];

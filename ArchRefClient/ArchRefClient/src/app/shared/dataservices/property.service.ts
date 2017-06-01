@@ -29,7 +29,7 @@ export class PropertyService {
    ******************************************************************************************************************/
   public getProperty(id: number): Observable<Property> {
     Logger.info('[REQUEST - PROPERTY] Send GET Property Request with ID:' + id, PropertyService.name);
-    return this.http.get(this.propertyUrl + '/' + id).map(this.extractPropertyListData).catch(this.handleError);
+    return this.http.get(this.propertyUrl + '/' + id).map(this.extractPropertyData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -42,7 +42,7 @@ export class PropertyService {
     Logger.data('[REQUEST - PROPERTY]' + JSON.stringify(property), PropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.propertyUrl, property, options).map(this.extractPropertyListData).catch(this.handleError);
+    return this.http.post(this.propertyUrl, property, options).map(this.extractPropertyData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -52,10 +52,10 @@ export class PropertyService {
    ******************************************************************************************************************/
   public updateProperty(property: Property): Observable<Property> {
     Logger.info('[REQUEST - PROPERTY] Send PUT Request Property', PropertyService.name);
-    Logger.data('[REQUEST - PROPERTY] ' + JSON.stringify(Property), PropertyService.name);
+    Logger.data('[REQUEST - PROPERTY] ' + JSON.stringify(property), PropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.propertyUrl + '/' + property.id, property, options).map(this.extractPropertyListData).catch(this.handleError);
+    return this.http.put(this.propertyUrl + '/' + property.id, property, options).map(this.extractPropertyData).catch(this.handleError);
   }
 
   /******************************************************************************************************************
@@ -93,7 +93,7 @@ export class PropertyService {
    *  Extract data from response data object
    *
    ******************************************************************************************************************/
-  private extractPropertyListData(res: Response) {
+  private extractPropertyData(res: Response) {
     Logger.info('[RESPONSE - PROPERTY]: Extract Data of Response Body', PropertyService.name);
     let body = res.json();
     Logger.data('[RESPONSE - PROPERTY]: ' + JSON.stringify(body), PropertyService.name);

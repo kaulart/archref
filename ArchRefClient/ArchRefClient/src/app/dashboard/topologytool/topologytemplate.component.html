@@ -1,0 +1,121 @@
+<div id="accordion" class="panel-group collapsed_area tab-panel">
+
+	<div class="panel panel-default ">
+
+		<div class="row panel-heading control-panel">
+			<h3 class="col-sm-6">Topology Templates</h3>
+			<button class="w3-right w3-theme-l1 btn btn-primary" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
+				href="#importTopologyTemplateArea">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
+			</button>
+			<button class="w3-right w3-green btn btn-primary" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
+				href="#createTopologyTemplateArea">
+				<i class="fa fa-plus" aria-hidden="true"></i> New
+			</button>
+		</div>
+
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createTopologyTemplateArea">
+			<form #createNodeTypeForm="ngForm">
+				<div class="col-sm-12 form-group">
+					<label for="name">Name:</label> <input #name #name="ngModel" name="name" type="text" [(ngModel)]="topologyTemplate.name" class="form-control"
+						id="name" value="{{topologyTemplate.name}}" required>
+					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+						<div [hidden]="!name.errors.required">Name is required</div>
+
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)="createTopologyTemplate(name.value)">Create</button>
+			</form>
+		</div>
+
+
+
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importTopologyTemplateArea">
+			<form>
+				<div class="form-group">
+					<label for="name">Name:</label> <input type="text" class="form-control" id="name" required>
+				</div>
+				<div class="form-group">
+					<label for="name">File</label> <input type="text" class="form-control" id="name" required>
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)=(importLevelGraph())>Upload</button>
+			</form>
+		</div>
+
+	</div>
+
+	<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
+
+		<table class="w3-table-all table-striped w3-bordered">
+
+			<thead>
+				<tr class="w3-theme-d3">
+					<th class="table-head"></th>
+					<th class="table-head">Nr.</th>
+					<th class="table-head">Name</th>
+					<th class="table-head">ID</th>
+					<th class="table-head">Edit</th>
+					<th class="table-head">Export</th>
+					<th class="table-head">Delete</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr *ngFor="let topology of topologyTemplates">
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}"><i class="fa fa-folder-open-o"
+						aria-hidden="true"></i></td>
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topologyTemplates.indexOf(topology)
+						+1 }}</td>
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getName() }}</td>
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getId() }}</td>
+					<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal"
+							(click)="setEditTopologyTemplate(topology)">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button></td>
+					<td><button class=" btn" (click)="exportTopologyTemplate(topology.id)">
+							<i class="fa fa-download" aria-hidden="true"></i>
+						</button></td>
+					<td><button class="w3-red btn" (click)="deleteTopologyTemplate(topology.id)">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="bottom_collapse_area"></div>
+
+</div>
+
+<!-- Modal for Edit Level Graph MetaData-->
+<div class="modal fade modal-position" id="editTopologyTemplateModal" tabindex="-1" role="dialog" data-backdrop="false"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Topology Template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="col-sm-6 form-group">
+						<label for="name">Name:</label> <input #name #name="ngModel" name="name" type="text" [(ngModel)]="topologyTemplate.name" class="form-control"
+							id="name" value="{{topologyTemplate.name}}" required>
+						<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+							<div [hidden]="!name.errors.required">Name is required</div>
+
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="updateTopologyTemplate()" data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

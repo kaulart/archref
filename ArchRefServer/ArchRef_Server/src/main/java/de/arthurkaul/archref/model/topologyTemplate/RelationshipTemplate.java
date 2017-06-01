@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
-import de.arthurkaul.archref.model.RelationshipConstraint;
+
 
 @Entity
 @Table(name="RELATIONSSHIP_TEMPLATE")
@@ -60,10 +60,6 @@ public class RelationshipTemplate {
 	
 	@Column(name="REQUIREMENT_TARGET_ID")
 	private Long targetElementRequirement; 
-	
-	@ManyToMany
-	@JoinTable(name="RELATIONSSHIPTEMPLATE_RELATIONSHIPCONSTRAINT", joinColumns=@JoinColumn(name="RELATIONSHIPTEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="RELATIONSHIPCONSTRAINT_ID", referencedColumnName="ID"))
-	private Collection<RelationshipConstraint> relationshipConstraintList;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="TOPOLOGYTEMPLATE_ID")
@@ -124,14 +120,6 @@ public class RelationshipTemplate {
 
 	public void setTargetElement(Long targetElement) {
 		this.targetElemenNodetype = targetElement;
-	}
-
-	public Collection<RelationshipConstraint> getRelationshipConstraintList() {
-		return relationshipConstraintList;
-	}
-
-	public void setRelationshipConstraintList(Collection<RelationshipConstraint> relationshipConstraintList) {
-		this.relationshipConstraintList = relationshipConstraintList;
 	}
 
 	public Long getSourceElementRequirement() {

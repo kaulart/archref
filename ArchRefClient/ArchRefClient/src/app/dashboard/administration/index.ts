@@ -3,3 +3,4 @@
 */
 export * from './administration.component';
 export * from './administration.routes';
+export * from './repository.component';

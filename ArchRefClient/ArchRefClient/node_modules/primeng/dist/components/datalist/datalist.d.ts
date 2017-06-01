@@ -13,6 +13,7 @@ export declare class DataList implements AfterViewInit, AfterContentInit, Blocka
     styleClass: string;
     paginatorPosition: string;
     emptyMessage: string;
+    trackBy: Function;
     onPage: EventEmitter<any>;
     header: any;
     footer: any;

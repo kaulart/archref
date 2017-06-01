@@ -7,8 +7,8 @@ export declare class MenubarSub {
     root: boolean;
     constructor(domHandler: DomHandler);
     activeItem: any;
-    onItemMouseEnter(event: any, item: any, menuitem: MenuItem): void;
-    onItemMouseLeave(event: any, link: any): void;
+    onItemMouseEnter(event: Event, item: HTMLLIElement, menuitem: MenuItem): void;
+    onItemMouseLeave(event: Event): void;
     itemClick(event: any, item: MenuItem): void;
     listClick(event: any): void;
 }

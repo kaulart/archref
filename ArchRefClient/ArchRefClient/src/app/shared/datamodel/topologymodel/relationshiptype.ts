@@ -7,7 +7,7 @@ export class RelationshipType {
   name: string;
   repositoryRelationshipType: Repository;
 
-  icon: '/assets/img/relationTypeDefault.png';
+  icon = '/assets/img/relationTypeDefault.png';
   providedProperties: Property[];
 
   constructor(name: string, repository: Repository) {

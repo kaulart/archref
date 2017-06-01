@@ -32,6 +32,16 @@ export class RelationshipTypeService {
 
   /******************************************************************************************************************
    *
+   * Send GET RelationshipType REQUEST
+   *
+   ******************************************************************************************************************/
+  public getRelationshipType(id: number): Observable<RelationshipType> {
+    Logger.info('[REQUEST - RELATIONSHIPTYPE] Send GET Relationship Type Request with ID:' + id, RelationshipTypeService.name);
+    return this.http.get(this.relationshipTypeUrl + '/' + id).map(this.extractRelationshipTypeData).catch(this.handleError);
+  }
+
+  /******************************************************************************************************************
+   *
    * Send POST RelationshipType REQUEST
    *
    ******************************************************************************************************************/
@@ -81,6 +91,7 @@ export class RelationshipTypeService {
     for (let relationshipType of body) {
       let tempRelationshipType: RelationshipType = new RelationshipType(relationshipType.name, relationshipType.repository);
       tempRelationshipType.id = relationshipType.id;
+      tempRelationshipType.providedProperties = relationshipType.providedProperties;
       relationshipTypeList.push(tempRelationshipType);
     }
     return relationshipTypeList || {};
@@ -97,6 +108,7 @@ export class RelationshipTypeService {
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeService.name);
     let relationshipType: RelationshipType = new RelationshipType(body.name, body.repository);
     relationshipType.id = body.id;
+    relationshipType.providedProperties = body.providedProperties;
     return relationshipType || {};
   }
 

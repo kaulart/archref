@@ -11,7 +11,7 @@ export declare class Editor implements AfterViewInit, ControlValueAccessor {
     style: any;
     styleClass: string;
     placeholder: string;
-    readOnly: boolean;
+    readonly: boolean;
     formats: string[];
     value: string;
     onModelChange: Function;

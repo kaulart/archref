@@ -11,17 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import de.arthurkaul.archref.model.Policy;
 import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.PropertyConstraint;
-import de.arthurkaul.archref.model.Requirement;
-import de.arthurkaul.archref.model.capability.Capability;
+
 
 @Entity
 @Table(name = "NODE_TEMPLATE")
@@ -53,18 +48,6 @@ public class NodeTemplate {
 	@ManyToMany
 	@JoinTable(name = "NODETEMPLATE_PROPERTYCONSTRAINT", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PROPERTYCONSTRAINT_ID", referencedColumnName = "ID"))
 	private Collection<PropertyConstraint> propertyConstraintList;
-
-	@ManyToMany
-	@JoinTable(name = "NODETEMPLATE_REQUIREMENT", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "REQUIREMENT_ID", referencedColumnName = "ID"))
-	private Collection<Requirement> requirementList;
-
-	@ManyToMany
-	@JoinTable(name = "NODETEMPLATE_CAPABILITY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "CAPABILITY_ID", referencedColumnName = "ID"))
-	private Collection<Capability> capabilityList;
-
-	@ManyToMany
-	@JoinTable(name = "NODETEMPLATE_POLICY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "POLICY_ID", referencedColumnName = "ID"))
-	private Collection<Policy> policyList;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOPOLOGYTEMPLATE_NODE_ID")
@@ -137,30 +120,6 @@ public class NodeTemplate {
 
 	public void setPropertyConstraintList(Collection<PropertyConstraint> propertyConstraintList) {
 		this.propertyConstraintList = propertyConstraintList;
-	}
-
-	public Collection<Requirement> getRequirementList() {
-		return requirementList;
-	}
-
-	public void setRequirementList(Collection<Requirement> requirementList) {
-		this.requirementList = requirementList;
-	}
-
-	public Collection<Capability> getCapabilityList() {
-		return capabilityList;
-	}
-
-	public void setCapabilityList(Collection<Capability> capabilityList) {
-		this.capabilityList = capabilityList;
-	}
-
-	public Collection<Policy> getPolicyList() {
-		return policyList;
-	}
-
-	public void setPolicyList(Collection<Policy> policyList) {
-		this.policyList = policyList;
 	}
 
 	public Integer getX() {

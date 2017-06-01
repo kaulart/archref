@@ -11,13 +11,16 @@ export declare class SelectButton implements ControlValueAccessor {
     disabled: boolean;
     onChange: EventEmitter<any>;
     value: any;
+    focusedItem: HTMLInputElement;
     onModelChange: Function;
     onModelTouched: Function;
     writeValue(value: any): void;
     registerOnChange(fn: Function): void;
     registerOnTouched(fn: Function): void;
     setDisabledState(val: boolean): void;
-    onItemClick(event: any, option: SelectItem): void;
+    onItemClick(event: any, option: SelectItem, checkbox: HTMLInputElement): void;
+    onFocus(): void;
+    onBlur(event: any): void;
     isSelected(option: SelectItem): boolean;
     findItemIndex(option: SelectItem): number;
 }

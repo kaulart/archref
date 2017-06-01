@@ -1,5 +1,8 @@
 package de.arthurkaul.archref.model.topologyTemplate;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import de.arthurkaul.archref.model.Property;
 import de.arthurkaul.archref.model.Repository;
 
 @Entity
@@ -29,32 +36,9 @@ public class NodeType{
 	@NotNull
 	private String icon;
 	
-//	private NodeType derivedFromNodeType;
-	
-//	private String targetnamespace;
-//	
-//	private boolean abstractNodeType;
-//	
-//	private boolean finalNodeType;
-	
-//	@ManyToMany
-//	@JoinTable(name="NODETYPE_REQUIREMENTDEFINITION", joinColumns=@JoinColumn(name="NODETYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="REQUIREMENT_ID", referencedColumnName="ID"))
-//	private Collection<RequirementDefinition> RequirementDefinitionList;
-//	
-//	@ManyToMany
-//	@JoinTable(name="NODETYPE_CAPABILITYDEFINITION", joinColumns=@JoinColumn(name="NODETYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="CAPABILITY_ID", referencedColumnName="ID"))
-//	private Collection<CapabilityDefinition> capabilityDefinitionList;
-//	
-//	@ManyToMany
-//	@JoinTable(name="NODETYPE_INSTANCESTATE", joinColumns=@JoinColumn(name="NODETYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="INSTANCESTATE_ID", referencedColumnName="ID"))
-//	private Collection<InstanceState> instanceStateList;
-//	
-//	@ManyToMany
-//	@JoinTable(name="NODETYPE_INTERFACE", joinColumns=@JoinColumn(name="NODETYPE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="INTERFACE_ID", referencedColumnName="ID"))
-//	private Collection<Interface> interfacesList;
-//	
-//	@OneToMany(mappedBy="nodeType")
-//	private Collection<NodeTemplate> nodeTemplateList;
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="nodeType")
+	@JsonManagedReference (value="nodeType-property")
+	private Collection<Property> providedProperties;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REPOSITORY_ID")
@@ -97,6 +81,14 @@ public class NodeType{
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public Collection<Property> getProvidedProperties() {
+		return providedProperties;
+	}
+
+	public void setProvidedProperties(Collection<Property> providedProperties) {
+		this.providedProperties = providedProperties;
 	}
 
 //	public NodeType getDerivedFromNodeType() {

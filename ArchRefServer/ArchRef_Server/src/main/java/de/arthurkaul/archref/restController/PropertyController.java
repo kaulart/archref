@@ -15,16 +15,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import de.arthurkaul.archref.exceptions.LevelGraphAlreadyExistException;
 import de.arthurkaul.archref.exceptions.LevelGraphNotFoundException;
 import de.arthurkaul.archref.model.Property;
-import de.arthurkaul.archref.model.levelgraph.FragmentNode;
-import de.arthurkaul.archref.services.PropertySerivce;
+import de.arthurkaul.archref.services.PropertyService;
 
 @RestController
 public class PropertyController {
 	
 	@Autowired
-	PropertySerivce propertyService;
+	PropertyService propertyService;
 	
-	@RequestMapping(value = "/api/propterties", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/properties", method = RequestMethod.GET)
 	public ResponseEntity<Collection<Property>> getAllProperties() {
 
 		Collection<Property> properties = propertyService.findAllProperties();
@@ -36,7 +35,7 @@ public class PropertyController {
 		return ResponseEntity.ok().body(properties);
 	}
 	
-	@RequestMapping(value = "/api/propterties/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Property> getProperty(@PathVariable("id") long id) {
 
 		Property property = propertyService.findById(id);
@@ -49,7 +48,7 @@ public class PropertyController {
 		return ResponseEntity.ok().body(property);
 	}
 
-	@RequestMapping(value = "/api/propterties", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/properties", method = RequestMethod.POST)
 	public ResponseEntity<Property> createProperty(@RequestBody Property property, UriComponentsBuilder ucBuilder) {
 		
 		if (property.getId() != null) {
@@ -59,12 +58,12 @@ public class PropertyController {
 		}
 		Property saved = propertyService.create(property);
 
-		return ResponseEntity.created(ucBuilder.path("/api/propterties/{id}").buildAndExpand(property.getId()).toUri())
+		return ResponseEntity.created(ucBuilder.path("/api/propterties/{id}").buildAndExpand(saved.getId()).toUri())
 				.body(saved);
 
 	}
 	
-	@RequestMapping(value = "/api/propterties/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Property> updateProperty(@PathVariable("id") long id, @RequestBody Property property) {
 
 		Property currentProperty = propertyService.findById(id);
@@ -74,12 +73,12 @@ public class PropertyController {
 					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
 							+ " not found.");
 		}
-
-		propertyService.update(currentProperty);
-		return ResponseEntity.ok().body(currentProperty);
+		
+		propertyService.update(property);
+		return ResponseEntity.ok().body(property);
 	}
 
-	@RequestMapping(value = "/api/propterties/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProperty(@PathVariable("id") Long id) {
 
 		Property property = propertyService.findById(id);
@@ -95,7 +94,7 @@ public class PropertyController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/propterties", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/properties", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProperties() {
 
 		propertyService.deleteAllProperties();

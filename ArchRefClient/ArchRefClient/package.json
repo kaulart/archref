@@ -1,5 +1,5 @@
 {
-  "name": "sbadmin-ng2",
+  "name": "ArchRef",
   "version": "0.0.0",
   "license": "MIT",
   "angular-cli": {},
@@ -19,12 +19,11 @@
     "@angular/core": "4.0.0",
     "@angular/forms": "4.0.0",
     "@angular/http": "4.0.0",
-    "@angular/material": "^2.0.0-beta.6",
+    "@angular/material": "^2.0.0-beta.3",
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-browser-dynamic": "4.0.0",
     "@angular/router": "4.0.0",
     "@angular/tsc-wrapped": "0.5.0",
-    "@types/lodash": "^4.14.64",
     "angular2-flash-message": "^1.0.2",
     "bootstrap": "4.0.0-alpha.4",
     "core-js": "2.4.1",
@@ -36,7 +35,6 @@
     "jquery": "3.1.0",
     "karma-coverage-istanbul-reporter": "0.2.0",
     "karma-jasmine-html-reporter": "0.2.2",
-    "lodash": "^4.17.4",
     "moment": "2.15.1",
     "ng2-bootstrap": "2.0.0-rc.0",
     "ng2-contextmenu": "^1.3.1",
@@ -53,7 +51,6 @@
     "@angular/cli": "1.0.0",
     "@types/jasmine": "2.2.30",
     "@types/node": "7.0.10",
-    "@types/lodash": "^4.14.64",
     "angular-ide": "^0.9.19",
     "codelyzer": "3.0.0-beta.4",
     "jasmine-core": "2.5.2",
@@ -64,6 +61,6 @@
     "protractor": "5.1.0",
     "ts-node": "2.0.0",
     "tslint": "4.5.0",
-    "typescript": "2.1.6"
+    "typescript": "2.3.2"
   }
 }

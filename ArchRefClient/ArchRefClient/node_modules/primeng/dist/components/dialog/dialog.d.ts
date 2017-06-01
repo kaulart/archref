@@ -11,6 +11,8 @@ export declare class Dialog implements AfterViewInit, OnDestroy {
     minHeight: number;
     width: any;
     height: any;
+    positionLeft: number;
+    positionTop: number;
     contentStyle: any;
     modal: boolean;
     closeOnEscape: boolean;
@@ -42,9 +44,11 @@ export declare class Dialog implements AfterViewInit, OnDestroy {
     mask: HTMLDivElement;
     container: HTMLDivElement;
     contentContainer: HTMLDivElement;
+    closeIconMouseDown: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer);
     visible: boolean;
     show(): void;
+    positionOverlay(): void;
     hide(): void;
     close(event: Event): void;
     ngAfterViewInit(): void;
@@ -53,11 +57,12 @@ export declare class Dialog implements AfterViewInit, OnDestroy {
     disableModality(): void;
     unbindMaskClickListener(): void;
     moveOnTop(): void;
-    initDrag(event: any): void;
-    onDrag(event: any): void;
-    endDrag(event: any): void;
-    initResize(event: any): void;
-    onResize(event: any): void;
+    onCloseMouseDown(event: Event): void;
+    initDrag(event: MouseEvent): void;
+    onDrag(event: MouseEvent): void;
+    endDrag(event: MouseEvent): void;
+    initResize(event: MouseEvent): void;
+    onResize(event: MouseEvent): void;
     ngOnDestroy(): void;
 }
 export declare class DialogModule {

@@ -90,6 +90,7 @@ export class NodeTypeService {
     for (let nodeType of body) {
       let tempNodeType: NodeType = new NodeType(nodeType.name, nodeType.repositoryId);
       tempNodeType.id = nodeType.id;
+      tempNodeType.providedProperties = nodeType.providedProperties;
       nodeTypeList.push(tempNodeType);
     }
     return nodeTypeList || {};
@@ -106,6 +107,7 @@ export class NodeTypeService {
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
     let nodeType: NodeType = new NodeType(body.name, body.repositoryId);
     nodeType.id = body.id;
+    nodeType.providedProperties = body.providedProperties;
     return nodeType || {};
   }
 
