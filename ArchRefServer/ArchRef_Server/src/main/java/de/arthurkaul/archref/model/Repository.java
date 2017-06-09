@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.topologyTemplate.NodeType;
-import de.arthurkaul.archref.model.topologyTemplate.RelationshipType;
+import de.arthurkaul.archref.model.types.NodeType;
+import de.arthurkaul.archref.model.types.RelationshipType;
 
 @Entity
 @Table(name="REPOSITORY")
@@ -24,10 +24,9 @@ public class Repository {
 	@Id
 	@GeneratedValue()
 	@Column(name="ID")
-	
 	private Long id;
 	
-	@Column(name="NAME", unique = true)
+	@Column(name="NAME")
 	@NotNull
 	private String name;
 	
@@ -38,10 +37,6 @@ public class Repository {
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryRelationshipType")
 	@JsonManagedReference
 	private Collection<RelationshipType> relationshipTypeList;
-	
-//	private ArrayList<RequirementType> requirementTypeList;
-//	private ArrayList<Capability> capabilityTypeList;
-//	private ArrayList<ArtifactType> artifactTypeList;
 
 	public Long getId() {
 		return id;

@@ -14,8 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RepositoryAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RepositoryNotFoundException;
-import de.arthurkaul.archref.model.topologyTemplate.RelationshipTemplate;
-import de.arthurkaul.archref.services.topologytemplate.RelationshipTemplateService;
+import de.arthurkaul.archref.model.topology.RelationshipTemplate;
+import de.arthurkaul.archref.services.topology.RelationshipTemplateService;
 
 @RestController
 public class RelationshipTemplateController {
@@ -72,7 +72,7 @@ public ResponseEntity<?> updateRelationshipTemplate(@PathVariable("id") long id,
     	throw new RepositoryNotFoundException("RepositoryNotFoundException: Unable to update. Repository with id " + id + " not found.");          
     }
 
-    currentNodeTemplate.setName(relationshiptemplate.getName());
+    currentNodeTemplate = relationshiptemplate;
 
     relationshipTemplateService.update(relationshiptemplate);
     return ResponseEntity.ok().body(currentNodeTemplate);

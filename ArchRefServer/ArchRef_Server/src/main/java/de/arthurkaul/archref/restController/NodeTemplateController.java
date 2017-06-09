@@ -14,8 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RepositoryAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RepositoryNotFoundException;
-import de.arthurkaul.archref.model.topologyTemplate.NodeTemplate;
-import de.arthurkaul.archref.services.topologytemplate.NodeTemplateService;
+import de.arthurkaul.archref.model.topology.NodeTemplate;
+import de.arthurkaul.archref.services.topology.NodeTemplateService;
 
 
 @RestController
@@ -73,9 +73,9 @@ public class NodeTemplateController {
       	throw new RepositoryNotFoundException("RepositoryNotFoundException: Unable to update. Repository with id " + id + " not found.");          
       }
 
-      currentNodeTemplate.setName(nodeTemplate.getName());
+      currentNodeTemplate = nodeTemplate;
 
-      nodeTemplateService.update(nodeTemplate);
+      nodeTemplateService.update(currentNodeTemplate);
       return ResponseEntity.ok().body(currentNodeTemplate);
   }
 

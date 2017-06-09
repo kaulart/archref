@@ -1,108 +1,55 @@
 package de.arthurkaul.archref.model.levelgraph;
 
 import java.util.Collection;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import de.arthurkaul.archref.model.graph.Node;
 
 @Entity
-@Table(name="LEVELGRAPHNODE")
-public class LevelGraphNode {
+@Table(name = "LEVELGRAPHNODE")
+public class LevelGraphNode extends Node{
 
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	private Long id;
+	@Column(name = "LEVEL_ID")
+	private Long levelId;
 	
-	@Column(name = "NAME")
-	private String name;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LEVEL")
+	@JsonBackReference(value = "level-levelGraphNode")
+	private Level level;
 
-	@Column(name = "X_POSITION")
-	private Integer x;
-
-	@Column(name = "Y_POSITION")
-	private Integer y;
-
-	@Column(name = "WIDTH")
-	private Integer width;
-
-	@Column(name = "HEIGHT")
-	private Integer height;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LEVELGRAPH")
+	@JsonBackReference(value = "levelgraph-levelgraphnodes")
+	private LevelGraph levelGraph;
 	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="targetLevelGraphNode")
+	@Column(name = "LEVELGRAPH_ID")
+	private Long levelGraphId;
+	
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="targetLevelGraphNode")
+    @Cascade(CascadeType.ALL)
 	@JsonManagedReference (value="levelgraphrelation-targetlevelgraphnodes")
 	private Collection<LevelGraphRelation> inLevelGraphRelation;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevelGraphNode")
-	@JsonManagedReference (value="levelgraphrelation-sourcelevelgraphnodes")
+
+	@OneToMany (fetch = FetchType.EAGER, mappedBy = "sourceLevelGraphNode")
+	@Cascade( CascadeType.ALL )
+	@JsonManagedReference(value = "levelgraphrelation-sourcelevelgraphnodes")
 	private Collection<LevelGraphRelation> outLevelGraphRelation;
 	
 	@Column(name = "TYPE")
 	private String levelGraphNodeType;
-	
+
 	@Column(name = "TYPEREF")
 	private long typeRef;
 	
-	@Column(name = "Level_ID")
-	private Long levelId;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVELGRAPH_ID")
-	@JsonBackReference (value="levelgraph-levelgraphnodes")
-	private LevelGraph levelGraph;
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getY() {
-		return y;
-	}
-
-	public void setY(Integer y) {
-		this.y = y;
-	}
-
-	public Integer getWidth() {
-		return width;
-	}
-
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
-
-	public Integer getHeight() {
-		return height;
-	}
-
-	public void setHeight(Integer height) {
-		this.height = height;
-	}
-
-	public Integer getX() {
-		return x;
-	}
-
-	public void setX(Integer x) {
-		this.x = x;
-	}
-
 	public Collection<LevelGraphRelation> getInLevelGraphRelation() {
 		return inLevelGraphRelation;
 	}
@@ -151,14 +98,12 @@ public class LevelGraphNode {
 		this.levelGraph = levelGraph;
 	}
 
-	public String getName() {
-		return name;
+	public Level getLevel() {
+		return level;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLevel(Level level) {
+		this.level = level;
 	}
-
-	
 
 }

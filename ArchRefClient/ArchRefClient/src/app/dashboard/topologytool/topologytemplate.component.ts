@@ -1,9 +1,8 @@
 import { Logger } from '../../../logger/logger';
-import { LevelGraph } from '../../shared/datamodel/levelgraphmodel/levelgraph';
-import { TopologyTemplate } from '../../shared/datamodel/topologymodel/topologytemplate';
-import { TopologyTemplateService } from '../../shared/dataservices/topologytemplate.service';
-
-import { LevelGraphService } from '../../shared/dataservices/levelgraph.service';
+import { LevelGraph } from '../../shared/datamodels/levelgraph/levelgraph';
+import { TopologyTemplate } from '../../shared/datamodels/topology/topologytemplate';
+import { LevelGraphService } from '../../shared/dataservices/levelgraph/levelgraph.service';
+import { TopologyTemplateService } from '../../shared/dataservices/topologytemplate/topologytemplate.service';
 import { Component, OnInit } from '@angular/core';
 import { Utility } from '../../utility';
 import { FlashMessageService } from 'angular2-flash-message';
@@ -37,22 +36,17 @@ export class TopologyTemplateComponent implements OnInit {
    *
    ****************************************************************************************************************/
   createTopologyTemplate() {
-
+    this.topologyTemplate.abstractionLevel = 1;
     this.topologyTemplateService.createTopologyTemplate(this.topologyTemplate)
       .subscribe(topologyTemplateResponse => {
-
         this.topologyTemplates.push(topologyTemplateResponse);
-        this.flashMessage.message = 'Info: TopologyTemplate with name: ' + topologyTemplateResponse.getName() + ' was created sucessfully with id: ' + topologyTemplateResponse.getId();
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
-        Logger.info('TopologyTemplate with name: ' + topologyTemplateResponse.getName() + ' was created sucessfully with id: ' + topologyTemplateResponse.getId(), TopologyTemplateComponent.name);
+        Logger.info('TopologyTemplate with name: ' + topologyTemplateResponse.name + ' was created sucessfully with id: ' + topologyTemplateResponse.id, TopologyTemplateComponent.name);
       },
       (error) => {
         this.flashMessage.message = error;
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
       });
-
   }
 
   /****************************************************************************************************************
@@ -85,9 +79,6 @@ export class TopologyTemplateComponent implements OnInit {
     this.topologyTemplateService.getTopologyTemplates()
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = topologyTemplateResponse;
-        this.flashMessage.message = 'Topology Template  retrieved sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Topology Template sucessfully retrieved.', TopologyTemplateComponent.name);
       },
       (error) => {
@@ -108,10 +99,7 @@ export class TopologyTemplateComponent implements OnInit {
     this.topologyTemplateService.updateTopologyTemplate(this.topologyTemplate)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = Utility.updateElementInArry(topologyTemplateResponse, this.topologyTemplates);
-        this.flashMessage.message = 'Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name: ' + topologyTemplateResponse.getName() + ' was updated sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
-        Logger.info('Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name:' + topologyTemplateResponse.getName() + ' was updated sucessfully.', TopologyTemplateComponent.name);
+        Logger.info('Topology Template with id: ' + topologyTemplateResponse.id + ' and name:' + topologyTemplateResponse.name + ' was updated sucessfully.', TopologyTemplateComponent.name);
       },
       (error) => {
         this.flashMessage.message = error;
@@ -131,9 +119,6 @@ export class TopologyTemplateComponent implements OnInit {
     this.topologyTemplateService.deleteTopologyTemplate(id)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = Utility.deleteElementFromArry(id, this.topologyTemplates);
-        this.flashMessage.message = 'Topology Template with id: ' + id + ' was deleted sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Topology Template with id: ' + id + ' was deleted sucessfully.', TopologyTemplateComponent.name);
       },
       (error) => {

@@ -1,5 +1,5 @@
 import { Logger } from '../../../../logger/logger';
-import { Repository } from '../../../shared/datamodel/repository';
+import { Repository } from '../../../shared/datamodels/repository';
 import { RepositoryService } from '../../../shared/dataservices/repository.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

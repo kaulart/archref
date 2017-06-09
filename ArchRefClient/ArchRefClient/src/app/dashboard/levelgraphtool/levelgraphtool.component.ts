@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-levelgraphtool',
@@ -6,8 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./levelgraphtool.component.css']
 })
 
-export class LevelGraphToolComponent implements OnInit {
-  ngOnInit(): void {
-    return;
-  }
-  }
+/*******************************************************************************************************************
+ *
+ * @component LevelGraphToolComponent as wrapper component for the LevelGraphComponent so that you can extend the
+ *  tool component flexible with other components
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************/
+export class LevelGraphToolComponent {}

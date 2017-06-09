@@ -10,10 +10,10 @@
       "dom"
     ],
     "outDir": "../out-tsc/app",
-    "target": "es5",
-    "module": "es2015",
+    "target": "ES5",
+    "module": "ES6",
     "baseUrl": "",
-    "types": []
+    "types": [ ]
   },
   "exclude": [
     "test.ts",

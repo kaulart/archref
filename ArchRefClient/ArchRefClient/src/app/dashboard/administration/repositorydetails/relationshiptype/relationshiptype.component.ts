@@ -1,20 +1,22 @@
 import { Logger } from '../../../../../logger/logger';
-import { Repository } from '../../../../shared/datamodel/repository';
-import { RelationshipType } from '../../../../shared/datamodel/topologymodel/relationshiptype';
-import { RelationshipTypeService } from '../../../../shared/dataservices/relationshiptype.service';
+import { Repository } from '../../../../shared/datamodels/repository';
+import { RelationshipType } from '../../../../shared/datamodels/types/relationshiptype';
+
+import { RelationshipTypeService } from '../../../../shared/dataservices/types/relationshiptype.service';
 import { Utility } from '../../../../utility';
 import { Component, OnInit, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
 
-const URL = 'api/icon';
+const URL = '/api/fileupload/relationshiptype';
 
 @Component({
   selector: 'app-relationshiptype',
   templateUrl: './relationshiptype.component.html',
   styleUrls: ['./relationshiptype.component.css']
 })
+
 
 /*****************************************************************************************************************
  *
@@ -28,6 +30,7 @@ export class RelationshipTypeComponent implements OnInit {
   @Input()
   currentRepository: Repository;
 
+  public relationshipType: RelationshipType = new RelationshipType("Unnamed", null);
   public editRelationshipType: RelationshipType = new RelationshipType(null, null);
   public flashMessage = new FlashMessage();
 
@@ -45,9 +48,16 @@ export class RelationshipTypeComponent implements OnInit {
    ****************************************************************************************************************/
   createRelationshipType(name: string) {
     Logger.info('Create RelationshipType', RelationshipTypeComponent.name);
-    let relationshipType: RelationshipType = new RelationshipType(name, this.currentRepository);
-    this.relationshipTypeService.createRelationshipType(relationshipType)
+    this.relationshipType.repository = this.currentRepository;
+    this.relationshipTypeService.createRelationshipType( this.relationshipType)
       .subscribe(relationshipTypeResponse => {
+        let tempURL = URL + '/' + relationshipTypeResponse.id;
+        this.uploader.setOptions({ url: tempURL });
+        this.uploader.uploadAll();
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+          relationshipTypeResponse.icon = item.url + '/' + response;
+          this.relationshipTypeService.updateRelationshipType(relationshipTypeResponse).subscribe();
+        };
         this.currentRepository.relationshipTypeList.push(relationshipTypeResponse);
         this.flashMessage.message = 'Info: RelationshipType with name: ' + relationshipTypeResponse.name + ' was created sucessfully with id: ' + relationshipTypeResponse.id;
         this.flashMessage.isSuccess = true;

@@ -1,4 +1,4 @@
-<div class="tab_panel rounded">
+<div class="tab-panel rounded">
 
 	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area">
 
@@ -18,10 +18,11 @@
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createRelationshipTypeFieldsArea">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameRelationshipType">Name: </label> <input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType" value="Unnamed" required>
+						<label for="nameRelationshipType">Name: </label> <input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType"
+							value="Unnamed" required>
 					</div>
 					<div class="col-sm-6 form-group">
-						<label for="icon">Icon: </label> <input  class="form-control" #icon type="file" ng2FileSelect [uploader]="uploader" />
+						<label for="icon">Icon: </label> <input class="form-control" #icon type="file" ng2FileSelect [uploader]="uploader" />
 					</div>
 					<button type="submit" class="btn btn-success" (click)="createRelationshipType(nameRelationshipType.value)">Create</button>
 				</form>
@@ -45,11 +46,16 @@
 
 				<tbody>
 					<tr *ngFor="let relationshipType of currentRepository.relationshipTypeList">
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.name }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.id }}</td>
-						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn" (click)="setEditRelationshipType(relationshipType)">
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}"><i
+							class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
+							currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
+							relationshipType.name }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
+							relationshipType.id }}</td>
+						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn"
+								(click)="setEditRelationshipType(relationshipType)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
 						<td><button class="btn" (click)="exportRelationshipType(relationshipType.id)">
@@ -68,8 +74,8 @@
 
 
 <!-- Modal for Edit Repository-->
-<div class="modal fade modal-position" id="editRelationshipTypeModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+<div class="modal fade modal-position" id="editRelationshipTypeModal" tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
@@ -84,7 +90,7 @@
 						<label for="name">Name: </label> <input #editName type="text" class="form-control" id="name" value="{{editRelationshipType.name}}" required>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="updateRelationshipType(editName.value)"  data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-primary" (click)="updateRelationshipType(editName.value)" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

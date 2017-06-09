@@ -7,117 +7,120 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Level {
+@Table(name = "LEVEL")
+public class Level extends de.arthurkaul.archref.model.Entity{
 
-	@Id
-	@GeneratedValue()
-	@Column(name="ID")
-	private Long id;
-	
-	@Column(name="VALUE")
+	@Column(name = "DEPTH")
 	@NotNull
-	private Long value;
-	
-	@Column(name="NAME")
+	private Long depth;
+
+	@Column(name = "VISIBLE")
 	@NotNull
-	private String name;
-	
-	@Column(name="CHECKED")
-	@NotNull
-	private Boolean checked;
-	
-	@Column(name="Y")
+	private Boolean visible;
+
+	@Column(name = "Y")
 	@NotNull
 	private Integer y;
-	
-	@Column(name="HEIGHT")
+
+	@Column(name = "HEIGHT")
 	@NotNull
 	private Integer height;
-	
-	@ManyToOne(fetch=FetchType.LAZY)	
-	@JoinColumn(name="LEVELGRAPH_LEVEL_ID")
-	@JsonBackReference (value="levelgraph-level")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LEVELGRAPH")
+	@JsonBackReference(value = "levelgraph-levels")
 	private LevelGraph levelGraph;
-	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevel")
-//	@JsonManagedReference (value="level-sourceLevelGraphRelation")
-//	private Collection<LevelGraphRelation> outLevelGraphRelations;
-//	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sourceLevel")
-//	@JsonManagedReference (value="level-sourceLevelGraphRelation")
+
+	@Column(name = "LEVELGRAPH_ID")
+	private Long levelGraphId;
+
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sourceLevel")
+//	@JsonManagedReference(value = "level-inLevelGraphRelations")
 //	private Collection<LevelGraphRelation> inLevelGraphRelations;
-	
-//	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="level")
-//	@JsonManagedReference (value="level-levelGraphNode")
+//
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "targetLevel")
+//	@JsonManagedReference(value = "level-outLevelGraphRelations")
+//	private Collection<LevelGraphRelation> outLevelGraphRelations;
+//
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "level")
+//	@JsonManagedReference(value = "level-levelGraphNode")
 //	private Collection<LevelGraphNode> levelGraphNodes;
-	
-	
-	public Long getId() {
-		return id;
+
+	public Long getDepth() {
+		return depth;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public void setDepth(Long depth) {
+		this.depth = depth;
 	}
-	public Boolean getChecked() {
-		return checked;
+
+	public Boolean getVisible() {
+		return visible;
 	}
-	public void setChecked(Boolean checked) {
-		this.checked = checked;
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
 	}
+
 	public Integer getY() {
 		return y;
 	}
+
 	public void setY(Integer y) {
 		this.y = y;
 	}
+
 	public Integer getHeight() {
 		return height;
 	}
+
 	public void setHeight(Integer height) {
 		this.height = height;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Long getValue() {
-		return value;
-	}
-	public void setValue(Long value) {
-		this.value = value;
 	}
 
 	public LevelGraph getLevelGraph() {
 		return levelGraph;
 	}
+
 	public void setLevelGraph(LevelGraph levelGraph) {
 		this.levelGraph = levelGraph;
 	}
-//	public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
-//		return outLevelGraphRelations;
-//	}
-//	public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
-//		this.outLevelGraphRelations = outLevelGraphRelations;
-//	}
-//	public Collection<LevelGraphRelation> getInLevelGraphRelations() {
-//		return inLevelGraphRelations;
-//	}
-//	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
-//		this.inLevelGraphRelations = inLevelGraphRelations;
-//	}
+
+	public Long getLevelGraphId() {
+		return levelGraphId;
+	}
+
+	public void setLevelGraphId(Long levelGraphId) {
+		this.levelGraphId = levelGraphId;
+	}
+
 //	public Collection<LevelGraphNode> getLevelGraphNodes() {
 //		return levelGraphNodes;
 //	}
+//
 //	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
 //		this.levelGraphNodes = levelGraphNodes;
 //	}
-	
+//
+//	public Collection<LevelGraphRelation> getInLevelGraphRelations() {
+//		return inLevelGraphRelations;
+//	}
+//
+//	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
+//		this.inLevelGraphRelations = inLevelGraphRelations;
+//	}
+//
+//	public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
+//		return outLevelGraphRelations;
+//	}
+//
+//	public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
+//		this.outLevelGraphRelations = outLevelGraphRelations;
+//	}
+
 }

@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.LevelGraphAlreadyExistException;
 import de.arthurkaul.archref.exceptions.LevelGraphNotFoundException;
-import de.arthurkaul.archref.model.levelgraph.FragmentNode;
+import de.arthurkaul.archref.model.types.FragmentType;
 import de.arthurkaul.archref.services.levelgraph.FragmentNodeService;
 
 @RestController
@@ -24,9 +24,9 @@ public class FragmentNodeController {
 	FragmentNodeService fragmentNodeService;
 
 	@RequestMapping(value = "/api/fragmentnodes", method = RequestMethod.GET)
-	public ResponseEntity<Collection<FragmentNode>> getAllFragmentNodes() {
+	public ResponseEntity<Collection<FragmentType>> getAllFragmentNodes() {
 
-		Collection<FragmentNode> fragmentNodes = fragmentNodeService.findAllFragmentNodes();
+		Collection<FragmentType> fragmentNodes = fragmentNodeService.findAllFragmentNodes();
 
 		if (fragmentNodes.isEmpty()) {
 			
@@ -38,9 +38,9 @@ public class FragmentNodeController {
 	}
 
 	@RequestMapping(value = "/api/fragmentnodes/{id}", method = RequestMethod.GET)
-	public ResponseEntity<FragmentNode> getFragmentNode(@PathVariable("id") long id) {
+	public ResponseEntity<FragmentType> getFragmentNode(@PathVariable("id") long id) {
 
-		FragmentNode fragmentNode = fragmentNodeService.findById(id);
+		FragmentType fragmentNode = fragmentNodeService.findById(id);
 
 		if (fragmentNode == null) {
 			throw new LevelGraphNotFoundException(
@@ -51,14 +51,14 @@ public class FragmentNodeController {
 	}
 
 	@RequestMapping(value = "/api/fragmentnodes", method = RequestMethod.POST)
-	public ResponseEntity<FragmentNode> createFragmentNode(@RequestBody FragmentNode fragmentNode, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<FragmentType> createFragmentNode(@RequestBody FragmentType fragmentNode, UriComponentsBuilder ucBuilder) {
 		
 		if (fragmentNode.getId() != null) {
 			throw new LevelGraphAlreadyExistException(
 					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + fragmentNode.getId()
 							+ " already exist.");
 		}
-		FragmentNode saved = fragmentNodeService.create(fragmentNode);
+		FragmentType saved = fragmentNodeService.create(fragmentNode);
 
 		return ResponseEntity.created(ucBuilder.path("/api/fragmentnodes/{id}").buildAndExpand(fragmentNode.getId()).toUri())
 				.body(saved);
@@ -66,16 +66,16 @@ public class FragmentNodeController {
 	}
 
 	@RequestMapping(value = "/api/fragmentnodes{id}", method = RequestMethod.PUT)
-	public ResponseEntity<FragmentNode> updateFragmentNode(@PathVariable("id") long id, @RequestBody FragmentNode fragmentNode) {
+	public ResponseEntity<FragmentType> updateFragmentNode(@PathVariable("id") long id, @RequestBody FragmentType fragmentNode) {
 
-		FragmentNode currentFragmentNode = fragmentNodeService.findById(id);
+		FragmentType currentFragmentNode = fragmentNodeService.findById(id);
 
 		if (currentFragmentNode == null) {
 			throw new LevelGraphNotFoundException(
 					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
 							+ " not found.");
 		}
-
+		currentFragmentNode = fragmentNode;
 		fragmentNodeService.update(currentFragmentNode);
 		return ResponseEntity.ok().body(currentFragmentNode);
 	}
@@ -83,7 +83,7 @@ public class FragmentNodeController {
 	@RequestMapping(value = "/api/fragmentnodes/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteFragmentNode(@PathVariable("id") Long id) {
 
-		FragmentNode fragmentNode = fragmentNodeService.findById(id);
+		FragmentType fragmentNode = fragmentNodeService.findById(id);
 
 		if (fragmentNode == null) {
 			throw new LevelGraphNotFoundException(

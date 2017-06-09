@@ -12,4 +12,5 @@ export class TopologyTemplateToolComponent implements OnInit {
   ngOnInit() {
   }
 
+  
 }

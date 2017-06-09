@@ -16,8 +16,6 @@
 	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6',
 		endColorstr='#f5f6f6', GradientType=0); /* IE6-9 */
-	margin: 0px;
-	padding: 5px;
 	width: 100%;
 }
 
@@ -38,6 +36,10 @@
 		rgba(255, 0, 0, 1) 50%, rgba(138, 0, 0, 1) 100%); /* w3c */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8A0000',
 		endColorstr='#8A0000', GradientType=0); /* ie6-9 */
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	width: 100%;
 }
 
 .relationType {
@@ -57,6 +59,10 @@
 		rgba(27, 252, 15, 1) 50%, rgba(0, 128, 0, 1) 100%); /* w3c */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008000',
 		endColorstr='#008000', GradientType=0); /* ie6-9 */
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	width: 100%;
 }
 
 .fragmentType {
@@ -78,6 +84,10 @@
 		rgba(219, 212, 0, 1) 51%, rgba(255, 111, 0, 1) 100%); /* w3c */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FF6F00',
 		endColorstr='#FF6F00', GradientType=0); /* ie6-9 */
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	width: 100%;
 }
 
 div {
@@ -98,9 +108,8 @@ div {
 	width: 100%;
 }
 
-.warning-item{
+.warning-item {
 	padding: 5px;
-	
 }
 
 svg {
@@ -132,6 +141,17 @@ svg {
 
 ul {
 	list-style-type: none;
+}
+
+.list {
+	padding: 5px;
+	max-height: 300px;
+	overflow: auto;
+}
+
+#toolbox_area {
+	height: 750px;
+	overflow: auto;
 }
 
 h3 {

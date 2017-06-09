@@ -77,7 +77,7 @@ public class LevelGraphNodeController {
 							+ " not found.");
 		}
 
-
+		currentLevelGraphNode = levelGraphNode;
 		levelGraphNodeService.update(currentLevelGraphNode);
 		return ResponseEntity.ok().body(currentLevelGraphNode);
 	}

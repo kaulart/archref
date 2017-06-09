@@ -1,6 +1,6 @@
 import { Logger } from '../../../../../../logger/logger';
-import { RelationshipType } from '../../../../../shared/datamodel/topologymodel/relationshiptype';
-import { RelationshipTypeService } from '../../../../../shared/dataservices/relationshiptype.service';
+import { RelationshipType } from '../../../../../shared/datamodels/types/relationshiptype';
+import { RelationshipTypeService } from '../../../../../shared/dataservices/types/relationshiptype.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessageService } from 'angular2-flash-message';

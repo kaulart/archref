@@ -41,14 +41,12 @@
 
 		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importLevelGraphFieldsArea">
 			<form>
+
 				<div class="form-group">
-					<label for="name">Name:</label> <input type="text" class="form-control" id="name" required>
-				</div>
-				<div class="form-group">
-					<label for="name">File</label> <input type="text" class="form-control" id="name" required>
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
 				</div>
 
-				<button type="submit" class="btn btn-success" (click)=(importLevelGraph())>Upload</button>
+				<button type="submit" class="btn btn-success" (click)="importLevelGraph()">Upload</button>
 			</form>
 		</div>
 
@@ -60,13 +58,13 @@
 
 			<thead>
 				<tr class="w3-theme-d3">
-					<th class="table-head"></th>
-					<th class="table-head">Nr.</th>
-					<th class="table-head">Name</th>
-					<th class="table-head">ID</th>
-					<th class="table-head">Edit</th>
-					<th class="table-head">Export</th>
-					<th class="table-head">Delete</th>
+					<th ></th>
+					<th>Nr.</th>
+					<th>Name</th>
+					<th>ID</th>
+					<th>Edit</th>
+					<th>Export</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 

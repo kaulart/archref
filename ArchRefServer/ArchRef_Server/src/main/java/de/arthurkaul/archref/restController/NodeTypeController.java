@@ -14,8 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.NodeTypeAlreadyExistException;
 import de.arthurkaul.archref.exceptions.NodeTypeNotFoundException;
-import de.arthurkaul.archref.model.topologyTemplate.NodeType;
-import de.arthurkaul.archref.services.NodeTypeService;
+import de.arthurkaul.archref.model.types.NodeType;
+import de.arthurkaul.archref.services.topology.NodeTypeService;
 
 @RestController
 public class NodeTypeController {
@@ -73,9 +73,11 @@ public class NodeTypeController {
 			throw new NodeTypeNotFoundException(
 					"NodeTypeNotFoundException: Unable to update NodeType. NodeType with id " + id + " not found.");
 		}
-
 		currentNodeType = nodeType;
-
+//		currentNodeType.setIcon(nodeType.getIcon());
+//		currentNodeType.setName(nodeType.getName());
+//		currentNodeType.setProvidedProperties(nodeType.getProvidedProperties());
+		
 		nodeTypeService.update(currentNodeType);
 		return ResponseEntity.ok().body(currentNodeType);
 	}

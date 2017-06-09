@@ -4,7 +4,8 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import de.arthurkaul.archref.model.levelgraph.FragmentNode;
+
+import de.arthurkaul.archref.model.types.FragmentType;
 import de.arthurkaul.archref.repositories.FragmentNodeRepository;
 
 @Service
@@ -14,19 +15,19 @@ public class FragmentNodeService implements FragmentNodeInterface {
 	FragmentNodeRepository fragmentNodeRepository;
 
 	@Override
-	public Collection<FragmentNode> findAllFragmentNodes() {
+	public Collection<FragmentType> findAllFragmentNodes() {
 
 		return fragmentNodeRepository.findAll();
 	}
 
 	@Override
-	public FragmentNode findById(long id) {
+	public FragmentType findById(long id) {
 
 		return fragmentNodeRepository.findOne(id);
 	}
 
 	@Override
-	public FragmentNode create(FragmentNode fragmentNode) {
+	public FragmentType create(FragmentType fragmentNode) {
 		if(fragmentNode.getId() != null){
 			return null;
 		}
@@ -34,8 +35,8 @@ public class FragmentNodeService implements FragmentNodeInterface {
 	}
 
 	@Override
-	public FragmentNode update(FragmentNode fragmentNode) {
-		FragmentNode persistedFragmentNode = fragmentNodeRepository	.findOne(fragmentNode.getId());
+	public FragmentType update(FragmentType fragmentNode) {
+		FragmentType persistedFragmentNode = fragmentNodeRepository	.findOne(fragmentNode.getId());
 
 		if (persistedFragmentNode == null) {
 			return null;

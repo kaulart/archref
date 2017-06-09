@@ -14,8 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RepositoryAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RepositoryNotFoundException;
-import de.arthurkaul.archref.model.topologyTemplate.TopologyTemplate;
-import de.arthurkaul.archref.services.topologytemplate.TopologyTemplateService;
+import de.arthurkaul.archref.model.topology.TopologyTemplate;
+import de.arthurkaul.archref.services.topology.TopologyTemplateService;
 
 
 @RestController

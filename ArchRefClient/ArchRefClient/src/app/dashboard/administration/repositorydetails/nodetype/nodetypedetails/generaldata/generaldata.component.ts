@@ -1,6 +1,6 @@
 import { Logger } from '../../../../../../../logger/logger';
-import { NodeType } from '../../../../../../shared/datamodel/topologymodel/nodetype';
-import { NodeTypeService } from '../../../../../../shared/dataservices/nodetype.service';
+import { NodeType } from '../../../../../../shared/datamodels/types/nodetype';
+import { NodeTypeService } from '../../../../../../shared/dataservices/types/nodetype.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FlashMessageService } from 'angular2-flash-message';

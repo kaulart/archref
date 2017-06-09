@@ -78,7 +78,7 @@ public class LevelGraphRelationController {
 							+ " not found.");
 		}
 
-
+		currentLevelGraphRelation = levelGraphRelation;
 		levelGraphRelationService.update(currentLevelGraphRelation);
 		return ResponseEntity.ok().body(currentLevelGraphRelation);
 	}

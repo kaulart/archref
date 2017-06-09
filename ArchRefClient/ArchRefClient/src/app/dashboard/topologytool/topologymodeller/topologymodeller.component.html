@@ -15,7 +15,7 @@
 			</div>
 			<div class="col-sm-12">
 				<label class="col-sm-2 w3-center">Abstract Topology</label>
-			<!--  	<md-slider class="col-sm-8 w3-center" min="1" max="5" step="1" value="1"></md-slider>-->
+				<md-slider class="col-sm-6 w3-center" ng-model="myValue" min="5" max="500"> </md-slider>
 				<label class="col-sm-2 w3-center">Specific Topology</label>
 			</div>
 			<div class="col-sm-12 w3-center">
@@ -24,29 +24,13 @@
 				</button>
 				<button class="btn btn-primary w3-green" type="button" (click)="startRefinement()">Refinement</button>
 				<button class="btn btn-primary w3-green" type="button" (click)="startOneStepRefinement()">One Step Refinement</button>
-
-				<!--  	<button class="btn btn-primary w3-green" type="button" (click)="updateTopologyTemplate()">
-					NodeTemplate Refinement
-				</button>
-				
-				<button class="btn btn-primary w3-green" type="button" (click)="updateTopologyTemplate()">
-					One Step NodeTemplate Refinement
-				</button>
-				
-				<button class="btn btn-primary w3-green" type="button" (click)="updateTopologyTemplate()">
-					RelationshipTemplate Refinement
-				</button>
-				
-				<button class="btn btn-primary w3-green" type="button" (click)="updateTopologyTemplate()">
-					One RelationshipTemplate Refinement
-				</button>-->
 			</div>
 		</div>
 
 		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme" style="margin: 0px; padding: 10px; margin-top: 10px;">
 
 			<h5 style="width: 100% w3-theme-d4">Toolbox</h5>
-		<!-- 	<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
+			<!-- 	<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
 
 			<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes"
 				aria-expanded="false" aria-controls="toolbox_nodes">
@@ -69,9 +53,7 @@
 
 				<div class="dropdown">
 					<label>Selected Level Graph:</label>
-					<button style="width: 100%" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedLevelGraph.name}}
-
-					</button>
+					<button style="width: 100%" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedLevelGraph.name}}</button>
 
 					<ul class="dropdown-menu">
 						<li *ngIf="levelGraphList.length < 1" disabled>NO LEVEL GRAPH AVAILABLE</li>
@@ -81,8 +63,7 @@
 				</div>
 
 				<label>NodeTypes of Level {{abstractionLevel}} of Level Graph:</label>
-				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse"
-					data-target="#levelGraph_nodeTypes" aria-expanded="false" aria-controls="levelGraph_nodeTypes">
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#levelGraph_nodeTypes" aria-expanded="false" aria-controls="levelGraph_nodeTypes">
 					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 				</button>
 
@@ -90,9 +71,7 @@
 					<ul style="padding: 5px" id="nodeTypesList" class=" list-group" style="height:300px; overflow: auto">
 						<ng-container *ngFor="let levelGraphNode of selectedLevelGraph.levelGraphNodes">
 
-						<li *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE' && isInCurrentLevel(levelGraphNode.levelId))" class="nodeTemplate w3-round"
-							draggable="true" (drag)="onDragLevelGraphNode($event, levelGraphNode.typeRef)" (dragover)="onDragOver($event)"><img
-							src="http://lorempixum.com/100/100/nature/1" />
+						<li *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE' && isInCurrentLevel(levelGraphNode.levelId))" class="nodeTemplate w3-round" draggable="true" (drag)="onDragLevelGraphNode($event, levelGraphNode.typeRef)" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
 							<h3>{{levelGraphNode.name}}</h3></li>
 						</ng-container>
 					</ul>
@@ -102,8 +81,7 @@
 
 		</div>
 
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mouseup)="mouseUpOnDrawArea()"
-			(mousemove)="onMoveNode($event)">
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" style="overflow: scroll; height: 800px;" (mouseup)="mouseUpOnDrawArea()" (mousemove)="onMoveNode($event)">
 
 
 			<svg id="parent" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
@@ -138,13 +116,10 @@
 						[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
 					</g>-->
 				
-				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates"
-					(mousedown)="mouseDownOnNode($event, nodeTemplate)" (mouseup)="mouseUpOnNode($event)">
+				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mousedown)="mouseDownOnNode($event, nodeTemplate)" (mouseup)="mouseUpOnNode($event)">
 						
-					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width"
-					[attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
-							<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/2" font-family="Verdana" font-size="35"
-					fill="white" text-anchor="middle">{{nodeTemplate.name}}</text>
+					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
+							<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{nodeTemplate.name}}</text>
 						
 				</g>
 				
@@ -160,9 +135,7 @@
 <contextmenu #nodeTemplateContextMenu>
 <div class="dropdown open">
 	<div class="dropdown-menu">
-		<a *ngFor="let relation of " class="dropdown-item" (onMouseDown)="startDrawRelation(nodeTemplateContextMenu.get('nodeTemplate'))"><i
-			class="fa fa-trash" aria-hidden="true"></i>Delete</a> <a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i
-			class="fa fa-eye" aria-hidden="true"></i>View Details</a> <a class="dropdown-item"
+		<a *ngFor="let relation of " class="dropdown-item" (onMouseDown)="startDrawRelation(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a> <a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a> <a class="dropdown-item"
 			(click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
 	</div>
 </div>
@@ -172,9 +145,7 @@
 <div class="dropdown open">
 	<div class="dropdown-menu">
 
-		<a class="dropdown-item" (click)="viewDetails(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye"
-			aria-hidden="true"></i>View Details</a> <a class="dropdown-item"
-			(click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+		<a class="dropdown-item" (click)="viewDetails(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a> <a class="dropdown-item" (click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
 	</div>
 </div>
 </contextmenu>

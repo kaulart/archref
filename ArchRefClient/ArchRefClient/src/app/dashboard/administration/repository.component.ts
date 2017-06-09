@@ -1,5 +1,5 @@
 import { Logger } from '../../../logger/logger';
-import { Repository } from '../../shared/datamodel/repository';
+import { Repository } from '../../shared/datamodels/repository';
 import { RepositoryService } from '../../shared/dataservices/repository.service';
 import { Utility } from '../../utility';
 import { Component, OnInit } from '@angular/core';
@@ -39,9 +39,6 @@ export class RepositoryComponent implements OnInit {
     this.repositoryService.createRepository(repository)
       .subscribe(repositoryResponse => {
         this.repositories.push(repositoryResponse);
-        this.flashMessage.message = 'Info: Repository with name: ' + repositoryResponse.name + ' was created sucessfully with id: ' + repositoryResponse.id;
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Repository with name: ' + repositoryResponse.name + ' was created sucessfully with id: ' + repositoryResponse.id, RepositoryComponent.name);
       },
       (error) => {
@@ -61,9 +58,6 @@ export class RepositoryComponent implements OnInit {
     this.repositoryService.getRepositories()
       .subscribe(repositoriesResponse => {
         this.repositories = repositoriesResponse;
-        this.flashMessage.message = 'Repositories retrieved sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
       },
       (error) => {
@@ -85,9 +79,6 @@ export class RepositoryComponent implements OnInit {
     this.repositoryService.updateRepository(this.editedRepository)
       .subscribe(repositoryResponse => {
         this.repositories = Utility.updateElementInArry(repositoryResponse, this.repositories);
-        this.flashMessage.message = 'Repository with id: ' + repositoryResponse.id + ' and name: ' + repositoryResponse.name + ' was updated sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Repository with id: ' + repositoryResponse.id + ' and name:' + repositoryResponse.name + ' was updated sucessfully.', RepositoryComponent.name);
       },
       (error) => {
@@ -108,9 +99,6 @@ export class RepositoryComponent implements OnInit {
     this.repositoryService.deleteRepository(id)
       .subscribe(repositoryResponse => {
         this.repositories = Utility.deleteElementFromArry(id, this.repositories);
-        this.flashMessage.message = 'Repository with id: ' + id + ' was deleted sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Repository with id: ' + id + ' was deleted sucessfully.', RepositoryComponent.name);
       },
       (error) => {

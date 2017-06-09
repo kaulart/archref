@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import de.arthurkaul.archref.model.topologyTemplate.NodeType;
-import de.arthurkaul.archref.model.topologyTemplate.RelationshipType;
+import de.arthurkaul.archref.model.types.NodeType;
+import de.arthurkaul.archref.model.types.RelationshipType;
 
 @Entity
 

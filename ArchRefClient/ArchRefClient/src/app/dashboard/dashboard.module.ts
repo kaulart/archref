@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Ng2BootstrapModule } from 'ng2-bootstrap';
-import { FileUploadModule } from 'ng2-file-upload';
 import { DashboardComponent } from './dashboard.component';
 import { TopNavComponent } from '../shared/index';
 import { FlashMessageModule } from 'angular2-flash-message';

@@ -1,14 +1,14 @@
 import { Logger } from '../../../../../logger/logger';
-import { Repository } from '../../../../shared/datamodel/repository';
-import { NodeType } from '../../../../shared/datamodel/topologymodel/nodetype';
-import { NodeTypeService } from '../../../../shared/dataservices/nodetype.service';
+import { Repository } from '../../../../shared/datamodels/repository';
+import { NodeType } from '../../../../shared/datamodels/types/nodetype';
+import { NodeTypeService } from '../../../../shared/dataservices/types/nodetype.service';
 import { Utility } from '../../../../utility';
 import { Component, OnInit, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
 
-const URL = 'api/icon';
+const URL = '/api/fileupload/nodetype';
 
 @Component({
   selector: 'app-nodetype',
@@ -48,10 +48,18 @@ export class NodeTypeComponent implements OnInit {
    ****************************************************************************************************************/
   createNodeType() {
 
+
     Logger.info('Create NodeType', NodeTypeComponent.name);
-    this.nodeType.setRepository(this.currentRepository);
+    this.nodeType.repository = this.currentRepository;
     this.nodeTypeService.createNodeType(this.nodeType)
       .subscribe(nodeTypeResponse => {
+        let tempURL = URL + '/' + nodeTypeResponse.id
+        this.uploader.setOptions({ url: tempURL });
+        this.uploader.uploadAll();
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+          nodeTypeResponse.icon = item.url + '/' + response;
+          this.nodeTypeService.updateNodeType(nodeTypeResponse).subscribe();
+        };
         this.currentRepository.nodeTypeList.push(nodeTypeResponse);
         this.flashMessage.message = 'Info: NodeType with name: ' + nodeTypeResponse.name + ' was created sucessfully with id: ' + nodeTypeResponse.id;
         this.flashMessage.isSuccess = true;
@@ -63,6 +71,7 @@ export class NodeTypeComponent implements OnInit {
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
       });
+
   }
 
   /****************************************************************************************************************

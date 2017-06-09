@@ -2,16 +2,16 @@ package de.arthurkaul.archref.services.levelgraph;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.levelgraph.FragmentNode;
+import de.arthurkaul.archref.model.types.FragmentType;
 
 public interface FragmentNodeInterface {
-	  Collection<FragmentNode> findAllFragmentNodes();
+	  Collection<FragmentType> findAllFragmentNodes();
 	    
-	  FragmentNode findById(long id);
+	  FragmentType findById(long id);
 
-	  FragmentNode create(FragmentNode fragmentNode);
+	  FragmentType create(FragmentType fragmentNode);
 
-	  FragmentNode update(FragmentNode fragmentNode);
+	  FragmentType update(FragmentType fragmentNode);
 
 	    void delete(long id);
 	    

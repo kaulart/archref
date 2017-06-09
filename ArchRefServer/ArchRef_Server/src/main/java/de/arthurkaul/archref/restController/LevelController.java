@@ -75,7 +75,7 @@ public class LevelController {
 							+ " not found.");
 		}
 
-		currentLevel.setName(level.getName());
+		currentLevel = level;
 
 		levelService.update(currentLevel);
 		return ResponseEntity.ok().body(currentLevel);

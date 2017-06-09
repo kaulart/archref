@@ -19,10 +19,6 @@
 				<div class="col-sm-12 form-group">
 					<label for="name">Name:</label> <input #name #name="ngModel" name="name" type="text" [(ngModel)]="topologyTemplate.name" class="form-control"
 						id="name" value="{{topologyTemplate.name}}" required>
-					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
-						<div [hidden]="!name.errors.required">Name is required</div>
-
-					</div>
 				</div>
 
 				<button type="submit" class="btn btn-success" (click)="createTopologyTemplate(name.value)">Create</button>
@@ -68,8 +64,8 @@
 						aria-hidden="true"></i></td>
 					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topologyTemplates.indexOf(topology)
 						+1 }}</td>
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getName() }}</td>
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.getId() }}</td>
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.name }}</td>
+					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.id }}</td>
 					<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal"
 							(click)="setEditTopologyTemplate(topology)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>

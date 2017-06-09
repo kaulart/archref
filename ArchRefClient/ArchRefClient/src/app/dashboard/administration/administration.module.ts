@@ -8,11 +8,13 @@ import { RepositoryComponent } from './repository.component';
 import { RouterModule } from '@angular/router';
 import { RepositoryDetailsComponent } from './repositorydetails/repositorydetails.component';
 import { RepositoryDetailsModule } from './repositorydetails/repositorydetails.module';
+import { LevelgrahdetailsComponent } from './levelgrahdetails/levelgrahdetails.component';
+import { TopologytemplatedetailsComponent } from './topologytemplatedetails/topologytemplatedetails.component';
 
 
 @NgModule({
     imports: [RepositoryDetailsModule, TopologyTemplateToolModule, LevelGraphToolModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
-    declarations: [ AdministrationComponent, RepositoryComponent, RepositoryDetailsComponent],
+    declarations: [ AdministrationComponent, RepositoryComponent, RepositoryDetailsComponent, LevelgrahdetailsComponent, TopologytemplatedetailsComponent],
     exports: [ AdministrationComponent, RepositoryComponent]
 })
 

@@ -14,8 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import de.arthurkaul.archref.exceptions.RelationshipTypeAlreadyExistException;
 import de.arthurkaul.archref.exceptions.RelationshipTypeNotFoundException;
-import de.arthurkaul.archref.model.topologyTemplate.RelationshipType;
-import de.arthurkaul.archref.services.RelationshipService;
+import de.arthurkaul.archref.model.types.RelationshipType;
+import de.arthurkaul.archref.services.topology.RelationshipService;
 
 @RestController
 public class RelationshipTypeController {
@@ -57,6 +57,7 @@ public class RelationshipTypeController {
 		if (relationshipType.getId() != null) {
 			throw new RelationshipTypeAlreadyExistException("RelationshipTypeAlreadyExistException: Unable to create NodeType. RelationshipType with id " + relationshipType.getId() + " already exist.");          	
         }
+		
 		RelationshipType saved = relationTypeService.create(relationshipType);
 		
        return ResponseEntity.created(ucBuilder.path("/api/relationshiptype/{id}").buildAndExpand(relationshipType.getId()).toUri()).body(saved);
@@ -71,8 +72,10 @@ public class RelationshipTypeController {
        if (currentRelationshipType == null) {
        	     throw new RelationshipTypeNotFoundException("RelationshipTypeNotFoundException: Unable to update RelationshipType. RelationshipType with id " + id + " not found.");          
        }
-
        currentRelationshipType = relationshipType;
+//       currentRelationshipType.setName(relationshipType.getName());
+//       currentRelationshipType.setIcon(relationshipType.getIcon());
+//       currentRelationshipType.setProvidedProperties(relationshipType.getProvidedProperties());
 
        relationTypeService.update(currentRelationshipType);
        return ResponseEntity.ok().body(currentRelationshipType);

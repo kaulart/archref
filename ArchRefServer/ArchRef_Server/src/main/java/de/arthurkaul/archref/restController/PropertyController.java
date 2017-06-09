@@ -73,9 +73,9 @@ public class PropertyController {
 					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
 							+ " not found.");
 		}
-		
-		propertyService.update(property);
-		return ResponseEntity.ok().body(property);
+		currentProperty = property;
+		propertyService.update(currentProperty);
+		return ResponseEntity.ok().body(currentProperty);
 	}
 
 	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.DELETE)

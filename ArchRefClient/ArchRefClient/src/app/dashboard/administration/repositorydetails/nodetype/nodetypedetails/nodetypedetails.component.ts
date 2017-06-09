@@ -1,10 +1,11 @@
 import { Logger } from '../../../../../../logger/logger';
-import { NodeType } from '../../../../../shared/datamodel/topologymodel/nodetype';
-import { NodeTypeService } from '../../../../../shared/dataservices/nodetype.service';
+import { NodeType } from '../../../../../shared/datamodels/types/nodetype';
+import { NodeTypeService } from '../../../../../shared/dataservices/types/nodetype.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
+
 
 @Component({
   selector: 'app-nodetypedetails',

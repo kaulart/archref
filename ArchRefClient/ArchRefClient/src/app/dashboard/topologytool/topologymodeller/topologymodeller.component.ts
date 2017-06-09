@@ -1,23 +1,23 @@
 import { Logger } from '../../../../logger/logger';
-import { TOPOLOGYTEMPLATECONSTANTS } from '../../../constants/topologytemplateconstants';
-import { LevelGraph } from '../../../shared/datamodel/levelgraphmodel/levelgraph';
-import { NodeTemplate } from '../../../shared/datamodel/topologymodel/nodetemplate';
-import { NodeType } from '../../../shared/datamodel/topologymodel/nodetype';
-import { RelationshipTemplate } from '../../../shared/datamodel/topologymodel/relationshiptemplate';
-import { RelationshipType } from '../../../shared/datamodel/topologymodel/relationshiptype';
-import { TopologyTemplate } from '../../../shared/datamodel/topologymodel/topologytemplate';
-import { LevelGraphService } from '../../../shared/dataservices/levelgraph.service';
-import { NodeTemplateService } from '../../../shared/dataservices/nodetemplate.service';
-import { LevelService } from '../../../shared/dataservices/level.service';
-import { NodeTypeService } from '../../../shared/dataservices/nodetype.service';
-import { RelationshipTemplateService } from '../../../shared/dataservices/relationshiptemplate.service';
-import { RelationshipTypeService } from '../../../shared/dataservices/relationshiptype.service';
+import { TOPOLOGYTEMPLATECONSTANTS } from '../../../shared/constants/topologytemplateconstants';
+import { LEVELGRAPHNODETYPES } from '../../../shared/constants/levelgraphnodetype';
+import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
+import { NodeTemplate } from '../../../shared/datamodels/topology/nodetemplate';
+import { RelationshipTemplate } from '../../../shared/datamodels/topology/relationshiptemplate';
+import { TopologyTemplate } from '../../../shared/datamodels/topology/topologytemplate';
+import { NodeType } from '../../../shared/datamodels/types/nodetype';
+import { RelationshipType } from '../../../shared/datamodels/types/relationshiptype';
+import { LevelService } from '../../../shared/dataservices/levelgraph/level.service';
+import { LevelGraphService } from '../../../shared/dataservices/levelgraph/levelgraph.service';
+import { NodeTemplateService } from '../../../shared/dataservices/topologytemplate/nodetemplate.service';
+import { NodeTypeService } from '../../../shared/dataservices/types/nodetype.service';
+import { RelationshipTemplateService } from '../../../shared/dataservices/topologytemplate/relationshiptemplate.service';
+import { RelationshipTypeService } from '../../../shared/dataservices/types/relationshiptype.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TopologyTemplateService } from '../../../shared/dataservices/topologytemplate.service';
+import { TopologyTemplateService } from '../../../shared/dataservices/topologytemplate/topologytemplate.service';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
-
 
 @Component({
   selector: 'app-topologymodeller',
@@ -26,13 +26,14 @@ import { FlashMessage } from 'angular2-flash-message';
 })
 export class TopologyModellerComponent implements OnInit {
 
-  rootTopologyTemplate = new TopologyTemplate('');
+  LEVELGRAPHNODETYPES: LEVELGRAPHNODETYPES;
 
+  rootTopologyTemplate = new TopologyTemplate('');
   currentTopologyTemplate = new TopologyTemplate('');
   currentTopologyTemplateId: number;
   currentTopologyTemplateName: string;
 
-  selectedLevelGraph: LevelGraph = new LevelGraph('Select Level Graph', 0);
+  selectedLevelGraph: LevelGraph = new LevelGraph();
 
   moveNode: NodeTemplate;
 
@@ -75,11 +76,8 @@ export class TopologyModellerComponent implements OnInit {
     this.topologyTemplateService.getTopologyTemplate(id)
       .subscribe(topologyTemplateResponse => {
         this.currentTopologyTemplate = topologyTemplateResponse;
-        this.rootTopologyTemplate = topologyTemplateResponse;
-        this.flashMessage.message = 'Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name: ' + topologyTemplateResponse.getName() + 'was retrieved sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
-        Logger.info('Topology Template with id: ' + topologyTemplateResponse.getId() + ' and name: ' + topologyTemplateResponse.getName() + 'was retrieved sucessfully.', TopologyModellerComponent.name);
+        // TODO this.rootTopologyTemplate = topologyTemplateResponse;
+        Logger.info('Topology Template with id: ' + topologyTemplateResponse.id + ' and name: ' + topologyTemplateResponse.name + 'was retrieved sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
         this.flashMessage.message = error;
@@ -91,9 +89,6 @@ export class TopologyModellerComponent implements OnInit {
   retrieveNodeTypes() {
     this.nodeTypeService.getNodeTypes().subscribe(nodeTypeResponse => {
       this.nodeTypeList = nodeTypeResponse;
-      this.flashMessage.message = 'NodeType were retrieved sucessfully.';
-      this.flashMessage.isSuccess = true;
-      this.flashMessageService.display(this.flashMessage);
       Logger.info('Nodetypes were retrieved sucessfully', TopologyModellerComponent.name);
     },
       (error) => {
@@ -106,9 +101,6 @@ export class TopologyModellerComponent implements OnInit {
   retrieveRelationshipTypes() {
     this.relationshipTypeService.getRelationshipTypes().subscribe(relationshipTypeResponse => {
       this.relationshipTypeList = relationshipTypeResponse;
-      this.flashMessage.message = 'RelationshipTypes were retrieved sucessfully.';
-      this.flashMessage.isSuccess = true;
-      this.flashMessageService.display(this.flashMessage);
       Logger.info('RelationshipTypes were retrieved sucessfully', TopologyModellerComponent.name);
     },
       (error) => {
@@ -121,9 +113,6 @@ export class TopologyModellerComponent implements OnInit {
   retrieveLevelGraphs() {
     this.levelGraphService.getLevelGraphs().subscribe(levelGraphsResponse => {
       this.levelGraphList = levelGraphsResponse;
-      this.flashMessage.message = 'LevelGraphs were retrieved sucessfully.';
-      this.flashMessage.isSuccess = true;
-      this.flashMessageService.display(this.flashMessage);
       Logger.info('LevelGraphs were retrieved sucessfully', TopologyModellerComponent.name);
     },
       (error) => {
@@ -149,8 +138,11 @@ export class TopologyModellerComponent implements OnInit {
    *
    ****************************************************************************************************************************************/
   onDragLevelGraphNode(event, nodeTypeId: number) {
-    this.nodeTypeService.getNodeType(nodeTypeId).subscribe(nodeTypeResponse => this.currentDragData = nodeTypeResponse);
-    this.drag = true;
+
+    if (this.drag === false) {
+      this.nodeTypeService.getNodeType(nodeTypeId).subscribe(nodeTypeResponse => this.currentDragData = nodeTypeResponse);
+      this.drag = true;
+    }
   }
 
   /*****************************************************************************************************************************************
@@ -182,12 +174,10 @@ export class TopologyModellerComponent implements OnInit {
    *
    ****************************************************************************************************************************************/
   mouseDownOnNode(event: MouseEvent, nodeTemplate: NodeTemplate) {
-
     this.mousedownOnNodeTemplate = true;
     this.lastMousePositionY = event.offsetY;
     this.lastMousePositionX = event.offsetX;
     this.moveNode = nodeTemplate;
-
   }
 
   onMoveNode(event: MouseEvent) {
@@ -200,7 +190,6 @@ export class TopologyModellerComponent implements OnInit {
       if ((this.moveNode.x + deltaX) > 0) {
         this.moveNode.x = (this.moveNode.x + deltaX);
       }
-
 
       if ((this.moveNode.y + deltaY) > 0) {
         this.moveNode.y = (this.moveNode.y + deltaY);
@@ -215,6 +204,7 @@ export class TopologyModellerComponent implements OnInit {
     this.mousedownOnNodeTemplate = false;
     this.lastMousePositionY = event.offsetY;
     this.lastMousePositionX = event.offsetX;
+    this.nodeTemplateService.updateNodeTemplate(this.moveNode).subscribe();
   }
 
   mouseUpOnDrawArea() {
@@ -225,7 +215,7 @@ export class TopologyModellerComponent implements OnInit {
 
     this.nodeTemplateService.createNodeTemplate(nodeTemplate)
       .subscribe(nodeTemplateResponse => {
-        this.currentTopologyTemplate.addNodeTemplate(nodeTemplateResponse);
+        this.currentTopologyTemplate.nodeTemplates.push(nodeTemplateResponse);
         this.topologyTemplateService.updateTopologyTemplate(this.currentTopologyTemplate).subscribe();
         //     this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
         this.flashMessage.message = 'Node Template was sucessfully created with id: ' + nodeTemplateResponse.id;
@@ -250,10 +240,7 @@ export class TopologyModellerComponent implements OnInit {
     this.levelGraphService.getLevelGraph(id)
       .subscribe(levelGraphResponse => {
         this.selectedLevelGraph = levelGraphResponse;
-        this.flashMessage.message = 'Level Graphs with id: ' + levelGraphResponse.id + ' retrieved sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
-        Logger.info('Level Graphs with id: ' + levelGraphResponse.id + ' retrieved sucessfully.', TopologyModellerComponent.name);
+        Logger.info('Level Graphs with id: ' + levelGraphResponse.getId() + ' retrieved sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
         this.flashMessage.message = error;
@@ -272,11 +259,7 @@ export class TopologyModellerComponent implements OnInit {
 
   deleteNodeTemplate(nodeTemplate: NodeTemplate) {
     this.nodeTemplateService.deleteNodeTemplate(nodeTemplate.id).subscribe(nodeTemplateResponse => {
-      this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
-      this.flashMessage.message = 'Node Template with id: ' + nodeTemplate.id + ' deleted sucessfully.';
-      this.flashMessage.isSuccess = true;
-      this.flashMessage.isError = false;
-      this.flashMessageService.display(this.flashMessage);
+      this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
       Logger.info('Node Template with id: ' + nodeTemplate.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
     },
       (error) => {
@@ -290,11 +273,7 @@ export class TopologyModellerComponent implements OnInit {
   deleteRelationshipTemplate(relationshipTemplate: RelationshipTemplate) {
     this.relationshipTemplateService.deleteRelationshipTemplate(relationshipTemplate.id)
       .subscribe(relationshipTemplateResponse => {
-        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.getId()).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
-        this.flashMessage.message = 'Relationship Template with id: ' + relationshipTemplateResponse.id + ' deleted sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessage.isError = false;
-        this.flashMessageService.display(this.flashMessage);
+        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
         Logger.info('Relationship Template with  id: ' + relationshipTemplateResponse.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
@@ -328,19 +307,19 @@ export class TopologyModellerComponent implements OnInit {
   //  }
 
   isNodeTypeEqual(nodeTypeId: number, nodeTemplate: NodeTemplate) {
-    alert(nodeTypeId + " " + JSON.stringify(nodeTemplate));
+
 
   }
 
-  isInCurrentLevel(levelId: number) {
-    for (let level of this.selectedLevelGraph.levels) {
-      if (level.id === levelId) {
-        if (level.value === this.abstractionLevel) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-  }
+  //  isInCurrentLevel(levelId: number) {
+  //    for (let level of this.selectedLevelGraph.getLevels()) {
+  //      if (level.id === levelId) {
+  //        if (level.value === this.abstractionLevel) {
+  //          return true;
+  //        } else {
+  //          return false;
+  //        }
+  //      }
+  //    }
+  //  }
 }

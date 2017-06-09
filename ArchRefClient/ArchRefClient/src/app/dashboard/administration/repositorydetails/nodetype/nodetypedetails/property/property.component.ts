@@ -1,7 +1,7 @@
-import { NodeType } from '../../../../../../shared/datamodel/topologymodel/nodetype';
-import { Property } from '../../../../../../shared/datamodel/topologymodel/property';
-import { PropertyService } from '../../../../../../shared/dataservices/property.service';
-import { NodeTypeService } from '../../../../../../shared/dataservices/nodetype.service';
+import { Property } from '../../../../../../shared/datamodels/metrics/property';
+import { NodeType } from '../../../../../../shared/datamodels/types/nodetype';
+import { PropertyService } from '../../../../../../shared/dataservices/metrics/property.service';
+import { NodeTypeService } from '../../../../../../shared/dataservices/types/nodetype.service';
 
 import { Component, OnInit, Input } from '@angular/core';
 
@@ -51,7 +51,7 @@ export class PropertyComponent implements OnInit {
     this.editProperty = new Property(property.name, property.value);
     this.editProperty.id = property.id;
 
-    let nodeType = new NodeType(this.currentNodeType.name, this.currentNodeType.getRepository());
+    let nodeType = new NodeType(this.currentNodeType.name, this.currentNodeType.repository.id);
     nodeType.providedProperties = [];
     nodeType.id = this.currentNodeType.id;
     this.editProperty.nodeType = nodeType;
