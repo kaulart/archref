@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.graph.Relation;
 import de.arthurkaul.archref.model.levelgraph.LevelGraphRelation;
 
 @Entity
@@ -32,8 +33,8 @@ public class Path {
 	private Collection<Point> points;
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="path")
-	@JsonBackReference  (value="levelgraphrelation-path")
-	private LevelGraphRelation levelGraphRelation;
+	@JsonBackReference  (value="relation-path")
+	private Relation relation;
 
 	public Long getId() {
 		return id;
@@ -59,13 +60,12 @@ public class Path {
 		this.points = points;
 	}
 
-	public LevelGraphRelation getLevelGraphRelation() {
-		return levelGraphRelation;
+	public Relation getRelation() {
+		return relation;
 	}
 
-	public void setLevelGraphRelation(LevelGraphRelation levelGraphRelation) {
-		this.levelGraphRelation = levelGraphRelation;
+	public void setRelation(Relation relation) {
+		this.relation = relation;
 	}
-
 
 }

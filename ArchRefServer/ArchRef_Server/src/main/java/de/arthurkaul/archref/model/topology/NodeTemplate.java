@@ -5,83 +5,49 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import de.arthurkaul.archref.model.Property;
-import de.arthurkaul.archref.model.PropertyConstraint;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import de.arthurkaul.archref.model.graph.Node;
 import de.arthurkaul.archref.model.types.NodeType;
 
 @Entity
-@Table(name = "NODE_TEMPLATE")
-public class NodeTemplate {
-
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	private Long id;
-	
-
-	@Column(name = "NAME")
-	private String name;
+@Table(name = "NODETEMPLATE")
+public class NodeTemplate extends Node{
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "NODETYPE_ID")
+	@JoinColumn(name = "NODETYPE")
 	private NodeType nodeType;
 
-	@Column(name = "MININSTANCES")
-	private Integer minInstances;
+	@Column(name = "NODETYPE_ID")
+	private Long nodeTypeId;
+	
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="targetNodeTemplate")
+    @Cascade(CascadeType.ALL)
+	@JsonManagedReference (value="inRelationshipTemplates-targetNodeTemplate")
+	private Collection<RelationshipTemplate> inRelationshipTemplates;
 
-	@Column(name = "MAXINSTANCES")
-	private Integer maxInstances1;
-
-	@ManyToMany
-	@JoinTable(name = "NODETEMPLATE_PROPERTY", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PROPERTY_ID", referencedColumnName = "ID"))
-	private Collection<Property> propertyList;
-
-	@ManyToMany
-	@JoinTable(name = "NODETEMPLATE_PROPERTYCONSTRAINT", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PROPERTYCONSTRAINT_ID", referencedColumnName = "ID"))
-	private Collection<PropertyConstraint> propertyConstraintList;
+	@OneToMany (fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
+	@Cascade( CascadeType.ALL )
+	@JsonManagedReference(value = "outRelationsipTemplates-sourceNodeTemplate")
+	private Collection<RelationshipTemplate> outRelationsipTemplates;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TOPOLOGYTEMPLATE_NODE_ID")
+	@JoinColumn(name = "TOPOLOGYTEMPLATE")
 	@JsonBackReference(value="topologyTemplate-nodeTemplate")
 	private TopologyTemplate topologyTemplate;
 
-	@Column(name = "X")
-	private Integer x;
-
-	@Column(name = "Y")
-	private Integer y;
-
-	@Column(name = "WIDTH")
-	private Integer width;
-
-	@Column(name = "HEIGHT")
-	private Integer height;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	@Column(name = "TOPOLOGYTEMPLATE_ID")
+	private Long topologyTemplateId;
+	
 	public NodeType getNodeType() {
 		return nodeType;
 	}
@@ -90,68 +56,44 @@ public class NodeTemplate {
 		this.nodeType = nodeType;
 	}
 
-	public Integer getMinInstances() {
-		return minInstances;
+	public Long getTopologyTemplateId() {
+		return topologyTemplateId;
 	}
 
-	public void setMinInstances(Integer minInstances) {
-		this.minInstances = minInstances;
+	public void setTopologyTemplateId(Long topologyTemplateId) {
+		this.topologyTemplateId = topologyTemplateId;
 	}
 
-	public Integer getMaxInstances1() {
-		return maxInstances1;
+	public TopologyTemplate getTopologyTemplate() {
+		return topologyTemplate;
 	}
 
-	public void setMaxInstances1(Integer maxInstances1) {
-		this.maxInstances1 = maxInstances1;
+	public void setTopologyTemplate(TopologyTemplate topologyTemplate) {
+		this.topologyTemplate = topologyTemplate;
 	}
 
-	public Collection<Property> getPropertyList() {
-		return propertyList;
+	public Long getNodeTypeId() {
+		return nodeTypeId;
 	}
 
-	public void setPropertyList(Collection<Property> propertyList) {
-		this.propertyList = propertyList;
+	public void setNodeTypeId(Long nodeTypeId) {
+		this.nodeTypeId = nodeTypeId;
 	}
 
-	public Collection<PropertyConstraint> getPropertyConstraintList() {
-		return propertyConstraintList;
+	public Collection<RelationshipTemplate> getInRelationshipTemplates() {
+		return inRelationshipTemplates;
 	}
 
-	public void setPropertyConstraintList(Collection<PropertyConstraint> propertyConstraintList) {
-		this.propertyConstraintList = propertyConstraintList;
+	public void setInRelationshipTemplates(Collection<RelationshipTemplate> inRelationshipTemplates) {
+		this.inRelationshipTemplates = inRelationshipTemplates;
 	}
 
-	public Integer getX() {
-		return x;
+	public Collection<RelationshipTemplate> getOutRelationsipTemplates() {
+		return outRelationsipTemplates;
 	}
 
-	public void setX(Integer x) {
-		this.x = x;
-	}
-
-	public Integer getY() {
-		return y;
-	}
-
-	public void setY(Integer y) {
-		this.y = y;
-	}
-
-	public Integer getWidth() {
-		return width;
-	}
-
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
-
-	public Integer getHeight() {
-		return height;
-	}
-
-	public void setHeight(Integer height) {
-		this.height = height;
+	public void setOutRelationsipTemplates(Collection<RelationshipTemplate> outRelationsipTemplates) {
+		this.outRelationsipTemplates = outRelationsipTemplates;
 	}
 
 }

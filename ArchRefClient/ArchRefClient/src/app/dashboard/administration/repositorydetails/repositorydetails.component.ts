@@ -11,6 +11,15 @@ import { FlashMessage } from 'angular2-flash-message';
   templateUrl: './repositorydetails.component.html',
   styleUrls: ['./repositorydetails.component.css']
 })
+
+/*****************************************************************************************************************************
+ *
+ * @component AdministrationComponent - Lazy loaded component as wrapper for all other components in the
+ *                                      AdministrationComponent
+ *
+ * @author Arthur Kaul
+ *
+ ****************************************************************************************************************************/
 export class RepositoryDetailsComponent implements OnInit {
 
   currentRepository: Repository = new Repository('');

@@ -49,10 +49,9 @@ export class LevelGraphComponent implements OnInit {
    *  @numberOfLevels: number - Number of different levels in the LevelGraph
    *
    ****************************************************************************************************************/
-  createLevelGraph(name: string, numberOfLevels: number) {
-    let levelGraph: LevelGraph = new LevelGraph();
-    levelGraph.setName(name);
-    this.levelGraphService.createLevelGraph(levelGraph).subscribe(levelGraphResponse => {
+  createLevelGraph(numberOfLevels: number) {
+
+    this.levelGraphService.createLevelGraph(this.createdLevelGraph).subscribe(levelGraphResponse => {
       for (let i = 0; i < numberOfLevels; i++) {
         let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id);
         tempLevel.levelGraph = levelGraphResponse;
@@ -155,7 +154,7 @@ export class LevelGraphComponent implements OnInit {
   }
 
   removeLevel() {
-    if (this.levels > 1) {
+    if (this.levels > 2) {
       this.levels--;
     }
   }

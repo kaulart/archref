@@ -9,13 +9,21 @@ import { RouterModule } from '@angular/router';
 import { RepositoryDetailsComponent } from './repositorydetails/repositorydetails.component';
 import { RepositoryDetailsModule } from './repositorydetails/repositorydetails.module';
 import { LevelgrahdetailsComponent } from './levelgrahdetails/levelgrahdetails.component';
-import { TopologytemplatedetailsComponent } from './topologytemplatedetails/topologytemplatedetails.component';
+import { TopologyTemplateDetailsComponent } from './topologytemplatedetails/topologytemplatedetails.component';
 
 
 @NgModule({
-    imports: [RepositoryDetailsModule, TopologyTemplateToolModule, LevelGraphToolModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
-    declarations: [ AdministrationComponent, RepositoryComponent, RepositoryDetailsComponent, LevelgrahdetailsComponent, TopologytemplatedetailsComponent],
-    exports: [ AdministrationComponent, RepositoryComponent]
+  imports: [RepositoryDetailsModule, TopologyTemplateToolModule, LevelGraphToolModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
+  declarations: [AdministrationComponent, RepositoryComponent, RepositoryDetailsComponent, LevelgrahdetailsComponent, TopologyTemplateDetailsComponent],
+  exports: [AdministrationComponent, RepositoryComponent]
 })
 
+/*******************************************************************************************************************
+ *
+ * @module AdministrationModule - Lazy loaded module as wrapper for all application modules and components which
+ *                                should be accessible in the AdministrationModule
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************/
 export class AdministrationModule { }

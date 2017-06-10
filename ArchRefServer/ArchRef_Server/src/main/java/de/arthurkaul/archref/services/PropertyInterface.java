@@ -2,7 +2,7 @@ package de.arthurkaul.archref.services;
 
 import java.util.Collection;
 
-import de.arthurkaul.archref.model.Property;
+import de.arthurkaul.archref.model.metrics.Property;
 
 public interface PropertyInterface {
 		

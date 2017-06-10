@@ -5,7 +5,16 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './topologytemplatedetails.component.html',
   styleUrls: ['./topologytemplatedetails.component.css']
 })
-export class TopologytemplatedetailsComponent implements OnInit {
+
+/*****************************************************************************************************************************
+ *
+ * @component TopologyTemplateDetailsComponent - Lazy loaded component as wrapper for all other components in the
+ *                                               TopologyTemplateDetailsComponent
+ *
+ * @author Arthur Kaul
+ *
+ ****************************************************************************************************************************/
+export class TopologyTemplateDetailsComponent implements OnInit {
 
   constructor() { }
 

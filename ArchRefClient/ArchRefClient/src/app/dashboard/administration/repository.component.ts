@@ -12,31 +12,51 @@ import { FlashMessage } from 'angular2-flash-message';
   styleUrls: ['./repository.component.css']
 })
 
+/*********************************************************************************************************************************************
+ *
+ * @component RepositoryComponent Class - The component retrieve all available repositories in the database and list them. You can
+ *                                        delete, import, export or edit the repository. Also you can select a repository and
+ *                                        call the RepositoryDetailComponent where you can see all data which are included in a repository.
+ *
+ * @author Arthur Kaul
+ *
+ ********************************************************************************************************************************************/
 export class RepositoryComponent implements OnInit {
 
+  // list of all available Repositories in the database
   public repositories: Repository[] = [];
-  public createdRepository: Repository;
+
+  // Repository which should be created
+  public createdRepository: Repository = new Repository('Unnamed');
+
+  // Repository which should be edit
   public editedRepository: Repository = new Repository('');
+
+  // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
   public flashMessage = new FlashMessage();
 
   constructor(private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
 
+  /*********************************************************************************************************************************************
+   *
+   * @method ngOnInit is called when the component is initialized
+   *
+   ********************************************************************************************************************************************/
   ngOnInit() {
-    Logger.info('Iniitalize Repository Component', RepositoryComponent.name);
+    Logger.info('Initialize Repository Component', RepositoryComponent.name);
     this.flashMessage.timeoutInMS = 4000;
     this.retrieveRepositoryData();
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   *  Create Repository
-   *  @param name: string - Name of the repository
+   *  @method createRepository - Call the RepositoryService for creating a new Repository in the database
+   *                             and subscribe for a callback
    *
-   ****************************************************************************************************************/
-  createRepository(name: string) {
+   ********************************************************************************************************************************************/
+  createRepository() {
     Logger.info('Create Repository', RepositoryComponent.name);
-    let repository: Repository = new Repository(name);
-    this.repositoryService.createRepository(repository)
+    this.repositoryService.createRepository(this.createdRepository)
       .subscribe(repositoryResponse => {
         this.repositories.push(repositoryResponse);
         Logger.info('Repository with name: ' + repositoryResponse.name + ' was created sucessfully with id: ' + repositoryResponse.id, RepositoryComponent.name);
@@ -48,11 +68,12 @@ export class RepositoryComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   * Retrieve Repository Data - Load all data from database
+   *  @method retrieveRepositoryData - Call the RepositoryService for loading all repositories from database into the application and subscribe
+   *                                   for a callback. Currently no pagination/streaming of data is supported
    *
-   ****************************************************************************************************************/
+   ********************************************************************************************************************************************/
   private retrieveRepositoryData() {
     Logger.info('Retrieve Repository Data', RepositoryComponent.name);
     this.repositoryService.getRepositories()
@@ -67,12 +88,13 @@ export class RepositoryComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
-  *
-  * Update Repository - Update the repository data
-  * @param name - New name of the Repository
-  *
-  *****************************************************************************************************************/
+  /*********************************************************************************************************************************************
+   *
+   * @method updateRepository - Call the RepositoryService for updating the repository in the database and subscribe for a callback.
+   *
+   * @param name - New name of the Repository
+   *
+   ********************************************************************************************************************************************/
   updateRepository(name: string) {
     Logger.info('Update Repository', RepositoryComponent.name);
     this.editedRepository.name = name;
@@ -88,12 +110,13 @@ export class RepositoryComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   * Delete Repository
+   * @method deleteRepository - Call the RepositoryService for delete a repository from the database and subscribe for a callback.
+   *
    * @param id: number - ID of the repository witch should be deleted from the database
    *
-   ****************************************************************************************************************/
+   ********************************************************************************************************************************************/
   deleteRepository(id: number, event) {
     Logger.info('Delete Repository', RepositoryComponent.name);
     this.repositoryService.deleteRepository(id)
@@ -108,12 +131,20 @@ export class RepositoryComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
+  importRepository() {
+    // TODO
+  }
+
+  exportRepository() {
+    // TODO
+  }
+
+  /*********************************************************************************************************************************************
    *
-   * Set the editable Repository Data
+   * Set the edit Repository Data
    * @param repository - The repository witch should be edit
    *
-   ****************************************************************************************************************/
+   ********************************************************************************************************************************************/
   setEditRepositoryData(repository) {
     Logger.info('Set Edit Repository Data', RepositoryComponent.name);
     this.editedRepository = repository;

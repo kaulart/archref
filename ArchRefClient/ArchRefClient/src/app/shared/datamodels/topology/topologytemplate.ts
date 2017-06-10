@@ -16,7 +16,7 @@ export class TopologyTemplate extends Entity {
 
   abstractionLevel: number;
 
-  constructor(name) {
+  constructor(name: string) {
     super(name);
   }
 

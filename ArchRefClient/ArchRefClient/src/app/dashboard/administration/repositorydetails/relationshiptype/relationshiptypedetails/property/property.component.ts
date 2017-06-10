@@ -26,7 +26,7 @@ export class PropertyComponent implements OnInit {
 
   createProperty() {
 
-    this.property.relationshipType = this.currentRelationshipType;
+    this.property.entityProvided = this.currentRelationshipType;
     this.propertyService.createProperty(this.property).subscribe(responseProperty =>
       this.relationshipTypeService.getRelationshipType(this.currentRelationshipType.id).subscribe(responseRelationshipType => this.currentRelationshipType = responseRelationshipType));
 
@@ -51,7 +51,7 @@ export class PropertyComponent implements OnInit {
     relationshipType.repository = this.currentRelationshipType.repository;
     relationshipType.providedProperties = [];
     relationshipType.id = this.currentRelationshipType.id;
-    this.editProperty.relationshipType = relationshipType;
+    this.editProperty.entityProvided = relationshipType;
 
   }
 

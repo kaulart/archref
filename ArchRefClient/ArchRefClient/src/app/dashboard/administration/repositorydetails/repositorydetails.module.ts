@@ -9,9 +9,17 @@ import { RouterModule } from '@angular/router';
 import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-    imports: [NodeTypeDetailsModule, RelationshipTypeDetailsModule, CommonModule, FileUploadModule, RouterModule, Ng2BootstrapModule.forRoot()],
-    declarations: [ NodeTypeComponent, RelationshipTypeComponent],
-    exports: [ NodeTypeComponent, RelationshipTypeComponent]
+  imports: [NodeTypeDetailsModule, RelationshipTypeDetailsModule, CommonModule, FileUploadModule, RouterModule, Ng2BootstrapModule.forRoot()],
+  declarations: [NodeTypeComponent, RelationshipTypeComponent],
+  exports: [NodeTypeComponent, RelationshipTypeComponent]
 })
 
+/*******************************************************************************************************************
+ *
+ * @module RepositoryDetailsModule - Lazy loaded module as wrapper for all application modules and components which
+ *                                   should be accessible in the RepositoryDetailsModule
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************/
 export class RepositoryDetailsModule { }

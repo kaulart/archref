@@ -8,23 +8,24 @@
 
 				<h3 class="col-sm-4">Relationship Types</h3>
 
-				<button class="w3-right w3-green btn" id="createRelationshipType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
-					href="#createRelationshipTypeFieldsArea">
+				<button class="w3-right w3-green btn" id="createRelationshipType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createRelationshipTypeFieldsArea">
 					<i class="fa fa-plus" aria-hidden="true"></i> New
 				</button>
 
 			</div>
 
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createRelationshipTypeFieldsArea">
-				<form>
+				<form #createRelationshipTypeForm="ngForm">
 					<div class="col-sm-6 form-group">
-						<label for="nameRelationshipType">Name: </label> <input #nameRelationshipType type="text" class="form-control" id="nameRelationshipType"
-							value="Unnamed" required>
+						<label for="relationshipTypeName">Name: </label> <input #relationshipTypeName #relationshipTypeName="ngModel" name="name" type="text" class="form-control" id="relationshipTypeName" [(ngModel)]="relationshipType.name" type="text" class="form-control" value="{{relationshipType.name}}" required>
+					</div>
+					<div *ngIf="relationshipTypeName.errors && (relationshipTypeName.dirty || relationshipTypeName.touched)" class="alert alert-danger">
+						<div [hidden]="!relationshipTypeName.errors.required">Name is required</div>
 					</div>
 					<div class="col-sm-6 form-group">
 						<label for="icon">Icon: </label> <input class="form-control" #icon type="file" ng2FileSelect [uploader]="uploader" />
 					</div>
-					<button type="submit" class="btn btn-success" (click)="createRelationshipType(nameRelationshipType.value)">Create</button>
+					<button type="submit" [disabled]="!createRelationshipTypeForm.form.valid" class="btn btn-success" (click)="createRelationshipType()">Create</button>
 				</form>
 			</div>
 
@@ -46,16 +47,11 @@
 
 				<tbody>
 					<tr *ngFor="let relationshipType of currentRepository.relationshipTypeList">
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}"><i
-							class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
-							currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
-							relationshipType.name }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{
-							relationshipType.id }}</td>
-						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn"
-								(click)="setEditRelationshipType(relationshipType)">
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.name }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.id }}</td>
+						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn" (click)="setEditRelationshipType(relationshipType)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
 						<td><button class="btn" (click)="exportRelationshipType(relationshipType.id)">
@@ -74,8 +70,7 @@
 
 
 <!-- Modal for Edit Repository-->
-<div class="modal fade modal-position" id="editRelationshipTypeModal" tabindex="-1" role="dialog" data-backdrop="true"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="editRelationshipTypeModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">

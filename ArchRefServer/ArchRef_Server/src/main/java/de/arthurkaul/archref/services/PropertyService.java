@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.arthurkaul.archref.model.Property;
+import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.repositories.PropertyRepository;
 
 @Service

@@ -9,8 +9,8 @@ export class RelationshipTemplate extends Relation {
   relationshipType: RelationshipType;
   relationshipTypeId: number;
 
-  sourceElement: NodeTemplate;
-  targetElement: NodeTemplate;
+  sourceNodeTemplate: NodeTemplate;
+  targetNodeTemplate: NodeTemplate;
 
   topologyTemplate: TopologyTemplate;
   topologyTemplateId: number;

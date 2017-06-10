@@ -19,43 +19,15 @@ import de.arthurkaul.archref.model.types.RelationshipType;
 
 @Entity
 @Table(name="REPOSITORY")
-public class Repository {
+public class Repository extends de.arthurkaul.archref.model.Entity{
 	
-	@Id
-	@GeneratedValue()
-	@Column(name="ID")
-	private Long id;
-	
-	@Column(name="NAME")
-	@NotNull
-	private String name;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryNodeType")
-	@JsonManagedReference
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repository")
+	@JsonManagedReference(value="repository-nodeType")
 	private Collection<NodeType> nodeTypeList;
 	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repositoryRelationshipType")
-	@JsonManagedReference
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="repository")
+	@JsonManagedReference(value="repository-relationshipType")
 	private Collection<RelationshipType> relationshipTypeList;
-
-	public Long getId() {
-		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-    public String toString() {
-        return String.format(
-                "Repository: [id=%d, name='%s']",
-                id, name);
-    }
 
 	public Collection<NodeType> getNodeTypeList() {
 		return nodeTypeList;

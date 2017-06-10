@@ -1,6 +1,7 @@
 import { Point } from './point';
 export class Path {
 
+  id: number;
   pathDataString: string;
   points: Point[];
 

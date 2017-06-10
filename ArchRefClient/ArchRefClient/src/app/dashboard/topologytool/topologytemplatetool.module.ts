@@ -15,4 +15,12 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     exports: [TopologyTemplateToolComponent, TopologyTemplateComponent, TopologyModellerComponent]
 })
 
+/****************************************************************************************************************************************
+ *
+ * @module TopologyTemplateToolModule - Lazy loaded module as wrapper for all components which should be accessible in the
+ *                                      TopologyToolModule
+ *
+ * @author Arthur Kaul
+ *
+ ***************************************************************************************************************************************/
 export class TopologyTemplateToolModule { }

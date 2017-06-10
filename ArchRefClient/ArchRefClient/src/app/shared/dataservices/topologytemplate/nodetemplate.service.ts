@@ -77,7 +77,7 @@ export class NodeTemplateService {
     let nodeTemplateList: NodeTemplate[] = [];
     Logger.data('[RESPONSE - NODETEMPLATE]: ' + JSON.stringify(body), NodeTemplateService.name);
     for (let nodeTemplate of body) {
-      let tempNodeTemplate: NodeTemplate = new NodeTemplate(nodeTemplate.name, nodeTemplate.repositoryId, nodeTemplate.x, nodeTemplate.y, nodeTemplate.width, nodeTemplate.height);
+      let tempNodeTemplate: NodeTemplate = new NodeTemplate(nodeTemplate.name, nodeTemplate.x, nodeTemplate.y, nodeTemplate.width, nodeTemplate.height, nodeTemplate.nodeTypeId, nodeTemplate.topologyTemplateId);
       tempNodeTemplate.id = nodeTemplate.id;
       nodeTemplateList.push(tempNodeTemplate);
     }
@@ -93,7 +93,7 @@ export class NodeTemplateService {
     Logger.info('[RESPONSE - NODETEMPLATE]: Extract Data of Response Body', NodeTemplateService.name);
     let body = res.json();
     Logger.data('[RESPONSE - NODETEMPLATE]: ' + JSON.stringify(body), NodeTemplateService.name);
-    let nodeTemplate: NodeTemplate = new NodeTemplate(body.name, body.repositoryId, body.x, body.y, body.width, body.height);
+    let nodeTemplate: NodeTemplate = new NodeTemplate(body.name, body.x, body.y, body.width, body.height, body.nodeTypeId, body.topologyTemplateId);
     nodeTemplate.id = body.id;
     return nodeTemplate || {};
   }

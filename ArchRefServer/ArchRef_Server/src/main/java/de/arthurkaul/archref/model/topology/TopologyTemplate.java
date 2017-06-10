@@ -5,27 +5,18 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 
 @Entity
-@Table(name="TOPOLOGY_TEMPLATE")
-public class TopologyTemplate {
-	
-	@Id
-	@GeneratedValue()
-	@Column(name="ID")
-	private Long id;
-	
-	@Column(name="NAME")
-	private String name;
+@Table(name="TOPOLOGYTEMPLATE")
+public class TopologyTemplate extends de.arthurkaul.archref.model.Entity {
 
 	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="topologyTemplate")
 	@JsonManagedReference (value="topologyTemplate-nodeTemplate")
@@ -35,8 +26,17 @@ public class TopologyTemplate {
 	@JsonManagedReference (value="topologyTemplate-relationshipTemplate")
 	private Collection<RelationshipTemplate> relationshipTemplates;
 	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PARENTTOPOLOGYTEMPLATE")
+	@JsonBackReference (value="topologyTemplate-topologyTemplate")
+	private TopologyTemplate parentTopologyTemplate;
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="parentTopologyTemplate")
+	@JsonManagedReference (value="topologyTemplate-topologyTemplate")
+	private Collection<TopologyTemplate> childTopologyTemplates;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVELGRAPH_TOPOLOGYTEMPLATE")
+	@JoinColumn(name = "LEVELGRAPH")
 	@JsonBackReference (value="levelgraph-topologytemplate")
 	private LevelGraph levelGraph;
 	
@@ -45,22 +45,6 @@ public class TopologyTemplate {
 	
 	@Column(name = "ABSTRACTIONLEVEL")
 	private Long abstractionLevel;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public LevelGraph getLevelGraph() {
 		return levelGraph;

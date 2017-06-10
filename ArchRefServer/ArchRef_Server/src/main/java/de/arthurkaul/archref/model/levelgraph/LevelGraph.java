@@ -16,7 +16,7 @@ import de.arthurkaul.archref.model.topology.TopologyTemplate;
 
 @Entity
 @Table(name = "LEVELGRAPH")
-public class LevelGraph {
+public class LevelGraph extends de.arthurkaul.archref.model.Entity{
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levels")

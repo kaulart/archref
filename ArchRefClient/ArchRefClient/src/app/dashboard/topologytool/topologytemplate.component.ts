@@ -1,5 +1,4 @@
 import { Logger } from '../../../logger/logger';
-import { LevelGraph } from '../../shared/datamodels/levelgraph/levelgraph';
 import { TopologyTemplate } from '../../shared/datamodels/topology/topologytemplate';
 import { LevelGraphService } from '../../shared/dataservices/levelgraph/levelgraph.service';
 import { TopologyTemplateService } from '../../shared/dataservices/topologytemplate/topologytemplate.service';
@@ -13,31 +12,56 @@ import { FlashMessage } from 'angular2-flash-message';
   templateUrl: './topologytemplate.component.html',
   styleUrls: ['./topologytemplate.component.css']
 })
+
+/*************************************************************************************************************************************************
+ *
+ * @component TopologyTemplateComponent Class - The component retrieve all available TopologyTemplates in the database and list them. You can
+ *                                              delete, import, export or edit the TopologyTemplate. Also you can select a TopologyTemplate and
+ *                                              call the TopologyTemplateDetailComponent where you can see all data which are included in a
+ *                                              TopologyTemplate.
+ *
+ * @author Arthur Kaul
+ *
+ ************************************************************************************************************************************************/
 export class TopologyTemplateComponent implements OnInit {
 
-  topologyTemplates: TopologyTemplate[] = [];
-  topologyTemplate: TopologyTemplate = new TopologyTemplate('Unnamed');
-  levelGraphs: LevelGraph[] = [];
+  submitted = false;
 
+  // list of all available TopologyTemplates in the database
+  topologyTemplates: TopologyTemplate[] = [];
+
+  // TopologyTemplate which should be created
+  createdTopologyTemplate: TopologyTemplate = new TopologyTemplate('Unnamed');
+
+  // TopologyTemplate which should be edit
+  editTopologyTemplate: TopologyTemplate = new TopologyTemplate('Unnamed');
+
+  // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
   public flashMessage = new FlashMessage();
 
   constructor(private flashMessageService: FlashMessageService, private topologyTemplateService: TopologyTemplateService, private levelGraphService: LevelGraphService) { }
 
+  /*********************************************************************************************************************************************
+   *
+   * @method ngOnInit is called when the component is initialized
+   *
+   ********************************************************************************************************************************************/
   ngOnInit() {
+    Logger.info('Initialize TopologyTemplateComponent', TopologyTemplateComponent.name);
     this.flashMessage.timeoutInMS = 4000;
     this.retrieveTopologyTemplates();
-    this.retrieveLevelGraphs();
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   *  Create Level Graph
-   *  @param name: string - Name of the TopologyTemplate
+   *  @method createTopologyTemplate - Call the TopologyTemplateService for creating a new TopologyTemplate in the database
+   *                                   and subscribe for a callback
    *
-   ****************************************************************************************************************/
+   ********************************************************************************************************************************************/
   createTopologyTemplate() {
-    this.topologyTemplate.abstractionLevel = 1;
-    this.topologyTemplateService.createTopologyTemplate(this.topologyTemplate)
+    Logger.info('Create TopologyTemplate', TopologyTemplateComponent.name);
+    this.createdTopologyTemplate.abstractionLevel = 1;
+    this.topologyTemplateService.createTopologyTemplate(this.createdTopologyTemplate)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates.push(topologyTemplateResponse);
         Logger.info('TopologyTemplate with name: ' + topologyTemplateResponse.name + ' was created sucessfully with id: ' + topologyTemplateResponse.id, TopologyTemplateComponent.name);
@@ -49,33 +73,14 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   *  Retrieve Topology Template
+   *  @method retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
+   *                                      and subscribe for a callback. Currently no pagination/streaming of data is supported
    *
-   ****************************************************************************************************************/
-  retrieveLevelGraphs() {
-    this.levelGraphService.getLevelGraphs()
-      .subscribe(levelGraphResponse => {
-        this.levelGraphs = levelGraphResponse;
-        this.flashMessage.message = 'Level Graphs retrieved sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
-        Logger.info('Level Graphs retrieved sucessfully.', TopologyTemplateComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
-
-  /****************************************************************************************************************
-   *
-   *  Retrieve Topology Template
-   *
-   ****************************************************************************************************************/
+   ********************************************************************************************************************************************/
   retrieveTopologyTemplates() {
+    Logger.info('Retrieve TopologyTemplate Data', TopologyTemplateComponent.name);
     this.topologyTemplateService.getTopologyTemplates()
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = topologyTemplateResponse;
@@ -88,15 +93,17 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   * Update Topology Template - Update the Topology Template data
-   * @param name - New name of the Level Graph
+   * @method updateTopologyTemplate - Call the TopologyTemplateService for updating the repository in the database and subscribe for a callback.
    *
-   *****************************************************************************************************************/
-  updateTopologyTemplate() {
-
-    this.topologyTemplateService.updateTopologyTemplate(this.topologyTemplate)
+   * @param name - New name of the TopologyTemplate
+   *
+   ********************************************************************************************************************************************/
+  updateTopologyTemplate(name: string) {
+    Logger.info('Update TopologyTemplate', TopologyTemplateComponent.name);
+    this.editTopologyTemplate.name = name;
+    this.topologyTemplateService.updateTopologyTemplate(this.editTopologyTemplate)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = Utility.updateElementInArry(topologyTemplateResponse, this.topologyTemplates);
         Logger.info('Topology Template with id: ' + topologyTemplateResponse.id + ' and name:' + topologyTemplateResponse.name + ' was updated sucessfully.', TopologyTemplateComponent.name);
@@ -108,14 +115,15 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   * Delete Topology Template
-   * @param id: number - ID of the topology template witch should be deleted from the database
+   * @method deleteTopologyTemplate - Call the TopologyTemplateService for delete a TopologyTemplate from the database and subscribe for a callback.
    *
-   ****************************************************************************************************************/
+   * @param id: number - ID of the TopologyTemplate witch should be deleted from the database
+   *
+   ********************************************************************************************************************************************/
   deleteTopologyTemplate(id: number) {
-
+    Logger.info('Delete TopologyTemplate', TopologyTemplateComponent.name);
     this.topologyTemplateService.deleteTopologyTemplate(id)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = Utility.deleteElementFromArry(id, this.topologyTemplates);
@@ -128,14 +136,22 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
+  importTopologyTemplate() {
+    // TODO
+  }
+
+  exportTopologyTemplate() {
+    // TODO
+  }
+
   /*****************************************************************************************************************
    *
-   * Set the editable LevelGraph Data
-   * @param repository - The levelGraph witch should be edit
+   * Set the editable TopologyTemplate Data
+   * @param topologyTemplate: TopologyTemplate - The TopologyTemplate witch should be edit
    *
    ****************************************************************************************************************/
   setEditTopologyTemplate(topologyTemplate: TopologyTemplate) {
-    this.topologyTemplate = topologyTemplate;
+    this.editTopologyTemplate = topologyTemplate;
   }
 
 }

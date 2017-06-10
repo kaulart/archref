@@ -1,7 +1,13 @@
+<!-- Selector of the top navigation bar available in the entire application -->
 <app-top-nav></app-top-nav>
 
+<!-- Application Content -->
 <section class="w3-theme-l3 dashboard-container">
+	
+	<!-- Flash Message for display errors/warnings/success messages -->
 	<flash-message></flash-message>
+	
+	<!-- Router Outlet is used for display the components which are registered in the dashboard.routes.ts file-->
 	<router-outlet class="dashboard-router-outlet"></router-outlet>
-</section>
 
+</section>

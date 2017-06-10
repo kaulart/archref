@@ -28,7 +28,7 @@ export class PropertyComponent implements OnInit {
 
   createProperty() {
 
-    this.property.nodeType = this.currentNodeType;
+    this.property.entityProvided = this.currentNodeType;
     this.propertyService.createProperty(this.property).subscribe(responseProperty =>
       this.nodeTypeService.getNodeType(this.currentNodeType.id).subscribe(responseNodeType => this.currentNodeType = responseNodeType));
 
@@ -54,7 +54,7 @@ export class PropertyComponent implements OnInit {
     let nodeType = new NodeType(this.currentNodeType.name, this.currentNodeType.repository.id);
     nodeType.providedProperties = [];
     nodeType.id = this.currentNodeType.id;
-    this.editProperty.nodeType = nodeType;
+    this.editProperty.entityProvided = nodeType;
 
 
   }

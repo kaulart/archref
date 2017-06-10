@@ -9,7 +9,14 @@ import { LevelGraphToolRoutes } from './levelgraphtool/levelgraphtool.routes';
 import { TopologyModellerRoutes } from './topologytool/topologymodeller/topologymodeller.routes';
 import { TopologyTemplateToolRoutes } from './topologytool/topologytemplatetool.routes';
 
-
+/*******************************************************************************************************************
+ *
+ * @route DashboardRoutes - Path for the navigation handling in the front-end for all components and modules which
+ *                          should be accessible from the DashboardModule
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************/
 export const DashboardRoutes: Route[] = [
   {
     path: 'dashboard',

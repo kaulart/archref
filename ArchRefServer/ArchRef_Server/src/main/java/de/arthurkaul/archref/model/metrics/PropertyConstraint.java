@@ -1,4 +1,4 @@
-package de.arthurkaul.archref.model;
+package de.arthurkaul.archref.model.metrics;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

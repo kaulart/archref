@@ -1,87 +1,43 @@
 package de.arthurkaul.archref.model.topology;
-
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import de.arthurkaul.archref.model.Property;
-import de.arthurkaul.archref.model.PropertyConstraint;
+import de.arthurkaul.archref.model.graph.Relation;
 import de.arthurkaul.archref.model.types.RelationshipType;
 
-
 @Entity
-@Table(name="RELATIONSSHIP_TEMPLATE")
-public class RelationshipTemplate {
-
-	@Id
-	@GeneratedValue()
-	@Column(name="ID")
-	private Long id;
-	
-	@Column(name="NAME")
-	private String name;
+@Table(name="RELATIONSHIPTEMPLATE")
+public class RelationshipTemplate extends Relation {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="RELATIONSHIPTYPE_ID")
+	@JoinColumn(name="RELATIONSHIPTYPE")
 	private RelationshipType relationshipType;
 	
-	
-	@ManyToMany
-	@JoinTable(name="RELATIONSSHIPTEMPLATE_PROPERTY", joinColumns=@JoinColumn(name="RELATIONSHIPTEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="PROPERTY_ID", referencedColumnName="ID"))
-	private Collection<Property> propertyList;
-	
-	@ManyToMany
-	@JoinTable(name="RELATIONSSHIPTEMPLATE_PROPERTYCONSTRAINT", joinColumns=@JoinColumn(name="RELATIONSHIPTEMPLATE_ID", referencedColumnName="ID"), inverseJoinColumns=@JoinColumn(name="PROPERTYCONSTRAINT_ID", referencedColumnName="ID"))
-	private Collection<PropertyConstraint> propertyConstraintList;
-	
-	//TODO: Maybe a problem to Indicate what Type will be the source or target so implemented a Workaround 
-	@Column(name="NODETEMPLATE_SOURCE_ID")
-	@NotNull
-	private Long sourceElementNodetype;
-	
-	@Column(name="REQUIREMENT_SOURCE_ID")
-	private Long sourceElementRequirement; 
-	
-	@Column(name="NODETEMPLATE_TARGET_ID")
-	@NotNull
-	private Long targetElemenNodetype;
-	
-	@Column(name="REQUIREMENT_TARGET_ID")
-	private Long targetElementRequirement; 
+	@Column(name = "RELATIONSHIPTYPE_ID")
+	private Long relationshipTypeId;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TOPOLOGYTEMPLATE_ID")
+	@JoinColumn(name="SOURCENODETEMPLATE")
+	@JsonBackReference(value = "outRelationsipTemplates-sourceNodeTemplate")
+	private NodeTemplate sourceNodeTemplate;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="TARGETNODETEMPLATE")
+	@JsonBackReference(value="inRelationshipTemplates-targetNodeTemplate")
+	private NodeTemplate targetNodeTemplate;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="TOPOLOGYTEMPLATE")
 	@JsonBackReference(value="topologyTemplate-relationshipTemplate")
 	private TopologyTemplate topologyTemplate;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	
+	@Column(name = "TOPOLOGYTEMPLATE_ID")
+	private Long topologyTemplateId;
 
 	public RelationshipType getRelationshipType() {
 		return relationshipType;
@@ -91,52 +47,44 @@ public class RelationshipTemplate {
 		this.relationshipType = relationshipType;
 	}
 
-	public Collection<Property> getPropertyList() {
-		return propertyList;
+	public Long getRelationshipTypeId() {
+		return relationshipTypeId;
 	}
 
-	public void setPropertyList(Collection<Property> propertyList) {
-		this.propertyList = propertyList;
+	public void setRelationshipTypeId(Long relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
 	}
 
-	public Collection<PropertyConstraint> getPropertyConstraintList() {
-		return propertyConstraintList;
+	public NodeTemplate getSourceNodeTemplate() {
+		return sourceNodeTemplate;
 	}
 
-	public void setPropertyConstraintList(Collection<PropertyConstraint> propertyConstraintList) {
-		this.propertyConstraintList = propertyConstraintList;
+	public void setSourceNodeTemplate(NodeTemplate sourceNodeTemplate) {
+		this.sourceNodeTemplate = sourceNodeTemplate;
 	}
 
-	public Long getSourceElement() {
-		return sourceElementNodetype;
+	public NodeTemplate getTargetNodeTemplate() {
+		return targetNodeTemplate;
 	}
 
-	public void setSourceElement(Long sourceElement) {
-		this.sourceElementNodetype = sourceElement;
+	public void setTargetNodeTemplate(NodeTemplate targetNodeTemplate) {
+		this.targetNodeTemplate = targetNodeTemplate;
 	}
 
-	public Long getTargetElement() {
-		return targetElemenNodetype;
+	public TopologyTemplate getTopologyTemplate() {
+		return topologyTemplate;
 	}
 
-	public void setTargetElement(Long targetElement) {
-		this.targetElemenNodetype = targetElement;
+	public void setTopologyTemplate(TopologyTemplate topologyTemplate) {
+		this.topologyTemplate = topologyTemplate;
 	}
 
-	public Long getSourceElementRequirement() {
-		return sourceElementRequirement;
+	public Long getTopologyTemplateId() {
+		return topologyTemplateId;
 	}
 
-	public void setSourceElementRequirement(Long sourceElementRequirement) {
-		this.sourceElementRequirement = sourceElementRequirement;
-	}
-
-	public Long getTargetElementRequirement() {
-		return targetElementRequirement;
-	}
-
-	public void setTargetElementRequirement(Long targetElementRequirement) {
-		this.targetElementRequirement = targetElementRequirement;
+	public void setTopologyTemplateId(Long topologyTemplateId) {
+		this.topologyTemplateId = topologyTemplateId;
 	}
 	
 }

@@ -7,9 +7,12 @@ import { Component} from '@angular/core';
 })
 
 
-/*****************************************************************************************************************
+/*****************************************************************************************************************************
  *
- * AdministrationComponent Class - Overview of the repositories, level graphs and topologies
+ * @component AdministrationComponent - Lazy loaded component as wrapper for all other components in the
+ *                                      AdministrationComponent
  *
- *****************************************************************************************************************/
+ * @author Arthur Kaul
+ *
+ ****************************************************************************************************************************/
 export class AdministrationComponent   {}

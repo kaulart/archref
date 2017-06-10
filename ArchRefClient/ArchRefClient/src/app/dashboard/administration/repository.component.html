@@ -1,38 +1,35 @@
 <div id="accordion" class="panel-group collapsed_area tab-panel">
 
 	<div class="panel panel-default ">
-
+		
+		<!-- Header for the RepositoryComponent and buttons for open and close the collapsable areas-->
 		<div class="row panel-heading control-panel">
-
 			<h3 class="col-sm-3">Repositories</h3>
-
-			<button class="w3-right w3-theme-l1 btn btn-primary" id="importRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
-				href="#importRepositoriesFieldsArea">
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="importRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importRepositoriesFieldsArea">
 				<i class="fa fa-upload" aria-hidden="true"></i> Import
 			</button>
-
-			<button class="w3-right w3-green btn btn-primary" id="addRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
-				href="#addRepositoriesFieldsArea">
+			<button class="w3-right w3-green btn btn-primary" id="addRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#addRepositoriesFieldsArea">
 				<i class="fa fa-plus" aria-hidden="true"></i> New
 			</button>
-
 		</div>
 
+		<!-- Data panel for user input for creating a new Repository -->
 		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="addRepositoriesFieldsArea">
-			<form>
+			<form #createRepositoryForm="ngForm">
 				<div class="form-group">
-					<label for="name">Name: </label> <input #name type="text" class="form-control" id="name" value="Unnamed" required>
+					<label for="repositoryName">Name: </label> <input #repositoryName #repositoryName="ngModel" name="name" type="text" class="form-control" id="repositoryName" [(ngModel)]="createdRepository.name" type="text" class="form-control" value="{{createdRepository.name}}" required>
+				</div>
+				<div *ngIf="repositoryName.errors && (repositoryName.dirty || repositoryName.touched)" class="alert alert-danger">
+					<div [hidden]="!repositoryName.errors.required">Name is required</div>
 				</div>
 
-				<button type="submit" class="btn btn-success" (click)=(createRepository(name.value))>Save</button>
+				<button type="submit" [disabled]="!createRepositoryForm.form.valid" class="btn btn-success" (click)="createRepository()">Save</button>
 			</form>
 		</div>
 
+		<!-- Data panel for user input for importing a new Repository -->
 		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importRepositoriesFieldsArea">
 			<form>
-				<div class="form-group">
-					<label for="name">Name</label> <input type="text" class="form-control" id="name" required>
-				</div>
 				<div class="form-group">
 					<label for="name">File</label> <input type="text" class="form-control" id="name" required>
 				</div>
@@ -42,6 +39,7 @@
 		</div>
 	</div>
 
+	<!-- Data table for display all Repositories -->
 	<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
 
 		<table class="w3-table-all table-striped w3-bordered">
@@ -60,13 +58,11 @@
 
 			<tbody>
 				<tr class="height" *ngFor="let repository of repositories">
-					<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}"><i class="fa fa-folder-open-o"
-						aria-hidden="true"></i></td>
+					<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
 					<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}">{{ repositories.indexOf(repository) +1 }}</td>
 					<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}">{{ repository.name }}</td>
 					<td routerLink="/dashboard/repository" [queryParams]="{name: repository.name , id: repository.id}">{{ repository.id }}</td>
-					<td><button type="button" data-toggle="modal" data-target="#editRepositoryModal" class="w3-blue btn"
-							(click)=setEditRepositoryData(repository)>
+					<td><button type="button" data-toggle="modal" data-target="#editRepositoryModal" class="w3-blue btn" (click)=setEditRepositoryData(repository)>
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</button></td>
 					<td><button class=" btn" disabled (click)="exportRepository(repository.id)">
@@ -79,15 +75,10 @@
 			</tbody>
 		</table>
 	</div>
-
 </div>
 
-
-
-
 <!-- Modal for Edit Repository-->
-<div class="modal fade modal-position" id="editRepositoryModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+<div class="modal fade modal-position" id="editRepositoryModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
@@ -103,7 +94,6 @@
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" (click)="updateRepository(editName.value)" data-dismiss="modal">Save</button>
-
 				</form>
 			</div>
 		</div>

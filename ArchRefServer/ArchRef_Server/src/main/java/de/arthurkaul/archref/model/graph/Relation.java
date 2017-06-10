@@ -23,7 +23,7 @@ public class Relation extends de.arthurkaul.archref.model.Entity {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="PATH_ID")
-	@JsonManagedReference (value="levelgraphrelation-path")
+	@JsonManagedReference (value="relation-path")
 	private Path path;
 
 	public Long getSourceNodeId() {

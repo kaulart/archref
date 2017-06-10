@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.metrics.Property;
+
 @javax.persistence.Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name = "ENTITY")
@@ -26,11 +28,11 @@ public class Entity {
 	@Column(name = "NAME")
 	private String name;
 
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="entity")
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="entityExpected")
 	@JsonManagedReference (value="entity-expectedProperties")
 	private Collection<Property> expectedProperties;
 	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="entity")
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="entityProvided")
 	@JsonManagedReference (value="entity-providedProperties")
 	private Collection<Property> providedProperties;
 	

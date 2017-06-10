@@ -1,10 +1,10 @@
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3e2c7+0,c19e67+50,b68d4c+51,e9d4b3+100;L+Brown+3D */
 
 /**********************************************************************************************************************************************
-*
-* Gradients
-*
-***********************************************************************************************************************************************/
+ *
+ * Gradients
+ *
+ ***********************************************************************************************************************************************/
 .repositoryListItem {
 	background: #f5f6f6; /* Old browsers */
 	background: -moz-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3
@@ -16,7 +16,14 @@
 	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6',
 		endColorstr='#f5f6f6', GradientType=0); /* IE6-9 */
-	width: 100%;
+	padding: 5px;
+	marging: 5px;
+	font-size: 1.2em;
+}
+
+.repositoryListItem:hover {
+	background: #3c6e9a;
+	cursor: pointer;
 }
 
 .nodeType {
@@ -42,7 +49,7 @@
 	width: 100%;
 }
 
-.relationType {
+.relationshipType {
 	background: -moz-linear-gradient(90deg, rgba(0, 128, 0, 1) 0%,
 		rgba(27, 252, 15, 1) 50%, rgba(0, 128, 0, 1) 100%); /* ff3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,
@@ -90,35 +97,108 @@
 	width: 100%;
 }
 
-div {
-	margin: 5px;
+/**********************************************************************************************************************************************
+ *
+ * Buttons
+ *
+ ***********************************************************************************************************************************************/
+#saveBtn {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+#selectRepository {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#collapseBtn {
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+/**********************************************************************************************************************************************
+ *
+ * Controller Panel
+ *
+ ***********************************************************************************************************************************************/
+.controller-group {
+	margin: 10px;
 	padding: 10px;
 }
 
+.group {
+	margin: 5px;
+	padding: 5px;
+}
+
+#level-list {
+	overflow: scroll;
+	height: 150px;
+	margin: 5px;
+	padding: 5px;
+}
+
+/**********************************************************************************************************************************************
+ *
+ * Tool Box
+ *
+ ***********************************************************************************************************************************************/
 #toolbox_area {
 	margin-top: 10px;
-	margin-right: 0px;
-	margin-left: 0px;
+	height: 750px;
+	overflow: auto;
+}
+
+.toolbox-group {
+	margin: 0px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	width: 100%;
+	border-style: solid;
+	border-width: 2px;
+	border-color: grey
 }
 
 .tool-item {
 	margin: 0px;
 	margin-top: 5px;
+	margin-bottom: 5px;
 	padding: 10px;
 	width: 100%;
+}
+
+.modelling-tool-list {
+	margin: 0px;
+	margin-top: 5px;
+	padding: 0px;
+	width: 100%;
+}
+
+#modelling-tool-list:hover {
+	background: #3c6e9a;
+	cursor: pointer;
 }
 
 .warning-item {
 	padding: 5px;
 }
 
+/**********************************************************************************************************************************************
+ *
+ * Draw Area
+ *
+ ***********************************************************************************************************************************************/
+
 svg {
+	
 	height: 3000px;
 	width: 3000px;
 }
 
 #draw_area {
-	height: 700px;
+	height: 750px;
 	margin-top: 10px;
 	margin-right: 0px;
 	margin-left: 0px;
@@ -132,11 +212,12 @@ svg {
 
 .level-panel {
 	width: 100%;
-	fill: white;
+	fill:white;
 	fill-opacity: 0.0;
 	stroke-dasharray: 10, 20;
 	stroke-width: 8;
 	stroke: black;
+	stroke-dasharray: 10, 20;
 }
 
 ul {
@@ -149,11 +230,6 @@ ul {
 	overflow: auto;
 }
 
-#toolbox_area {
-	height: 750px;
-	overflow: auto;
-}
-
 h3 {
 	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
 }
@@ -161,18 +237,4 @@ h3 {
 li img {
 	float: left;
 	margin: 0 15px 0 0;
-}
-
-li p {
-	font: 200 12px/1.5 Georgia, Times New Roman, serif;
-}
-
-li {
-	padding: 10px;
-	overflow: auto;
-}
-
-li:hover {
-	background: #804000;
-	cursor: pointer;
 }

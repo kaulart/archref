@@ -8,6 +8,8 @@ export class Entity {
   expectedProperties: Property[];
   providedProperties: Property[];
 
-  constructor(name: string) { }
+  constructor(name: string) {
+    this.name = name;
+  }
 
 }
