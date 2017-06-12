@@ -1,4 +1,4 @@
-<div id="level_graph_tool" class="container-fluid w3-theme-l3" (mouseup)="stopAllEvents()">
+<div id="level_graph_tool" class="container-fluid w3-theme-l3" >
 
 	<div class="row">
 
@@ -17,7 +17,7 @@
 
 			<div class="col-sm-12 w3-center control-group">
 				<label class="col-sm-2 ">Abstract Topology</label>
-				<md-slider class="col-sm-8" ng-model="currentTopologyTemplate.abstractionLevel" min="1" max="maxAbstractionLevel"> </md-slider>
+				<md-slider class="col-sm-8" ng-model="currentTopologyTemplate.abstractionLevel" step="1" min="1" max="maxAbstractionLevel"> </md-slider>
 				<label class="col-sm-2">Specific Topology</label>
 			</div>
 
@@ -31,29 +31,54 @@
 
 		</div>
 	</div>
+
 	<div class="row">
+
 		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme">
 
 			<h5 class="w3-center w3-margin">
 				<b>Tool Box</b>
 			</h5>
-			<!-- 	<div class="toolbox_group" style="margin: 0px; margin-top: 5px; padding: 0px; width: 100%">
 
-			<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes"
-				aria-expanded="false" aria-controls="toolbox_nodes">
-				NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
-			</button>
+			<div class="toolbox-group">
 
-			<div class="  collapse toolbox" id="toolbox_nodes" style="margin: 0px; padding: 0px; width: 100%;">
-				<ul style="padding: 5px" id="nodeTypesList" class=" list-group" style="height:300px; overflow: auto">
+				<label>Selected Repository:</label>
+				<div class="dropdown">
+					<button id="selcetRepository" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}</button>
 
-					<li *ngIf="nodeTypeList.length < 1" disabled>NO NODETYPES AVAILABLE</li>
-					<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of nodeTypeList" (drag)="onDrag($event, nodeType)"
-						(dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
-						<h3>{{nodeType.name}}</h3></li>
-				</ul>
+					<ul class="dropdown-menu" style="width: 100%;">
+						<li class="repositoryListItem" *ngIf="repositories.length < 1" disabled>NO REPOSITORY AVAILABLE</li>
+						<li class="repositoryListItem" *ngFor="let repository of repositories" (click)="onSelectRepository(repository)">{{ repository.name }}</li>
+					</ul>
+
+				</div>
+
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes" aria-expanded="false" aria-controls="toolbox_nodes">
+					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="collapse toolbox" id="toolbox_nodes">
+					<ul class="list-group">
+
+						<li *ngIf="selectedRepository.nodeTypeList.length < 1" disabled>NO NODETYPES AVAILABLE</li>
+						<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							<h3>{{nodeType.name}}</h3></li>
+					</ul>
+				</div>
+
+				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_relationshipTypes" aria-expanded="false" aria-controls="toolbox_nodes">
+					RelationshipTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+				</button>
+
+				<div class="collapse toolbox" id="toolbox_relationshipTypes">
+					<ul class="list-group">
+
+						<li *ngIf="selectedRepository.relationshipTypeList.length < 1" disabled>NO NODETYPES AVAILABLE</li>
+						<li class="nodeTemplate w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList" (drag)="onDrag($event, nodeType)" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+							<h3>{{relationshipType.name}}</h3></li>
+					</ul>
+				</div>
 			</div>
-</div> -->
 
 			<div class="toolbox-group">
 				<label>Selected Level Graph:</label>
@@ -78,7 +103,7 @@
 						<ul class="list-group">
 							<ng-container *ngFor="let levelGraphNode of selectedLevelGraph.levelGraphNodes">
 
-							<li class="nodeTemplate w3-round" draggable="true" *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE' && isInCurrentLevel(levelGraphNode.levelId))" (drag)="onDragLevelGraphNode($event, levelGraphNode.typeRef)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="/test" />
+							<li class="nodeTemplate w3-round" draggable="true" *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE' && isInCurrentLevel(levelGraphNode.levelId))" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="/test" />
 								<h3>{{levelGraphNode.name}}</h3></li>
 							</ng-container>
 						</ul>
@@ -88,7 +113,7 @@
 
 		</div>
 
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel">
+		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" (mousemove)="onDrawLevelGraphRelation($event)">
 
 
 			<svg id="parent" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
@@ -116,14 +141,17 @@
 					</linearGradient> 
 				</defs>
 				
-			<!-- 	 <g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]"
-						*ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
-					    <polyline
-						*ngIf="(levelGraphRelationTypes[0].checked == true) && (level.value === levelGraphRelation.sourceLevelValue) && (levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO_RELATION')"
-						[attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
-					</g>-->
 				
-				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mousedown)="startMoveNode($event, nodeTemplate)" (mousemove)="onMoveNode($event)" (mouseup)="stopMoveNode($event)">
+				<polyline *ngIf="drawRelation || drawLevelGraphCompliantRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#TriangleDraw)" />
+				
+				
+			 	 <g [contextmenu]="[relationshipTemplateContextMenu, {relationshipTemplate: RelationshipTemplate}]"
+						*ngFor="let relationshipTemplate of currentTopologyTemplate.relationshipTemplates">
+					    <polyline
+						[attr.points]="relationshipTemplate.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#Triangle)" />
+				</g>
+				
+				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (click)="stopDrawLevelGraphRelation(nodeTemplate)" (mousedown)="startMoveNode($event, nodeTemplate); setCurrentLevelGraphCompliantRelationshipTypes($event, nodeTemplate.levelGraphNodeId)" (mousemove)="onMoveNode($event)" (mouseup)="stopMoveNode($event)">
 						
 					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
 							<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{nodeTemplate.name}}</text>
@@ -137,15 +165,20 @@
 	</div>
 </div>
 
-
-
 <contextmenu #nodeTemplateContextMenu>
-<div class="dropdown open">
+<div class="dropdown open" style="width: 300px">
 	<div class="dropdown-menu">
 		<ul>
-			<li *ngFor="let relation of "><a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+
+			<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph Compliant</a>
+				<ul tabindex="-1" class="dropdown-menu">
+					<li *ngIf="currentLevelGraphCompliantRelationshipTypes.length < 1">NO COMPLIANT LEVELGRAPH NODE OF RELATIONSHIPTYPE</li>
+					<li *ngFor="let levelGraphNode of currentLevelGraphCompliantRelationshipTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphCompliantRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
+				</ul></li>
+			<li><a class="dropdown-menu" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate').nodeTypeId)"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+
 			<li><a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
-			<li><a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
+			<li><a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 		</ul>
 	</div>
 </div>

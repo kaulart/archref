@@ -18,21 +18,20 @@ import { FlashMessage } from 'angular2-flash-message';
  *                                        delete, import, export or edit the repository. Also you can select a repository and
  *                                        call the RepositoryDetailComponent where you can see all data which are included in a repository.
  *
+ * @field repositories: Repository[] - List of all available Repositories in the database
+ * @field createdRepository: Repository -  Repository which should be created
+ * @field ditedRepository: Repository - Repository which should be edit
+ * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ *                                     cause a "Over Flash" for the user experience
+ *
  * @author Arthur Kaul
  *
  ********************************************************************************************************************************************/
 export class RepositoryComponent implements OnInit {
 
-  // list of all available Repositories in the database
   public repositories: Repository[] = [];
-
-  // Repository which should be created
-  public createdRepository: Repository = new Repository('Unnamed');
-
-  // Repository which should be edit
-  public editedRepository: Repository = new Repository('');
-
-  // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
+  public createdRepository: Repository = new Repository();
+  public editedRepository: Repository = new Repository();
   public flashMessage = new FlashMessage();
 
   constructor(private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
@@ -50,7 +49,7 @@ export class RepositoryComponent implements OnInit {
 
   /*********************************************************************************************************************************************
    *
-   *  @method createRepository - Call the RepositoryService for creating a new Repository in the database
+   * @method createRepository - Call the RepositoryService for creating a new Repository in the database
    *                             and subscribe for a callback
    *
    ********************************************************************************************************************************************/
@@ -70,7 +69,7 @@ export class RepositoryComponent implements OnInit {
 
   /*********************************************************************************************************************************************
    *
-   *  @method retrieveRepositoryData - Call the RepositoryService for loading all repositories from database into the application and subscribe
+   * @method retrieveRepositoryData - Call the RepositoryService for loading all repositories from database into the application and subscribe
    *                                   for a callback. Currently no pagination/streaming of data is supported
    *
    ********************************************************************************************************************************************/
@@ -142,6 +141,7 @@ export class RepositoryComponent implements OnInit {
   /*********************************************************************************************************************************************
    *
    * Set the edit Repository Data
+   *
    * @param repository - The repository witch should be edit
    *
    ********************************************************************************************************************************************/

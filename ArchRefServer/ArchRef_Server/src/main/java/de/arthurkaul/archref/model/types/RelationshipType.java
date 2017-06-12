@@ -14,10 +14,6 @@ import de.arthurkaul.archref.model.Repository;
 @Table(name="RELATIONSHIPTYPE")
 public class RelationshipType extends de.arthurkaul.archref.model.Entity{
 	
-	@Column(name="ICON_PATH")
-	@NotNull
-	private String icon;
-	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REPOSITORY")
 	@JsonBackReference (value="repository-relationshipType")
@@ -25,14 +21,6 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity{
 	
 	@Column(name="REPOSITORY_ID")
 	private Long repositoryId;
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
 
 	public Repository getRepository() {
 		return repository;

@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.graph.Relation;
-import de.arthurkaul.archref.model.levelgraph.LevelGraphRelation;
 
 @Entity
 public class Path {

@@ -68,24 +68,6 @@ export class LevelService {
 
   /******************************************************************************************************************
    *
-   * Extract data from response data list
-   *
-   ******************************************************************************************************************/
-  //  public extractLevelDataList(res) {
-  //    Logger.info('[RESPONSE - LEVEL]: Extract Level Data List', LevelService.name);
-  //    let body = res.json();
-  //    let levelList: Level[] = [];
-  //    Logger.info('[RESPONSE - LEVEL]: ' + JSON.stringify(body), LevelService.name);
-  //    for (let level of body) {
-  //      let tempLevelGraph: Level = new Level(level.depth, level.visible, level.y, level.height, level.levelGraphId);
-  //      tempLevelGraph.id = (level.id);
-  //      levelList.push(tempLevelGraph);
-  //    }
-  //    return levelList || {};
-  //  }
-
-  /******************************************************************************************************************
-   *
    *  Extract data from response data Level object
    *
    ******************************************************************************************************************/
@@ -93,8 +75,10 @@ export class LevelService {
     let body = res.json();
     Logger.info('[RESPONSE - LEVEL]:  Extract Level Data', LevelService.name);
     Logger.info('[RESPONSE - LEVEL]: ' + JSON.stringify(body), LevelService.name);
-    let level: Level = new Level(body.depth, body.visible, body.y, body.height, body.levelGraphId);
+    let level: Level = new Level(body.depth, body.visible, body.y, body.height, body.levelGraphId, body.levelGraphRelations, body.levelGraphNodes);
     level.id = (body.id);
+    level.levelGraphNodes = body.levelGraphNodes;
+  //  level.outLevelGraphRelations = body.outLevelGraphRelations;
     return level || {};
   }
 

@@ -12,22 +12,21 @@ import { LevelGraphRelation } from './levelgraphrelation';
  ******************************************************************************************************************************************************************************************************/
 export class LevelGraphNode extends Node {
 
-  levelId: number;
   level: Level;
+  levelId: number;
   levelGraph: LevelGraph;
   levelGraphId: number;
 
-  inLevelGraphRelation: LevelGraphRelation[] = [];
-  outLevelGraphRelation: LevelGraphRelation[] = [];
+  levelGraphRelations: LevelGraphRelation[] = [];
 
   levelGraphNodeType: string;
-  typeRef: number;
+  levelGraphNodeTypeId: number;
 
-  constructor(name: string, x: number, y: number, width: number, height: number, levelId: number, levelGraphNodeType: string, typeRef: number, levelGraphId: number) {
+  constructor(name: string, x: number, y: number, width: number, height: number, levelId: number, levelGraphNodeType: string, levelGraphNodeTypeId: number, levelGraphId: number) {
     super(name, x, y, width, height);
     this.levelId = levelId;
     this.levelGraphNodeType = levelGraphNodeType;
-    this.typeRef = typeRef;
+    this.levelGraphNodeTypeId = levelGraphNodeTypeId;
     this.levelGraphId = levelGraphId;
   }
 

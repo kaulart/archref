@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://example.org/archref/2017" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns="http://example.org/archref/2017" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd" />
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd" />
 	<xs:element name="documentation" type="tDocumentation" />
 	<xs:complexType name="tDocumentation" mixed="true">
 		<xs:sequence>
@@ -51,18 +52,10 @@
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
-					<xs:choice maxOccurs="unbounded">
-						<xs:element name="NodeType" type="xs:string" />
-						<xs:element name="NodeTypeImplementation" type="xs:string" />
-						<xs:element name="RelationshipType" type="xs:string" />
-						<xs:element name="RelationshipTypeImplementation" type="xs:string" />
-						<xs:element name="RequirementType" type="xs:string" />
-						<xs:element name="CapabilityType" type="xs:string" />
-						<xs:element name="ArtifactType" type="xs:string" />
-						<xs:element name="ArtifactTemplate" type="xs:string" />
-						<xs:element name="PolicyType" type="xs:string" />
-						<xs:element name="PolicyTemplate" type="xs:string" />
-					</xs:choice>
+					<xs:choice></xs:choice>
+					<xs:element name="TopologyTemplates" type="tTopologyTemplates"></xs:element>
+					<xs:element name="Repositories" type="xs:string"></xs:element>
+					<xs:element name="LevelGraphs" type="xs:string"></xs:element>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:ID" use="required" />
 				<xs:attribute name="name" type="xs:string" use="optional" />
@@ -353,4 +346,24 @@
 	<xs:simpleType name="importedURI">
 		<xs:restriction base="xs:anyURI" />
 	</xs:simpleType>
+
+
+	<xs:complexType name="tTopologyTemplates">
+		<xs:sequence>
+			<xs:element name="Topology" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="tRepositories"></xs:complexType>
+
+    <xs:complexType name="tRepository"></xs:complexType>
+
+    <xs:complexType name="tLevelGraphs"></xs:complexType>
+
+    <xs:complexType name="tLevelGraph"></xs:complexType>
+
+    <xs:complexType name="tLevel"></xs:complexType>
+
+    <xs:complexType name="tLevelGraphNode"></xs:complexType>
+
 </xs:schema>

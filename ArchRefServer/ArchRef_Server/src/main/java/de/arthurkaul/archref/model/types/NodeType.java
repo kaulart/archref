@@ -1,22 +1,24 @@
 package de.arthurkaul.archref.model.types;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import de.arthurkaul.archref.model.Repository;
+import de.arthurkaul.archref.model.topology.NodeTemplate;
 
 @Entity
 @Table(name="NODETYPE")
 public class NodeType extends de.arthurkaul.archref.model.Entity{
-	
-	@Column(name="ICON_PATH")
-	@NotNull
-	private String icon;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REPOSITORY")
@@ -25,14 +27,11 @@ public class NodeType extends de.arthurkaul.archref.model.Entity{
 	
 	@Column(name="REPOSITORY_ID")
 	private Long repositoryId;
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+	
+	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraphNode")
+	@JsonManagedReference (value = "nodeType-nodeTemplate")
+	private Collection<NodeTemplate> nodeTemplates;
+	
 
 	public Repository getRepository() {
 		return repository;

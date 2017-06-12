@@ -1,9 +1,13 @@
 package de.arthurkaul.archref.model.levelgraph;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -15,58 +19,40 @@ import de.arthurkaul.archref.model.graph.Relation;
 @Table(name="LEVELGRAPHRELATION")
 public class LevelGraphRelation extends Relation{
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCELEVEL_LEVELGRAPH_NODE_ID")
-	@JsonBackReference (value = "level-inLevelGraphRelations")
-	private LevelGraphNode sourceLevel;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGETLEVEL_LEVELGRAPH_NODE_ID")
-	@JsonBackReference  (value = "level-outLevelGraphRelations")
-	private LevelGraphNode targetLevel;
+	@Column(name = "SOURCE_LEVEL_DEPTH")
+	private Integer sourceLevelDepth;
 	
-	@Column(name = "SOURCE_LEVEL_VALUE")
-	private Integer sourceLevelValue;
+	@Column(name = "TARGET_LEVEL_DEPTH")
+	private Integer targetLevelDepth;
 	
-	@Column(name = "TARGET_LEVEL_VALUE")
-	private Integer targetLevelValue;
+	@ManyToMany
+	@JoinTable(name = "LEVELGRAPHRELATION_LEVELGRAPHNODE", 
+			joinColumns = @JoinColumn(name = "LEVELGRAPHNODE_ID", referencedColumnName = "ID"), 
+			inverseJoinColumns = @JoinColumn(name = "LEVELGRAPHRELATION_ID", referencedColumnName = "ID"))
+	private Collection<LevelGraphNode> levelGraphNodes;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_LEVEL_GRAPH_NODE_ID")
-	@JsonBackReference  (value="levelgraphrelation-sourcelevelgraphnodes")
-	private LevelGraphNode sourceLevelGraphNode;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_LEVELGRAPH_NODE_ID")
-	@JsonBackReference  (value="levelgraphrelation-targetlevelgraphnodes")
-	private LevelGraphNode targetLevelGraphNode;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVEL_GRAPH_RELATION_ID")
+	@JoinColumn(name = "LEVEL_GRAPH")
 	@JsonBackReference (value="levelgraph-levelgraphrelation")
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
 	private Long levelGraphId;
 
+	@ManyToMany
+	@JoinTable(name = "LEVELGRAPHRELATION_LEVEL", 
+			joinColumns = @JoinColumn(name = "LEVELGRAPHRELATION_ID", referencedColumnName = "ID"), 
+			inverseJoinColumns = @JoinColumn(name = "LEVEL_ID", referencedColumnName = "ID"))
+	private Collection<Level> levels;
+	
+	@Column(name = "SOURCELEVEL_ID")
+	private Long sourceLevelId;
+	
+	@Column(name = "TARGETLEVEL_ID")
+	private Long targetLevelId;
+	
 	@Column(name = "TYPE")
 	private String levelGraphRelationType;
-
-	public LevelGraphNode getSourceLevelGraphNode() {
-		return sourceLevelGraphNode;
-	}
-
-	public void setSourceLevelGraphNode(LevelGraphNode sourceLevelGraphNode) {
-		this.sourceLevelGraphNode = sourceLevelGraphNode;
-	}
-
-	public LevelGraphNode getTargetLevelGraphNode() {
-		return targetLevelGraphNode;
-	}
-
-	public void setTargetLevelGraphNode(LevelGraphNode targetLevelGraphNode) {
-		this.targetLevelGraphNode = targetLevelGraphNode;
-	}
 
 	public LevelGraph getLevelGraph() {
 		return levelGraph;
@@ -84,28 +70,60 @@ public class LevelGraphRelation extends Relation{
 		this.levelGraphRelationType = levelGraphRelationType;
 	}
 
-	public Integer getSourceLevelValue() {
-		return sourceLevelValue;
-	}
-
-	public void setSourceLevelValue(Integer sourceLevelValue) {
-		this.sourceLevelValue = sourceLevelValue;
-	}
-
-	public Integer getTargetLevelValue() {
-		return targetLevelValue;
-	}
-
-	public void setTargetLevelValue(Integer targetLevelValue) {
-		this.targetLevelValue = targetLevelValue;
-	}
-
 	public Long getLevelGraphId() {
 		return levelGraphId;
 	}
 
 	public void setLevelGraphId(Long levelGraphId) {
 		this.levelGraphId = levelGraphId;
+	}
+
+	public Integer getSourceLevelDepth() {
+		return sourceLevelDepth;
+	}
+
+	public void setSourceLevelDepth(Integer sourceLevelDepth) {
+		this.sourceLevelDepth = sourceLevelDepth;
+	}
+
+	public Integer getTargetLevelDepth() {
+		return targetLevelDepth;
+	}
+
+	public void setTargetLevelDepth(Integer targetLevelDepth) {
+		this.targetLevelDepth = targetLevelDepth;
+	}
+
+//	public Collection<LevelGraphNode> getLevelGraphNodes() {
+//		return levelGraphNodes;
+//	}
+//
+//	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+//		this.levelGraphNodes = levelGraphNodes;
+//	}
+
+	public Collection<Level> getLevels() {
+		return levels;
+	}
+
+	public void setLevels(Collection<Level> levels) {
+		this.levels = levels;
+	}
+
+	public Long getSourceLevelId() {
+		return sourceLevelId;
+	}
+
+	public void setSourceLevelId(Long sourceLevelId) {
+		this.sourceLevelId = sourceLevelId;
+	}
+
+	public Long getTargetLevelId() {
+		return targetLevelId;
+	}
+
+	public void setTargetLevelId(Long targetLevelId) {
+		this.targetLevelId = targetLevelId;
 	}
 
 }

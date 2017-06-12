@@ -6,48 +6,49 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.graph.Node;
+import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
 import de.arthurkaul.archref.model.types.NodeType;
 
 @Entity
 @Table(name = "NODETEMPLATE")
-public class NodeTemplate extends Node{
+public class NodeTemplate extends Node {
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LEVELGRAPHNODE")
+	@JsonBackReference(value = "levelGraphNode-nodeTemplate")
+	private LevelGraphNode levelGraphNode;
+
+	@Column(name = "LEVELGRAPHNODE_ID")
+	private Long levelGraphNodeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "NODETYPE")
+	@JsonBackReference(value = "nodeType-nodeTemplate")
 	private NodeType nodeType;
 
 	@Column(name = "NODETYPE_ID")
 	private Long nodeTypeId;
-	
-	@OneToMany (fetch=FetchType.LAZY, mappedBy="targetNodeTemplate")
-    @Cascade(CascadeType.ALL)
-	@JsonManagedReference (value="inRelationshipTemplates-targetNodeTemplate")
-	private Collection<RelationshipTemplate> inRelationshipTemplates;
 
-	@OneToMany (fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
-	@Cascade( CascadeType.ALL )
-	@JsonManagedReference(value = "outRelationsipTemplates-sourceNodeTemplate")
-	private Collection<RelationshipTemplate> outRelationsipTemplates;
+	@ManyToMany
+	@JoinTable(name = "NODETEMPLATE_RELATIONSHIPTEMPLATE", joinColumns = @JoinColumn(name = "NODETEMPLATE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "RELATIONSHIPTEMPLATE_ID", referencedColumnName = "ID"))
+	private Collection<RelationshipTemplate> relationshipTemplates;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOPOLOGYTEMPLATE")
-	@JsonBackReference(value="topologyTemplate-nodeTemplate")
+	@JsonBackReference(value = "topologyTemplate-nodeTemplate")
 	private TopologyTemplate topologyTemplate;
 
 	@Column(name = "TOPOLOGYTEMPLATE_ID")
 	private Long topologyTemplateId;
-	
+
 	public NodeType getNodeType() {
 		return nodeType;
 	}
@@ -80,20 +81,28 @@ public class NodeTemplate extends Node{
 		this.nodeTypeId = nodeTypeId;
 	}
 
-	public Collection<RelationshipTemplate> getInRelationshipTemplates() {
-		return inRelationshipTemplates;
+	public LevelGraphNode getLevelGraphNode() {
+		return levelGraphNode;
 	}
 
-	public void setInRelationshipTemplates(Collection<RelationshipTemplate> inRelationshipTemplates) {
-		this.inRelationshipTemplates = inRelationshipTemplates;
+	public void setLevelGraphNode(LevelGraphNode levelGraphNode) {
+		this.levelGraphNode = levelGraphNode;
 	}
 
-	public Collection<RelationshipTemplate> getOutRelationsipTemplates() {
-		return outRelationsipTemplates;
+	public Long getLevelGraphNodeId() {
+		return levelGraphNodeId;
 	}
 
-	public void setOutRelationsipTemplates(Collection<RelationshipTemplate> outRelationsipTemplates) {
-		this.outRelationsipTemplates = outRelationsipTemplates;
+	public void setLevelGraphNodeId(Long levelGraphNodeId) {
+		this.levelGraphNodeId = levelGraphNodeId;
+	}
+
+	public Collection<RelationshipTemplate> getRelationshipTemplates() {
+		return relationshipTemplates;
+	}
+
+	public void setRelationshipTemplates(Collection<RelationshipTemplate> relationshipTemplates) {
+		this.relationshipTemplates = relationshipTemplates;
 	}
 
 }

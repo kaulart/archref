@@ -14,12 +14,14 @@ import { LevelService } from './shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from './shared/dataservices/levelgraph/levelgraph.service';
 import { LevelGraphNodeService } from './shared/dataservices/levelgraph/levelgraphnode.service';
 import { LevelGraphRelationService } from './shared/dataservices/levelgraph/levelgraphrelation.service';
+import { ExpectedPropertyService } from './shared/dataservices/metrics/expectedproperty.service';
 import { NodeTypeService } from './shared/dataservices/types/nodetype.service';
 import { RelationshipTypeService } from './shared/dataservices/types/relationshiptype.service';
 import { TopologyTemplateService } from './shared/dataservices/topologytemplate/topologytemplate.service';
 import { NodeTemplateService } from './shared/dataservices/topologytemplate/nodetemplate.service';
 import { RelationshipTemplateService } from './shared/dataservices/topologytemplate/relationshiptemplate.service';
 import { PropertyService } from './shared/dataservices/metrics/property.service';
+import { ProvidedPropertyService } from './shared/dataservices/metrics/providedpropertyservice.service';
 import 'hammerjs';
 
 @NgModule({
@@ -36,7 +38,7 @@ import 'hammerjs';
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
+  providers: [ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
   bootstrap: [AppComponent]
 })
 

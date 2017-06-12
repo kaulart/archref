@@ -7,7 +7,6 @@
 		
 		<ul class="tabrow nav" role="tablist">	
 			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#general" style="color: white" role="tab">General Data</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#property" style="color: white" role="tab">Properties</a></li>
 		</ul>
 
 		<div class="tab-content  tab-panel">
@@ -15,9 +14,7 @@
 			<div id="general" class="rounded tab-pane active" role="tabpanel">
 				<app-generaldata [currentNodeType]="currentNodeType"></app-generaldata>
 			</div>
-			<div id="property" class="rounded tab-pane" role="tabpanel">
-				<app-property [currentNodeType]="currentNodeType"></app-property>
-			</div>
+		
 			
 		</div>
 	</div>

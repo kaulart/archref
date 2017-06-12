@@ -4,21 +4,23 @@
 		<h2>{{relationshipTypeName}} Relationship Type</h2>
 	</div>
 	<div class="data-panel ">
-		
-		<ul class="tabrow nav" role="tablist">	
+
+		<ul class="tabrow nav" role="tablist">
 			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#general" style="color: white" role="tab">General Data</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#property" style="color: white" role="tab">Properties</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#property" style="color: white" role="tab">Provided Properties</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#property" style="color: white" role="tab">Expected Properties</a></li>
 		</ul>
 
 		<div class="tab-content  tab-panel">
-			
 			<div id="general" class="rounded tab-pane active" role="tabpanel">
 				<app-generaldata [currentRelationshipType]="currentRelationshipType"></app-generaldata>
 			</div>
 			<div id="property" class="rounded tab-pane" role="tabpanel">
-				<app-property [currentRelationshipType]="currentRelationshipType"></app-property>
+				<app-providedproperty> [currentRelationshipType]="currentRelationshipType"></app-providedproperty>
 			</div>
-			
+			<div id="property" class="rounded tab-pane" role="tabpanel">
+				<app-expectedproperty> [currentRelationshipType]="currentRelationshipType"></app-expectedproperty>
+			</div>
 		</div>
 	</div>
 </div>

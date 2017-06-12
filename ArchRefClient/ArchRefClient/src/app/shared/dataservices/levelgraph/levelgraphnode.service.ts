@@ -86,10 +86,11 @@ export class LevelGraphNodeService {
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: Extract Level Graph Node Data List', LevelGraphNodeService.name);
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
     for (let levelGraphNode of body) {
-      let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode(levelGraphNode.name, levelGraphNode.x, levelGraphNode.y, levelGraphNode.width, levelGraphNode.height, levelGraphNode.levelId, levelGraphNode.levelGraphNodeType, levelGraphNode.typeRef, levelGraphNode.levelGraphId);
-      tempLevelGraphNode.inLevelGraphRelation = (levelGraphNode.inLevelGraphRelation);
-      tempLevelGraphNode.outLevelGraphRelation = (levelGraphNode.outLevelGraphRelation);
-      tempLevelGraphNode.id = (levelGraphNode.id);
+      let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode(levelGraphNode.name, levelGraphNode.x, levelGraphNode.y, levelGraphNode.width, levelGraphNode.height, levelGraphNode.levelId, levelGraphNode.levelGraphNodeType, levelGraphNode.levelGraphNodeTypeId, levelGraphNode.levelGraphId);
+      tempLevelGraphNode.levelGraphRelations = levelGraphNode.levelGraphRelations;
+      tempLevelGraphNode.id = levelGraphNode.id;
+      tempLevelGraphNode.level = levelGraphNode.level;
+      tempLevelGraphNode.levelGraph = levelGraphNode.levelGraph;
       levelGraphList.push(tempLevelGraphNode);
     }
     return levelGraphList || {};
@@ -104,10 +105,11 @@ export class LevelGraphNodeService {
     let body = res.json();
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: Extract Level Graph Node Data', LevelGraphNodeService.name);
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
-    let levelGraphNode: LevelGraphNode = new LevelGraphNode(body.name, body.x, body.y, body.width, body.height, body.levelId, body.levelGraphNodeType, body.typeRef, body.levelGraphId);
-    levelGraphNode.inLevelGraphRelation = (body.inLevelGraphRelation);
-    levelGraphNode.outLevelGraphRelation = (body.outLevelGraphRelation);
-    levelGraphNode.id = (body.id);
+    let levelGraphNode: LevelGraphNode = new LevelGraphNode(body.name, body.x, body.y, body.width, body.height, body.levelId, body.levelGraphNodeType, body.levelGraphNodeTypeId, body.levelGraphId);
+      levelGraphNode.levelGraphRelations = body.levelGraphRelations;
+      levelGraphNode.id = body.id;
+      levelGraphNode.level = body.level;
+      levelGraphNode.levelGraph = body.levelGraph;
     return levelGraphNode || {};
   }
 

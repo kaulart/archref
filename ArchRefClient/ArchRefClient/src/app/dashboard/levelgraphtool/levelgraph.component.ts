@@ -8,6 +8,7 @@ import { FlashMessage } from 'angular2-flash-message';
 import { FileUploader } from 'ng2-file-upload';
 import { LevelService } from '../../shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from '../../shared/dataservices/levelgraph/levelgraph.service';
+import { Utility } from '../../utility';
 import { FlashMessageService } from 'angular2-flash-message';
 
 const URL = '/api/import/levelgraph';
@@ -53,7 +54,7 @@ export class LevelGraphComponent implements OnInit {
 
     this.levelGraphService.createLevelGraph(this.createdLevelGraph).subscribe(levelGraphResponse => {
       for (let i = 0; i < numberOfLevels; i++) {
-        let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id);
+        let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id, [], []);
         tempLevel.levelGraph = levelGraphResponse;
         this.levelService.createLevel(tempLevel)
           .subscribe(levelResponse => {
@@ -67,7 +68,7 @@ export class LevelGraphComponent implements OnInit {
           });
       }
       this.levelGraphs.push(levelGraphResponse);
-      Logger.info('LevelGraph with name: ' + levelGraphResponse.getName() + ' was created sucessfully with id: ' + levelGraphResponse.getId(), LevelGraphComponent.name);
+      Logger.info('LevelGraph with name: ' + levelGraphResponse.name + ' was created sucessfully with id: ' + levelGraphResponse.id, LevelGraphComponent.name);
     },
       (error) => {
         this.flashMessage.message = error;
@@ -101,15 +102,11 @@ export class LevelGraphComponent implements OnInit {
    *
    *****************************************************************************************************************/
   updateLevelGraph(name: string) {
-    this.editedLevelGraph.setName(name);
+    this.editedLevelGraph.name = name;
     this.levelGraphService.updateLevelGraph(this.editedLevelGraph)
       .subscribe(levelGraphResponse => {
-        for (let i = 0; i < this.levelGraphs.length; i++) {
-          if (levelGraphResponse.getId() === this.levelGraphs[i].getId()) {
-            this.levelGraphs[i] = levelGraphResponse;
-          }
-        }
-        Logger.info('Level Graph with id: ' + levelGraphResponse.getId() + ' and name:' + levelGraphResponse.getName() + ' was updated sucessfully.', LevelGraphComponent.name);
+        this.levelGraphs = Utility.updateElementInArry(levelGraphResponse, this.levelGraphs);
+        Logger.info('Level Graph with id: ' + levelGraphResponse.id + ' and name:' + levelGraphResponse.name + ' was updated sucessfully.', LevelGraphComponent.name);
       },
       (error) => {
         this.flashMessage.message = error;
@@ -127,9 +124,7 @@ export class LevelGraphComponent implements OnInit {
   deleteLevelGraph(id: number) {
     this.levelGraphService.deleteLevelGraph(id)
       .subscribe(response => {
-        this.levelGraphs = this.levelGraphs.filter(function(obj) {
-          return obj.getId() !== id;
-        });
+        this.levelGraphs = Utility.deleteElementFromArry(id, this.levelGraphs);
         Logger.info('Level Graph with id: ' + id + ' was deleted sucessfully.', LevelGraphComponent.name);
       },
       (error) => {

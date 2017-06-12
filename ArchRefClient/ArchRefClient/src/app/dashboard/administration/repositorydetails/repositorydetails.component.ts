@@ -14,53 +14,56 @@ import { FlashMessage } from 'angular2-flash-message';
 
 /*****************************************************************************************************************************
  *
- * @component AdministrationComponent - Lazy loaded component as wrapper for all other components in the
- *                                      AdministrationComponent
+ * @component RepositoryDetailsComponent - Lazy loaded component as wrapper for all other components in the
+ *                                         RepositoryDetailsComponent
+ *
+ * @field currentRepository: Repository - Repository which is currently displayed
+ * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ *                                     cause a "Over Flash" for the user experience
  *
  * @author Arthur Kaul
  *
  ****************************************************************************************************************************/
 export class RepositoryDetailsComponent implements OnInit {
 
-  currentRepository: Repository = new Repository('');
-
-  repositoryName: string;
-  repositoryId: number;
-
+  currentRepository: Repository = new Repository();
   public flashMessage = new FlashMessage();
-  private sub: any;
 
   constructor(private route: ActivatedRoute,
     private router: Router, private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
 
+  /*********************************************************************************************************************************************
+   *
+   * @method ngOnInit is called when the component is initialized
+   *
+   ********************************************************************************************************************************************/
   ngOnInit() {
-    Logger.info('Iniitalize RepositoryDetails Component', RepositoryDetailsComponent.name);
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.repositoryName = params['name'] || 'Unnamed';
+    Logger.info('Iniitalize RepositoryDetailsComponent', RepositoryDetailsComponent.name);
+    this.route.queryParams.subscribe(params => {
+      this.currentRepository.name = params['name'] || 'Unnamed';
     });
 
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.repositoryId = params['id'] || null;
+    this.route.queryParams.subscribe(params => {
+      this.currentRepository.id = params['id'] || null;
     });
 
-    this.retrieveRepositoryData(this.repositoryId);
+    this.retrieveRepositoryData(this.currentRepository.id);
 
   }
 
-  /****************************************************************************************************************
-  *
-  * Retrieve Repository Data - Load Repository with id from the database
-  * @param id: number - ID of the Repository witch should be loaded
-  *
-  ****************************************************************************************************************/
+  /*********************************************************************************************************************************************
+   *
+   * @method retrieveRepositoryData - Call the RepositoryService for loading repository from database into the application and subscribe
+   *                                  for a callback.
+   *
+   * @param id: number - ID of the Repository which should be loaded from the database
+   *
+   ********************************************************************************************************************************************/
   retrieveRepositoryData(id: number) {
     Logger.info('Retrieve Repository Data', RepositoryDetailsComponent.name);
     this.repositoryService.getRepository(id)
       .subscribe(repositoryResponse => {
         this.currentRepository = repositoryResponse;
-        this.flashMessage.message = 'Repository with id: ' + repositoryResponse.id + ' and name: ' + repositoryResponse.name + ' retrieved sucessfully. ';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('Repositories sucessfully retrieved.', RepositoryDetailsComponent.name);
       },
       (error) => {

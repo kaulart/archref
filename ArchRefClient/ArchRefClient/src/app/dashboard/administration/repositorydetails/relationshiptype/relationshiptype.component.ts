@@ -9,6 +9,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
 
+// URL for icon Upload
 const URL = '/api/fileupload/relationshiptype';
 
 @Component({
@@ -17,39 +18,57 @@ const URL = '/api/fileupload/relationshiptype';
   styleUrls: ['./relationshiptype.component.css']
 })
 
-
-/*****************************************************************************************************************
+/*********************************************************************************************************************************************
  *
- * RelationshipTypeComponent - Overview of the RelationshipTypeData
+ * @component RelationshipTypeComponent Class - The component retrieve all available RelationshipType of the currently selected Repository
+ *                                              from the database and list them. You can delete, import, export or edit the RelationshipType.
+ *                                              Also you can select a RelationshipType and call the RelationshipTypeDetailComponent where you can see all
+ *                                              data which are included in a RelationshipType.
  *
- *****************************************************************************************************************/
+ * @field currentRepository: Repository -  Repository which is currently selected
+ * @field createdRelationshipType: RelationshipType - RelationshipType which should be created
+ * @field editRelationshipType: RelationshipType - RelationshipType which should be edit
+ * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ *                                     cause a "Over Flash" for the user experience
+ * @field uploader: FileUploader - UploaderSerivce for uploading files like icons to the file system of the server
+ *
+ * @author Arthur Kaul
+ *
+ ********************************************************************************************************************************************/
 export class RelationshipTypeComponent implements OnInit {
-
-  public uploader: FileUploader = new FileUploader({ url: URL });
 
   @Input()
   currentRepository: Repository;
 
-  public relationshipType: RelationshipType = new RelationshipType("Unnamed", null);
-  public editRelationshipType: RelationshipType = new RelationshipType(null, null);
-  public flashMessage = new FlashMessage();
+  createdRelationshipType: RelationshipType = new RelationshipType('Unnamed', null);
+  editRelationshipType: RelationshipType = new RelationshipType(null, null);
+  flashMessage = new FlashMessage();
+  uploader: FileUploader = new FileUploader({ url: URL });
 
   constructor(private relationshipTypeService: RelationshipTypeService, private flashMessageService: FlashMessageService) { }
 
+  /*********************************************************************************************************************************************
+   *
+   * @method ngOnInit is called when the component is initialized
+   *
+   ********************************************************************************************************************************************/
   ngOnInit() {
+    Logger.info('Iniitalize RelationshipTypeComponent', RelationshipTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
+    let repository = new Repository();
+    repository.id = this.currentRepository.id;
+    this.createdRelationshipType.repository = repository;
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   *  Create RelationshipType
-   *  @param name: string - Name of the RelationshipType
+   * @method createRelationshipType - Call the RelationshipTypeService for creating a new RelationshipType in the database
+   *                            ´     and subscribe for a callback
    *
-   ****************************************************************************************************************/
-  createRelationshipType(name: string) {
+   ********************************************************************************************************************************************/
+  createRelationshipType() {
     Logger.info('Create RelationshipType', RelationshipTypeComponent.name);
-    this.relationshipType.repository = this.currentRepository;
-    this.relationshipTypeService.createRelationshipType( this.relationshipType)
+    this.relationshipTypeService.createRelationshipType(this.createdRelationshipType)
       .subscribe(relationshipTypeResponse => {
         let tempURL = URL + '/' + relationshipTypeResponse.id;
         this.uploader.setOptions({ url: tempURL });
@@ -59,9 +78,6 @@ export class RelationshipTypeComponent implements OnInit {
           this.relationshipTypeService.updateRelationshipType(relationshipTypeResponse).subscribe();
         };
         this.currentRepository.relationshipTypeList.push(relationshipTypeResponse);
-        this.flashMessage.message = 'Info: RelationshipType with name: ' + relationshipTypeResponse.name + ' was created sucessfully with id: ' + relationshipTypeResponse.id;
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('RelationshipType with name: ' + relationshipTypeResponse.name + ' was created sucessfully with id: ' + relationshipTypeResponse.id, RelationshipTypeComponent.name);
       },
       (error) => {
@@ -71,21 +87,19 @@ export class RelationshipTypeComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
-  *
-  *  Update RelationshipType
-  *  @param name: string - New Name of the RelationshipType
-  *
-  ****************************************************************************************************************/
+  /*********************************************************************************************************************************************
+   *
+   * @method updateRelationshipType - Call the RelationshipTypeService for updating the RelationshipType in the database and subscribe for a callback.
+   *
+   * @param name - New name of the RelationshipType
+   *
+   ********************************************************************************************************************************************/
   updateRelationshipType(name: string) {
     Logger.info('Update RelationshipType', RelationshipTypeComponent.name);
     this.editRelationshipType.name = name;
     this.relationshipTypeService.updateRelationshipType(this.editRelationshipType)
       .subscribe(relationshipTypeResponse => {
         this.currentRepository.relationshipTypeList = Utility.updateElementInArry(relationshipTypeResponse, this.currentRepository.relationshipTypeList);
-        this.flashMessage.message = 'RelationshipType with id: ' + relationshipTypeResponse.id + ' and name: ' + relationshipTypeResponse.name + ' was updated sucessfully.';
-        this.flashMessage.isSuccess = true;
-        this.flashMessageService.display(this.flashMessage);
         Logger.info('RelationshipType with id: ' + relationshipTypeResponse.id + ' and name:' + relationshipTypeResponse.name + ' was updated sucessfully.', RelationshipTypeComponent.name);
       },
       (error) => {
@@ -95,12 +109,13 @@ export class RelationshipTypeComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /*********************************************************************************************************************************************
    *
-   *  Delete RelationshipType
-   *  @param id: number -  ID of the RelationshipType witch should be deleted from the database
+   * @method deleteRelationshipType - Call the RelationshipTypeService for delete a RelationshipType from the database and subscribe for a callback.
    *
-   ****************************************************************************************************************/
+   * @param id: number - ID of the RelationshipType witch should be deleted from the database
+   *
+   ********************************************************************************************************************************************/
   deleteRelationshipType(id: number) {
     Logger.info('Delete RelationshipType', RelationshipTypeComponent.name);
     this.relationshipTypeService.deleteRelationshipType(id).subscribe(res => this.currentRepository.relationshipTypeList = Utility.deleteElementFromArry(id, this.currentRepository.relationshipTypeList));
@@ -109,10 +124,12 @@ export class RelationshipTypeComponent implements OnInit {
   /*****************************************************************************************************************
   *
   * Set the editable RelationshipType Data
+  *
   * @param nodeType - The RelationshipType witch should be edit
   *
   ****************************************************************************************************************/
   setEditRelationshipType(editRelationshipType: RelationshipType) {
     this.editRelationshipType = editRelationshipType;
   }
+
 }

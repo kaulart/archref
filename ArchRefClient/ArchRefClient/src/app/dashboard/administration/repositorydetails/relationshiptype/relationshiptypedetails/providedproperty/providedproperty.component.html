@@ -6,12 +6,7 @@
 
 			<div class="row panel-heading control-panel">
 
-				<h3 class="col-sm-3">Property</h3>
-
-				<!--<button class="w3-right w3-theme-l1 btn" id="importNodeType" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
-					href="#importNodeTypeFieldsArea">
-					<i class="fa fa-upload" aria-hidden="true"></i> Import
-				</button> -->
+				<h3 class="col-sm-3">ProvidedProperty</h3>
 
 				<button class="w3-right w3-green btn" id="createProperty" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
 					href="#createPropertyArea">
@@ -20,12 +15,12 @@
 
 			</div>
 
-			<div [hidden]="submitted" class="collapse panel-collapse w3-theme-l1 input-panel" id="createPropertyArea">
+			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createPropertyArea">
 				<form #createNodeTypeForm="ngForm">
 
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="property.name" #nameProperty type="text"
-							class="form-control" id="nameProperty" value="{{property.name}}" required>
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createdProvidedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{createdProvidedProperty.name}}" required>
 						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!nameProperty.errors.required">Name is required</div>
 
@@ -34,8 +29,8 @@
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="property.value" #valueProperty type="text"
-							class="form-control" id="valueProperty" value="{{property.value}}" required>
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createdProvidedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{createdProvidedProperty.value}}" required>
 						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!valueProperty.errors.required">Value is required</div>
 
@@ -97,8 +92,8 @@
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="editProperty.name" #nameProperty type="text"
-							class="form-control" id="nameProperty" value="{{editProperty.name}}" required>
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="editProvidedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{editProvidedProperty.name}}" required>
 						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!nameProperty.errors.required">Name is required</div>
 
@@ -107,8 +102,8 @@
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="editProperty.value" #valueProperty type="text"
-							class="form-control" id="valueProperty" value="{{editProperty.value}}" required>
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="editProvidedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{editProvidedProperty.value}}" required>
 						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!valueProperty.errors.required">Value is required</div>
 

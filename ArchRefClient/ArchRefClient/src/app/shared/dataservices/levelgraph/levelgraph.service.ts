@@ -65,7 +65,7 @@ export class LevelGraphService {
     Logger.data('[REQUEST - LEVELGRAPH]: ' + JSON.stringify(levelGraph), LevelGraphService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.levelGraphUrl + '/' + levelGraph.getId(), levelGraph, options)
+    return this.http.put(this.levelGraphUrl + '/' + levelGraph.id, levelGraph, options)
       .map(this.extractLevelGraph)
       .catch(this.handleError);
   }
@@ -96,11 +96,11 @@ export class LevelGraphService {
     Logger.info('[RESPONSE - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     for (let levelGraph of body) {
       let tempLevelGraph: LevelGraph = new LevelGraph();
-      tempLevelGraph.setId(levelGraph.id);
-      tempLevelGraph.setName(levelGraph.name);
-      tempLevelGraph.setLevels(levelGraph.levels);
-      tempLevelGraph.setLevelGraphRelations(levelGraph.levelGraphRelations);
-      tempLevelGraph.setLevelGraphNodes(levelGraph.levelGraphNodes);
+      tempLevelGraph.id = levelGraph.id;
+      tempLevelGraph.name = levelGraph.name;
+      tempLevelGraph.levels = levelGraph.levels;
+      tempLevelGraph.levelGraphRelations = levelGraph.levelGraphRelations;
+      tempLevelGraph.levelGraphNodes = levelGraph.levelGraphNodes;
       levelGraphList.push(tempLevelGraph);
     }
     return levelGraphList || {};
@@ -116,11 +116,11 @@ export class LevelGraphService {
     Logger.info('[RESPONSE - LEVELGRAPH]: Extract Level Graph Data', LevelGraphService.name);
     Logger.info('[RESPONSE - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     let levelGraph: LevelGraph = new LevelGraph();
-    levelGraph.setId(body.id);
-    levelGraph.setName(body.name);
-    levelGraph.setLevels(body.levels);
-    levelGraph.setLevelGraphRelations(body.levelGraphRelations);
-    levelGraph.setLevelGraphNodes(body.levelGraphNodes);
+    levelGraph.id = body.id;
+    levelGraph.name = body.name;
+    levelGraph.levels = body.levels;
+    levelGraph.levelGraphRelations = body.levelGraphRelations;
+    levelGraph.levelGraphNodes = body.levelGraphNodes;
     return levelGraph || {};
   }
 

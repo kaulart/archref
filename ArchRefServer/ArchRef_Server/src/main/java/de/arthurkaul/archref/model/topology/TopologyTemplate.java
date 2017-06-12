@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -26,8 +28,12 @@ public class TopologyTemplate extends de.arthurkaul.archref.model.Entity {
 	@JsonManagedReference (value="topologyTemplate-relationshipTemplate")
 	private Collection<RelationshipTemplate> relationshipTemplates;
 	
+	@Column(name = "PARENT_TOPOLOGYTEMPLATE_ID")
+	private Long parentTopologyTemplateID;
+	
+	//TODO probleme möglicherweisße mit der Referenz
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PARENTTOPOLOGYTEMPLATE")
+	@JoinColumn(name = "PARENT_TOPOLOGYTEMPLATE")
 	@JsonBackReference (value="topologyTemplate-topologyTemplate")
 	private TopologyTemplate parentTopologyTemplate;
 	
@@ -35,24 +41,15 @@ public class TopologyTemplate extends de.arthurkaul.archref.model.Entity {
 	@JsonManagedReference (value="topologyTemplate-topologyTemplate")
 	private Collection<TopologyTemplate> childTopologyTemplates;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVELGRAPH")
-	@JsonBackReference (value="levelgraph-topologytemplate")
-	private LevelGraph levelGraph;
-	
-	@Column(name = "LEVELGRAPH_ID")
-	private Long levelGraphId;
+	@ManyToMany
+	@JoinTable(name = "LEVELGRAPH_TOPOLOGYTEMPLATE", 
+			joinColumns = @JoinColumn(name = "TOPOLOGY_ID", referencedColumnName = "ID"), 
+			inverseJoinColumns = @JoinColumn(name = "LEVELGRAPH_ID", referencedColumnName = "ID"))
+	private Collection<LevelGraph> levelGraphs;
 	
 	@Column(name = "ABSTRACTIONLEVEL")
 	private Long abstractionLevel;
 
-	public LevelGraph getLevelGraph() {
-		return levelGraph;
-	}
-
-	public void setLevelGraph(LevelGraph levelGraph) {
-		this.levelGraph = levelGraph;
-	}
 
 	public Collection<NodeTemplate> getNodeTemplates() {
 		return nodeTemplates;
@@ -76,14 +73,6 @@ public class TopologyTemplate extends de.arthurkaul.archref.model.Entity {
 
 	public void setAbstractionLevel(Long abstractionLevel) {
 		this.abstractionLevel = abstractionLevel;
-	}
-
-	public Long getLevelGraphId() {
-		return levelGraphId;
-	}
-
-	public void setLevelGraphId(Long levelGraphId) {
-		this.levelGraphId = levelGraphId;
 	}
 	
 }

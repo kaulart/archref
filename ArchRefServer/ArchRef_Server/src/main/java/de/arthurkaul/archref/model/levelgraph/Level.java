@@ -1,19 +1,32 @@
 package de.arthurkaul.archref.model.levelgraph;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "LEVEL")
-public class Level extends de.arthurkaul.archref.model.Entity{
+public class Level {
+
+	@Id
+	@GeneratedValue()
+	@Column(name = "ID")
+	private Long id;
 
 	@Column(name = "DEPTH")
 	@NotNull
@@ -39,18 +52,24 @@ public class Level extends de.arthurkaul.archref.model.Entity{
 	@Column(name = "LEVELGRAPH_ID")
 	private Long levelGraphId;
 
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sourceLevel")
-//	@JsonManagedReference(value = "level-inLevelGraphRelations")
-//	private Collection<LevelGraphRelation> inLevelGraphRelations;
-//
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "targetLevel")
-//	@JsonManagedReference(value = "level-outLevelGraphRelations")
-//	private Collection<LevelGraphRelation> outLevelGraphRelations;
-//
-//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "level")
-//	@JsonManagedReference(value = "level-levelGraphNode")
-//	private Collection<LevelGraphNode> levelGraphNodes;
+	@ManyToMany
+	@JoinTable(name = "LEVELGRAPHRELATION_LEVEL", 
+			joinColumns = @JoinColumn(name = "LEVELGRAPHRELATION_ID", referencedColumnName = "ID"), 
+			inverseJoinColumns = @JoinColumn(name = "LEVEL_ID", referencedColumnName = "ID"))
+	private Collection<LevelGraphRelation> levelGraphRelations;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "level")
+	@JsonManagedReference(value = "level-levelGraphNode")
+	private Collection<LevelGraphNode> levelGraphNodes;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Long getDepth() {
 		return depth;
 	}
@@ -99,28 +118,20 @@ public class Level extends de.arthurkaul.archref.model.Entity{
 		this.levelGraphId = levelGraphId;
 	}
 
-//	public Collection<LevelGraphNode> getLevelGraphNodes() {
-//		return levelGraphNodes;
-//	}
-//
+	public Collection<LevelGraphRelation> getLevelGraphRelations() {
+		return levelGraphRelations;
+	}
+
+	public void setLevelGraphRelations(Collection<LevelGraphRelation> levelGraphRelations) {
+		this.levelGraphRelations = levelGraphRelations;
+	}
+
+	public Collection<LevelGraphNode> getLevelGraphNodes() {
+		return levelGraphNodes;
+	}
+
 //	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
 //		this.levelGraphNodes = levelGraphNodes;
-//	}
-//
-//	public Collection<LevelGraphRelation> getInLevelGraphRelations() {
-//		return inLevelGraphRelations;
-//	}
-//
-//	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
-//		this.inLevelGraphRelations = inLevelGraphRelations;
-//	}
-//
-//	public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
-//		return outLevelGraphRelations;
-//	}
-//
-//	public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
-//		this.outLevelGraphRelations = outLevelGraphRelations;
 //	}
 
 }

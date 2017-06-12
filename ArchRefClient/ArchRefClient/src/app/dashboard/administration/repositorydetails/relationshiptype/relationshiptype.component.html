@@ -17,7 +17,7 @@
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createRelationshipTypeFieldsArea">
 				<form #createRelationshipTypeForm="ngForm">
 					<div class="col-sm-6 form-group">
-						<label for="relationshipTypeName">Name: </label> <input #relationshipTypeName #relationshipTypeName="ngModel" name="name" type="text" class="form-control" id="relationshipTypeName" [(ngModel)]="relationshipType.name" type="text" class="form-control" value="{{relationshipType.name}}" required>
+						<label for="relationshipTypeName">Name: </label> <input #relationshipTypeName #relationshipTypeName="ngModel" name="name" type="text" class="form-control" id="relationshipTypeName" [(ngModel)]="createdRelationshipType.name" type="text" class="form-control" value="{{createdRelationshipType.name}}" required>
 					</div>
 					<div *ngIf="relationshipTypeName.errors && (relationshipTypeName.dirty || relationshipTypeName.touched)" class="alert alert-danger">
 						<div [hidden]="!relationshipTypeName.errors.required">Name is required</div>

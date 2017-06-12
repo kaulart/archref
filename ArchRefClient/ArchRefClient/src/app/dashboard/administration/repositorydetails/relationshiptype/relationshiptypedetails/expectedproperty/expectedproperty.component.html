@@ -20,12 +20,12 @@
 
 			</div>
 
-			<div [hidden]="submitted" class="collapse panel-collapse w3-theme-l1 input-panel" id="createPropertyArea">
+			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createPropertyArea">
 				<form #createNodeTypeForm="ngForm">
 
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="property.name" #nameProperty type="text"
-							class="form-control" id="nameProperty" value="{{property.name}}" required>
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createdExpectedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{createdExpectedProperty.name}}" required>
 						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!nameProperty.errors.required">Name is required</div>
 
@@ -34,8 +34,8 @@
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="property.value" #valueProperty type="text"
-							class="form-control" id="valueProperty" value="{{property.value}}" required>
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createdExpectedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{createdExpectedProperty.value}}" required>
 						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!valueProperty.errors.required">Value is required</div>
 
@@ -62,8 +62,8 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let property of currentNodeType.providedProperties">
-						<td>{{currentNodeType.providedProperties.indexOf(property) + 1 }}</td>
+					<tr *ngFor="let property of currentRelationshipType.providedProperties">
+						<td>{{currentRelationshipType.providedProperties.indexOf(property) + 1 }}</td>
 					    <td>{{ property.id }}</td>
 						<td>{{ property.name }}</td>
 						<td>{{ property.value }}</td>
@@ -97,8 +97,8 @@
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="editProperty.name" #nameProperty type="text"
-							class="form-control" id="nameProperty" value="{{editProperty.name}}" required>
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="editExpectedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{editExpectedProperty.name}}" required>
 						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!nameProperty.errors.required">Name is required</div>
 
@@ -107,8 +107,8 @@
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="editProperty.value" #valueProperty type="text"
-							class="form-control" id="valueProperty" value="{{editProperty.value}}" required>
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="editExpectedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{editExpectedProperty.value}}" required>
 						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!valueProperty.errors.required">Value is required</div>
 

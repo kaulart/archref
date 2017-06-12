@@ -1,16 +1,18 @@
 /*******************************************************************************************************************************************************************************************************
  *
- * Property Data Model
+ * @data Point - A point in a coordinate system used for drawing
  *
  * @author Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
-export class Property {
+export class Point {
 
-  id: number = null;
-  name = 'Unnamed';
-  value = 'Undefined';
+  x: number;
+  y: number;
 
-  constructor() {}
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
 }

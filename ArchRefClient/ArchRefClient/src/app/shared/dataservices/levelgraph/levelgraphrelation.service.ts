@@ -85,10 +85,13 @@ export class LevelGraphRelationService {
     let body = res.json();
     let levelGraphRelationList: LevelGraphRelation[] = [];
     Logger.info('Extract Level Graph Relation Data List', LevelGraphRelationService.name);
-    Logger.info('[REQUEST - LEVELGRAPHRELATION]: ' + JSON.stringify(body), LevelGraphRelationService.name);
+    Logger.info('[RESPONSE - LEVELGRAPHRELATION]: ' + JSON.stringify(body), LevelGraphRelationService.name);
     for (let levelGraphRelation of body) {
-      let tempLevelGraphRelation: LevelGraphRelation = new LevelGraphRelation(levelGraphRelation.sourceLevelValue, levelGraphRelation.targetLevelValue, levelGraphRelation.sourceLevelGraphNodeId, levelGraphRelation.targetLevelGraphNodeId, levelGraphRelation.levelGraphId, levelGraphRelation.path, levelGraphRelation.levelGraphRelationType);
+      let tempLevelGraphRelation: LevelGraphRelation = new LevelGraphRelation(levelGraphRelation.sourceLevelDepth, levelGraphRelation.targetLevelDepth, levelGraphRelation.sourceNodeId, levelGraphRelation.targetNodeId, levelGraphRelation.levelGraphId, levelGraphRelation.path, levelGraphRelation.levelGraphRelationType);
       tempLevelGraphRelation.id = levelGraphRelation.id;
+      tempLevelGraphRelation.levelGraph = levelGraphRelation.levelGraph;
+      tempLevelGraphRelation.levelGraphNodes = levelGraphRelation.levelGraphNodes;
+      tempLevelGraphRelation.levels = levelGraphRelation.levels;
       levelGraphRelationList.push(levelGraphRelation);
     }
     return levelGraphRelationList || {};
@@ -102,9 +105,12 @@ export class LevelGraphRelationService {
   private extractLevelGraphRelation(res: Response) {
     let body = res.json();
     Logger.info('Extract Level Graph Relation Data', LevelGraphRelationService.name);
-    Logger.info('[REQUEST - LEVELGRAPHRELATION]: ' + JSON.stringify(body), LevelGraphRelationService.name);
-    let levelGraphRelation: LevelGraphRelation = new LevelGraphRelation(body.sourceLevelValue, body.targetLevelValue, body.sourceLevelGraphNodeId, body.targetLevelGraphNodeId, body.levelGraphId, body.path, body.levelGraphRelationType);
+    Logger.info('[RESPONSE - LEVELGRAPHRELATION]: ' + JSON.stringify(body), LevelGraphRelationService.name);
+    let levelGraphRelation: LevelGraphRelation = new LevelGraphRelation(body.sourceLevelDepth, body.targetLevelDepth, body.sourceNodeId, body.targetNodeId, body.levelGraphId, body.path, body.levelGraphRelationType);
     levelGraphRelation.id = body.id;
+    levelGraphRelation.levelGraph = body.levelGraph;
+    levelGraphRelation.levelGraphNodes = body.levelGraphNodes;
+    levelGraphRelation.levels = body.levels;
     return levelGraphRelation || {};
   }
 

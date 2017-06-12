@@ -1,18 +1,31 @@
 <div class="container-fluid" (mouseup)="stopAllEvents()">
 
 	<div class="row">
+
 		<!-- Heading where you can see the current selected Level Graph save the level graph and open/close the control panel-->
 		<div class="heading col-sm-12 w3-theme-d3 w3-card-4">
-			<h3 class="col-sm-5">Level-Graph Name: {{currentLevelGraphName}}</h3>
-			<h3 class="col-sm-5">Level-Graph ID: {{currentLevelGraphId}}</h3>
-			<button id="collapseBtn" class=" w3-theme-d1 btn btn-primary w3-right btn-10" type="button" data-toggle="collapse" data-target="#control_level_graph_tool" aria-expanded="false" aria-controls="control_level_graph_tool">
-				<i class="fa fa-caret-down w3-right fa-lg" aria-hidden="true"></i>
-			</button>
-			<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateLevelGraph()">
-				<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
-			</button>
-		</div>
+			<div class="col-sm-5">
+				<h3>
+					Level-Graph Name: <input disabled style="color: black" value="{{currentLevelGraph.name}}" />
+				</h3>
+			</div>
+			<div class="col-sm-5">
+				<h3>
+					Level-Graph ID: <input disabled style="color: black" value="{{currentLevelGraph.id}}" />
+				</h3>
 
+			</div>
+
+			<div class="col-sm-2">
+				<button id="collapseBtn" class=" w3-theme-d1 btn btn-primary w3-right btn-10" type="button" data-toggle="collapse" data-target="#control_level_graph_tool" aria-expanded="false" aria-controls="control_level_graph_tool">
+					<i class="fa fa-caret-down w3-right fa-lg" aria-hidden="true"></i>
+				</button>
+				<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateLevelGraph()">
+					<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
+				</button>
+			</div>
+		</div>
+		
 		<!-- Controller Panel for the controller groups like filters -->
 		<div id="control_level_graph_tool" class="col-sm-12 w3-card-4 w3-theme collapse">
 
@@ -30,7 +43,7 @@
 				</div>
 				<label>Displayed Levels:</label>
 				<div id="level-list" class="w3-light-grey">
-					<label *ngFor="let level of currentLevelGraph.getLevels()" class="form-control"> <input type="checkbox" name="levels" [(ngModel)]="level.visible" value="{{level.id}}" (click)="onShowLevel(level)" /> Level {{level.depth}}
+					<label *ngFor="let level of currentLevelGraph.levels" class="form-control"> <input type="checkbox" name="levels" [(ngModel)]="level.visible" value="{{level.id}}" (click)="onShowLevel(level)" /> Level {{level.depth}}
 					</label>
 				</div>
 			</div>
@@ -59,9 +72,9 @@
 				<label>Modelling Tools:</label>
 				<ul id="modelling-tool-list">
 					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[0].checked" (click)="changeTool(toolList[0])" value="{{toolList[0].name}}"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>{{toolList[0].name}}</li>
-					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[1].checked" (click)="changeTool(toolList[1])" value="{{toolList[1].name}}"><i class="fa fa-arrow-right" style="color:green;" aria-hidden="true"></i>{{toolList[1].name}}</li>
-					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[2].checked" (click)="changeTool(toolList[2])" value="{{toolList[2].name}}"><i class="fa fa-arrow-right" style="color:blue;"  aria-hidden="true"></i>{{toolList[2].name}}</li>
-					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[3].checked" (click)="changeTool(toolList[3])" value="{{toolList[3].name}}"><i class="fa fa-arrow-right" style="color:yellow;" aria-hidden="true"></i>{{toolList[3].name}}</li>
+					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[1].checked" (click)="changeTool(toolList[1])" value="{{toolList[1].name}}"><i class="fa fa-arrow-right" style="color: green;" aria-hidden="true"></i>{{toolList[1].name}}</li>
+					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[2].checked" (click)="changeTool(toolList[2])" value="{{toolList[2].name}}"><i class="fa fa-arrow-right" style="color: blue;" aria-hidden="true"></i>{{toolList[2].name}}</li>
+					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[3].checked" (click)="changeTool(toolList[3])" value="{{toolList[3].name}}"><i class="fa fa-arrow-right" style="color: yellow;" aria-hidden="true"></i>{{toolList[3].name}}</li>
 				</ul>
 			</div>
 
@@ -198,7 +211,7 @@
 				
 				<!-- Definition of the level draw areas-->
 				
-				<g *ngFor="let level of currentLevelGraph.getLevels().reverse()">
+				<g *ngFor="let level of currentLevelGraph.levels.reverse()">
 				   	
 				   <g *ngIf="level.visible">
 				   		
@@ -216,34 +229,34 @@
 								
 							<!-- Definition of the hostedOnRelation-->
 				    		<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
-					    		<polyline *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'HOSTED_ON') && (levelGraphRelation.sourceLevelValue === level.depth)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#Triangle)" />
+					    		<polyline *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'HOSTED_ON') && (levelGraphRelation.sourceLevelDepth === level.depth)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#Triangle)" />
 							</g>
 					
 							<!-- Definition of the connectedToRelation-->
 					 		<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
-					   			<polyline *ngIf="(levelGraphRelationTypes[0].checked == true) && (level.depth === levelGraphRelation.sourceLevelValue) && (levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO')" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
+					   			<polyline *ngIf="(levelGraphRelationTypes[0].checked == true) && (level.depth === levelGraphRelation.sourceLevelDepth) && (levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO')" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
 							</g>
 				
-							<polyline *ngIf="drawRelation && currentDrawRelation.sourceLevelValue === level.depth  && currentDrawRelation.levelGraphRelationType === 'CONNECTED_TO'" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#TriangleDraw)" />
+							<polyline *ngIf="drawRelation && currentDrawRelation.sourceLevelDepth === level.depth  && currentDrawRelation.levelGraphRelationType === 'CONNECTED_TO'" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#TriangleDraw)" />
 						
-				    		<polyline *ngIf="drawRelation && currentDrawRelation.sourceLevelValue === level.depth && currentDrawRelation.levelGraphRelationType === 'HOSTED_ON'" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#TriangleDraw)" />	
+				    		<polyline *ngIf="drawRelation && currentDrawRelation.sourceLevelDepth === level.depth && currentDrawRelation.levelGraphRelationType === 'HOSTED_ON'" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#TriangleDraw)" />	
 					
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'FRAGMENTTYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level)">
+								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'FRAGMENTTYPE') && (levelGraphNode.levelId === level.id))" (click)="stopDrawRelation($event, levelGraphNode, level); startDrawRelation($event, level, levelGraphNode);" (mousedown)="startMoveNode($event, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event)">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradFragmentNode)" style="stroke:black;stroke-width:5;" />
 									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>
 								</g> 	
 							</g>
 					
 				 			<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level)">
+								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" (click)="startDrawRelation($event, level, levelGraphNode);" (mousedown)="startMoveNode($event, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event)">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
 									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text> 		
 								</g>
 							</g>
 					
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
-								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level)">
+								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" (click)="startDrawRelation($event, level, levelGraphNode); " (mousedown)="startMoveNode($event, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event)">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />
 									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text> 	
 								</g>

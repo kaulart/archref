@@ -1,4 +1,3 @@
-import { Entity } from '../entity/entity';
 import { TopologyTemplate } from '../topology/topologytemplate';
 import { Level } from './level';
 import { LevelGraphNode } from './levelgraphnode';
@@ -11,15 +10,17 @@ import { LevelGraphRelation } from './levelgraphrelation';
  * @author Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
-export class LevelGraph extends Entity {
+export class LevelGraph {
 
+  id: number;
+  name: string;
   levels: Level[];
   levelGraphNodes: LevelGraphNode[];
   levelGraphRelations: LevelGraphRelation[];
   topologyTemplates: TopologyTemplate[];
 
   constructor() {
-    super('Unnamed');
+    this.name = 'Unnamed';
     this.levels = [];
     this.levelGraphRelations = [];
     this.levelGraphNodes = [];
@@ -30,13 +31,6 @@ export class LevelGraph extends Entity {
    * Getter Methods
    *
    ******************************************************************************************************************************************************************************************************/
-  public getId(): number {
-    return this.id;
-  }
-
-  public getName(): string {
-    return this.name;
-  }
 
   public getLevel(levelId: number) {
     for (let i = 0; i < this.levels.length; i++) {
@@ -45,10 +39,6 @@ export class LevelGraph extends Entity {
       }
     }
     return null;
-  }
-
-  public getLevels(): Level[] {
-    return this.levels;
   }
 
   public getVisibleLevels(): Level[] {
@@ -62,14 +52,6 @@ export class LevelGraph extends Entity {
     }
 
     return visibleLevels;
-  }
-
-  public getLevelGraphRelations(): LevelGraphRelation[] {
-    return this.levelGraphRelations;
-  }
-
-  public getLevelGraphNodes(): LevelGraphNode[] {
-    return this.levelGraphNodes;
   }
 
   public getLevelGraphRelation(levelGraphRelationId: number): LevelGraphRelation {
@@ -99,13 +81,6 @@ export class LevelGraph extends Entity {
    * Setter Methods
    *
    ******************************************************************************************************************************************************************************************************/
-  public setId(id: number) {
-    this.id = id;
-  }
-
-  public setName(name: string) {
-    this.name = name;
-  }
 
   public setLevel(level: Level) {
     for (let i = 0; i < this.levels.length; i++) {
@@ -113,18 +88,6 @@ export class LevelGraph extends Entity {
         this.levels[i] = level;
       }
     }
-  }
-
-  public setLevels(levels: Level[]) {
-    this.levels = levels;
-  }
-
-  public setLevelGraphNodes(levelGraphNodes: LevelGraphNode[]) {
-    this.levelGraphNodes = levelGraphNodes;
-  }
-
-  public setLevelGraphRelations(levelGraphRelations: LevelGraphRelation[]) {
-    this.levelGraphRelations = levelGraphRelations;
   }
 
   /*******************************************************************************************************************************************************************************************************

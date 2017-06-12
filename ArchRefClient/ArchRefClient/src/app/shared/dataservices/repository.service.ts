@@ -8,8 +8,8 @@ import 'rxjs/add/operator/catch';
 
 /********************************************************************************************************************
  *
- * Repository Service implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for Repositories
+ * @service RepositoryService  - Implements the calls to the rest interface of the application server and
+ *                               handle the request construction and response extraction for Repository data
  *
  ********************************************************************************************************************/
 @Injectable()
@@ -22,7 +22,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Send GET all Repositories REQUEST
+   * @request - Send GET all Repositories REQUEST
    *
    ******************************************************************************************************************/
   public getRepositories(): Observable<Repository[]> {
@@ -32,7 +32,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Send GET Repository REQUEST
+   * @request - Send GET Repository REQUEST
    *
    ******************************************************************************************************************/
   public getRepository(id: number): Observable<Repository> {
@@ -42,7 +42,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Send POST Repository REQUEST
+   * @request - Send POST Repository REQUEST
    *
    ******************************************************************************************************************/
   public createRepository(repository: Repository): Observable<Repository> {
@@ -55,7 +55,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Send PUT Repository REQUEST
+   * @request - Send PUT Repository REQUEST
    *
    ******************************************************************************************************************/
   public updateRepository(repository: Repository): Observable<Repository> {
@@ -68,7 +68,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Send DELETE Repository REQUEST
+   * @request - Send DELETE Repository REQUEST
    *
    ******************************************************************************************************************/
   public deleteRepository(id: number): Observable<Repository> {
@@ -80,18 +80,19 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response - Extract data from response data list
    *
    ******************************************************************************************************************/
   private extractRepositoryDataList(res: Response) {
-    Logger.info('[RESPONSE - REPOSITORIES]: Extract Data of Response Body', RepositoryService.name);
+
     let body = res.json();
     let repoList: Repository[] = [];
+    Logger.info('[RESPONSE - REPOSITORIES]: Extract Data of Response Body', RepositoryService.name);
     Logger.data('[RESPONSE - REPOSITORIES]: ' + JSON.stringify(body), RepositoryService.name);
     for (let repository of body) {
-      let tempRepository: Repository = new Repository(repository.name);
+      let tempRepository: Repository = new Repository();
       tempRepository.id = repository.id;
-      tempRepository.id = repository.id;
+      tempRepository.name = repository.name;
       tempRepository.nodeTypeList = repository.nodeTypeList;
       tempRepository.relationshipTypeList = repository.relationshipTypeList;
       repoList.push(tempRepository);
@@ -101,15 +102,17 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   *  Extract data from response data object
+   *  @response - Extract data from response data object
    *
    ******************************************************************************************************************/
   private extractRepositoryData(res: Response) {
-    Logger.info('[RESPONSE - REPOSITORY]: Extract Data of Response Body', RepositoryService.name);
+
     let body = res.json();
+    Logger.info('[RESPONSE - REPOSITORY]: Extract Data of Response Body', RepositoryService.name);
     Logger.data('[RESPONSE - REPOSITORY]: ' + JSON.stringify(body), RepositoryService.name);
-    let rep: Repository = new Repository(body.name);
+    let rep: Repository = new Repository();
     rep.id = body.id;
+    rep.name = body.name;
     rep.nodeTypeList = body.nodeTypeList;
     rep.relationshipTypeList = body.relationshipTypeList;
     return rep || {};
@@ -117,7 +120,7 @@ export class RepositoryService {
 
   /******************************************************************************************************************
    *
-   *  Error Handling
+   *  @error - Error Handling
    *
    ******************************************************************************************************************/
   private handleError(error: Response | any) {

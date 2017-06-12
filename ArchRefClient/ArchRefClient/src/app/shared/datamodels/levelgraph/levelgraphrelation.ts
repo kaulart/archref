@@ -1,5 +1,5 @@
 import { Relation } from '../graph/relation';
-import { Path } from '../path';
+import { Path } from '../utility/path';
 import { Level } from './level';
 import { LevelGraph } from './levelgraph';
 import { LevelGraphNode } from './levelgraphnode';
@@ -13,20 +13,24 @@ import { LevelGraphNode } from './levelgraphnode';
  ******************************************************************************************************************************************************************************************************/
 export class LevelGraphRelation extends Relation {
 
-  sourceLevel: Level;
-  targetLevel: Level;
-  sourceLevelValue: number;
-  targetLevelValue: number;
-  sourceLevelGraphNode: LevelGraphNode;
-  targetLevelGraphNode: LevelGraphNode;
+  sourceLevelDepth: number;
+  targetLevelDepth: number;
+
+  levelGraphNodes: LevelGraphNode[] = [];
+
   levelGraph: LevelGraph;
   levelGraphId: number;
+
+  levels: Level[] = [];
+  sourceLevelId: number;
+  targetLevelId: number;
+
   levelGraphRelationType: string;
 
-  constructor(sourceLevelValue: number, targetLevelValue: number, sourceLevelGraphNodeId: number, targetLevelGraphNodeId: number, levelGraphId: number, path: Path, levelGraphRelationType: string) {
-    super(name, sourceLevelGraphNodeId, targetLevelGraphNodeId, path);
-    this.sourceLevelValue = sourceLevelValue;
-    this.targetLevelValue = targetLevelValue;
+  constructor(sourceLevelDepth: number, targetLevelDepth: number, sourceNodeId: number, targetNodeId: number, levelGraphId: number, path: Path, levelGraphRelationType: string) {
+    super(name, sourceNodeId, targetNodeId, path);
+    this.sourceLevelDepth = sourceLevelDepth;
+    this.targetLevelDepth = targetLevelDepth;
     this.levelGraphId = levelGraphId;
     this.levelGraphRelationType = levelGraphRelationType;
   }

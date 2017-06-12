@@ -8,10 +8,10 @@ import javax.persistence.Table;
 @Table(name = "NODE")
 public class Node extends de.arthurkaul.archref.model.Entity{
 	
-	@Column(name = "X_POSITION")
+	@Column(name = "X")
 	private Integer x;
 
-	@Column(name = "Y_POSITION")
+	@Column(name = "Y")
 	private Integer y;
 
 	@Column(name = "WIDTH")

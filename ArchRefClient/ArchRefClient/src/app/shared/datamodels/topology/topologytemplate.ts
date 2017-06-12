@@ -9,10 +9,10 @@ export class TopologyTemplate extends Entity {
   relationshipTemplates: RelationshipTemplate[] = [];
 
   parentTopologyTemplate: TopologyTemplate;
+  parentTopologyTemplateId: number;
   childTopologyTemplates: TopologyTemplate[] = [];
 
-  levelGraph: LevelGraph;
-  levelGraphId: number;
+  levelGraphs: LevelGraph[];
 
   abstractionLevel: number;
 
