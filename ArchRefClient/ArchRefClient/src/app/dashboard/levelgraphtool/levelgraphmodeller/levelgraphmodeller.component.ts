@@ -236,7 +236,7 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    *************************************************************************************************************************************/
   startMoveNode(event: MouseEvent, levelGraphNode) {
-    if (!this.moveNode) {
+    if (!this.moveNode && this.toolList[0].checked) {
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
       this.currentMoveNode = levelGraphNode;
@@ -320,6 +320,7 @@ export class LevelGraphModellerComponent implements OnInit {
     if (this.moveNode) {
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
+      this.updateLevelGraph();
       this.moveNode = false;
     }
   }

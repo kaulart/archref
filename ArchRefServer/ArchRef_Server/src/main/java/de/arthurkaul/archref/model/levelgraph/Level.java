@@ -126,9 +126,9 @@ public class Level {
 		this.levelGraphRelations = levelGraphRelations;
 	}
 
-	public Collection<LevelGraphNode> getLevelGraphNodes() {
-		return levelGraphNodes;
-	}
+//	public Collection<LevelGraphNode> getLevelGraphNodes() {
+//		return levelGraphNodes;
+//	}
 
 //	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
 //		this.levelGraphNodes = levelGraphNodes;

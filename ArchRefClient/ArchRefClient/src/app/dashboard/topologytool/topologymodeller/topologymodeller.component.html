@@ -142,7 +142,7 @@
 				</defs>
 				
 				
-				<polyline *ngIf="drawRelation || drawLevelGraphCompliantRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#TriangleDraw)" />
+				<polyline *ngIf="drawRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#TriangleDraw)" />
 				
 				
 			 	 <g [contextmenu]="[relationshipTemplateContextMenu, {relationshipTemplate: RelationshipTemplate}]"

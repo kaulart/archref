@@ -81,7 +81,6 @@ export class TopologyModellerComponent implements OnInit {
 
   moveNode = false;
   drawRelation = false;
-  drawLevelGraphCompliantRelation = false;
   drawCurrentLevelGraphCompliantRelation = false;
 
   currentLevelGraphCompliantRelationshipTypes: LevelGraphNode[] = [];
@@ -399,6 +398,7 @@ export class TopologyModellerComponent implements OnInit {
       this.moveNode = false;
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
+      this.updateTopologyTemplate();
     }
   }
 
@@ -406,13 +406,6 @@ export class TopologyModellerComponent implements OnInit {
     if (!this.drawRelation) {
       // TODO
       this.drawRelation = true;
-    }
-  }
-
-  startDrawLevelGraphRelation() {
-    if (!this.drawLevelGraphCompliantRelation) {
-      // TODO
-      this.drawLevelGraphCompliantRelation = true;
     }
   }
 
@@ -440,8 +433,7 @@ export class TopologyModellerComponent implements OnInit {
 
   onDrawLevelGraphRelation(event: MouseEvent) {
 
-    if (this.drawRelation || this.drawLevelGraphCompliantRelation || this.drawCurrentLevelGraphCompliantRelation) {
-
+    if (this.drawRelation || this.drawCurrentLevelGraphCompliantRelation) {
 
       this.currentDrawRelation.path.points[1].x = event.offsetX;
       this.currentDrawRelation.path.points[1].y = event.offsetY;
@@ -456,8 +448,9 @@ export class TopologyModellerComponent implements OnInit {
   }
 
   stopDrawLevelGraphRelation(targetNodeTemplate: NodeTemplate) {
-    Logger.info("CALL", '');
-    if (this.drawRelation || this.drawLevelGraphCompliantRelation || this.drawCurrentLevelGraphCompliantRelation) {
+
+    if (this.drawRelation  || this.drawCurrentLevelGraphCompliantRelation) {
+
 
       this.currentDrawRelation.path.points[1].x = targetNodeTemplate.x + targetNodeTemplate.width / 2;
       this.currentDrawRelation.path.points[1].y = targetNodeTemplate.y + targetNodeTemplate.height / 2;
@@ -466,11 +459,10 @@ export class TopologyModellerComponent implements OnInit {
 
       this.currentDrawRelation.nodeTemplates.push(targetNodeTemplate);
       this.currentDrawRelation.targetNodeId = targetNodeTemplate.id;
-      Logger.info("TESTTTT", '');
+
       this.createRelationshipTemplate(this.currentDrawRelation);
 
       this.drawRelation = false;
-      this.drawLevelGraphCompliantRelation = false;
       this.drawCurrentLevelGraphCompliantRelation = false;
 
     }
@@ -498,26 +490,6 @@ export class TopologyModellerComponent implements OnInit {
         this.flashMessage.isError = true;
         this.flashMessageService.display(this.flashMessage);
       });
-  }
-
-  updateTopologyTemplate() {
-    // TODO
-  }
-
-  onChangeAbstraktionLevel() {
-    // TODO
-  }
-
-  prevTopology() {
-    // TODO
-  }
-
-  nextTopology() {
-    // TODO
-  }
-
-  isNodeTypeEqual(nodeTypeId: number, nodeTemplate: NodeTemplate) {
-
   }
 
   isInCurrentLevel(levelId: number) {
@@ -580,7 +552,25 @@ export class TopologyModellerComponent implements OnInit {
     this.dragLevelGraphNode = false;
     this.moveNode = false;
     this.drawRelation = false;
-    this.drawLevelGraphCompliantRelation = false;
     this.drawCurrentLevelGraphCompliantRelation = false;
   }
+
+  updateTopologyTemplate() {
+    this.topologyTemplateService.updateTopologyTemplate(this.currentTopologyTemplate)
+      .subscribe(topologyTemplateResponse =>
+        this.currentTopologyTemplate = topologyTemplateResponse);
+  }
+
+  onChangeAbstraktionLevel() {
+    // TODO
+  }
+
+  prevTopology() {
+    // TODO
+  }
+
+  nextTopology() {
+    // TODO
+  }
+
 }
