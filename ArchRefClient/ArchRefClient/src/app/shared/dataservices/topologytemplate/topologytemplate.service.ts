@@ -1,4 +1,5 @@
 import { Logger } from '../../../../logger/logger';
+import { LevelGraph } from '../../datamodels/levelgraph/levelgraph';
 import { TopologyTemplate } from '../../datamodels/topology/topologytemplate';
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
@@ -15,6 +16,7 @@ export class TopologyTemplateService {
 
   // URL of the REST Interface End-Point
   private topologyTemplateURL = '/api/topologytemplates';
+  private refinmentAlgorithmURL = '/api/refinement';
 
   constructor(private http: Http) { }
 
@@ -74,6 +76,41 @@ export class TopologyTemplateService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.delete(this.topologyTemplateURL + '/' + id, options).map(res => res).catch(this.handleError);
+  }
+
+  /******************************************************************************************************************
+   *
+   * Send GET refinedTopologyTemplates REQUEST
+   *
+   ******************************************************************************************************************/
+  public refineSingleLevelGraphTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template with single LevelGraph and not Level Graph Konform', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+  public refineSingleLevelGraphKonformTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template with single LevelGraph and Level Graph Konform', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphKonformRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+  public refineSingleLevelGraphLevelKonformTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template with single LevelGraph and Level Graph Level Konform', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphLevelKonformRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+  public refineMultiLevelGraphTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Template', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+  public refineMultiLevelGraphKonformTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Template', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphKonformRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+ public refineMultiLevelGraphLevelKonformTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Template', TopologyTemplateService.name);
+    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphLevelKonformRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
   }
 
   /******************************************************************************************************************

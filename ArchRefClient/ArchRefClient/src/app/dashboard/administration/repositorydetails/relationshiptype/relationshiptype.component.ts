@@ -55,9 +55,8 @@ export class RelationshipTypeComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize RelationshipTypeComponent', RelationshipTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    let repository = new Repository();
-    repository.id = this.currentRepository.id;
-    this.createdRelationshipType.repository = repository;
+    this.createdRelationshipType.repositoryId = this.currentRepository.id;
+    this.createdRelationshipType.repository = this.currentRepository;
   }
 
   /*********************************************************************************************************************************************

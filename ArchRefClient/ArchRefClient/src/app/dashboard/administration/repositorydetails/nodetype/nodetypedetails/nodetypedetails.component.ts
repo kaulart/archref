@@ -16,26 +16,22 @@ export class NodeTypeDetailsComponent implements OnInit {
 
   currentNodeType: NodeType = new NodeType('', null);
 
-  nodeTypeName: string;
-  nodeTypeId: number;
-
   public flashMessage = new FlashMessage();
-  private sub: any;
 
   constructor(private route: ActivatedRoute,
     private router: Router, private nodeTypeService: NodeTypeService, private flashMessageService: FlashMessageService) { }
 
   ngOnInit() {
     Logger.info('Iniitalize NodeTypeDetails Component', NodeTypeDetailsComponent.name);
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.nodeTypeName = params['name'] || 'Unnamed';
+   this.route.queryParams.subscribe(params => {
+      this.currentNodeType.name = params['name'] || 'Unnamed';
     });
 
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.nodeTypeId = params['id'] || null;
+    this.route.queryParams.subscribe(params => {
+      this.currentNodeType.id = params['id'] || null;
     });
 
-    this.retrieveNodeType(this.nodeTypeId);
+    this.retrieveNodeType(this.currentNodeType.id);
 
   }
 

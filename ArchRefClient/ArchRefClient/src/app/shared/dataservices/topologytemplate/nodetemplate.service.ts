@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 
 /********************************************************************************************************************
  *
- * NodeTemplate Service implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for Node Templates
+ * @service - NodeTemplateService implements the calls to the rest interface of the application server and
+ *            handle the request construction and response extraction for NodeTemplates
  *
  ********************************************************************************************************************/
 @Injectable()
@@ -20,17 +20,17 @@ export class NodeTemplateService {
 
   /******************************************************************************************************************
    *
-   * Send GET all NodeTemplates REQUEST
+   * @request - Send GET all NodeTemplates REQUEST
    *
    ******************************************************************************************************************/
   public getNodeTemplates(): Observable<NodeTemplate[]> {
     Logger.info('[REQUEST - NODETEMPLATE] Send GET Node Templates Request', NodeTemplateService.name);
-    return this.http.get(this.nodetemplateUrl).map(this.extractNodeTemplateDataList).catch(this.handleError);
+    return this.http.get(this.nodetemplateUrl).map(this.extractNodeTemplates).catch(this.handleError);
   }
 
   /******************************************************************************************************************
    *
-   * Send POST NodeTemplates REQUEST
+   * @request - Send POST NodeTemplates REQUEST
    *
    ******************************************************************************************************************/
   public createNodeTemplate(nodeTemplate: NodeTemplate): Observable<NodeTemplate> {
@@ -38,25 +38,25 @@ export class NodeTemplateService {
     Logger.data('[REQUEST - NODETEMPLATE]' + JSON.stringify(nodeTemplate), NodeTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.nodetemplateUrl, nodeTemplate, options).map(this.extractNodeTemplateData).catch(this.handleError);
+    return this.http.post(this.nodetemplateUrl, nodeTemplate, options).map(this.extractNodeTemplate).catch(this.handleError);
   }
 
   /******************************************************************************************************************
    *
-   * Send PUT NodeTemplate REQUEST
+   * @request - Send PUT NodeTemplate REQUEST
    *
    ******************************************************************************************************************/
   public updateNodeTemplate(nodeTemplate: NodeTemplate): Observable<NodeTemplate> {
-    Logger.info('[REQUEST - NODETEMPLATE] Send PUT Request Node Template', NodeTemplateService.name);
+    Logger.info('[REQUEST - NODETEMPLATE] Send PUT Node Template Request', NodeTemplateService.name);
     Logger.data('[REQUEST - NODETEMPLATE] ' + JSON.stringify(nodeTemplate), NodeTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.nodetemplateUrl + '/' + nodeTemplate.id, nodeTemplate, options).map(this.extractNodeTemplateData).catch(this.handleError);
+    return this.http.put(this.nodetemplateUrl + '/' + nodeTemplate.id, nodeTemplate, options).map(this.extractNodeTemplate).catch(this.handleError);
   }
 
   /******************************************************************************************************************
    *
-   * Send DELETE NodeTemplate REQUEST
+   * @request - Send DELETE NodeTemplate REQUEST
    *
    ******************************************************************************************************************/
   public deleteNodeTemplate(id: number): Observable<NodeTemplate> {
@@ -68,13 +68,13 @@ export class NodeTemplateService {
 
   /******************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response - Extract data from response data list
    *
    ******************************************************************************************************************/
-  public extractNodeTemplateDataList(res) {
-    Logger.info('[RESPONSE - NODETEMPLATE]: Extract Data of Response Body', NodeTemplateService.name);
+  public extractNodeTemplates(res) {
     let body = res.json();
     let nodeTemplateList: NodeTemplate[] = [];
+    Logger.info('[RESPONSE - NODETEMPLATE]: Extract Data of Response Body', NodeTemplateService.name);
     Logger.data('[RESPONSE - NODETEMPLATE]: ' + JSON.stringify(body), NodeTemplateService.name);
     for (let nodeTemplate of body) {
       let tempNodeTemplate: NodeTemplate = new NodeTemplate(nodeTemplate.name, nodeTemplate.x, nodeTemplate.y, nodeTemplate.width, nodeTemplate.height, nodeTemplate.nodeTypeId, nodeTemplate.topologyTemplateId);
@@ -86,12 +86,12 @@ export class NodeTemplateService {
 
   /******************************************************************************************************************
    *
-   *  Extract data from response data object
+   * @response - Extract data from response data object
    *
    ******************************************************************************************************************/
-  private extractNodeTemplateData(res: Response) {
-    Logger.info('[RESPONSE - NODETEMPLATE]: Extract Data of Response Body', NodeTemplateService.name);
+  private extractNodeTemplate(res: Response) {
     let body = res.json();
+    Logger.info('[RESPONSE - NODETEMPLATE]: Extract Data of Response Body', NodeTemplateService.name);
     Logger.data('[RESPONSE - NODETEMPLATE]: ' + JSON.stringify(body), NodeTemplateService.name);
     let nodeTemplate: NodeTemplate = new NodeTemplate(body.name, body.x, body.y, body.width, body.height, body.nodeTypeId, body.topologyTemplateId);
     nodeTemplate.id = body.id;
@@ -100,7 +100,7 @@ export class NodeTemplateService {
 
   /******************************************************************************************************************
    *
-   *  Error Handling
+   * @error - Error Handling
    *
    ******************************************************************************************************************/
   private handleError(error: Response | any) {

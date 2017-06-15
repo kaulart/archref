@@ -2,7 +2,6 @@ import { Logger } from '../../../../logger/logger';
 import { TOPOLOGYTEMPLATECONSTANTS } from '../../../shared/constants/topologytemplateconstants';
 import { LEVELGRAPHNODETYPES } from '../../../shared/constants/levelgraphnodetype';
 import { LEVELGRAPHRELATIONTYPE } from '../../../shared/constants/levelgraphrelationtype';
-
 import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
 import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
 import { Repository } from '../../../shared/datamodels/repository';
@@ -35,10 +34,11 @@ import { FlashMessage } from 'angular2-flash-message';
 
 /*****************************************************************************************************************************************************
  *
- * @component TopologyModellerComponent Class - The component display, model or refine a TopologyTemplate. It implements different retrieve,
- *                                              update, create and delete methods for different data types like NodeTemplates, RelationsshipTemplates,
+ * @component TopologyModellerComponent Class - With this component you can display, model or refine a TopologyTemplate. It implements different retrieve,
+ *                                              update, create and delete methods for different data types like NodeTemplates, RelationshipTemplates,
  *                                              TopologyTemplates, etc. Also it implements all Events which are used for model a TopologyTemplate like
- *                                              move a node and draw a relation.
+ *                                              move a node and draw a relation. And it`s call the refinement algorithm on the server side and subscribe
+ *                                              for a response.
  *
  * @author Arthur Kaul
  *
@@ -51,48 +51,67 @@ export class TopologyModellerComponent implements OnInit {
   // Current displayed TopologyTemplate in the ModellerComponent
   currentTopologyTemplate = new TopologyTemplate('');
 
-  selectedLevelGraphNode: LevelGraphNode;
-  selectedLevel
+  // NodeTemplate which should be moved with the move tool
+  currentMoveNode: NodeTemplate;
 
-  repositories: Repository[] = [];
-  selectedRepository: Repository = new Repository();
+  // RelationshipTemplate which should be draw and created on the draw area with the draw tool
+  currentDrawRelation: RelationshipTemplate;
+
+  // List of all available LevelGraphs in the database
+  levelGraphs: LevelGraph[] = [];
 
   // Current selected levelGraph in the tool box
   selectedLevelGraph: LevelGraph = new LevelGraph();
 
-  // NodeTemplate which should be moved with the move tool
-  currentMoveNode: NodeTemplate;
+  // List of all available repositories in the database
+  repositories: Repository[] = [];
 
-  // Maximal number of different abstractions of the root TopologyTemplate
+  // Current selected repository in the tool box
+  selectedRepository: Repository = new Repository();
+
+  // Maximal number of different abstraction levels default 2 because a Level Graph has at least two different levels
   maxAbstractionLevel = 2;
 
-  // last known position of the mouse needed to calculate the delta of a mouse move event
+  // last known position of the mouse to calculate the delta of a mouse move event
   lastMousePositionY = 0;
   lastMousePositionX = 0;
 
   // container for storing the data which are moved from the tool box to the draw area
   currentDragData: any;
 
-  currentDrawRelation: RelationshipTemplate;
-
-  // flags to differentiate events like moving, drawing and drag&drop and to indicate which event is currently active or not
+  // true if you drag a nodeType from the repository tool box to the draw area
   dragNodeType = false;
+
+  // true if you drag a levelGraphNode from the level graph tool box to the draw area
   dragLevelGraphNode = false;
 
+  // true if you move a node in the draw area
   moveNode = false;
+
+  // true if you draw a relationTemplate with a relationType from a repository and not directly from a level graph
   drawRelation = false;
+
+  // true if you draw a relationsTemplate with a relationType from a level graph node of a level graph
   drawCurrentLevelGraphCompliantRelation = false;
 
+  // Collection of the relationshipTypes of a node template witch a compliant to a level graph node
   currentLevelGraphCompliantRelationshipTypes: LevelGraphNode[] = [];
-  levelGraphCompliantRelationshipTypes: LevelGraphNode[] = [];
-
-  // list of all available LevelGraphs in the database
-  levelGraphList: LevelGraph[] = [];
 
   // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
   public flashMessage = new FlashMessage();
 
-  constructor(private repositoryService: RepositoryService, private levelGraphNodeService: LevelGraphNodeService, levelService: LevelService, private flashMessageService: FlashMessageService, private route: ActivatedRoute, private router: Router, private topologyTemplateService: TopologyTemplateService, private nodeTypeService: NodeTypeService, private relationshipTypeService: RelationshipTypeService, private levelGraphService: LevelGraphService, private nodeTemplateService: NodeTemplateService, private relationshipTemplateService: RelationshipTemplateService) { }
+  constructor(private repositoryService: RepositoryService,
+    private levelGraphNodeService: LevelGraphNodeService,
+    private levelService: LevelService,
+    private flashMessageService: FlashMessageService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private topologyTemplateService: TopologyTemplateService,
+    private nodeTypeService: NodeTypeService,
+    private relationshipTypeService: RelationshipTypeService,
+    private levelGraphService: LevelGraphService,
+    private nodeTemplateService: NodeTemplateService,
+    private relationshipTemplateService: RelationshipTemplateService) { }
 
   /*********************************************************************************************************************************************
    *
@@ -115,7 +134,7 @@ export class TopologyModellerComponent implements OnInit {
     this.retrieveTopologyTemplate(this.currentTopologyTemplate.id);
     this.retrieveRepository();
     this.retrieveLevelGraphs();
-    this.selectedRepository.name = 'Select LevelGraph';
+    this.selectedRepository.name = 'Select Repository';
     this.selectedLevelGraph.name = 'Select LevelGraph';
 
   }
@@ -165,7 +184,7 @@ export class TopologyModellerComponent implements OnInit {
   retrieveLevelGraphs() {
     Logger.info('Retrieve LevelGraphs Data', TopologyModellerComponent.name);
     this.levelGraphService.getLevelGraphs().subscribe(levelGraphsResponse => {
-      this.levelGraphList = levelGraphsResponse;
+      this.levelGraphs = levelGraphsResponse;
       Logger.info('LevelGraphs were retrieved sucessfully', TopologyModellerComponent.name);
     },
       (error) => {
@@ -242,28 +261,23 @@ export class TopologyModellerComponent implements OnInit {
 
   /****************************************************************************************************
    *
-   * onSelectedLevelGraph - Set the data of the currently selected levelgraph
-   * @param id - Id of the selected level graph
+   * onSelectedLevelGraph - Set the data of the currently selected LevelGraph
+   * @param levelGraph: LevelGraph - LevelGraph which should be set
    *
    ****************************************************************************************************/
-  onSelectLevelGraph(id: number) {
-    this.levelGraphService.getLevelGraph(id)
-      .subscribe(levelGraphResponse => {
-        this.selectedLevelGraph = levelGraphResponse;
-        Logger.info('Level Graphs with id: ' + levelGraphResponse.id + ' retrieved sucessfully.', TopologyModellerComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
+  onSelectLevelGraph(levelGraph: LevelGraph) {
+    this.selectedLevelGraph = levelGraph;
   }
 
-
+  /****************************************************************************************************
+   *
+   * onSelectRepository - Set the data of the currently selected Repository
+   * @param repository: Repository - Repository which should be set
+   *
+   ****************************************************************************************************/
   onSelectRepository(repository: Repository) {
     this.selectedRepository = repository;
   }
-
 
   /*****************************************************************************************************************************************
    *
@@ -310,19 +324,22 @@ export class TopologyModellerComponent implements OnInit {
   onDrop(event) {
 
     if (this.dragNodeType) {
-      // TODO
+
+      let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, this.currentDragData.id, this.currentTopologyTemplate.id);
+      tempNodeTemplate.nodeType = this.currentDragData;
+      tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
+      this.createNodeTemplate(tempNodeTemplate);
+
       this.dragNodeType = false;
     }
 
     if (this.dragLevelGraphNode) {
-
       this.nodeTypeService.getNodeType(this.currentDragData.levelGraphNodeTypeId).subscribe(nodeTypeResponse => {
         let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, nodeTypeResponse.id, this.currentTopologyTemplate.id);
         tempNodeTemplate.levelGraphNode = this.currentDragData;
         tempNodeTemplate.levelGraphNodeId = this.currentDragData.id;
         tempNodeTemplate.nodeType = nodeTypeResponse;
         tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
-        alert(JSON.stringify(tempNodeTemplate));
         this.createNodeTemplate(tempNodeTemplate);
       });
       this.dragLevelGraphNode = false;
@@ -336,7 +353,7 @@ export class TopologyModellerComponent implements OnInit {
    *
    ****************************************************************************************************************************************/
   startMoveNode(event: MouseEvent, nodeTemplate: NodeTemplate) {
-    if (!this.moveNode) {
+    if (!this.moveNode && !this.drawRelation && !this.drawCurrentLevelGraphCompliantRelation) {
       this.moveNode = true;
       this.currentMoveNode = nodeTemplate;
       this.lastMousePositionY = event.offsetY;
@@ -356,6 +373,7 @@ export class TopologyModellerComponent implements OnInit {
       let deltaY = (newMousePositionY - this.lastMousePositionY);
       let deltaX = (newMousePositionX - this.lastMousePositionX);
 
+      // TODO Check again right and bottom border
       if ((this.currentMoveNode.x + deltaX) > 0) {
         this.currentMoveNode.x = (this.currentMoveNode.x + deltaX);
       }
@@ -364,24 +382,28 @@ export class TopologyModellerComponent implements OnInit {
         this.currentMoveNode.y = (this.currentMoveNode.y + deltaY);
       }
 
-
-      for (let relationshipTemplate of this.currentMoveNode.relationshipTemplates) {
+      // TODO Check again right and bottom border
+      for (let relationshipTemplate of this.currentTopologyTemplate.relationshipTemplates) {
         if (this.currentMoveNode.id === relationshipTemplate.targetNodeId) {
-
-          relationshipTemplate.path.points[1].x = relationshipTemplate.path.points[1].x + deltaX;
-          relationshipTemplate.path.points[1].y = relationshipTemplate.path.points[1].y + deltaY;
-
+          if ((relationshipTemplate.path.points[1].x + deltaX) > (0 + this.currentMoveNode.width / 2)) {
+            relationshipTemplate.path.points[1].x = relationshipTemplate.path.points[1].x + deltaX;
+          }
+          if ((relationshipTemplate.path.points[1].y + deltaY) > (0 + this.currentMoveNode.height / 2)) {
+            relationshipTemplate.path.points[1].y = relationshipTemplate.path.points[1].y + deltaY;
+          }
         }
         if (this.currentMoveNode.id === relationshipTemplate.sourceNodeId) {
-
-          relationshipTemplate.path.points[0].x = relationshipTemplate.path.points[0].x + deltaX;
-          relationshipTemplate.path.points[0].y = relationshipTemplate.path.points[0].y + deltaY;
+          if ((relationshipTemplate.path.points[0].x + deltaX) > (0 + this.currentMoveNode.width / 2)) {
+            relationshipTemplate.path.points[0].x = relationshipTemplate.path.points[0].x + deltaX;
+          }
+          if ((relationshipTemplate.path.points[0].y + deltaY) > (0 + this.currentMoveNode.height / 2)) {
+            relationshipTemplate.path.points[0].y = relationshipTemplate.path.points[0].y + deltaY;
+          }
         }
 
         let tempPath = new Path(relationshipTemplate.path.points);
         relationshipTemplate.path = tempPath;
       }
-
 
       this.lastMousePositionY = newMousePositionY;
       this.lastMousePositionX = newMousePositionX;
@@ -402,16 +424,42 @@ export class TopologyModellerComponent implements OnInit {
     }
   }
 
-  startDrawRelation() {
+  startRefinement() {
+
+  }
+
+  startOneStepRefinement() {
+
+  }
+
+  startDrawRelation(event: MouseEvent, relationshipType: RelationshipType, nodeTemplate: NodeTemplate) {
+
     if (!this.drawRelation) {
-      // TODO
+
+      this.lastMousePositionY = event.offsetY;
+      this.lastMousePositionX = event.offsetX;
+
+      let startPoint: Point;
+      let endPoint: Point;
+      startPoint = new Point(nodeTemplate.x + nodeTemplate.width / 2, nodeTemplate.y + nodeTemplate.height / 2);
+      endPoint = new Point(nodeTemplate.x + nodeTemplate.width / 2 - 5, nodeTemplate.y + nodeTemplate.height / 2 - 5);
+
+      let tempPoints: Point[] = [];
+      tempPoints.push(startPoint);
+      tempPoints.push(endPoint);
+
+      let tempPath = new Path(tempPoints);
+      this.currentDrawRelation = new RelationshipTemplate(relationshipType.name, nodeTemplate.id, nodeTemplate.id, tempPath, relationshipType.id, this.currentTopologyTemplate.id);
+      this.currentDrawRelation.relationshipType = relationshipType;
+      this.currentDrawRelation.nodeTemplates.push(nodeTemplate);
+      this.drawCurrentLevelGraphCompliantRelation = true;
       this.drawRelation = true;
     }
   }
 
   startDrawCurrentLevelGraphCompliantRelation(event: MouseEvent, levelGraphNode: LevelGraphNode, nodeTemplate: NodeTemplate) {
     if (!this.drawCurrentLevelGraphCompliantRelation) {
-      alert(nodeTemplate);
+
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
 
@@ -426,6 +474,8 @@ export class TopologyModellerComponent implements OnInit {
 
       let tempPath = new Path(tempPoints);
       this.currentDrawRelation = new RelationshipTemplate(levelGraphNode.name, nodeTemplate.id, nodeTemplate.id, tempPath, levelGraphNode.levelGraphNodeTypeId, this.currentTopologyTemplate.id);
+      this.currentDrawRelation.levelGraphNode = levelGraphNode;
+      this.currentDrawRelation.levelGraphNodeId = levelGraphNode.id;
       this.currentDrawRelation.nodeTemplates.push(nodeTemplate);
       this.drawCurrentLevelGraphCompliantRelation = true;
     }
@@ -434,38 +484,42 @@ export class TopologyModellerComponent implements OnInit {
   onDrawLevelGraphRelation(event: MouseEvent) {
 
     if (this.drawRelation || this.drawCurrentLevelGraphCompliantRelation) {
-
       this.currentDrawRelation.path.points[1].x = event.offsetX;
       this.currentDrawRelation.path.points[1].y = event.offsetY;
       this.currentDrawRelation.path.updatePath();
-
     }
+
+  }
+
+  stopDrawLevelGraphRelation(targetNodeTemplate: NodeTemplate) {
+    if (this.drawRelation || (this.drawCurrentLevelGraphCompliantRelation && this.isRelationLevelGraphCompliant(targetNodeTemplate))) {
+
+      if (!this.currentDrawRelation.isSourceNodeEqualTargetNode()) {
+
+        this.currentDrawRelation.path.points[1].x = targetNodeTemplate.x + targetNodeTemplate.width / 2;
+        this.currentDrawRelation.path.points[1].y = targetNodeTemplate.y + targetNodeTemplate.height / 2;
+        this.currentDrawRelation.path.updatePath();
+        this.currentDrawRelation.nodeTemplates.push(targetNodeTemplate);
+        this.currentDrawRelation.targetNodeId = targetNodeTemplate.id;
+        this.createRelationshipTemplate(this.currentDrawRelation);
+      } else {
+        this.flashMessage.message = 'Self-Loops are not allowed in a Topology Template';
+        this.flashMessage.isSuccess = false;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      }
+
+      this.drawRelation = false;
+      this.drawCurrentLevelGraphCompliantRelation = false;
+    }
+  }
+
+  isRelationLevelGraphCompliant(targetNode: NodeTemplate) {
 
   }
 
   isRelationExist() {
 
-  }
-
-  stopDrawLevelGraphRelation(targetNodeTemplate: NodeTemplate) {
-
-    if (this.drawRelation  || this.drawCurrentLevelGraphCompliantRelation) {
-
-
-      this.currentDrawRelation.path.points[1].x = targetNodeTemplate.x + targetNodeTemplate.width / 2;
-      this.currentDrawRelation.path.points[1].y = targetNodeTemplate.y + targetNodeTemplate.height / 2;
-
-      this.currentDrawRelation.path.updatePath();
-
-      this.currentDrawRelation.nodeTemplates.push(targetNodeTemplate);
-      this.currentDrawRelation.targetNodeId = targetNodeTemplate.id;
-
-      this.createRelationshipTemplate(this.currentDrawRelation);
-
-      this.drawRelation = false;
-      this.drawCurrentLevelGraphCompliantRelation = false;
-
-    }
   }
 
   setRootTopology(topologyTemplate: TopologyTemplate) {
@@ -571,6 +625,14 @@ export class TopologyModellerComponent implements OnInit {
 
   nextTopology() {
     // TODO
+  }
+
+  addExpectedProperties() {
+
+  }
+
+  addProvidedProperties() {
+
   }
 
 }

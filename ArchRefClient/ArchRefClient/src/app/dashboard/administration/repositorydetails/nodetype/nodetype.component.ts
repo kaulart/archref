@@ -53,6 +53,8 @@ export class NodeTypeComponent implements OnInit {
    ********************************************************************************************************************************************/
   ngOnInit() {
     this.flashMessage.timeoutInMS = 4000;
+        this.createdNodeType.repository = this.currentRepository;
+        this.createdNodeType.repositoryId = this.currentRepository.id;
   }
 
   /*********************************************************************************************************************************************
@@ -63,7 +65,6 @@ export class NodeTypeComponent implements OnInit {
    ********************************************************************************************************************************************/
   createNodeType() {
     Logger.info('Create NodeType', NodeTypeComponent.name);
-    this.createdNodeType.repository = this.currentRepository;
     this.nodeTypeService.createNodeType(this.createdNodeType)
       .subscribe(nodeTypeResponse => {
         let tempURL = URL + '/' + nodeTypeResponse.id;

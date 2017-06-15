@@ -22,7 +22,7 @@ import { ContextmenuModule } from 'ng2-contextmenu';
     AdministrationModule,
     Ng2BootstrapModule.forRoot()
   ],
-  declarations: [DashboardComponent, TopNavComponent],
+  declarations: [DashboardComponent, TopNavComponent ],
   exports: [DashboardComponent, TopNavComponent]
 })
 

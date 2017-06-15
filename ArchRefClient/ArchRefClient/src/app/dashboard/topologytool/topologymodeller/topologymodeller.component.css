@@ -1,4 +1,4 @@
-.levelGraphListItem {
+.listItem {
 	background: #f5f6f6; /* Old browsers */
 	background: -moz-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3
 		80%, #f5f6f6 100%); /* FF3.6-15 */
@@ -14,7 +14,7 @@
 	font-size: 1.2em;
 }
 
-.levelGraphListItem:hover {
+.listItem:hover {
 	background: #3c6e9a;
 	cursor: pointer;
 }
@@ -180,3 +180,7 @@ li img {
     border-radius: 6px 0 6px 6px;
 }
 
+#selectRepository {
+	width: 100%;
+	margin-bottom: 10px;
+}

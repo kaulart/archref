@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
-import de.arthurkaul.archref.repositories.LevelGraphNodeRepository;
+import de.arthurkaul.archref.repositories.levelgraph.LevelGraphNodeRepository;
 
 @Service
 public class LevelGraphNodeService implements LevelGraphNodeInterface {

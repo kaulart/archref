@@ -1,3 +1,4 @@
+import { PropertyModule } from '../../../../../shared/property.module';
 import { GeneralDataComponent } from './generaldata/generaldata.component';
 import { NodeTypeDetailsComponent } from './nodetypedetails.component';
 import { NgModule } from '@angular/core';
@@ -8,7 +9,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 
 
 @NgModule({
-    imports: [CommonModule, FileUploadModule, RouterModule, Ng2BootstrapModule.forRoot()],
+    imports: [CommonModule, FileUploadModule, RouterModule, Ng2BootstrapModule.forRoot(), PropertyModule],
     declarations: [NodeTypeDetailsComponent, GeneralDataComponent],
     exports: [NodeTypeDetailsComponent, GeneralDataComponent]
 })

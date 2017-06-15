@@ -20,4 +20,20 @@ export class TopologyTemplate extends Entity {
     super(name);
   }
 
+  isSingleLevelGraphLevelKonform() {
+    // TODO
+  }
+
+  isSingleLevelGraphKonform() {
+    // TODO
+  }
+
+  isMultiLevelGraphLevelKonform() {
+    // TODO
+  }
+
+  isMultiLevelGraphKonform() {
+    // TODO
+  }
+
 }

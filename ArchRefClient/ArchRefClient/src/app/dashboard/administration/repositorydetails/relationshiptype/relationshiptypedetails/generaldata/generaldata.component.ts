@@ -18,7 +18,6 @@ export class GeneralDataComponent implements OnInit {
 
   @Input()
   currentRelationshipType: RelationshipType;
-  submitted = false;
 
   public uploader: FileUploader = new FileUploader({ url: URL });
   public flashMessage = new FlashMessage();

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
-import de.arthurkaul.archref.repositories.TopologyTemplateRepository;
+import de.arthurkaul.archref.repositories.topology.TopologyTemplateRepository;
 
 
 

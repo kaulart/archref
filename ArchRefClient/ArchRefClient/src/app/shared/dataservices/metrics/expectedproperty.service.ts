@@ -81,10 +81,8 @@ export class ExpectedPropertyService {
     Logger.info('[RESPONSE - ExpectedProperty]: Extract Data of Response Body', ExpectedPropertyService.name);
     Logger.data('[RESPONSE - ExpectedProperty]: ' + JSON.stringify(body), ExpectedPropertyService.name);
     for (let expectedProperty of body) {
-      let tempExpectedProperty: ExpectedProperty = new ExpectedProperty();
+      let tempExpectedProperty: ExpectedProperty = new ExpectedProperty(expectedProperty.name, expectedProperty.value);
       tempExpectedProperty.id = expectedProperty.id;
-      tempExpectedProperty.name = expectedProperty.name;
-      tempExpectedProperty.value = expectedProperty.value;
       tempExpectedProperty.entityExpectedId = expectedProperty.entityExpectedId;
       expectedPropertyList.push(tempExpectedProperty);
     }
@@ -100,10 +98,8 @@ export class ExpectedPropertyService {
     let body = res.json();
     Logger.info('[RESPONSE - ExpectedProperty]: Extract Data of Response Body', ExpectedPropertyService.name);
     Logger.data('[RESPONSE - ExpectedProperty]: ' + JSON.stringify(body), ExpectedPropertyService.name);
-    let expectedProperty: ExpectedProperty = new ExpectedProperty();
+    let expectedProperty: ExpectedProperty = new ExpectedProperty(body.name, body.value);
     expectedProperty.id = body.id;
-    expectedProperty.name = body.name;
-    expectedProperty.value = body.value;
     expectedProperty.entityExpectedId = body.entityExpectedId;
     return expectedProperty || {};
   }

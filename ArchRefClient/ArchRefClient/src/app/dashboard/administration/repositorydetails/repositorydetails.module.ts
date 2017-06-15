@@ -10,8 +10,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   imports: [NodeTypeDetailsModule, RelationshipTypeDetailsModule, CommonModule, FileUploadModule, RouterModule, Ng2BootstrapModule.forRoot()],
-  declarations: [NodeTypeComponent, RelationshipTypeComponent],
-  exports: [NodeTypeComponent, RelationshipTypeComponent]
+  declarations: [NodeTypeComponent, RelationshipTypeComponent ],
+  exports: [NodeTypeComponent, RelationshipTypeComponent ]
 })
 
 /*******************************************************************************************************************

@@ -4,8 +4,6 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import de.arthurkaul.archref.exceptions.RepositoryNotFoundException;
 import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.repositories.RepositoryRepository;
 

@@ -35,4 +35,8 @@ export class LevelGraphRelation extends Relation {
     this.levelGraphRelationType = levelGraphRelationType;
   }
 
+  isTargetNodeSourceNodeInSameLevel() {
+    return (this.sourceLevelId === this.targetLevelId);
+  }
+
 }

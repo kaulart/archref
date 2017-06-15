@@ -58,7 +58,7 @@ export class LevelGraphComponent implements OnInit {
         tempLevel.levelGraph = levelGraphResponse;
         this.levelService.createLevel(tempLevel)
           .subscribe(levelResponse => {
-            levelGraphResponse.addLevel(levelResponse);
+            levelGraphResponse.levels.push(levelResponse);
             Logger.info('Level was created sucessfully with id: ' + levelResponse.id, LevelGraphComponent.name);
           },
           (error) => {

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.arthurkaul.archref.model.topology.NodeTemplate;
-import de.arthurkaul.archref.repositories.NodeTemplateRepository;
+import de.arthurkaul.archref.repositories.topology.NodeTemplateRepository;
 
 @Service	
 public class NodeTemplateService implements NodeTemplateInterface{

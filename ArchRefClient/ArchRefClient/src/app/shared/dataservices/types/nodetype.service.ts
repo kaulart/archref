@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 
 /********************************************************************************************************************
  *
- * NodeType Service implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for Node Types
+ * @service - NodeTypeService implements the calls to the rest interface of the application server and
+ *            handle the request construction and response extraction for Node Types
  *
  ********************************************************************************************************************/
 @Injectable()
@@ -20,7 +20,7 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Send GET all NodeTypes REQUEST
+   * @request - Send GET all NodeTypes REQUEST
    *
    ******************************************************************************************************************/
   public getNodeTypes(): Observable<NodeType[]> {
@@ -30,7 +30,7 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Send GET Node Type REQUEST
+   * @request - Send GET Node Type REQUEST
    *
    ******************************************************************************************************************/
   public getNodeType(id: number): Observable<NodeType> {
@@ -40,7 +40,7 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Send POST NodeType REQUEST
+   * @request - Send POST NodeType REQUEST
    *
    ******************************************************************************************************************/
   public createNodeType(nodeType: NodeType): Observable<NodeType> {
@@ -53,11 +53,11 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Send PUT Repository REQUEST
+   * @request - Send PUT Repository REQUEST
    *
    ******************************************************************************************************************/
   public updateNodeType(nodeType: NodeType): Observable<NodeType> {
-    Logger.info('[REQUEST - NODETYPE] Send PUT Request NodeType', NodeTypeService.name);
+    Logger.info('[REQUEST - NODETYPE] Send PUT NodeType Request', NodeTypeService.name);
     Logger.data('[REQUEST - NODETYPE] ' + JSON.stringify(nodeType), NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -66,7 +66,7 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Send DELETE Repository REQUEST
+   * @request - Send DELETE Repository REQUEST
    *
    ******************************************************************************************************************/
   public deleteNodeType(id: number): Observable<NodeType> {
@@ -78,13 +78,13 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response - Extract data from response data list
    *
    ******************************************************************************************************************/
   public extractNodeTypesDataList(res) {
-    Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     let body = res.json();
     let nodeTypeList: NodeType[] = [];
+    Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
     for (let nodeType of body) {
       let tempNodeType: NodeType = new NodeType(nodeType.name, nodeType.repositoryId);
@@ -98,12 +98,12 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   *  Extract data from response data object
+   *  @response - Extract data from response data object
    *
    ******************************************************************************************************************/
   private extractNodeTypesData(res: Response) {
-    Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     let body = res.json();
+    Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
     let nodeType: NodeType = new NodeType(body.name, body.repositoryId);
     nodeType.id = body.id;
@@ -114,7 +114,7 @@ export class NodeTypeService {
 
   /******************************************************************************************************************
    *
-   *  Error Handling
+   * @error - Error Handling
    *
    ******************************************************************************************************************/
   private handleError(error: Response | any) {

@@ -4,7 +4,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.levelgraph.Level;
-import de.arthurkaul.archref.repositories.LevelRepository;
+import de.arthurkaul.archref.repositories.levelgraph.LevelRepository;
 
 @Service
 public class LevelService implements LevelInterface{

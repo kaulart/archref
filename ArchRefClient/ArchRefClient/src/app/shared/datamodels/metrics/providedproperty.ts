@@ -6,7 +6,7 @@ export class ProvidedProperty extends Property {
   entityProvided: Entity;
   entityProvidedId: number;
 
-  constructor() {
-    super();
+  constructor(name: string, value: string) {
+    super(name, value);
   }
 }

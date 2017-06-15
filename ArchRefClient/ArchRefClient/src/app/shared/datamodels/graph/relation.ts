@@ -21,4 +21,8 @@ export class Relation extends Entity {
     this.path = path;
   };
 
+  isSourceNodeEqualTargetNode() {
+    return (this.sourceNodeId === this.targetNodeId);
+  }
+
 }

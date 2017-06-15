@@ -1,6 +1,8 @@
+import { DashboardModule } from '../dashboard.module';
 import { LevelGraphToolModule } from '../levelgraphtool/levelgraphtool.module';
 import { TopologyTemplateToolModule } from '../topologytool/topologytemplatetool.module';
 import { AdministrationComponent } from './administration.component';
+import { ExpectedPropertyComponent } from '../../shared/components/expectedproperty/expectedproperty.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Ng2BootstrapModule } from 'ng2-bootstrap';
@@ -15,7 +17,7 @@ import { TopologyTemplateDetailsComponent } from './topologytemplatedetails/topo
 @NgModule({
   imports: [RepositoryDetailsModule, TopologyTemplateToolModule, LevelGraphToolModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
   declarations: [AdministrationComponent, RepositoryComponent, RepositoryDetailsComponent, LevelgrahdetailsComponent, TopologyTemplateDetailsComponent],
-  exports: [AdministrationComponent, RepositoryComponent]
+  exports: [AdministrationComponent, RepositoryComponent ]
 })
 
 /*******************************************************************************************************************

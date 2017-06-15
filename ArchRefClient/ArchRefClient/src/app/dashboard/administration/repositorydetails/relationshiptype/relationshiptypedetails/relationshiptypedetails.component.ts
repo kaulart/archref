@@ -16,26 +16,22 @@ export class RelationshipTypeDetailsComponent implements OnInit {
 
   currentRelationshipType: RelationshipType = new RelationshipType('', null);
 
-  relationshipTypeName: string;
-  relationshipTypeId: number;
-
   public flashMessage = new FlashMessage();
-  private sub: any;
 
   constructor(private route: ActivatedRoute,
     private router: Router, private relationshipTypeService: RelationshipTypeService, private flashMessageService: FlashMessageService) { }
 
   ngOnInit() {
     Logger.info('Iniitalize RelationshipTypeDetails Component', RelationshipTypeDetailsComponent.name);
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.relationshipTypeName = params['name'] || 'Unnamed';
+    this.route.queryParams.subscribe(params => {
+      this.currentRelationshipType.name = params['name'] || 'Unnamed';
     });
 
-    this.sub = this.route.queryParams.subscribe(params => {
-      this.relationshipTypeId = params['id'] || null;
+    this.route.queryParams.subscribe(params => {
+      this.currentRelationshipType.id = params['id'] || null;
     });
 
-    this.retrieveNodeType(this.relationshipTypeId);
+    this.retrieveNodeType(this.currentRelationshipType.id);
 
   }
 

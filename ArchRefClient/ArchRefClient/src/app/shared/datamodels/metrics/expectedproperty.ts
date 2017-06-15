@@ -6,8 +6,8 @@ export class ExpectedProperty extends Property {
   entityExpected: Entity;
   entityExpectedId: number;
 
-  constructor() {
-    super();
+  constructor(name: string, value: string) {
+    super(name, value);
   }
 
 }

@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 
 /********************************************************************************************************************
  *
- * RelationshipTemplateService implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for Relationship Templates
+ * @service - RelationshipTemplateService implements the calls to the rest interface of the application server and
+ *            handle the request construction and response extraction for Relationship Templates
  *
  ********************************************************************************************************************/
 @Injectable()
@@ -20,7 +20,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   * Send GET all RelationshipTemplate REQUEST
+   * @request - Send GET all RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
   public getRelationshipTemplates(): Observable<RelationshipTemplate[]> {
@@ -30,7 +30,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   * Send POST RelationshipTemplate REQUEST
+   * @request - Send POST RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
   public createRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
@@ -43,7 +43,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   * Send PUT RelationshipTemplate REQUEST
+   * @request - Send PUT RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
   public updateRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
@@ -56,7 +56,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   * Send DELETE RelationshipTemplate REQUEST
+   * @request - Send DELETE RelationshipTemplate REQUEST
    *
    ******************************************************************************************************************/
   public deleteRelationshipTemplate(id: number): Observable<RelationshipTemplate> {
@@ -68,7 +68,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response - Extract data from response data list
    *
    ******************************************************************************************************************/
   public extractRelationshipTemplateDataList(res) {
@@ -86,7 +86,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   *  Extract data from response data object
+   * @response - Extract data from response data object
    *
    ******************************************************************************************************************/
   private extractRelationshipTemplateData(res: Response) {
@@ -100,7 +100,7 @@ export class RelationshipTemplateService {
 
   /******************************************************************************************************************
    *
-   *  Error Handling
+   * @error - Error Handling
    *
    ******************************************************************************************************************/
   private handleError(error: Response | any) {

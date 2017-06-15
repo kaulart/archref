@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
-import de.arthurkaul.archref.repositories.RelationshipTemplateRepository;
+import de.arthurkaul.archref.repositories.topology.RelationshipTemplateRepository;
 
 @Service
 public class RelationshipTemplateService implements RelationshipTemplateInterface{

@@ -9,7 +9,6 @@ import { FlashMessageModule } from 'angular2-flash-message';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ContextmenuModule } from 'ng2-contextmenu';
 import { RepositoryService } from './shared/dataservices/repository.service';
-import { FragmentNodeService } from './shared/dataservices/types/fragmenttype.service';
 import { LevelService } from './shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from './shared/dataservices/levelgraph/levelgraph.service';
 import { LevelGraphNodeService } from './shared/dataservices/levelgraph/levelgraphnode.service';
@@ -38,16 +37,16 @@ import 'hammerjs';
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService, FragmentNodeService],
+  providers: [ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService],
   bootstrap: [AppComponent]
 })
 
-/****************************************************************************************************************************
+/*********************************************************************************************************************************************************************************************************
  *
  * @module AppModule - Module as wrapper for the whole application modules and components. It is the root module of the application.
  *                     You should register all services here so that the are accessible from everywhere.
  *
  * @author Arthur Kaul
  *
- ***************************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class AppModule { }

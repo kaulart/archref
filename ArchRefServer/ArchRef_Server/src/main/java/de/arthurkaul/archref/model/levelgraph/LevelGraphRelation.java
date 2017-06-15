@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import de.arthurkaul.archref.model.graph.Relation;
 
@@ -25,7 +26,7 @@ public class LevelGraphRelation extends Relation{
 	@Column(name = "TARGET_LEVEL_DEPTH")
 	private Integer targetLevelDepth;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "LEVELGRAPHRELATION_LEVELGRAPHNODE", 
 			joinColumns = @JoinColumn(name = "LEVELGRAPHNODE_ID", referencedColumnName = "ID"), 
 			inverseJoinColumns = @JoinColumn(name = "LEVELGRAPHRELATION_ID", referencedColumnName = "ID"))
@@ -66,6 +67,7 @@ public class LevelGraphRelation extends Relation{
 		return levelGraphRelationType;
 	}
 
+	
 	public void setLevelGraphRelationType(String levelGraphRelationType) {
 		this.levelGraphRelationType = levelGraphRelationType;
 	}
@@ -94,10 +96,11 @@ public class LevelGraphRelation extends Relation{
 		this.targetLevelDepth = targetLevelDepth;
 	}
 
+//	@JsonIgnore
 //	public Collection<LevelGraphNode> getLevelGraphNodes() {
 //		return levelGraphNodes;
 //	}
-//
+//	@JsonIgnore
 //	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
 //		this.levelGraphNodes = levelGraphNodes;
 //	}

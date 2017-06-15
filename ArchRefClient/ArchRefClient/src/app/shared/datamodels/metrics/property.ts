@@ -11,6 +11,9 @@ export class Property {
   name = 'Unnamed';
   value = 'Undefined';
 
-  constructor() {}
+  constructor(name: string, value: string) {
+    this.name = name;
+    this.value = value;
+  }
 
 }
