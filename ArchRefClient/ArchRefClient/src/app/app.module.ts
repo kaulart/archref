@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { FlashMessageModule } from 'angular2-flash-message';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ContextmenuModule } from 'ng2-contextmenu';
-import { RepositoryService } from './shared/dataservices/repository.service';
+import { RepositoryService } from './shared/dataservices/repository/repository.service';
 import { LevelService } from './shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from './shared/dataservices/levelgraph/levelgraph.service';
 import { LevelGraphNodeService } from './shared/dataservices/levelgraph/levelgraphnode.service';
@@ -28,7 +28,6 @@ import 'hammerjs';
     AppComponent,
   ],
   imports: [
-
     BrowserModule,
     FlashMessageModule,
     ContextmenuModule,

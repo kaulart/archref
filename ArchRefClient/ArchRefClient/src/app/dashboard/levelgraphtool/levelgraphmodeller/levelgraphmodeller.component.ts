@@ -2,19 +2,21 @@ import { Logger } from '../../../../logger/logger';
 import { LEVELGRAPHCONSTANTS } from '../../../shared/constants/levelgraphconstants';
 import { LEVELGRAPHNODETYPES } from '../../../shared/constants/levelgraphnodetype';
 import { LEVELGRAPHRELATIONTYPE } from '../../../shared/constants/levelgraphrelationtype';
+import { Entity } from '../../../shared/datamodels/entity/entity';
 import { Level } from '../../../shared/datamodels/levelgraph/level';
 import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
 import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
 import { LevelGraphRelation } from '../../../shared/datamodels/levelgraph/levelgraphrelation';
+import { ProvidedProperty } from '../../../shared/datamodels/metrics/providedproperty';
 import { Path } from '../../../shared/datamodels/utility/path';
 import { Point } from '../../../shared/datamodels/utility/point';
-import { Repository } from '../../../shared/datamodels/repository';
-import { FragmentType } from '../../../shared/datamodels/types/fragmenttype';
-import { RepositoryService } from '../../../shared/dataservices/repository.service';
+import { Repository } from '../../../shared/datamodels/repository/repository';
+import { RepositoryService } from '../../../shared/dataservices/repository/repository.service';
 import { LevelService } from '../../../shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from '../../../shared/dataservices/levelgraph/levelgraph.service';
 import { LevelGraphNodeService } from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
 import { LevelGraphRelationService } from '../../../shared/dataservices/levelgraph/levelgraphrelation.service';
+import { ProvidedPropertyService } from '../../../shared/dataservices/metrics/providedpropertyservice.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessageService } from 'angular2-flash-message';
@@ -40,15 +42,12 @@ export class LevelGraphModellerComponent implements OnInit {
   repositories: Repository[] = [];
   selectedRepository: Repository = new Repository();
 
+  entity: Entity = new Entity();
+  createProvidedProperty = new ProvidedProperty('Unnamed', 'Undefined');
+
   currentLevelGraph: LevelGraph = new LevelGraph();
-  currentLevelGraphNode: LevelGraphNode = new LevelGraphNode(null, null, null, null, null, null, null, null, null);
+  currentLevelGraphNode: LevelGraphNode = new LevelGraphNode(null, null, null, null, null, null, null, null);
   currentLevelGraphRelation: LevelGraphRelation = new LevelGraphRelation(null, null, null, null, null, null, null);
-
-  //  levelGraphMatrix: [][][] = [][][];
-
-  //  refineToGraphMatrix: [][][] = [][][];
-  //  connectToGraphMatrix: [][][] = [][][];
-  //  hostedOnGraphMatirx: [][][] = [][][];
 
   level: Level;
 
@@ -89,7 +88,8 @@ export class LevelGraphModellerComponent implements OnInit {
     private levelGraphNodeService: LevelGraphNodeService,
     private levelService: LevelService,
     private levelGraphRelationService: LevelGraphRelationService,
-    private flashMessageService: FlashMessageService) {
+    private flashMessageService: FlashMessageService,
+    private providedPropertyService: ProvidedPropertyService) {
   }
 
   ngOnInit() {
@@ -209,9 +209,7 @@ export class LevelGraphModellerComponent implements OnInit {
 
     this.levelGraphRelationService.createLevelGraphRelation(this.currentLevelGraphRelation)
       .subscribe(levelGraphRelationResponse => {
-        // TODO push wirklich nötig ?
-        this.currentLevelGraphRelation.levelGraphNodes[0].levelGraphRelations.push(levelGraphRelationResponse);
-        this.currentLevelGraphRelation.levelGraphNodes[1].levelGraphRelations.push(levelGraphRelationResponse);
+        //TODO Push node to source and target Node
         this.currentLevelGraph.levelGraphRelations.push(levelGraphRelationResponse);
 
         Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
@@ -573,8 +571,6 @@ export class LevelGraphModellerComponent implements OnInit {
       this.currentLevelGraphNode.level = level;
       this.currentLevelGraphNode.levelId = level.id;
       this.currentLevelGraphNode.levelGraphRelations = [];
-
-      // TODO You may decide that expectedProperties and providedProperties of NodeTypes will be derived
       this.currentLevelGraphNode.expectedProperties = [];
       this.currentLevelGraphNode.providedProperties = [];
 
@@ -1008,15 +1004,14 @@ export class LevelGraphModellerComponent implements OnInit {
     tool.checked = true;
   }
 
-  viewDetails(id: number) {
-    // TODO
-  }
-
-  addExpectedProperties() {
-    // TODO
+  setEntity(entity: any) {
+    this.entity = entity;
   }
 
   addProvidedProperties() {
-    // TODO
+    this.createProvidedProperty.entityProvided = this.entity;
+    this.createProvidedProperty.entityProvidedId = this.entity.id;
+    this.providedPropertyService.createProvidedProperty(this.createProvidedProperty).subscribe(providedPropertyResponse => this.entity.providedProperties.push(providedPropertyResponse));
   }
+
 }

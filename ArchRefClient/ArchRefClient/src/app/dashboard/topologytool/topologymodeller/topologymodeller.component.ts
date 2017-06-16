@@ -2,9 +2,12 @@ import { Logger } from '../../../../logger/logger';
 import { TOPOLOGYTEMPLATECONSTANTS } from '../../../shared/constants/topologytemplateconstants';
 import { LEVELGRAPHNODETYPES } from '../../../shared/constants/levelgraphnodetype';
 import { LEVELGRAPHRELATIONTYPE } from '../../../shared/constants/levelgraphrelationtype';
+import { Entity } from '../../../shared/datamodels/entity/entity';
 import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
 import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
-import { Repository } from '../../../shared/datamodels/repository';
+import { ExpectedProperty } from '../../../shared/datamodels/metrics/expectedproperty';
+import { ProvidedProperty } from '../../../shared/datamodels/metrics/providedproperty';
+import { Repository } from '../../../shared/datamodels/repository/repository';
 import { NodeTemplate } from '../../../shared/datamodels/topology/nodetemplate';
 import { RelationshipTemplate } from '../../../shared/datamodels/topology/relationshiptemplate';
 import { TopologyTemplate } from '../../../shared/datamodels/topology/topologytemplate';
@@ -15,7 +18,9 @@ import { Point } from '../../../shared/datamodels/utility/point';
 import { LevelService } from '../../../shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from '../../../shared/dataservices/levelgraph/levelgraph.service';
 import { LevelGraphNodeService } from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
-import { RepositoryService } from '../../../shared/dataservices/repository.service';
+import { ExpectedPropertyService } from '../../../shared/dataservices/metrics/expectedproperty.service';
+import { ProvidedPropertyService } from '../../../shared/dataservices/metrics/providedpropertyservice.service';
+import { RepositoryService } from '../../../shared/dataservices/repository/repository.service';
 import { NodeTemplateService } from '../../../shared/dataservices/topologytemplate/nodetemplate.service';
 import { NodeTypeService } from '../../../shared/dataservices/types/nodetype.service';
 import { RelationshipTemplateService } from '../../../shared/dataservices/topologytemplate/relationshiptemplate.service';
@@ -46,10 +51,10 @@ import { FlashMessage } from 'angular2-flash-message';
 export class TopologyModellerComponent implements OnInit {
 
   // Root TopologyTemplate which have to be modeled by the user
-  rootTopologyTemplate = new TopologyTemplate('');
+  rootTopologyTemplate = new TopologyTemplate();
 
   // Current displayed TopologyTemplate in the ModellerComponent
-  currentTopologyTemplate = new TopologyTemplate('');
+  currentTopologyTemplate = new TopologyTemplate();
 
   // NodeTemplate which should be moved with the move tool
   currentMoveNode: NodeTemplate;
@@ -97,6 +102,10 @@ export class TopologyModellerComponent implements OnInit {
   // Collection of the relationshipTypes of a node template witch a compliant to a level graph node
   currentLevelGraphCompliantRelationshipTypes: LevelGraphNode[] = [];
 
+  entity: Entity = new Entity();
+  createProvidedProperty = new ProvidedProperty('Unnamed', 'Undefined');
+  createExpectedProperty = new ExpectedProperty('Unnamed', 'Undefined');
+
   // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
   public flashMessage = new FlashMessage();
 
@@ -111,6 +120,8 @@ export class TopologyModellerComponent implements OnInit {
     private relationshipTypeService: RelationshipTypeService,
     private levelGraphService: LevelGraphService,
     private nodeTemplateService: NodeTemplateService,
+    private providedPropertyService: ProvidedPropertyService,
+    private expectedPropertyService: ExpectedPropertyService,
     private relationshipTemplateService: RelationshipTemplateService) { }
 
   /*********************************************************************************************************************************************
@@ -325,8 +336,10 @@ export class TopologyModellerComponent implements OnInit {
 
     if (this.dragNodeType) {
 
-      let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, this.currentDragData.id, this.currentTopologyTemplate.id);
+      let tempNodeTemplate = new NodeTemplate(event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, this.currentDragData.id, this.currentTopologyTemplate.id);
+      tempNodeTemplate.name = this.currentDragData.name;
       tempNodeTemplate.nodeType = this.currentDragData;
+      tempNodeTemplate.icon = this.currentDragData.icon;
       tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
       this.createNodeTemplate(tempNodeTemplate);
 
@@ -335,9 +348,11 @@ export class TopologyModellerComponent implements OnInit {
 
     if (this.dragLevelGraphNode) {
       this.nodeTypeService.getNodeType(this.currentDragData.levelGraphNodeTypeId).subscribe(nodeTypeResponse => {
-        let tempNodeTemplate = new NodeTemplate(this.currentDragData.name, event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, nodeTypeResponse.id, this.currentTopologyTemplate.id);
+        let tempNodeTemplate = new NodeTemplate(event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, nodeTypeResponse.id, this.currentTopologyTemplate.id);
+        tempNodeTemplate.name = this.currentDragData.name;
         tempNodeTemplate.levelGraphNode = this.currentDragData;
         tempNodeTemplate.levelGraphNodeId = this.currentDragData.id;
+        tempNodeTemplate.icon = nodeTypeResponse.icon;
         tempNodeTemplate.nodeType = nodeTypeResponse;
         tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
         this.createNodeTemplate(tempNodeTemplate);
@@ -420,7 +435,7 @@ export class TopologyModellerComponent implements OnInit {
       this.moveNode = false;
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
-      this.updateTopologyTemplate();
+      //  this.updateTopologyTemplate();
     }
   }
 
@@ -449,7 +464,8 @@ export class TopologyModellerComponent implements OnInit {
       tempPoints.push(endPoint);
 
       let tempPath = new Path(tempPoints);
-      this.currentDrawRelation = new RelationshipTemplate(relationshipType.name, nodeTemplate.id, nodeTemplate.id, tempPath, relationshipType.id, this.currentTopologyTemplate.id);
+      this.currentDrawRelation = new RelationshipTemplate(nodeTemplate.id, nodeTemplate.id, tempPath, relationshipType.id, this.currentTopologyTemplate.id);
+      this.currentDrawRelation.name = relationshipType.name;
       this.currentDrawRelation.relationshipType = relationshipType;
       this.currentDrawRelation.nodeTemplates.push(nodeTemplate);
       this.drawCurrentLevelGraphCompliantRelation = true;
@@ -473,7 +489,8 @@ export class TopologyModellerComponent implements OnInit {
       tempPoints.push(endPoint);
 
       let tempPath = new Path(tempPoints);
-      this.currentDrawRelation = new RelationshipTemplate(levelGraphNode.name, nodeTemplate.id, nodeTemplate.id, tempPath, levelGraphNode.levelGraphNodeTypeId, this.currentTopologyTemplate.id);
+      this.currentDrawRelation = new RelationshipTemplate(nodeTemplate.id, nodeTemplate.id, tempPath, levelGraphNode.levelGraphNodeTypeId, this.currentTopologyTemplate.id);
+      this.currentDrawRelation.name = levelGraphNode.name;
       this.currentDrawRelation.levelGraphNode = levelGraphNode;
       this.currentDrawRelation.levelGraphNodeId = levelGraphNode.id;
       this.currentDrawRelation.nodeTemplates.push(nodeTemplate);
@@ -494,13 +511,12 @@ export class TopologyModellerComponent implements OnInit {
   stopDrawLevelGraphRelation(targetNodeTemplate: NodeTemplate) {
     if (this.drawRelation || (this.drawCurrentLevelGraphCompliantRelation && this.isRelationLevelGraphCompliant(targetNodeTemplate))) {
 
+      this.currentDrawRelation.targetNodeId = targetNodeTemplate.id;
+      this.currentDrawRelation.path.points[1].x = targetNodeTemplate.x + targetNodeTemplate.width / 2;
+      this.currentDrawRelation.path.points[1].y = targetNodeTemplate.y + targetNodeTemplate.height / 2;
+      this.currentDrawRelation.path.updatePath();
+      this.currentDrawRelation.nodeTemplates.push(targetNodeTemplate);
       if (!this.currentDrawRelation.isSourceNodeEqualTargetNode()) {
-
-        this.currentDrawRelation.path.points[1].x = targetNodeTemplate.x + targetNodeTemplate.width / 2;
-        this.currentDrawRelation.path.points[1].y = targetNodeTemplate.y + targetNodeTemplate.height / 2;
-        this.currentDrawRelation.path.updatePath();
-        this.currentDrawRelation.nodeTemplates.push(targetNodeTemplate);
-        this.currentDrawRelation.targetNodeId = targetNodeTemplate.id;
         this.createRelationshipTemplate(this.currentDrawRelation);
       } else {
         this.flashMessage.message = 'Self-Loops are not allowed in a Topology Template';
@@ -561,37 +577,43 @@ export class TopologyModellerComponent implements OnInit {
   setCurrentLevelGraphCompliantRelationshipTypes(event, levelGraphNodeId: number) {
 
     if (event.which === 3) {
-      Logger.info("ID: " + levelGraphNodeId, '');
-      this.currentLevelGraphCompliantRelationshipTypes = [];
-      this.levelGraphNodeService.getLevelGraphNode(levelGraphNodeId).subscribe(levelGraphNode => {
-        for (let levelGraphRelation of levelGraphNode.levelGraphRelations) {
-          if (levelGraphRelation.levelGraphRelationType === LEVELGRAPHRELATIONTYPE.CONNECTED_TO && levelGraphRelation.sourceNodeId === levelGraphNode.id) {
-            Logger.info("ID: " + levelGraphRelation.targetNodeId, '');
-            this.levelGraphNodeService.getLevelGraphNode(levelGraphRelation.targetNodeId).subscribe(targetNode => {
-              Logger.info("FIND", '');
-              this.currentLevelGraphCompliantRelationshipTypes.push(targetNode);
+      //      Logger.info("ID: " + levelGraphNodeId, '');
+      //      this.currentLevelGraphCompliantRelationshipTypes = [];
+      //      this.levelGraphNodeService.getLevelGraphNode(levelGraphNodeId).subscribe(levelGraphNode => {
+      //        for (let levelGraphRelation of levelGraphNode.levelGraphRelations) {
+      //          if (levelGraphRelation.levelGraphRelationType === LEVELGRAPHRELATIONTYPE.CONNECTED_TO && levelGraphRelation.sourceNodeId === levelGraphNode.id) {
+      //            Logger.info("ID: " + levelGraphRelation.targetNodeId, '');
+      //            this.levelGraphNodeService.getLevelGraphNode(levelGraphRelation.targetNodeId).subscribe(targetNode => {
+      //              Logger.info("FIND", '');
+      //              this.currentLevelGraphCompliantRelationshipTypes.push(targetNode);
+      //            }
+      //            );
+      //          }
+      //        }
+      //      });
+
+      // Alternative ohne services 
+      Logger.info("Length: " + this.selectedLevelGraph.levelGraphNodes.length, '');
+
+      for (let levelGraphNode of this.selectedLevelGraph.levelGraphNodes) {
+        if (levelGraphNode.id === levelGraphNodeId) {
+          Logger.info("Length: " + levelGraphNode.levelGraphRelations.length, '');
+          for (let levelGraphRelation of levelGraphNode.levelGraphRelations) {
+            if (levelGraphRelation.levelGraphRelationType === LEVELGRAPHRELATIONTYPE.CONNECTED_TO && levelGraphRelation.sourceNodeId === levelGraphNode.id) {
+
+              Logger.info("Length: " + this.selectedLevelGraph.levelGraphNodes.length, '');
+              for (let node of this.selectedLevelGraph.levelGraphNodes) {
+                if (node.id === levelGraphRelation.targetNodeId && node.levelGraphNodeType === LEVELGRAPHNODETYPES.RELATIONSHIPTYPE) {
+                  Logger.info("Found: ", '');
+
+                  this.currentLevelGraphCompliantRelationshipTypes.push(node);
+                }
+              }
             }
-            );
           }
         }
-      });
+      }
     }
-
-    // Alternative ohne services 
-
-    //      for (let levelGraphNode of this.selectedLevelGraph.levelGraphNodes) {
-    //        if (levelGraphNode.id === levelGraphNodeId) {
-    //          for (let levelGraphRelation of levelGraphNode.levelGraphRelations) {
-    //            if (levelGraphRelation.levelGraphRelationType === LEVELGRAPHRELATIONTYPE.CONNECTED_TO && levelGraphRelation.sourceNodeId === levelGraphNode.id) {
-    //              for (let node of this.selectedLevelGraph.levelGraphNodes) {
-    //                if (){
-    //
-    //                }// relationshipTypes.push(node.levelGraphNodeTypeObject);
-    //              }
-    //            }
-    //          }
-    //        }
-    //      }
 
   }
 
@@ -609,11 +631,11 @@ export class TopologyModellerComponent implements OnInit {
     this.drawCurrentLevelGraphCompliantRelation = false;
   }
 
-  updateTopologyTemplate() {
-    this.topologyTemplateService.updateTopologyTemplate(this.currentTopologyTemplate)
-      .subscribe(topologyTemplateResponse =>
-        this.currentTopologyTemplate = topologyTemplateResponse);
-  }
+  //  updateTopologyTemplate() {
+  //    this.topologyTemplateService.updateTopologyTemplate(this.currentTopologyTemplate)
+  //      .subscribe(topologyTemplateResponse =>
+  //        this.currentTopologyTemplate = topologyTemplateResponse);
+  //  }
 
   onChangeAbstraktionLevel() {
     // TODO
@@ -627,12 +649,20 @@ export class TopologyModellerComponent implements OnInit {
     // TODO
   }
 
-  addExpectedProperties() {
-
+  setEntity(entity: any) {
+    this.entity = entity;
   }
 
-  addProvidedProperties() {
+  addExpectedProperty() {
+    this.createExpectedProperty.entityExpected = this.entity;
+    this.createExpectedProperty.entityExpectedId = this.entity.id;
+    this.expectedPropertyService.createExpectedProperty(this.createExpectedProperty).subscribe(expectedPropertyResponse => this.entity.expectedProperties.push(expectedPropertyResponse));
+  }
 
+  addProvidedProperty() {
+    this.createProvidedProperty.entityProvided = this.entity;
+    this.createProvidedProperty.entityProvidedId = this.entity.id;
+    this.providedPropertyService.createProvidedProperty(this.createProvidedProperty).subscribe(providedPropertyResponse => this.entity.providedProperties.push(providedPropertyResponse));
   }
 
 }

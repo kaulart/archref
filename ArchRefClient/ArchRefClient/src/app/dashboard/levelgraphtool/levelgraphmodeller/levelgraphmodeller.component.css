@@ -177,7 +177,9 @@
  ***********************************************************************************************************************************************/
 #toolbox_area {
 	margin-top: 10px;
-	height: 750px;
+	margin-right: 10px;
+	width: 300px;
+	height: 100%;
 	overflow: auto;
 }
 
@@ -227,10 +229,9 @@ svg {
 }
 
 #draw_area {
-	height: 750px;
+	height: 100%;
 	margin-top: 10px;
 	margin-right: 0px;
-	margin-left: 0px;
 	overflow: scroll;
 }
 
@@ -251,6 +252,10 @@ svg {
 
 ul {
 	list-style-type: none;
+}
+
+#modeller{
+	height: 100%;
 }
 
 .list {

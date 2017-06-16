@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 /**********************************************************************************************************************************************************************************************************
  *
- * @service RelationshipTypeFragmentService  - Implements the calls to the rest interface of the application server and
+ * @service - RelationshipTypeFragmentService  - Implements the calls to the rest interface of the application server and
  *                                             handle the request construction and response extraction for RelationshipTypeFragment data
  *
  *********************************************************************************************************************************************************************************************************/
@@ -18,7 +18,7 @@ export class RelationshipTypeFragmentService {
 
   constructor(private http: Http) { }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send GET RelationshipType Fragments REQUEST
    *
@@ -28,7 +28,7 @@ export class RelationshipTypeFragmentService {
     return this.http.get(this.relationshipTypeFragmentUrl).map(this.extractRelationshipTypeFragments).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send GET RelationshipType Fragment REQUEST
    *
@@ -38,7 +38,7 @@ export class RelationshipTypeFragmentService {
     return this.http.get(this.relationshipTypeFragmentUrl + '/' + id).map(this.extractRelationshipTypeFragment).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send POST RelationshipType Fragment REQUEST
    *
@@ -51,7 +51,7 @@ export class RelationshipTypeFragmentService {
     return this.http.post(this.relationshipTypeFragmentUrl, relationshipTypeFragment, options).map(this.extractRelationshipTypeFragment).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send PUT RelationshipType Fragment REQUEST
    *
@@ -64,7 +64,7 @@ export class RelationshipTypeFragmentService {
     return this.http.put(this.relationshipTypeFragmentUrl + '/' + relationshipTypeFragment.id, relationshipTypeFragment, options).map(this.extractRelationshipTypeFragment).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send DELETE RelationshipType Fragment REQUEST
    *
@@ -76,7 +76,7 @@ export class RelationshipTypeFragmentService {
     return this.http.delete(this.relationshipTypeFragmentUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @response - Extract data from response data list
    *
@@ -87,8 +87,9 @@ export class RelationshipTypeFragmentService {
     Logger.info('[RESPONSE - RELATIONSHIPTYPEFRAGMENT]: Extract Data of Response Body', RelationshipTypeFragmentService.name);
     Logger.data('[RESPONSE - RELATIONSHIPTYPEFRAGMENT]: ' + JSON.stringify(body), RelationshipTypeFragmentService.name);
     for (let relationshipTypeFragment of body) {
-      let tempRelationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment(relationshipTypeFragment.name);
+      let tempRelationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment();
       tempRelationshipTypeFragment.id = relationshipTypeFragment.id;
+      tempRelationshipTypeFragment.name = relationshipTypeFragment.name;
       tempRelationshipTypeFragment.providedProperties = relationshipTypeFragment.providedProperties;
       tempRelationshipTypeFragment.expectedProperties = relationshipTypeFragment.providedProperties;
       tempRelationshipTypeFragment.icon = relationshipTypeFragment.icon;
@@ -97,26 +98,27 @@ export class RelationshipTypeFragmentService {
     return relationshipTypeFragments || {};
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  @response - Extract data from response data object
+   * @response - Extract data from response data object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractRelationshipTypeFragment(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - RELATIONSHIPTYPE]: Extract Data of Response Body', RelationshipTypeFragmentService.name);
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeFragmentService.name);
-    let relationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment(body.name);
+    let relationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment();
     relationshipTypeFragment.id = body.id;
+    relationshipTypeFragment.name = body.name;
     relationshipTypeFragment.icon = body.icon;
     relationshipTypeFragment.providedProperties = body.providedProperties;
     relationshipTypeFragment.expectedProperties = body.expectedProperties;
     return relationshipTypeFragment || {};
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  @error - Error Handling
+   * @error - Error Handling
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

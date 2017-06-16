@@ -4,12 +4,12 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
-/********************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * LevelGraphRelation Service implements the calls to the rest interface of the application server and
- * handle the request construction and response extraction for Level Graph Relations
+ * @service - LevelGraphRelationService implements the calls to the rest interface of the application server and
+ *            handle the request construction and response extraction for LevelGraphRelations
  *
- ********************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 @Injectable()
 export class LevelGraphRelationService {
 
@@ -18,31 +18,31 @@ export class LevelGraphRelationService {
 
   constructor(private http: Http) { }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send GET all Level Graph Relations REQUEST
+   * @request - Send GET all Level Graph Relations REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public getLevelGraphRelations(): Observable<LevelGraphRelation[]> {
     Logger.info('[REQUEST - LEVELGRAPHRELATION]: Send GET Level Graph Relation Request', LevelGraphRelationService.name);
     return this.http.get(this.levelGraphRelationUrl).map(this.extractLevelGraphRelations).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send GET Level Graph Relations REQUEST
+   * @request - Send GET Level Graph Relations REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public getLevelGraphRelation(id: number): Observable<LevelGraphRelation> {
     Logger.info('[REQUEST - LEVELGRAPHRELATION]: Send GET Level Graph Relations Request with ID: ' + id, LevelGraphRelationService.name);
     return this.http.get(this.levelGraphRelationUrl + '/' + id).map(this.extractLevelGraphRelation).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send POST Level Graph Relations REQUEST
+   * @request - Send POST Level Graph Relations REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public createLevelGraphRelation(levelGraphRelation: LevelGraphRelation): Observable<LevelGraphRelation> {
     Logger.info('[REQUEST - LEVELGRAPHRELATION]: Send POST Level Graph Relation Request', LevelGraphRelationService.name);
     Logger.data('[REQUEST - LEVELGRAPHRELATION]: ' + JSON.stringify(levelGraphRelation), LevelGraphRelationService.name);
@@ -51,11 +51,11 @@ export class LevelGraphRelationService {
     return this.http.post(this.levelGraphRelationUrl, levelGraphRelation, options).map(this.extractLevelGraphRelation).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send PUT Level Graph Relations REQUEST
+   * @request - Send PUT Level Graph Relations REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public updateLevelGraphRelation(levelGraphRelation: LevelGraphRelation): Observable<LevelGraphRelation> {
     Logger.info('[REQUEST - LEVELGRAPHRELATION]: Send PUT Level Graph Relation Request', LevelGraphRelationService.name);
     Logger.data('[REQUEST - LEVELGRAPHRELATION]: ' + JSON.stringify(levelGraphRelation), LevelGraphRelationService.name);
@@ -64,11 +64,11 @@ export class LevelGraphRelationService {
     return this.http.put(this.levelGraphRelationUrl + '/' + levelGraphRelation.id, levelGraphRelation, options).map(this.extractLevelGraphRelation).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send DELETE Level Graph Relations REQUEST
+   * @request - Send DELETE Level Graph Relations REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public deleteLevelGraphRelation(id: number): Observable<LevelGraphRelation> {
     Logger.info('[REQUEST - LEVELGRAPHRELATION]: Send DELETE Level Graph Relation Request', LevelGraphRelationService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -76,11 +76,11 @@ export class LevelGraphRelationService {
     return this.http.delete(this.levelGraphRelationUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response - Extract data from response data list
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public extractLevelGraphRelations(res) {
     let body = res.json();
     let levelGraphRelationList: LevelGraphRelation[] = [];
@@ -97,11 +97,11 @@ export class LevelGraphRelationService {
     return levelGraphRelationList || {};
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  Extract data from response data object
+   * @response - Extract data from response data object
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   private extractLevelGraphRelation(res: Response) {
     let body = res.json();
     Logger.info('Extract Level Graph Relation Data', LevelGraphRelationService.name);
@@ -114,11 +114,11 @@ export class LevelGraphRelationService {
     return levelGraphRelation || {};
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  Error Handling
+   * @error - Error Handling
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {

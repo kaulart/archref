@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 
 /*******************************************************************************************************************
  *
- * @component LevelGraphToolComponent as wrapper component for the LevelGraphComponent so that you can extend the
- *  tool component flexible with other components
+ * @component -  LevelGraphToolComponent as wrapper component for the LevelGraphComponent so that you can extend the
+ *               tool component flexible with other components
  *
  * @author Arthur Kaul
  *

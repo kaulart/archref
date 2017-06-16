@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -38,11 +39,11 @@ public class LevelGraphNode extends Node {
 	@Column(name = "LEVELGRAPH_ID")
 	private Long levelGraphId;
 //
-//	@ManyToMany
+//	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 //	@JoinTable(name = "LEVELGRAPHRELATION_LEVELGRAPHNODE", 
 //			joinColumns = @JoinColumn(name = "LEVELGRAPHRELATION_ID", referencedColumnName = "ID"), 
 //			inverseJoinColumns = @JoinColumn(name = "LEVELGRAPHNODE_ID", referencedColumnName = "ID"))
-    @ManyToMany( fetch=FetchType.LAZY, mappedBy="levelGraphNodes")
+    @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraphNodes")
     private Collection<LevelGraphRelation> levelGraphRelations;
 	
 	@Column(name = "LEVELGRAPHNODETYPE")

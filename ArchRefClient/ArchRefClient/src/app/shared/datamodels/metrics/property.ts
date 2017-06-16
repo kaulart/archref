@@ -1,6 +1,10 @@
 /*******************************************************************************************************************************************************************************************************
  *
- * Property Data Model
+ * @data - Property Data Model - Properties are name value pairs
+ *
+ * @field - id: number - Id of the Property
+ * @field - name: string - Name of the Property
+ * @field - value: string - Value of the Property
  *
  * @author Arthur Kaul
  *

@@ -17,7 +17,7 @@
 
 			<div class="col-sm-12 w3-center control-group">
 				<label class="col-sm-2 ">Abstract Topology</label>
-				<md-slider class="col-sm-8" ng-model="currentTopologyTemplate.abstractionLevel" step="1" min="1" max="maxAbstractionLevel"> </md-slider>
+				<md-slider class="col-sm-8" ng-model="currentTopologyTemplate.abstractionLevel" step="1" min="1" max="{{maxAbstractionLevel}}"> </md-slider>
 				<label class="col-sm-2">Specific Topology</label>
 			</div>
 
@@ -31,7 +31,7 @@
 
 	<div class="row">
 
-		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme">
+		<div id="toolbox_area" class="w3-card-4 w3-col w3-theme">
 
 			<h5 class="w3-center w3-margin">
 				<b>Tool Box</b>
@@ -41,7 +41,7 @@
 
 				<label>Selected Repository:</label>
 				<div class="dropdown">
-					<button id="selcetRepository" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}</button>
+					<button id="selectRepository" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}</button>
 
 					<ul class="dropdown-menu" style="width: 100%;">
 						<li class="listItem" *ngIf="repositories.length < 1" disabled>NO REPOSITORY AVAILABLE</li>
@@ -99,23 +99,36 @@
 		</div>
 
 		<!-- Draw area container -->
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" (mousemove)="onDrawLevelGraphRelation($event)">
+		<div id="draw_area" class="w3-rest w3-theme-l5 scroll-panel" (mousemove)="onDrawLevelGraphRelation($event)">
 
 			<!-- svg container for display svg elements like rect, line, polyline etc. -->
 			<svg (dragover)="onDragOver($event)" (drop)="onDrop($event)">
 				
 				<!-- Definition of gradients of the node Template and of the arrows of the polyline -->
 				<defs>
-   					<marker id="Triangle" viewBox="0 0 10 10" refX="50" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+   					<marker id="TriangleEnd" viewBox="0 0 10 10" refX="50" refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					</marker>
+ 				</defs> 
+ 					 
+ 				<defs>
+   					<marker id="TriangleEndDraw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					</marker>
+ 				</defs>
+ 				
+ 				<defs>
+   					<marker id="TriangleStart" viewBox="0 0 10 10" refX="-40" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 10 0 L 10 10 L 0 5 z" />
    					</marker>
  				</defs>
  					 
  				<defs>
-   					<marker id="TriangleDraw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
-    				  	<path d="M 0 0 L 10 5 L 0 10 z" />
+   					<marker id="TriangleStartDraw" viewBox="0 0 10 10" refX="-8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+    				  	<path d="M 10 0 L 10 10 L 0 5 z" />
    					</marker>
  				</defs>
+ 				
  				
  				<defs> 
 					<linearGradient id="nodeTemplate" x1="50%" y1="100%" x2="50%" y2="0%"> 
@@ -129,11 +142,11 @@
 				
 				
 				<!-- Draw Line witch is enabled if you draw a relation to display the currentDrawRelation -->
-				<polyline *ngIf="drawRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-start="url(#Triangle)" marker-end="url(#TriangleDraw)" />	
+				<polyline *ngIf="drawRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentDrawRelation.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-start="url(#TriangleStartDraw)" marker-end="url(#TriangleEndDraw)" />	
 				
 				<!-- Relationship Template -->
-			 	<g [contextmenu]="[relationshipTemplateContextMenu, {relationshipTemplate: RelationshipTemplate}]" *ngFor="let relationshipTemplate of currentTopologyTemplate.relationshipTemplates">
-					    <polyline [attr.points]="relationshipTemplate.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-start="url(#Triangle)" marker-end="url(#Triangle)" />
+			 	<g [contextmenu]="[relationshipTemplateContextMenu, {relationshipTemplate: relationshipTemplate}]" *ngFor="let relationshipTemplate of currentTopologyTemplate.relationshipTemplates">
+					    <polyline [attr.points]="relationshipTemplate.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-start="url(#TriangleStart)" marker-end="url(#TriangleEnd)" />
 				</g>
 				
 				<!-- Node Templates -->
@@ -142,6 +155,7 @@
 					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
 							<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{nodeTemplate.name}}</text>		
 				</g>
+				
 				
            </svg>
 
@@ -169,9 +183,9 @@
 				<li *ngFor="let levelGraphNode of currentLevelGraphCompliantRelationshipTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphCompliantRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
 			</ul></li>
 
-		<li><a class="dropdown-item" (click)="addExpectedProperties(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
-		<li><a class="dropdown-item" (click)="addProvidedProperties(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
-		<li><a class="dropdown-item" (click)="viewDetails(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
+		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
@@ -181,10 +195,92 @@
 <contextmenu #relationshipTemplateContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" (click)="addExpectedProperties(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
-		<li><a class="dropdown-item" (click)="addProvidedProperties(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
-		<li><a class="dropdown-item" (click)="viewDetails(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
+		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
 </contextmenu>
+
+
+<!-- Modal for Create ProvidedProperty -->
+<div class="modal fade modal-position" id="createProvidedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create ProvidedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="col-sm-6 form-group">
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createProvidedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{createProvidedProperty.name}}" required>
+						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-6 form-group">
+
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createProvidedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{createProvidedProperty.value}}" required>
+						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="addProvidedProperty()" data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal for Create ExpectedProperty -->
+<div class="modal fade modal-position" id="createExpectedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create ExpectedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="col-sm-6 form-group">
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createExpectedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{createExpectedProperty.name}}" required>
+						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-6 form-group">
+
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createExpectedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{createExpectedProperty.value}}" required>
+						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="addExpectedProperty()" data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

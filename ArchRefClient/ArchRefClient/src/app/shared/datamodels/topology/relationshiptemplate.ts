@@ -5,6 +5,32 @@ import { NodeTemplate } from './nodetemplate';
 import { RelationshipType } from '../types/relationshiptype';
 import { TopologyTemplate } from './topologytemplate';
 
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @data - RelationshipTemplate Data Model - A relation of a RelationshipTemplate
+ *
+ * @Entity
+ * @superFields - id: number - ID of the RelationshipTemplate
+ * @superFields - name: string - Name of the RelationshipTemplate
+ * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the RelationshipTemplate
+ * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the RelationshipTemplate
+ *
+ * @Relation
+ * @superFields - sourceNodeId: number - ID of the Source Node of RelationshipTemplate
+ * @superFields - targetNodeId: number - ID of the Target Node of RelationshipTemplate
+ * @superFields - path: Path - Path of the line from source node to target node
+ *
+ * @fields - levelGraphNode: LevelGraphNode - LevelGraph Node from which this RelationshipTemplate is derived
+ * @fields - levelGraphNodeId: number - ID of the LevelGraph Node form which the RelationshipTemplate is derived
+ * @fields - relationshipType: RelationshipType - RelationshipType of the RelationshipTemplate
+ * @fields - relationshipTypeId: number - ID of the RelationshipType
+ * @fields - nodeTemplates: NodeTemplate[] - Source and Target NodeTemplate of the RelationshipTemplate // You may decide to split the array in two separate fields and move it up to relation
+ * @fields - topologyTemplate: TopologyTemplate - TopologyTemplate of the RelationshipTemplate
+ * @fields - topologyTemplateId: number - ID of the TopologyTemplate
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
 export class RelationshipTemplate extends Relation {
 
   levelGraphNode: LevelGraphNode;
@@ -18,8 +44,8 @@ export class RelationshipTemplate extends Relation {
   topologyTemplate: TopologyTemplate;
   topologyTemplateId: number;
 
-  constructor(name: string, sourceNodeId: number, targetNodeId: number, path: Path, relationshipTypeId: number, topologyTemplateId: number) {
-    super(name, sourceNodeId, targetNodeId, path);
+  constructor(sourceNodeId: number, targetNodeId: number, path: Path, relationshipTypeId: number, topologyTemplateId: number) {
+    super(sourceNodeId, targetNodeId, path);
     this.relationshipTypeId = relationshipTypeId;
     this.topologyTemplateId = topologyTemplateId;
   }

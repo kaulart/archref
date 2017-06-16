@@ -1,7 +1,6 @@
 import { TopologyTemplateToolComponent } from './topologytemplatetool.component';
 import { Route } from '@angular/router';
 
-
 /*******************************************************************************************************************
  *
  * @route TopologyTemplateToolRoutes - Path to the TopologyTemplateToolComponent

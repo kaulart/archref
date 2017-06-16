@@ -18,7 +18,7 @@ export class RelationshipTypeService {
 
   constructor(private http: Http) { }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send GET all RelationshipType REQUEST
    *
@@ -28,7 +28,7 @@ export class RelationshipTypeService {
     return this.http.get(this.relationshipTypeUrl).map(this.extractRelationshipTypesDataList).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send GET RelationshipType REQUEST
    *
@@ -38,7 +38,7 @@ export class RelationshipTypeService {
     return this.http.get(this.relationshipTypeUrl + '/' + id).map(this.extractRelationshipTypeData).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send POST RelationshipType REQUEST
    *
@@ -51,7 +51,7 @@ export class RelationshipTypeService {
     return this.http.post(this.relationshipTypeUrl, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send PUT RelationshipType REQUEST
    *
@@ -64,7 +64,7 @@ export class RelationshipTypeService {
     return this.http.put(this.relationshipTypeUrl + '/' + relationshipType.id, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @request - Send DELETE RelationshipType REQUEST
    *
@@ -76,7 +76,7 @@ export class RelationshipTypeService {
     return this.http.delete(this.relationshipTypeUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @response - Extract data from response data list
    *
@@ -87,8 +87,10 @@ export class RelationshipTypeService {
     let relationshipTypeList: RelationshipType[] = [];
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeService.name);
     for (let relationshipType of body) {
-      let tempRelationshipType: RelationshipType = new RelationshipType(relationshipType.name, relationshipType.repository);
+      let tempRelationshipType: RelationshipType = new RelationshipType();
       tempRelationshipType.id = relationshipType.id;
+      tempRelationshipType.name = relationshipType.name;
+      tempRelationshipType.repository = relationshipType.repository;
       tempRelationshipType.providedProperties = relationshipType.providedProperties;
       tempRelationshipType.expectedProperties = relationshipType.providedProperties;
       tempRelationshipType.icon = relationshipType.icon;
@@ -97,7 +99,7 @@ export class RelationshipTypeService {
     return relationshipTypeList || {};
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @response - Extract data from response data object
    *
@@ -106,15 +108,17 @@ export class RelationshipTypeService {
     Logger.info('[RESPONSE - RELATIONSHIPTYPE]: Extract Data of Response Body', RelationshipTypeService.name);
     let body = res.json();
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeService.name);
-    let relationshipType: RelationshipType = new RelationshipType(body.name, body.repository);
+    let relationshipType: RelationshipType = new RelationshipType();
     relationshipType.id = body.id;
+    relationshipType.name = body.name;
+    relationshipType.repository = body.repository;
     relationshipType.icon = body.icon;
     relationshipType.providedProperties = body.providedProperties;
     relationshipType.expectedProperties = body.expectedProperties;
     return relationshipType || {};
   }
 
-  /*******************************************************************************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @error - Error Handling
    *

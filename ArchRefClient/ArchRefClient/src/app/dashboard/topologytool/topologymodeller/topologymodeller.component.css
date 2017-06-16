@@ -72,6 +72,7 @@ svg {
 #toolbox_area {
 	margin-top: 10px;
 	height: 700px;
+	width:300px;
 	overflow: auto;
 }
 

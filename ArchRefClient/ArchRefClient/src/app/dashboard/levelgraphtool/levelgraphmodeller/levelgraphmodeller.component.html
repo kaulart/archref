@@ -1,4 +1,4 @@
-<div class="container-fluid" (mouseup)="stopAllEvents()">
+<div id="modeller" class="container-fluid" (mouseup)="stopAllEvents()" >
 
 	<div class="row">
 
@@ -58,10 +58,10 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" style="height:100%">
 
 		<!-- Tool box Panel for the tool box groups like ModellingTools / LevelGraphNodes / RepositoryNodes -->
-		<div id="toolbox_area" class="w3-card-4 col-sm-2 w3-theme">
+		<div id="toolbox_area" class="w3-col w3-card-4 w3-theme">
 
 			<h5 class="w3-center w3-margin">
 				<b>Tool Box</b>
@@ -154,9 +154,7 @@
 			</div>
 		</div>
 
-
-
-		<div id="draw_area" class="col-sm-10 w3-theme-l5 scroll-panel" (mousemove)="onDrawRelation($event)">
+		<div id="draw_area" class="w3-rest w3-theme-l5 scroll-panel" (mousemove)="onDrawRelation($event)">
 
 			<svg id="parent">
 				
@@ -294,9 +292,8 @@
 <contextmenu #levelGraphNodeContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createPropertyModal" (click)="addProperty(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
-		<!-- <li><a class="dropdown-item" (click)="addProperty(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li> -->
-		<li><a class="dropdown-item" (click)="viewDetails(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
+		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
@@ -305,9 +302,50 @@
 <contextmenu #levelGraphRelationContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" (click)="addProperty(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a> <!--<li><a class="dropdown-item" (click)="addProperty(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>-->
-		<li><a class="dropdown-item" (click)="viewDetails(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
+		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteLevelGraphRelation(levelGraphRelationContextMenu.get('levelGraphRelation').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
 </contextmenu>
+
+
+<!-- Modal for Create ProvidedProperty -->
+<div class="modal fade modal-position" id="createProvidedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create ProvidedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="col-sm-6 form-group">
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createProvidedProperty.name" #nameProperty type="text"
+							class="form-control" id="nameProperty" value="{{createProvidedProperty.name}}" required>
+						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-6 form-group">
+
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createProvidedProperty.value" #valueProperty type="text"
+							class="form-control" id="valueProperty" value="{{createProvidedProperty.value}}" required>
+						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="addProvidedProperties()" data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

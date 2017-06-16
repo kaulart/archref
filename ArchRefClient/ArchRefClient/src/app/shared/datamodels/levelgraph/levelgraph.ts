@@ -5,7 +5,14 @@ import { LevelGraphRelation } from './levelgraphrelation';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * LevelGraph Data Model for the refinement of TopologyTemplate Data Models
+ * @data - LevelGraph Data Model - LevelGraph Model is used for the refinement of TopologyTemplate Data Models
+ *
+ * @fields - id: number - ID of the LevelGraph
+ * @fields - name: string - Name of the LevelGraph
+ * @fields - levels: Level[] - Array of the different levels of a LevelGraph
+ * @fields - levelGraphNodes: LevelGraphNode[] - Array of all LevelGraphNodes in the LevelGraph
+ * @fields - levelGraphRelations: LevelGraphRelation[] - Array of all LevelGraphRelations in the LevelGraph
+ * @fields - topologyTemplates: TopologyTemplate[] - Array of all TopologyTemplates which were created/generated with the LevelGraph
  *
  * @author Arthur Kaul
  *
@@ -24,6 +31,7 @@ export class LevelGraph {
     this.levels = [];
     this.levelGraphRelations = [];
     this.levelGraphNodes = [];
+    this.topologyTemplates = [];
   }
 
   /*******************************************************************************************************************************************************************************************************

@@ -1,8 +1,48 @@
-<div class="dashboard_area">
+<!-- AdministrationComponent -->
+<div id="accordion" class="dashboard_area">
+	
+	<div class="panel panel-default ">
+		
+		<!-- Header -->
+		<div class="w3-theme-d4 w3-card-4 heading row heading panel-heading control-panel">
+			<h2 class="col-sm-3">Administration</h2>
 
-	<!-- Header -->
-	<div class="w3-theme-d4 w3-card-4 heading">
-		<h2>Administration</h2>
+			<!-- Export Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="export" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#exportArea">
+				<i class="fa fa-download" aria-hidden="true"></i> Export
+			</button>
+
+			<!-- Import Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="import" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importArea">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
+			</button>
+
+		</div>
+		
+		<!-- Import Control Area -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importArea">
+			<form>
+
+				<!-- <div class="form-group">
+				<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+			</div> -->
+
+				<button type="submit" class="btn btn-success" (click)="import()">Upload</button>
+			</form>
+		</div>
+
+		<!-- Export Control Area -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="exportArea">
+			<form>
+
+				<!-- <div class="form-group">
+				<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+			</div> -->
+
+				<button type="submit" class="btn btn-success" (click)="export()">Download</button>
+			</form>
+		</div>
+		
 	</div>
 
 	<!-- Tab Data Panel -->

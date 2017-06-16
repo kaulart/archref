@@ -1,0 +1,45 @@
+<div class="tab-panel rounded">
+
+	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area ">
+
+		<div class="panel panel-default">
+
+			<div class="row panel-heading control-panel">
+
+				<h3 class="col-sm-3">Level Graph Relations</h3>
+
+			</div>
+
+		</div>
+
+		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
+			<table class="w3-table-all table-striped w3-bordered">
+				<thead>
+					<tr class="w3-theme-d3">
+						<th class="table-head"></th>
+						<th class="table-head">Nr.</th>
+						<th class="table-head">ID</th>
+						<th class="table-head">RelationType</th>
+						<th class="table-head">Source Level Depth</th>
+						<th class="table-head">Target Level Depth</th>
+						<th class="table-head">Source Node Id</th>
+						<th class="table-head">Target Node Id</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr routerLink="/dashboard/levelgraphrelationdetails" [queryParams]="{name: levelGraphRelation.name , id: levelGraphRelation.id}" *ngFor="let levelGraphRelation of currentLevelGraph.levelGraphRelations">
+						<td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td>{{ currentLevelGraph.levelGraphRelations.indexOf(levelGraphRelation) + 1 }}</td>
+						<td>{{ levelGraphRelation.id }}</td>
+						<td>{{ levelGraphRelation.levelGraphRelationType }}</td>
+						<td>{{ levelGraphRelation.sourceLevelDepth }}</td>
+						<td>{{ levelGraphRelation.targetLevelDepth }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: levelGraphRelation.sourceNodeId}">{{ levelGraphRelation.sourceNodeId }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: levelGraphRelation.targetNodeId}">{{ levelGraphRelation.targetNodeId}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

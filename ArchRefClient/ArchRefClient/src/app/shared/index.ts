@@ -1,6 +1,7 @@
 /**
  * This barrel file provides the exports for the shared resources (services, components).
  */
-export * from './components/topnav/index';
+export * from './modules/topnav/index';
+
 
 

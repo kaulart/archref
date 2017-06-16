@@ -1,5 +1,7 @@
 import { LevelGraphModellerComponent } from './levelgraphmodeller/levelgraphmodeller.component';
-import { LevelGraphComponent } from './levelgraph.component';
+import { LevelGraphModule } from '../../shared/modules/levelgraph/levelgraphmodule';
+import { NodeTypeDetailsModule } from '../../shared/modules/types/nodetype/nodetypedetails/nodetypedetlails.module';
+import { RelationshipTypeDetailsModule } from '../../shared/modules/types/relationshiptype/relationshiptypedetails/relationshipdetails.module';
 import { LevelGraphToolComponent } from './levelgraphtool.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,11 +11,10 @@ import { ContextmenuModule } from 'ng2-contextmenu';
 import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-  imports: [FileUploadModule, ContextmenuModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
-  declarations: [LevelGraphToolComponent, LevelGraphComponent, LevelGraphModellerComponent ],
-  exports: [LevelGraphToolComponent, LevelGraphComponent, LevelGraphModellerComponent ]
+  imports: [LevelGraphModule, NodeTypeDetailsModule, RelationshipTypeDetailsModule, FileUploadModule, ContextmenuModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
+  declarations: [LevelGraphToolComponent, LevelGraphModellerComponent ],
+  exports: [LevelGraphToolComponent, LevelGraphModellerComponent ]
 })
-
 
 /*******************************************************************************************************************
  *

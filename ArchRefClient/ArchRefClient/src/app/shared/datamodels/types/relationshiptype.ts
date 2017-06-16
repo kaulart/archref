@@ -1,17 +1,19 @@
 import { Entity } from '../entity/entity';
-import { Repository } from '../repository';
+import { Repository } from '../repository/repository';
 
 /*******************************************************************************************************************************************************************************************************
  *
  * @data RelationshipType - RelationshipType inherited from Entity it is the Type of a RelationshipTemplate or of a LevelGraphNode
  *
- * @field id: number - ID of the NodeType inherited from Entity
- * @field name: name - Name of the Repository inherited from Entity
- * @field repository: Repository - Repository of the NodeType
- * @field repositoryId: number - ID of the Repository of the NodeType
- * @field expectedProperties: Property[] - Array of expected properties inherited from Entity
- * @field providedProperties: Property[] - Array of provided properties inherited from Entity
- * @field icon: String - Path of the icon for representation inherited from Entity
+ * Entity
+ * @superFields - id: number - ID of the RelationshipType
+ * @superFields - name: string - Name of the RelationshipType
+ * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the RelationshipType
+ * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the RelationshipType
+ * @superFields icon: String - Path of the icon for representation inherited from Entity
+ *
+ * @field repository: Repository - Repository of the RelationshipType
+ * @field repositoryId: number - ID of the Repository of the RelationshipType
  *
  * @author Arthur Kaul
  *
@@ -24,9 +26,8 @@ export class RelationshipType extends Entity {
   repository: Repository;
   repositoryId: number;
 
-  constructor(name: string, repositoryId: number) {
-    super(name);
-    this.repositoryId = repositoryId;
+  constructor() {
+    super();
   }
 
 }

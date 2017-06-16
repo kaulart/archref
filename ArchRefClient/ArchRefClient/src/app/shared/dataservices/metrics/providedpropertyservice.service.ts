@@ -5,6 +5,12 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
+/**********************************************************************************************************************************************************************************************************
+ *
+ * @service ProvidedPropertyService - Implements the calls to the rest interface of the application server and
+ *                                    handle the request construction and response extraction for ProvidedProperty data
+ *
+ *********************************************************************************************************************************************************************************************************/
 @Injectable()
 export class ProvidedPropertyService {
 
@@ -13,31 +19,31 @@ export class ProvidedPropertyService {
 
   constructor(private http: Http) { }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send GET all ProvidedProperties REQUEST
+   * @request - Send GET all ProvidedProperties REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public getProvidedProperties(): Observable<ProvidedProperty[]> {
     Logger.info('[REQUEST - ProvidedProperty] Send GET ProvidedProperties Request', ProvidedPropertyService.name);
     return this.http.get(this.providedPropertyUrl).map(this.extractProvidedPropertyDataList).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send GET ProvidedProperty REQUEST
+   * @request - Send GET ProvidedProperty REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public getProvidedProperty(id: number): Observable<ProvidedProperty> {
     Logger.info('[REQUEST - ProvidedProperty] Send GET ProvidedProperty Request with ID:' + id, ProvidedPropertyService.name);
     return this.http.get(this.providedPropertyUrl + '/' + id).map(this.extractProvidedPropertyData).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send POST ProvidedProperty REQUEST
+   * @request - Send POST ProvidedProperty REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public createProvidedProperty(providedProperty: ProvidedProperty): Observable<ProvidedProperty> {
     Logger.info('[REQUEST - ProvidedProperty] Send POST ProvidedProperty Request', ProvidedPropertyService.name);
     Logger.data('[REQUEST - ProvidedProperty]' + JSON.stringify(providedProperty), ProvidedPropertyService.name);
@@ -46,11 +52,11 @@ export class ProvidedPropertyService {
     return this.http.post(this.providedPropertyUrl, providedProperty, options).map(this.extractProvidedPropertyData).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send PUT ProvidedProperty REQUEST
+   * @request - Send PUT ProvidedProperty REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public updateProvidedProperty(providedProperty: ProvidedProperty): Observable<ProvidedProperty> {
     Logger.info('[REQUEST - ProvidedProperty] Send PUT Request ProvidedProperty', ProvidedPropertyService.name);
     Logger.data('[REQUEST - ProvidedProperty] ' + JSON.stringify(providedProperty), ProvidedPropertyService.name);
@@ -59,11 +65,11 @@ export class ProvidedPropertyService {
     return this.http.put(this.providedPropertyUrl + '/' + providedProperty.id, providedProperty, options).map(this.extractProvidedPropertyData).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Send DELETE ProvidedProperty REQUEST
+   * @request - Send DELETE ProvidedProperty REQUEST
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public deleteProvidedProperty(id: number): Observable<ProvidedProperty> {
     Logger.info('[REQUEST - ProvidedProperty] Send DELETE ProvidedProperty Request with ID: ' + id, ProvidedPropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -71,11 +77,11 @@ export class ProvidedPropertyService {
     return this.http.delete(this.providedPropertyUrl + '/' + id, options).map(res => res).catch(this.handleError);
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Extract data from response data list
+   * @response -  Extract data from response data list
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   public extractProvidedPropertyDataList(res) {
     let body = res.json();
     let propertyList: ProvidedProperty[] = [];
@@ -90,11 +96,11 @@ export class ProvidedPropertyService {
     return propertyList || {};
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  Extract data from response data object
+   * @response - Extract data from response data object
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   private extractProvidedPropertyData(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - ProvidedProperty]: Extract Data of Response Body', ProvidedPropertyService.name);
@@ -106,11 +112,11 @@ export class ProvidedPropertyService {
     return providedProperty || {};
   }
 
-  /******************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  Error Handling
+   * @error - Error Handling
    *
-   ******************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {

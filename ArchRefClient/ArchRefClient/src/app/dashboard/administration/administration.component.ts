@@ -6,7 +6,6 @@ import { Component} from '@angular/core';
   styleUrls: ['./administration.component.css']
 })
 
-
 /*****************************************************************************************************************************
  *
  * @component AdministrationComponent - Lazy loaded component as wrapper for all other components in the

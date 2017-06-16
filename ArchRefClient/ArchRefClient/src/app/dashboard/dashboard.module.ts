@@ -10,26 +10,25 @@ import { LevelGraphToolModule } from './levelgraphtool/levelgraphtool.module';
 import { TopologyTemplateToolModule } from './topologytool/topologytemplatetool.module';
 import { ContextmenuModule } from 'ng2-contextmenu';
 
-
 @NgModule({
   imports: [
     TopologyTemplateToolModule,
-    FlashMessageModule,
     ContextmenuModule,
     LevelGraphToolModule,
+    FlashMessageModule,
     CommonModule,
     RouterModule,
     AdministrationModule,
     Ng2BootstrapModule.forRoot()
   ],
-  declarations: [DashboardComponent, TopNavComponent ],
+  declarations: [DashboardComponent, TopNavComponent],
   exports: [DashboardComponent, TopNavComponent]
 })
 
 /*******************************************************************************************************************
  *
- * @module DashboardModule - Lazy loaded module as wrapper for all application modules and components as
- *                           central view controller of the application
+ * @module DashboardModule - Lazy loaded module as wrapper for all application modules and components which should
+ *                           be accessible in the TopologyToolModule
  *
  * @author Arthur Kaul
  *

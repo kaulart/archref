@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "PROVIDED_PROPERTY")
-public class ProvidedProperty extends Property{
+public class ProvidedProperty extends Property {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ENTITYPROVIDED")
@@ -20,5 +20,21 @@ public class ProvidedProperty extends Property{
 
 	@Column(name = "ENTITYPROVIDED_ID")
 	private Long entityProvidedId;
+
+	public de.arthurkaul.archref.model.Entity getEntityProvided() {
+		return entityProvided;
+	}
+
+	public void setEntityProvided(de.arthurkaul.archref.model.Entity entityProvided) {
+		this.entityProvided = entityProvided;
+	}
+
+	public Long getEntityProvidedId() {
+		return entityProvidedId;
+	}
+
+	public void setEntityProvidedId(Long entityProvidedId) {
+		this.entityProvidedId = entityProvidedId;
+	}
 
 }
