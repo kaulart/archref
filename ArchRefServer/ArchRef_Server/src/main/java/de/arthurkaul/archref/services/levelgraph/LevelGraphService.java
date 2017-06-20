@@ -39,7 +39,7 @@ public class LevelGraphService implements LevelGraphInterface {
 		if (persistedLevelGraph == null) {
             return null;
         }
-		return levelGraphRepository.save(levelGraph);
+		return levelGraphRepository.saveAndFlush(levelGraph);
 	}
 
 	@Override

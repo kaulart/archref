@@ -1,27 +1,47 @@
+<!-- NodeTypeDetails Component Area -->
 <div class="dashboard_area">
-
-	<div class="w3-theme-d4 w3-card-4 heading">
-		<h2>{{currentNodeType.name}} Node Type</h2>
+	
+	<!-- Header -->
+	<div class="w3-theme-d4 row panel-heading control-panel">
+		<div class="col-sm-6">
+			<h2>
+				Node Type Name: <input disabled style="color: black" value="{{currentNodeType.name}}"/>
+			</h2>
+		</div>
+		<div class="col-sm-6">
+			<h2>
+				Node Type ID: <input disabled style="color: black" value="{{currentNodeType.id}}"/>
+			</h2>
+		</div>
 	</div>
+	
+	<!-- Tab Panel -->
 	<div class="data-panel ">
 		
+		<!-- Tab Header -->
 		<ul class="tabrow nav" role="tablist">	
 			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#general" style="color: white" role="tab">General Data</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#providedproperty" style="color: white" role="tab">Provided Properties</a></li>
-<!-- 			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#expectedproperty" style="color: white" role="tab">Expected Properties</a></li>
- -->		</ul>
-
+		    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#providedproperty" style="color: white" role="tab">Provided Properties</a></li>
+		    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#expectedproperty" style="color: white" role="tab">Expected Properties</a></li>
+		</ul>
+		
+		<!-- Tab Content -->
 		<div class="tab-content  tab-panel">
 			
 			<div id="general" class="rounded tab-pane active" role="tabpanel">
+				<!-- Selector GeneralData Component -->
 				<app-generaldata [currentNodeType]="currentNodeType"></app-generaldata>
 			</div>
+			
 			<div id="providedproperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector ProvidedProperty Component -->
 				<app-providedproperty [entity]="currentNodeType"></app-providedproperty>
 			</div>
-			<!--  <div id="expectedproperty" class="rounded tab-pane" role="tabpanel">
+			
+			 <div id="expectedproperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector ExpectedProperty -->
 				<app-expectedproperty [entity]="currentNodeType"></app-expectedproperty>
-			</div>-->
+			</div>
 			
 		</div>
 	</div>

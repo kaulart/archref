@@ -1,12 +1,11 @@
-
 import { NodeTypeDetailsComponent } from './nodetypedetails.component';
 import { Route } from '@angular/router';
 
 /*******************************************************************************************************************
  *
- * @route NodeTypeDetailsRoutes - Path to the RelationshipDetailsComponent
+ * @route - NodeTypeDetailsRoutes - Path to the RelationshipDetailsComponent
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export const NodeTypeDetailsRoutes: Route[] = [

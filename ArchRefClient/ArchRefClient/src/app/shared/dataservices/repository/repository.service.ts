@@ -3,12 +3,10 @@ import { Repository } from '../../datamodels/repository/repository';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 
 /*********************************************************************************************************************************************************************************************************
  *
- * @service RepositoryService  - Implements the calls to the rest interface of the application server and
+ * @service - RepositoryService  - Implements the calls to the rest interface of the application server and
  *                               handle the request construction and response extraction for Repository data
  *
  *********************************************************************************************************************************************************************************************************/
@@ -22,27 +20,31 @@ export class RepositoryService {
 
   /*******************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all Repositories REQUEST
+   * @request - getRepositories - Send GET all Repositories REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getRepositories(): Observable<Repository[]> {
     Logger.info('[REQUEST - REPOSITORY] Send GET Repositories Request', RepositoryService.name);
-    return this.http.get(this.repositoriesUrl).map(this.extractRepositoryDataList).catch(this.handleError);
+    return this.http.get(this.repositoriesUrl).map(this.extractRepositorys).catch(this.handleError);
   }
 
   /*******************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Repository REQUEST
+   * @request - getRepository - Send GET Repository REQUEST
+   *
+   * @param - id: number - ID of the Repository which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getRepository(id: number): Observable<Repository> {
     Logger.info('[REQUEST - REPOSITORY] Send GET Repository Request with ID:' + id, RepositoryService.name);
-    return this.http.get(this.repositoriesUrl + '/' + id).map(this.extractRepositoryData).catch(this.handleError);
+    return this.http.get(this.repositoriesUrl + '/' + id).map(this.extractRepository).catch(this.handleError);
   }
 
   /*******************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST Repository REQUEST
+   * @request - createRepository - Send POST Repository REQUEST
+   *
+   * @param - repository: Repository - Repository which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createRepository(repository: Repository): Observable<Repository> {
@@ -50,12 +52,14 @@ export class RepositoryService {
     Logger.data('[REQUEST - REPOSITORY]' + JSON.stringify(repository), RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.repositoriesUrl, repository, options).map(this.extractRepositoryData).catch(this.handleError);
+    return this.http.post(this.repositoriesUrl, repository, options).map(this.extractRepository).catch(this.handleError);
   }
 
   /*******************************************************************************************************************************************************************************************************
    *
    * @request - Send PUT Repository REQUEST
+   *
+   * @param - repository: Repository - Repository which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateRepository(repository: Repository): Observable<Repository> {
@@ -63,12 +67,14 @@ export class RepositoryService {
     Logger.data('[REQUEST - REPOSITORY] ' + JSON.stringify(repository), RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.repositoriesUrl + '/' + repository.id, repository, options).map(this.extractRepositoryData).catch(this.handleError);
+    return this.http.put(this.repositoriesUrl + '/' + repository.id, repository, options).map(this.extractRepository).catch(this.handleError);
   }
 
   /*******************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Repository REQUEST
+   * @request - deleteRepository - Send DELETE Repository REQUEST
+   *
+   * @param - id: number - ID of the Repository which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteRepository(id: number): Observable<Repository> {
@@ -82,8 +88,10 @@ export class RepositoryService {
    *
    * @response - Extract data from response data list
    *
+   * @param - res: Response - Response Object
+   *
    *******************************************************************************************************************************************************************************************************/
-  private extractRepositoryDataList(res: Response) {
+  private extractRepositorys(res) {
 
     let body = res.json();
     let repoList: Repository[] = [];
@@ -102,10 +110,12 @@ export class RepositoryService {
 
   /*******************************************************************************************************************************************************************************************************
    *
-   *  @response - Extract data from response data object
+   * @response - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  private extractRepositoryData(res: Response) {
+  private extractRepository(res: Response) {
 
     let body = res.json();
     Logger.info('[RESPONSE - REPOSITORY]: Extract Data of Response Body', RepositoryService.name);
@@ -120,7 +130,9 @@ export class RepositoryService {
 
   /*******************************************************************************************************************************************************************************************************
    *
-   *  @error - Error Handling
+   * @error - handleError -  Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

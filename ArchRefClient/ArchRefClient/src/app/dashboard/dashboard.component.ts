@@ -8,10 +8,10 @@ import { Component } from '@angular/core';
 
 /*****************************************************************************************************************************
  *
- * @component DashboardComponent - Lazy loaded component as wrapper for all other application components and for displaying the start
- *                                 page of the application
+ * @component - DashboardComponent - Lazy loaded component as wrapper for all other application components and for displaying the start
+ *                                   page of the application
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ****************************************************************************************************************************/
 export class DashboardComponent { }

@@ -3,9 +3,9 @@ import { Route } from '@angular/router';
 
 /*******************************************************************************************************************
  *
- * @route LevelGraphToolRoutes path for the navigation handling in the front-end
+ * @route - LevelGraphToolRoutes path for the navigation handling in the front-end
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export const LevelGraphToolRoutes: Route[] = [

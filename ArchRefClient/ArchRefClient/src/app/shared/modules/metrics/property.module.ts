@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   exports: [ExpectedPropertyComponent, ProvidedPropertyComponent]
 })
 
-/*********************************************************************************************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
  * @module PropertyModule - SharedModule as wrapper for ExpectedProperties and ProvidedProperties import the module when you need access to the properties
  *

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Point {
+	
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")

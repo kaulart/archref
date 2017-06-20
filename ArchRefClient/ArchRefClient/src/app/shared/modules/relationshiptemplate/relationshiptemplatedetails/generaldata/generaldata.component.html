@@ -1,0 +1,64 @@
+<!-- General Data Component currently only for display data but you can extends later this component with update functionality -->
+<div class="tab-panel rounded">
+
+	<div class="w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+		<form>
+			<div class="row">
+
+				<div class="col-sm-6 form-group">
+					<label>ID: </label> <input class="form-control" value="{{currentRelationshipTemplate.id}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label for="nameLevelGraphNode">Name: </label> <input disabled #nameLevelGraphNode type="text" class="form-control" value="{{currentRelationshipTemplate.name}}" required>
+				</div>
+
+				<div class="col-sm-4 form-group">
+					<label for="icon">Icon Path: </label> <input class="  form-control" #icon value="{{currentRelationshipTemplate.icon}}" disabled />
+				</div>
+
+				<div class="col-sm-2 form-group">
+					<label>Icon View: </label> <img class=" form-control w3-right icon" src="{{currentRelationshipTemplate.icon}}" />
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Source Node ID: </label> <input class="form-control col-sm-5" value="{{currentRelationshipTemplate.sourceNodeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: currentRelationshipTemplate.sourceNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Target Node ID: </label> <input class="form-control col-sm-5" value="{{currentRelationshipTemplate.targetNodeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: currentRelationshipTemplate.targetNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Relationship Type ID: </label> <input class="form-control col-sm-5" value="{{currentRelationshipTemplate.relationshipTypeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: currentRelationshipTemplate.relationshipTypeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level Graph Node ID: </label> <input class="form-control col-sm-5" value="{{currentRelationshipTemplate.levelGraphNodeId}}" disabled>
+					<button [disabled]="currentRelationshipTemplate.levelGraphNodeId !== undefined" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: currentRelationshipTemplate.levelGraphNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Topology Template ID: </label> <input class="form-control col-sm-5" value="{{currentRelationshipTemplate.topologyTemplateId}}" disabled>
+					<button *ngIf="currentRelationshipTemplate.topologyTemplateId !== null" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/topologymodeller" [queryParams]="{id: currentRelationshipTemplate.topologyTemplateId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+</div>
+

@@ -20,7 +20,7 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all Level Graph Nodes REQUEST
+   * @request - getLevelGraphNodes - Send GET all Level Graph Nodes REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getLevelGraphNodes(): Observable<LevelGraphNode[]> {
@@ -30,7 +30,9 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Level Graph Node REQUEST
+   * @request - getLevelGraphNode - Send GET Level Graph Node REQUEST
+   *
+   * @param - id: number - ID of the LevelGraphNode which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getLevelGraphNode(id: number): Observable<LevelGraphNode> {
@@ -40,7 +42,9 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST Level Graph Node REQUEST
+   * @request - createLevelGraphNode - Send POST Level Graph Node REQUEST
+   *
+   * @param - levelGraphNode: LevelGraphNode - LevelGraphRelation which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createLevelGraphNode(levelGraphNode: LevelGraphNode): Observable<LevelGraphNode> {
@@ -53,7 +57,9 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT Level Graph Node REQUEST
+   * @request - updateLevelGraphNode - Send PUT Level Graph Node REQUEST
+   *
+   * @param - levelGraphNode: LevelGraphNode - LeveLevelGraphNodelGraphRelation which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateLevelGraphNode(levelGraphNode: LevelGraphNode): Observable<LevelGraphNode> {
@@ -66,7 +72,9 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Level Graph Node  REQUEST
+   * @request - deleteLevelGraphNode - Send DELETE Level Graph Node  REQUEST
+   *
+   * @param - id: number - ID of the LevelGraphNode which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteLevelGraphNode(id: number): Observable<LevelGraphNode> {
@@ -78,19 +86,25 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractLevelGraphNodes - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractLevelGraphNodes(res) {
+  public extractLevelGraphNodes(res: Response) {
     let body = res.json();
     let levelGraphList: LevelGraphNode[] = [];
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: Extract Level Graph Node Data List', LevelGraphNodeService.name);
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
     for (let levelGraphNode of body) {
       let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode(levelGraphNode.x, levelGraphNode.y, levelGraphNode.width, levelGraphNode.height, levelGraphNode.levelId, levelGraphNode.levelGraphNodeType, levelGraphNode.levelGraphNodeTypeId, levelGraphNode.levelGraphId);
-      levelGraphNode.name = levelGraphNode.name;
-      tempLevelGraphNode.levelGraphRelations = levelGraphNode.levelGraphRelations;
       tempLevelGraphNode.id = levelGraphNode.id;
+      tempLevelGraphNode.name = levelGraphNode.name;
+      tempLevelGraphNode.providedProperties = levelGraphNode.providedProperties;
+      tempLevelGraphNode.expectedProperties = levelGraphNode.expectedProperties;
+      tempLevelGraphNode.inLevelGraphRelations = levelGraphNode.inLevelGraphRelations;
+      tempLevelGraphNode.outLevelGraphRelations = levelGraphNode.outLevelGraphRelations;
+      tempLevelGraphNode.levelDepth = levelGraphNode.levelDepth;
       tempLevelGraphNode.level = levelGraphNode.level;
       tempLevelGraphNode.levelGraph = levelGraphNode.levelGraph;
       levelGraphList.push(tempLevelGraphNode);
@@ -100,7 +114,9 @@ export class LevelGraphNodeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractLevelGraphNode - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractLevelGraphNode(res: Response) {
@@ -108,17 +124,23 @@ export class LevelGraphNodeService {
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: Extract Level Graph Node Data', LevelGraphNodeService.name);
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
     let levelGraphNode: LevelGraphNode = new LevelGraphNode(body.x, body.y, body.width, body.height, body.levelId, body.levelGraphNodeType, body.levelGraphNodeTypeId, body.levelGraphId);
-      levelGraphNode.levelGraphRelations = body.levelGraphRelations;
-      levelGraphNode.name = body.name;
-      levelGraphNode.id = body.id;
-      levelGraphNode.level = body.level;
-      levelGraphNode.levelGraph = body.levelGraph;
+    levelGraphNode.id = body.id;
+    levelGraphNode.name = body.name;
+    levelGraphNode.providedProperties = body.providedProperties;
+    levelGraphNode.expectedProperties = body.expectedProperties;
+    levelGraphNode.levelDepth = body.levelDepth;
+    levelGraphNode.inLevelGraphRelations = body.inLevelGraphRelations;
+    levelGraphNode.outLevelGraphRelations = body.outLevelGraphRelations;
+    levelGraphNode.level = body.level;
+    levelGraphNode.levelGraph = body.levelGraph;
     return levelGraphNode || {};
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

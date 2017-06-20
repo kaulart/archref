@@ -1,0 +1,65 @@
+<!-- General Data Component currently only for display data but you can extends later this component with update functionality -->
+<div class="tab-panel rounded">
+
+	<div class="w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+		<form #formCtrl="ngForm">
+			<div class="row">
+
+				<div class="col-sm-6 form-group">
+					<label>ID: </label> <input class="form-control" value="{{currentNodeTemplate.id}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label for="nameLevelGraphNode">Name: </label> <input disabled #nameLevelGraphNode type="text" class="form-control" value="{{currentNodeTemplate.name}}" required>
+				</div>
+
+				<div class="col-sm-4 form-group">
+					<label for="icon">Icon Path: </label> <input class="  form-control" #icon value="{{currentNodeTemplate.icon}}" disabled />
+				</div>
+
+				<div class="col-sm-2 form-group">
+					<label>Icon View: </label> <img class=" form-control w3-right icon" src="{{currentNodeTemplate.icon}}" />
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>X (in px): </label> <input class="form-control" value="{{currentNodeTemplate.x}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Y (in px): </label> <input class="form-control" value="{{currentNodeTemplate.y}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Width (in px): </label> <input class="form-control" value="{{currentNodeTemplate.width}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Height (in px): </label> <input class="form-control" value="{{currentNodeTemplate.height}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Node Type ID: </label> <input class="form-control col-sm-5" value="{{currentNodeTemplate.nodeTypeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/nodetypedetails" [queryParams]="{id: currentNodeTemplate.nodeTypeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level Graph Node ID: </label> <input class="form-control col-sm-5" value="{{currentNodeTemplate.levelGraphNodeId}}" required disabled>
+					<button [disabled]="currentNodeTemplate.levelGraphNodeId !== undefined" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: currentNodeTemplate.levelGraphNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Topology Template ID: </label> <input class="form-control col-sm-5" value="{{currentNodeTemplate.topologyTemplateId}}" disabled>
+					<button *ngIf="currentNodeTemplate.topologyTemplateId !== null" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/topologymodeller" [queryParams]="{id: currentNodeTemplate.topologyTemplateId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+</div>

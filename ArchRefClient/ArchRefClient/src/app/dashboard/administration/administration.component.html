@@ -1,8 +1,8 @@
 <!-- AdministrationComponent -->
 <div id="accordion" class="dashboard_area">
-	
+
 	<div class="panel panel-default ">
-		
+
 		<!-- Header -->
 		<div class="w3-theme-d4 w3-card-4 heading row heading panel-heading control-panel">
 			<h2 class="col-sm-3">Administration</h2>
@@ -18,16 +18,16 @@
 			</button>
 
 		</div>
-		
+
 		<!-- Import Control Area -->
 		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importArea">
 			<form>
 
-				<!-- <div class="form-group">
-				<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
-			</div> -->
+				<div class="form-group">
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div>
 
-				<button type="submit" class="btn btn-success" (click)="import()">Upload</button>
+				<button type="submit" class="btn btn-success" (click)="importXml()">Upload</button>
 			</form>
 		</div>
 
@@ -36,13 +36,13 @@
 			<form>
 
 				<!-- <div class="form-group">
-				<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
-			</div> -->
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div> -->
 
-				<button type="submit" class="btn btn-success" (click)="export()">Download</button>
+				<button type="submit" class="btn btn-success" (click)="exportXml()">Download</button>
 			</form>
 		</div>
-		
+
 	</div>
 
 	<!-- Tab Data Panel -->

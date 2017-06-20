@@ -1,5 +1,4 @@
 import { Logger } from '../../../../logger/logger';
-import { LevelGraph } from '../../datamodels/levelgraph/levelgraph';
 import { TopologyTemplate } from '../../datamodels/topology/topologytemplate';
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
@@ -16,13 +15,12 @@ export class TopologyTemplateService {
 
   // URL of the REST Interface End-Point
   private topologyTemplateURL = '/api/topologytemplates';
-  private refinmentAlgorithmURL = '/api/refinement';
 
   constructor(private http: Http) { }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all Topology Template REQUEST
+   * @request - getTopologyTemplates - Send GET all Topology Template REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getTopologyTemplates(): Observable<TopologyTemplate[]> {
@@ -32,7 +30,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Topology Template REQUEST
+   * @request - getTopologyTemplate - Send GET Topology Template REQUEST
+   *
+   * @param - id: number - ID of the TopologyTemplate which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getTopologyTemplate(id: number): Observable<TopologyTemplate> {
@@ -42,7 +42,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST Topology Template REQUEST
+   * @request - createTopologyTemplate - Send POST Topology Template REQUEST
+   *
+   * @param - topologyTemplate: TopologyTemplate - TopologyTemplate which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createTopologyTemplate(topologyTemplate: TopologyTemplate): Observable<TopologyTemplate> {
@@ -55,7 +57,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT Topology Template REQUEST
+   * @request - updateTopologyTemplate - Send PUT Topology Template REQUEST
+   *
+   * @param - topologyTemplate: TopologyTemplate - TopologyTemplate which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateTopologyTemplate(topologyTemplate: TopologyTemplate): Observable<TopologyTemplate> {
@@ -68,7 +72,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Topology Template REQUEST
+   * @request - deleteTopologyTemplate - Send DELETE Topology Template REQUEST
+   *
+   * @param - id: number - ID of the TopologyTemplate which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteTopologyTemplate(id: number): Observable<TopologyTemplate> {
@@ -80,70 +86,12 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET refineSingleLevelGraphTopologyTemplate REQUEST
+   * @response - extractTopologyTemplates - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public refineSingleLevelGraphTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template Request with single LevelGraph and not Level Graph Konform', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @request - Send GET refineSingleLevelGraphKonformTopologyTemplate REQUEST
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public refineSingleLevelGraphKonformTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template Request with single LevelGraph and Level Graph Konform', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphKonformRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @request - Send GET refineSingleLevelGraphLevelKonformTopologyTemplate REQUEST
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public refineSingleLevelGraphLevelKonformTopologyTemplate(idTopologyTemplate: number, idLevelGraphTemplate: number): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Refined Topology Template Request with single LevelGraph and Level Graph Level Konform', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'singelLevelGraphLevelKonformRefinment' + '/' + idTopologyTemplate + '/' + idLevelGraphTemplate).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @request - Send GET refineMultiLevelGraphTopologyTemplate REQUEST
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public refineMultiLevelGraphTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Request Template', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @request - Send GET refineMultiLevelGraphKonformTopologyTemplate REQUEST
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public refineMultiLevelGraphKonformTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Request Template', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphKonformRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @request - Send GET refineMultiLevelGraphLevelKonformTopologyTemplate REQUEST
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public refineMultiLevelGraphLevelKonformTopologyTemplate(idTopologyTemplate: number, levelGraphs: LevelGraph[]): Observable<TopologyTemplate> {
-    Logger.info('[REQUEST - TOPOLOGYTEMPLATE]: Send GET Request Topology Request Template', TopologyTemplateService.name);
-    return this.http.get(this.refinmentAlgorithmURL + '/' + 'multiLevelGraphLevelKonformRefinment' + '/' + idTopologyTemplate, levelGraphs).map(this.extractTopologyTemplate).catch(this.handleError);
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @response - Extract data from response data list
-   *
-   *******************************************************************************************************************************************************************************************************/
-  public extractTopologyTemplates(res) {
+  public extractTopologyTemplates(res: Response) {
     let body = res.json();
     let topologyTemplateList: TopologyTemplate[] = [];
     Logger.info('[RESPONSE - TOPOLOGYTEMPLATE]: Extract Topology Template Data List', TopologyTemplateService.name);
@@ -165,7 +113,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractTopologyTemplate - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractTopologyTemplate(res: Response) {
@@ -185,7 +135,9 @@ export class TopologyTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

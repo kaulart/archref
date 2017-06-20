@@ -1,6 +1,6 @@
 export class LEVELGRAPHNODETYPES {
   public static readonly NODETYPE = 'NODETYPE';
+  public static readonly RELATIONSHIPTYPE = 'RELATIONSHIPTYPE';
   public static readonly NODETYPEFRAGMENT = 'NODETYPEFRAGMENT';
   public static readonly RELATIONSHIPTYPEFRAGMENT = 'RELATIONSHIPTYPEFRAGMENT';
-  public static readonly RELATIONSHIPTYPE = 'RELATIONSHIPTYPE';
 }

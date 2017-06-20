@@ -1,0 +1,49 @@
+<!-- RelationshipTemplate Area -->
+<div class="dashboard_area">
+
+	<!-- Header -->
+	<div class="w3-theme-d4 row panel-heading control-panel">
+		<div class="col-sm-6">
+			<h2>
+				Relationship Template Name: <input disabled style="color: black" value="{{currentRelationshipTemplate.name}}" />
+			</h2>
+		</div>
+		<div class="col-sm-6">
+			<h2>
+				Relationship Template ID: <input disabled style="color: black" value="{{currentRelationshipTemplate.id}}" />
+			</h2>
+		</div>
+	</div>
+
+	<!-- Tab Panel for display data -->
+	<div class="data-panel ">
+
+		<!-- Tab Header -->
+		<ul class="tabrow nav" role="tablist">
+			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#generalData" style="color: white" role="tab">General Data</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#providedProperty" style="color: white" role="tab">Provided Property</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#expectedproperty" style="color: white" role="tab">Expected Property</a></li>
+		</ul>
+
+		<!-- Tab Content -->
+		<div class="tab-content tab-panel">
+
+			<div id="generalData" class="rounded tab-pane active" role="tabpanel">
+				<!-- Selector for the NodeTypeComponent -->
+				<app-generaldata [currentRelationshipTemplate]="currentRelationshipTemplate"></app-generaldata>
+			</div>
+
+			<div id="providedProperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ProvidedPropertyComponent -->
+				<app-providedproperty [entity]="currentRelationshipTemplate"></app-providedproperty>
+			</div>
+
+			<div id="expectedproperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ExpectedPropertyComponent -->
+				<app-expectedproperty [entity]="currentRelationshipTemplate"></app-expectedproperty>
+			</div>
+
+		</div>
+	</div>
+</div>
+

@@ -21,9 +21,11 @@ import { LevelGraphRelation } from './levelgraphrelation';
  *
  * @fields - level: Level - Level of the Node
  * @fields - levelId: number - ID of the Level of the Node
+ * @fields - levelDepth: number - Level depth of the node
  * @fields - levelGraph: LevelGraph - LevelGraph of the Node
  * @fields - levelGraphId: number - ID of the LevelGraph of the Node
- * @fields - levelGraphRelations: LevelGraphRelation[] - Array of all outgoing and incoming relations of the node
+ * @fields - inLevelGraphRelations: LevelGraphRelation[] - Array of all incoming relations of the node
+ * @fields - outLevelGraphRelations: LevelGraphRelation[] - Array of all outgoing relations of the node
  * @fields - levelGraphNodeType: string - Type of the LevelGraphNode;
  * @fields - levelGraphNodeTypeId: number - ID of the Type of the LevelGraphNode
  *
@@ -34,10 +36,13 @@ export class LevelGraphNode extends Node {
 
   level: Level;
   levelId: number;
+  levelDepth: number;
+
   levelGraph: LevelGraph;
   levelGraphId: number;
 
-  levelGraphRelations: LevelGraphRelation[] = [];
+  inLevelGraphRelations: LevelGraphRelation[] = [];
+  outLevelGraphRelations: LevelGraphRelation[] = [];
 
   levelGraphNodeType: string;
   levelGraphNodeTypeId: number;

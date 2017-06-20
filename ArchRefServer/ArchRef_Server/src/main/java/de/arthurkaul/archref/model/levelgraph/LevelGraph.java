@@ -18,9 +18,39 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
 
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @data - LevelGraph Data Model - LevelGraph Model is used for the refinement
+ *       of TopologyTemplate Data Models
+ *
+ * @fields - id: number - ID of the LevelGraph
+ * @fields - name: string - Name of the LevelGraph
+ * @fields - levels: Level[] - Array of the different levels of a LevelGraph
+ * @fields - levelGraphNodes: LevelGraphNode[] - Array of all LevelGraphNodes in
+ *         the LevelGraph
+ * @fields - levelGraphRelations: LevelGraphRelation[] - Array of all
+ *         LevelGraphRelations in the LevelGraph
+ * @fields - topologyTemplates: TopologyTemplate[] - Array of all
+ *         TopologyTemplates which were created/generated with the LevelGraph
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
+
 @Entity
 @Table(name = "LEVELGRAPH")
 public class LevelGraph {
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+
+	// private Long levelGraphMatrix[][][];
+	// private Long levelGraphRefineToMatrix[][][];
+	// private Long levelGraphConnectToMatrix[][][];
+	// private Long levelGraphHostedOnMatrix[][][];
 
 	@Id
 	@GeneratedValue()
@@ -30,7 +60,7 @@ public class LevelGraph {
 	@Column(name = "NAME")
 	private String name;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "levelGraph")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levels")
 	private Collection<Level> levels;
 
@@ -43,10 +73,14 @@ public class LevelGraph {
 	private Collection<LevelGraphRelation> levelGraphRelations;
 
 	@ManyToMany
-	@JoinTable(name = "LEVELGRAPH_TOPOLOGYTEMPLATE", 
-			joinColumns = @JoinColumn(name = "LEVELGRAPH_ID", referencedColumnName = "ID"), 
-			inverseJoinColumns = @JoinColumn(name = "TOPOLOGY_ID", referencedColumnName = "ID"))
+	@JoinTable(name = "LEVELGRAPH_TOPOLOGYTEMPLATE", joinColumns = @JoinColumn(name = "LEVELGRAPH_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "TOPOLOGY_ID", referencedColumnName = "ID"))
 	private Collection<TopologyTemplate> topologyTemplates;
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 
 	public Collection<Level> getLevels() {
 		return levels;
@@ -72,14 +106,6 @@ public class LevelGraph {
 		this.levelGraphRelations = levelGraphRelations;
 	}
 
-//	public Collection<TopologyTemplate> getTopologyTemplates() {
-//		return topologyTemplates;
-//	}
-//
-//	public void setTopologyTemplates(Collection<TopologyTemplate> topologyTemplates) {
-//		this.topologyTemplates = topologyTemplates;
-//	}
-
 	public Long getId() {
 		return id;
 	}
@@ -94,6 +120,19 @@ public class LevelGraph {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Collection<TopologyTemplate> getTopologyTemplates() {
+		return topologyTemplates;
+	}
+
+	public void setTopologyTemplates(Collection<TopologyTemplate> topologyTemplates) {
+		this.topologyTemplates = topologyTemplates;
+	}
+
+	public void constructLevelGraphMatrix() {
+
+		// TODO
 	}
 
 }

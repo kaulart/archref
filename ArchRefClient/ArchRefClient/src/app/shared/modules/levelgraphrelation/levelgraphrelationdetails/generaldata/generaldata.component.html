@@ -1,0 +1,69 @@
+<!-- General Data Component -->
+<div class="tab-panel rounded">
+
+	<div class="w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+		<form>
+			<div class="row">
+
+				<div class="col-sm-6 form-group">
+					<label>ID: </label> <input class="form-control" value="{{currentLevelGraphRelation.id}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label for="nameLevelGraphNode">Name: </label> <input disabled #nameLevelGraphNode type="text" class="form-control" value="{{currentLevelGraphRelation.name}}" required>
+				</div>
+
+				<div class="col-sm-4 form-group">
+					<label for="icon">Icon Path: </label> <input class="  form-control" #icon value="{{currentLevelGraphRelation.icon}}" disabled />
+				</div>
+
+				<div class="col-sm-2 form-group">
+					<label>Icon View: </label> <img class=" form-control w3-right icon" src="{{currentLevelGraphRelation.icon}}" />
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Source Node Level Depth: </label> <input class="form-control" value="{{currentLevelGraphRelation.sourceLevelDepth}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Target Node Level Depth: </label> <input class="form-control" value="{{currentLevelGraphRelation.targetLevelDepth}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Source Node ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.sourceNodeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: currentLevelGraphRelation.sourceNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Target Node ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.targetNodeId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: currentLevelGraphRelation.targetNodeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Type:</label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.levelGraphRelationType}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Source Level ID: </label> <input class="form-control" value="{{currentLevelGraphRelation.sourceLevelId}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Target Level ID: </label> <input class="form-control" value="{{currentLevelGraphRelation.targetLevelId}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level Graph ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.levelGraphId}}" disabled>
+					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphmodeller" [queryParams]="{id: currentLevelGraphRelation.levelGraphId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+</div>

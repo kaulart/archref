@@ -13,49 +13,47 @@ import { FlashMessage } from 'angular2-flash-message';
   styleUrls: ['./topologytemplatedetails.component.css']
 })
 
-/*****************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
  * @component TopologyTemplateDetailsComponent - Lazy loaded component as wrapper for all other components in the
  *                                               TopologyTemplateDetailsComponent
  *
  * @author Arthur Kaul
  *
- ****************************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateDetailsComponent implements OnInit {
 
-  currentTopologyTemplate: TopologyTemplate;
+  currentTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   public flashMessage = new FlashMessage();
 
   constructor(private route: ActivatedRoute,
-    private router: Router, private topologyTemplateService: TopologyTemplateService, private flashMessageService: FlashMessageService) { }
+    private router: Router,
+    private topologyTemplateService: TopologyTemplateService,
+    private flashMessageService: FlashMessageService) { }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @method ngOnInit is called when the component is initialized
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Iniitalize LevelGraphDetailsComponent', LevelGraphDetailsComponent.name);
-    this.route.queryParams.subscribe(params => {
-      this.currentTopologyTemplate.name = params['name'] || 'Unnamed';
-    });
 
     this.route.queryParams.subscribe(params => {
       this.currentTopologyTemplate.id = params['id'] || null;
     });
 
     this.retrieveTopologyTemplate(this.currentTopologyTemplate.id);
-
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * @method retrieveRepositoryData - Call the RepositoryService for loading repository from database into the application and subscribe
    *                                  for a callback.
    *
    * @param id: number - ID of the Repository which should be loaded from the database
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   retrieveTopologyTemplate(id: number) {
     Logger.info('Retrieve LevelGraph Data', LevelGraphDetailsComponent.name);
     this.topologyTemplateService.getTopologyTemplate(id)

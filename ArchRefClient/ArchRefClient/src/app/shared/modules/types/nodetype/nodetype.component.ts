@@ -17,40 +17,41 @@ const URL = '/api/fileupload/nodetype';
   styleUrls: ['./nodetype.component.css']
 })
 
-/*********************************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @component NodeTypeComponent Class - The component retrieve all available NodeType of the currently selected Repository
- *                                              from the database and list them. You can delete, import, export or edit the NodeType.
- *                                              Also you can select a NodeType and call the NodeTypeDetailComponent where you can see all
- *                                              data which are included in a NodeType.
+ * @component - NodeTypeComponent - The component retrieve all available NodeType of the currently selected Repository
+ *                                  from the database and list them. You can create, delete or edit the NodeType.
+ *                                  Also you can select a NodeType and call the NodeTypeDetailComponent where you can see all
+ *                                  data which are included in a NodeType.
  *
- * @field currentRepository: Repository -  Repository which is currently selected
- * @field createdNodeType: NodeType - NodeType which should be created
- * @field editNodeType: NodeType - NodeType which should be edit
- * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ * @field - currentRepository: Repository -  Repository which is currently selected
+ * @field - createdNodeType: NodeType - NodeType which should be created
+ * @field - editNodeType: NodeType - NodeType which should be edit
+ * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
  *                                     cause a "Over Flash" for the user experience
- * @field uploader: FileUploader - UploaderSerivce for uploading files like icons to the file system of the server
+ * @field - uploader: FileUploader - UploaderSerivce for uploading files like icons to the file system of the server
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ********************************************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class NodeTypeComponent implements OnInit {
 
   @Input()
   currentRepository: Repository;
 
-  public createdNodeType: NodeType = new NodeType('Unnamed', null);
-  public editNodeType: NodeType = new NodeType(null, null);
+  public createdNodeType: NodeType = new NodeType();
+  public editNodeType: NodeType = new NodeType();
   public flashMessage = new FlashMessage();
 
   public uploader: FileUploader = new FileUploader({ url: URL });
 
   constructor(private nodeTypeService: NodeTypeService, private flashMessageService: FlashMessageService) { }
-  /*********************************************************************************************************************************************
+
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method ngOnInit is called when the component is initialized
+   * @method - ngOnInit - Is called when the component is initialized
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Iniitalize NodeTypeComponent', NodeTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
@@ -58,12 +59,12 @@ export class NodeTypeComponent implements OnInit {
     this.createdNodeType.repositoryId = this.currentRepository.id;
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method createNodeType - Call the NodeTypeService for creating a new NodeType in the database
-   *                          and subscribe for a callback
+   * @method - createNodeType - Call the NodeTypeService for creating a new NodeType in the database
+   *                            and subscribe for a callback
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   createNodeType() {
     Logger.info('Create NodeType', NodeTypeComponent.name);
     this.nodeTypeService.createNodeType(this.createdNodeType)
@@ -86,13 +87,13 @@ export class NodeTypeComponent implements OnInit {
 
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method updateNodeType - Call the NodeTypeService for updating the NodeType in the database and subscribe for a callback.
+   * @method - updateNodeType - Call the NodeTypeService for updating the NodeType in the database and subscribe for a callback.
    *
-   * @param name - New name of the NodeType
+   * @param - name: string - New name of the NodeType
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   updateNodeType(name: string) {
     Logger.info('Update NodeType', NodeTypeComponent.name);
     this.editNodeType.name = name;
@@ -108,13 +109,13 @@ export class NodeTypeComponent implements OnInit {
       });
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method deleteNodeType - Call the NodeTypeService for delete a NodeType from the database and subscribe for a callback.
+   * @method - deleteNodeType - Call the NodeTypeService for delete a NodeType from the database and subscribe for a callback.
    *
-   * @param id: number - ID of the NodeType witch should be deleted from the database
+   * @param - id: number - ID of the NodeType witch should be deleted from the database
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   deleteNodeType(id: number) {
     Logger.info('Delete NodeType', NodeTypeComponent.name);
     this.nodeTypeService.deleteNodeType(id)
@@ -128,12 +129,13 @@ export class NodeTypeComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Set the editable NodeType Data
-   * @param nodeType - The nodeType witch should be edit
+   * @method - Set the editable NodeType Data
    *
-   ****************************************************************************************************************/
+   * @param nodeType: NodeType - The nodeType witch should be edit
+   *
+   *******************************************************************************************************************************************************************************************************/
   setEditNodeType(nodeType: NodeType) {
     this.editNodeType = nodeType;
   }

@@ -4,9 +4,9 @@ import { Route } from '@angular/router';
 
 /*******************************************************************************************************************
  *
- * @route AdministrationRoutes - Path for the navigation to the AdministrationModule
+ * @route - AdministrationRoutes - Path for the navigation to the AdministrationModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export const AdministrationRoutes: Route[] = [

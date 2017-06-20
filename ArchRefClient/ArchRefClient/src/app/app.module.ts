@@ -21,11 +21,12 @@ import { NodeTemplateService } from './shared/dataservices/topologytemplate/node
 import { RelationshipTemplateService } from './shared/dataservices/topologytemplate/relationshiptemplate.service';
 import { PropertyService } from './shared/dataservices/metrics/property.service';
 import { ProvidedPropertyService } from './shared/dataservices/metrics/providedpropertyservice.service';
+import { RefinementService } from './shared/dataservices/refinement/refinement.service';
 import 'hammerjs';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -36,16 +37,16 @@ import 'hammerjs';
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService],
+  providers: [RefinementService, ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService],
   bootstrap: [AppComponent]
 })
 
 /*********************************************************************************************************************************************************************************************************
  *
- * @module AppModule - Module as wrapper for the whole application modules and components. It is the root module of the application.
- *                     You should register all services here so that the are accessible from everywhere.
+ * @module - AppModule - Module as wrapper for the whole application modules and components. It is the root module of the application.
+ *                       You should register all services here so that the are accessible from everywhere.
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  *********************************************************************************************************************************************************************************************************/
 export class AppModule { }

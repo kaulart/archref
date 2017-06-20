@@ -16,12 +16,12 @@ import { RouterModule } from '@angular/router';
   exports: [LevelGraphComponent]
 })
 
-/*******************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @module LevelGraphModule - Lazy loaded module as wrapper for all application modules and components which
+ * @module - LevelGraphModule - Lazy loaded module as wrapper for all application modules and components which
  *                            should be accessible in the LevelGraphModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ******************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class LevelGraphModule {}

@@ -20,7 +20,7 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all Level Graphs REQUEST
+   * @request - getLevelGraphs- Send GET all Level Graphs REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getLevelGraphs(): Observable<LevelGraph[]> {
@@ -30,7 +30,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Level Graph REQUEST
+   * @request - getLevelGraph - Send GET Level Graph REQUEST
+   *
+   * @param - id: number - ID of the LevelGraph which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getLevelGraph(id: number): Observable<LevelGraph> {
@@ -42,7 +44,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST Level Graph REQUEST
+   * @request - createLevelGraph - Send POST Level Graph REQUEST
+   *
+   * @param - levelGraph: LevelGraph - LevelGraph which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
@@ -57,7 +61,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT Level Graph REQUEST
+   * @request - updateLevelGraph - Send PUT Level Graph REQUEST
+   *
+   * @param - levelGraph: LevelGraph - LevelGraphRelation which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateLevelGraph(levelGraph: LevelGraph): Observable<LevelGraph> {
@@ -72,7 +78,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Level Graph REQUEST
+   * @request - deleteLevelGraph - Send DELETE Level Graph REQUEST
+   *
+   * @param - id: number - ID of the LevelGraph which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteLevelGraph(id: number): Observable<LevelGraph> {
@@ -86,10 +94,12 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractLevelGraphs - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractLevelGraphs(res) {
+  public extractLevelGraphs(res: Response) {
     let body = res.json();
     let levelGraphList: LevelGraph[] = [];
     Logger.info('[RESPONSE - LEVELGRAPH]: Extract Level Graph Data List', LevelGraphService.name);
@@ -108,7 +118,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response -  Extract data from response data object
+   * @response - extractLevelGraph -  Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractLevelGraph(res: Response) {
@@ -126,7 +138,9 @@ export class LevelGraphService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

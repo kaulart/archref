@@ -20,7 +20,7 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all FragmentTypes REQUEST
+   * @request - getFragmentTypes - Send GET all FragmentTypes REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getFragmentTypes(): Observable<FragmentType[]> {
@@ -30,7 +30,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET FragmentType REQUEST
+   * @request - getFragmentType - Send GET FragmentType REQUEST
+   *
+   * @param - id: number - ID of the FragmentType which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getFragmentType(id: number): Observable<FragmentType> {
@@ -40,7 +42,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST FragmentType REQUEST
+   * @request - createFragmentType - Send POST FragmentType REQUEST
+   *
+   * @param - fragmentType: FragmentType - FragmentType which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createFragmentType(fragmentType: FragmentType): Observable<FragmentType> {
@@ -53,7 +57,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT FragmentType REQUEST
+   * @request - updateFragmentType - Send PUT FragmentType REQUEST
+   *
+   * @param - fragmentType: FragmentType - FragmentType which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateFragmentType(fragmentType: FragmentType): Observable<FragmentType> {
@@ -65,7 +71,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE FragmentType REQUEST
+   * @request - deleteFragmentType - Send DELETE FragmentType REQUEST
+   *
+   * @param - id: number - ID of the FragmentType which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteFragmentType(id: number): Observable<FragmentType> {
@@ -77,7 +85,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractFragmentTypes - Extract data from response data list
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractFragmentTypes(res: Response) {
@@ -99,7 +109,9 @@ export class FragmentTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractFragmentType - Extract data from response data object
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractFragmentType(res: Response) {
@@ -118,6 +130,8 @@ export class FragmentTypeService {
   /********************************************************************************************************************************************************************************************************
    *
    * @error - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

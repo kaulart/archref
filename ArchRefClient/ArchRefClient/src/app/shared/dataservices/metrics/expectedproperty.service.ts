@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 
 /**********************************************************************************************************************************************************************************************************
  *
- * @service ExpectedPropertyService  - Implements the calls to the rest interface of the application server and
- *                                     handle the request construction and response extraction for ExpectedProperty data
+ * @service - ExpectedPropertyService  - Implements the calls to the rest interface of the application server and
+ *                                       handle the request construction and response extraction for ExpectedProperty data
  *
  *********************************************************************************************************************************************************************************************************/
 @Injectable()
@@ -20,27 +20,31 @@ export class ExpectedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all ExpectedProperties REQUEST
+   * @request - getExpectedProperties - Send GET all ExpectedProperties REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getExpectedProperties(): Observable<ExpectedProperty[]> {
     Logger.info('[REQUEST - ExpectedProperty] Send GET ExpectedProperties Request', ExpectedPropertyService.name);
-    return this.http.get(this.expectedPropertyUrl).map(this.extractExpectedPropertyDataList).catch(this.handleError);
+    return this.http.get(this.expectedPropertyUrl).map(this.extractExpectedProperties).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET ExpectedProperty REQUEST
+   * @request - getExpectedProperty - Send GET ExpectedProperty REQUEST
+   *
+   * @param - id: number - ID of the ExpectedProperty which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getExpectedProperty(id: number): Observable<ExpectedProperty> {
     Logger.info('[REQUEST - ExpectedProperty] Send GET ExpectedProperty Request with ID:' + id, ExpectedPropertyService.name);
-    return this.http.get(this.expectedPropertyUrl + '/' + id).map(this.extractExpectedPropertyData).catch(this.handleError);
+    return this.http.get(this.expectedPropertyUrl + '/' + id).map(this.extractExpectedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST ExpectedProperty REQUEST
+   * @request - createExpectedProperty - Send POST ExpectedProperty REQUEST
+   *
+   * @param - expectedProperty: ExpectedProperty - ExpectedProperty which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createExpectedProperty(expectedProperty: ExpectedProperty): Observable<ExpectedProperty> {
@@ -48,12 +52,14 @@ export class ExpectedPropertyService {
     Logger.data('[REQUEST - ExpectedProperty]' + JSON.stringify(expectedProperty), ExpectedPropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.expectedPropertyUrl, expectedProperty, options).map(this.extractExpectedPropertyData).catch(this.handleError);
+    return this.http.post(this.expectedPropertyUrl, expectedProperty, options).map(this.extractExpectedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT ExpectedProperty REQUEST
+   * @request - updateExpectedProperty - Send PUT ExpectedProperty REQUEST
+   *
+   * @param - expectedProperty: ExpectedProperty - ExpectedProperty which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateExpectedProperty(expectedProperty: ExpectedProperty): Observable<ExpectedProperty> {
@@ -61,12 +67,14 @@ export class ExpectedPropertyService {
     Logger.data('[REQUEST - ExpectedProperty] ' + JSON.stringify(expectedProperty), ExpectedPropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.expectedPropertyUrl + '/' + expectedProperty.id, expectedProperty, options).map(this.extractExpectedPropertyData).catch(this.handleError);
+    return this.http.put(this.expectedPropertyUrl + '/' + expectedProperty.id, expectedProperty, options).map(this.extractExpectedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE ExpectedProperty REQUEST
+   * @request - deleteExpectedProperty - Send DELETE ExpectedProperty REQUEST
+   *
+   * @param - id: number - ID of the ExpectedProperty which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteExpectedProperty(id: number): Observable<ExpectedProperty> {
@@ -78,10 +86,12 @@ export class ExpectedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractExpectedPropertyDataList - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractExpectedPropertyDataList(res) {
+  public extractExpectedProperties(res: Response) {
     let body = res.json();
     let expectedPropertyList: ExpectedProperty[] = [];
     Logger.info('[RESPONSE - ExpectedProperty]: Extract Data of Response Body', ExpectedPropertyService.name);
@@ -97,10 +107,12 @@ export class ExpectedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractExpectedPropertyData - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  private extractExpectedPropertyData(res: Response) {
+  private extractExpectedProperty(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - ExpectedProperty]: Extract Data of Response Body', ExpectedPropertyService.name);
     Logger.data('[RESPONSE - ExpectedProperty]: ' + JSON.stringify(body), ExpectedPropertyService.name);
@@ -112,7 +124,9 @@ export class ExpectedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

@@ -13,51 +13,47 @@ import { FlashMessage } from 'angular2-flash-message';
   styleUrls: ['./topologytemplate.component.css']
 })
 
-/*************************************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @component TopologyTemplateComponent Class - The component retrieve all available TopologyTemplates in the database and list them. You can
- *                                              delete, import, export or edit the TopologyTemplate. Also you can select a TopologyTemplate and
- *                                              call the TopologyTemplateDetailComponent where you can see all data which are included in a
- *                                              TopologyTemplate.
+ * @component - TopologyTemplateComponent - The component retrieve all available TopologyTemplates in the database and list them. You can
+ *                                          delete, import, export or edit the TopologyTemplate. Also you can select a TopologyTemplate and
+ *                                          call the TopologyTemplateDetailComponent where you can see all data which are included in a
+ *                                          TopologyTemplate.
  *
- * @author Arthur Kaul
+ * @fields - topologyTemplates: TopologyTemplate[] - List of all available TopologyTemplates in the database
+ * @fields - createdTopologyTemplate: TopologyTemplate - TopologyTemplate which should be created
+ * @fields - editTopologyTemplate: TopologyTemplate - TopologyTemplate which should be edit
+ * @fields - flashMessage = new FlashMessage() - for display errors and warnings you can also use it for display success messages but this may a cause a "Over-Flashing" for the user experience
  *
- ************************************************************************************************************************************************/
+ * @author - Arthur Kaul
+ *
+ *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateComponent implements OnInit {
 
-  submitted = false;
-
-  // list of all available TopologyTemplates in the database
   topologyTemplates: TopologyTemplate[] = [];
-
-  // TopologyTemplate which should be created
   createdTopologyTemplate: TopologyTemplate = new TopologyTemplate();
-
-  // TopologyTemplate which should be edit
   editTopologyTemplate: TopologyTemplate = new TopologyTemplate();
-
-  // for display errors and warnings you can also use it for display success messages but this may a cause a "Overflashing" for the user experience
   public flashMessage = new FlashMessage();
 
   constructor(private flashMessageService: FlashMessageService, private topologyTemplateService: TopologyTemplateService, private levelGraphService: LevelGraphService) { }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method ngOnInit is called when the component is initialized
+   * @method - ngOnInit - Is called when the component is initialized
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Initialize TopologyTemplateComponent', TopologyTemplateComponent.name);
     this.flashMessage.timeoutInMS = 4000;
     this.retrieveTopologyTemplates();
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  @method createTopologyTemplate - Call the TopologyTemplateService for creating a new TopologyTemplate in the database
-   *                                   and subscribe for a callback
+   *  @method - createTopologyTemplate - Call the TopologyTemplateService for creating a new TopologyTemplate in the database
+   *                                     and subscribe for a callback
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   createTopologyTemplate() {
     Logger.info('Create TopologyTemplate', TopologyTemplateComponent.name);
     this.createdTopologyTemplate.abstractionLevel = 1;
@@ -73,12 +69,12 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  @method retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
-   *                                      and subscribe for a callback. Currently no pagination/streaming of data is supported
+   *  @method - retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
+   *                                        and subscribe for a callback. Currently no pagination/streaming of data is supported
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   retrieveTopologyTemplates() {
     Logger.info('Retrieve TopologyTemplate Data', TopologyTemplateComponent.name);
     this.topologyTemplateService.getTopologyTemplates()
@@ -93,13 +89,13 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method updateTopologyTemplate - Call the TopologyTemplateService for updating the repository in the database and subscribe for a callback.
+   * @method - updateTopologyTemplate - Call the TopologyTemplateService for updating the repository in the database and subscribe for a callback.
    *
-   * @param name - New name of the TopologyTemplate
+   * @param - name: string - New name of the TopologyTemplate
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   updateTopologyTemplate(name: string) {
     Logger.info('Update TopologyTemplate', TopologyTemplateComponent.name);
     this.editTopologyTemplate.name = name;
@@ -115,13 +111,13 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method deleteTopologyTemplate - Call the TopologyTemplateService for delete a TopologyTemplate from the database and subscribe for a callback.
+   * @method - deleteTopologyTemplate - Call the TopologyTemplateService for delete a TopologyTemplate from the database and subscribe for a callback.
    *
-   * @param id: number - ID of the TopologyTemplate witch should be deleted from the database
+   * @param - id: number - ID of the TopologyTemplate witch should be deleted from the database
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   deleteTopologyTemplate(id: number) {
     Logger.info('Delete TopologyTemplate', TopologyTemplateComponent.name);
     this.topologyTemplateService.deleteTopologyTemplate(id)
@@ -136,20 +132,12 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-  importTopologyTemplate() {
-    // TODO
-  }
-
-  exportTopologyTemplate() {
-    // TODO
-  }
-
-  /*****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
    * Set the editable TopologyTemplate Data
-   * @param topologyTemplate: TopologyTemplate - The TopologyTemplate witch should be edit
+   * @param - topologyTemplate: TopologyTemplate - The TopologyTemplate witch should be edit
    *
-   ****************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   setEditTopologyTemplate(topologyTemplate: TopologyTemplate) {
     this.editTopologyTemplate = topologyTemplate;
   }

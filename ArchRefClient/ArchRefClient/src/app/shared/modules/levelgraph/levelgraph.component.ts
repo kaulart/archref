@@ -16,10 +16,9 @@ import { FlashMessageService } from 'angular2-flash-message';
   styleUrls: ['./levelgraph.component.css']
 })
 
-/******************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @component - LevelGraphToolComponent - Entry point for the LevelGraphModellerComponent and for select,
- *                                        create, delete, update or edit a Level Graph
+ * @component - LevelGraphComponent - Entry point for the LevelGraphModellerComponent and for select, create, delete, update or edit a Level Graph
  *
  * @fields - levels: number - Number of levels which should be created in the new LevelGraph
  * @fields - levelGraphs: LevelGraph[] - Array of all available LevelGraphs in the database
@@ -30,7 +29,7 @@ import { FlashMessageService } from 'angular2-flash-message';
  *
  * @Arthur Kaul
  *
- *****************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class LevelGraphComponent implements OnInit {
 
   levels = 3;
@@ -41,30 +40,29 @@ export class LevelGraphComponent implements OnInit {
 
   constructor(private levelGraphService: LevelGraphService, private levelService: LevelService, private flashMessageService: FlashMessageService) { }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method ngOnInit is called when the component is initialized
+   * @method - ngOnInit is called when the component is initialized
    *
    ********************************************************************************************************************************************/
   ngOnInit() {
-    Logger.info('Iniitalize RelationshipTypeComponent', LevelGraphComponent.name);
+    Logger.info('Iniitalize LevelGraphComponent', LevelGraphComponent.name);
     this.flashMessage.timeoutInMS = 4000;
     this.retrieveLevelGraphs();
   }
 
-  /****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  @method - createLevelGraph - Call the LevelGraphService for creating a new LevelGraph in the database
-   *                            ´  and subscribe for a callback
+   * @method - createLevelGraph - Call the LevelGraphService for creating a new LevelGraph in the database and subscribe for a callback
    *
-   *  @numberOfLevels: number - Number of different levels in the LevelGraph
+   * @param - numberOfLevels: number - Number of different levels in the LevelGraph
    *
-   ****************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   createLevelGraph(numberOfLevels: number) {
     Logger.info('Create LevelGraph', LevelGraphComponent.name);
     this.levelGraphService.createLevelGraph(this.createdLevelGraph).subscribe(levelGraphResponse => {
       for (let i = 0; i < numberOfLevels; i++) {
-        let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id, [], []);
+        let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id);
         tempLevel.levelGraph = levelGraphResponse;
         this.levelService.createLevel(tempLevel)
           .subscribe(levelResponse => {
@@ -87,12 +85,14 @@ export class LevelGraphComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   *  Retrieve Level Graph
+   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
+   *                                 for a callback. Currently no pagination/streaming of data is supported
    *
-   ****************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   retrieveLevelGraphs() {
+    Logger.info('Retrieve LevelGraph Data', LevelGraphComponent.name);
     this.levelGraphService.getLevelGraphs()
       .subscribe(levelGraphsResponse => {
         this.levelGraphs = levelGraphsResponse;
@@ -105,13 +105,15 @@ export class LevelGraphComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Update Level Graph - Update the level graph data
-   * @param name - New name of the Level Graph
+   * @method - updateLevelGraph - Call the LevelGraphService for updating the LevelGraph in the database and subscribe for a callback.
    *
-   *****************************************************************************************************************/
+   * @param name: string - New name of the Level Graph
+   *
+   *******************************************************************************************************************************************************************************************************/
   updateLevelGraph(name: string) {
+    Logger.info('Update LevelGraph', LevelGraphComponent.name);
     this.editedLevelGraph.name = name;
     this.levelGraphService.updateLevelGraph(this.editedLevelGraph)
       .subscribe(levelGraphResponse => {
@@ -125,12 +127,13 @@ export class LevelGraphComponent implements OnInit {
       });
   }
 
-  /****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Delete Level Graph
-   * @param id: number - ID of the level graph witch should be deleted from the database
+   * @method deleteLevelGraph - Call the LevelGraphService for delete a LevelGraph from the database and subscribe for a callback.
    *
-   ****************************************************************************************************************/
+   * @param id: number - ID of the LevelGraph witch should be deleted from the database
+   *
+   *******************************************************************************************************************************************************************************************************/
   deleteLevelGraph(id: number) {
     this.levelGraphService.deleteLevelGraph(id)
       .subscribe(response => {
@@ -144,12 +147,12 @@ export class LevelGraphComponent implements OnInit {
       });
   }
 
-  /*****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Set the editable LevelGraph Data
-   * @param repository - The levelGraph witch should be edit
+   * @method - setEditedLevelGraph - Set the editable LevelGraph Data
+   * @param - repository - The levelGraph witch should be edit
    *
-   ****************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   setEditedLevelGraph(levelGraph: LevelGraph) {
     this.editedLevelGraph = levelGraph;
   }

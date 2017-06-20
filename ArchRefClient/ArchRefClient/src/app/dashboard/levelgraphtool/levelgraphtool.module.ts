@@ -18,9 +18,9 @@ import { FileUploadModule } from 'ng2-file-upload';
 
 /*******************************************************************************************************************
  *
- * @module LevelGraphToolModule for importing other modules and declaration/export the components
+ * @module - LevelGraphToolModule for importing other modules and declaration/export the components
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export class LevelGraphToolModule { }

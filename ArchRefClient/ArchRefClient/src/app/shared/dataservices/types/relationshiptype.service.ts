@@ -20,27 +20,31 @@ export class RelationshipTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all RelationshipType REQUEST
+   * @request - getRelationshipTypes - Send GET all RelationshipType REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getRelationshipTypes(): Observable<RelationshipType[]> {
     Logger.info('[REQUEST - RELATIONSHIPTYPE] Send GET Relationship Types Request', RelationshipTypeService.name);
-    return this.http.get(this.relationshipTypeUrl).map(this.extractRelationshipTypesDataList).catch(this.handleError);
+    return this.http.get(this.relationshipTypeUrl).map(this.extractRelationshipTypes).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET RelationshipType REQUEST
+   * @request - getRelationshipType - Send GET RelationshipType REQUEST
+   *
+   * @param - id: number - ID of the RelationshipType which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getRelationshipType(id: number): Observable<RelationshipType> {
     Logger.info('[REQUEST - RELATIONSHIPTYPE] Send GET Relationship Type Request with ID:' + id, RelationshipTypeService.name);
-    return this.http.get(this.relationshipTypeUrl + '/' + id).map(this.extractRelationshipTypeData).catch(this.handleError);
+    return this.http.get(this.relationshipTypeUrl + '/' + id).map(this.extractRelationshipType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST RelationshipType REQUEST
+   * @request - createRelationshipType - Send POST RelationshipType REQUEST
+   *
+   * @param - relationshipType: RelationshipType - RelationshipType which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createRelationshipType(relationshipType: RelationshipType): Observable<RelationshipType> {
@@ -48,12 +52,14 @@ export class RelationshipTypeService {
     Logger.data('[REQUEST - RELATIONSHIPTYPE]' + JSON.stringify(relationshipType), RelationshipTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.relationshipTypeUrl, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
+    return this.http.post(this.relationshipTypeUrl, relationshipType, options).map(this.extractRelationshipType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT RelationshipType REQUEST
+   * @request - updateRelationshipType - Send PUT RelationshipType REQUEST´
+   *
+   * @param - relationshipType: RelationshipType - RelationshipType which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateRelationshipType(relationshipType: RelationshipType): Observable<RelationshipType> {
@@ -61,12 +67,14 @@ export class RelationshipTypeService {
     Logger.data('[REQUEST - RELATIONSHIPTYPE] ' + JSON.stringify(relationshipType), RelationshipTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.relationshipTypeUrl + '/' + relationshipType.id, relationshipType, options).map(this.extractRelationshipTypeData).catch(this.handleError);
+    return this.http.put(this.relationshipTypeUrl + '/' + relationshipType.id, relationshipType, options).map(this.extractRelationshipType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE RelationshipType REQUEST
+   * @request - deleteRelationshipType - Send DELETE RelationshipType REQUEST
+   *
+   * @param - id: number - ID of the RelationshipType which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteRelationshipType(id: number): Observable<RelationshipType> {
@@ -78,10 +86,12 @@ export class RelationshipTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractRelationshipTypes - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractRelationshipTypesDataList(res) {
+  public extractRelationshipTypes(res: Response) {
     Logger.info('[RESPONSE - RELATIONSHIPTYPE]: Extract Data of Response Body', RelationshipTypeService.name);
     let body = res.json();
     let relationshipTypeList: RelationshipType[] = [];
@@ -91,9 +101,10 @@ export class RelationshipTypeService {
       tempRelationshipType.id = relationshipType.id;
       tempRelationshipType.name = relationshipType.name;
       tempRelationshipType.repository = relationshipType.repository;
+      tempRelationshipType.repositoryId = relationshipType.repositoryId;
+      tempRelationshipType.icon = relationshipType.icon;
       tempRelationshipType.providedProperties = relationshipType.providedProperties;
       tempRelationshipType.expectedProperties = relationshipType.providedProperties;
-      tempRelationshipType.icon = relationshipType.icon;
       relationshipTypeList.push(tempRelationshipType);
     }
     return relationshipTypeList || {};
@@ -101,10 +112,12 @@ export class RelationshipTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractRelationshipType - Extract data from response data object
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  private extractRelationshipTypeData(res: Response) {
+  private extractRelationshipType(res: Response) {
     Logger.info('[RESPONSE - RELATIONSHIPTYPE]: Extract Data of Response Body', RelationshipTypeService.name);
     let body = res.json();
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeService.name);
@@ -112,6 +125,7 @@ export class RelationshipTypeService {
     relationshipType.id = body.id;
     relationshipType.name = body.name;
     relationshipType.repository = body.repository;
+    relationshipType.repositoryId = body.repositoryId;
     relationshipType.icon = body.icon;
     relationshipType.providedProperties = body.providedProperties;
     relationshipType.expectedProperties = body.expectedProperties;
@@ -120,7 +134,9 @@ export class RelationshipTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

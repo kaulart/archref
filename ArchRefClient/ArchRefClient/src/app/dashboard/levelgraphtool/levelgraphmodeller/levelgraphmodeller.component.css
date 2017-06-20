@@ -250,12 +250,12 @@ svg {
 	stroke-dasharray: 10, 20;
 }
 
-ul {
-	list-style-type: none;
-}
-
 #modeller{
 	height: 100%;
+}
+
+ul {
+	list-style-type: none;
 }
 
 .list {

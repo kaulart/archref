@@ -24,7 +24,8 @@ import { TopologyTemplate } from './topologytemplate';
  * @fields - levelGraphNodeId: number - ID of the LevelGraph Node form which the RelationshipTemplate is derived
  * @fields - relationshipType: RelationshipType - RelationshipType of the RelationshipTemplate
  * @fields - relationshipTypeId: number - ID of the RelationshipType
- * @fields - nodeTemplates: NodeTemplate[] - Source and Target NodeTemplate of the RelationshipTemplate // You may decide to split the array in two separate fields and move it up to relation
+ * @fields - sourceNodeTemplate: NodeTemplate - Source and Target NodeTemplate of the RelationshipTemplate
+ * @fields - targetNodeTemplate: NodeTemplate - Source and Target NodeTemplate of the RelationshipTemplate
  * @fields - topologyTemplate: TopologyTemplate - TopologyTemplate of the RelationshipTemplate
  * @fields - topologyTemplateId: number - ID of the TopologyTemplate
  *
@@ -39,7 +40,8 @@ export class RelationshipTemplate extends Relation {
   relationshipType: RelationshipType;
   relationshipTypeId: number;
 
-  nodeTemplates: NodeTemplate[] = [];
+  sourceNodeTemplate: NodeTemplate;
+  targetNodeTemplate: NodeTemplate;
 
   topologyTemplate: TopologyTemplate;
   topologyTemplateId: number;

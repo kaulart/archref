@@ -1,13 +1,13 @@
 import { RelationshipTypeDetailsComponent } from './relationshiptypedetails.component';
 import { Route } from '@angular/router';
 
-/*******************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @route RelationshipDetailsRoutes - Path to the RelationshipDetailsComponent
+ * @route - RelationshipDetailsRoutes - Path to the RelationshipDetailsComponent
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ******************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export const RelationshipDetailsRoutes: Route[] = [
     {
       path: 'relationshiptypedetails',

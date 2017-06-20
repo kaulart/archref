@@ -6,19 +6,20 @@ import { Ng2BootstrapModule } from 'ng2-bootstrap';
 import { RepositoryModule } from '../../shared/modules/repository/repositorymodule';
 import { TopologyTemplateModule } from '../../shared/modules/topologytemplate/topologytemplatemodule';
 import { RouterModule } from '@angular/router';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-  imports: [LevelGraphModule, RepositoryModule, TopologyTemplateModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
+  imports: [FileUploadModule, LevelGraphModule, RepositoryModule, TopologyTemplateModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
   declarations: [AdministrationComponent],
   exports: [AdministrationComponent]
 })
 
 /*******************************************************************************************************************
  *
- * @module AdministrationModule - Lazy loaded module as wrapper for all application modules and components which
- *                                should be accessible in the AdministrationModule
+ * @module - AdministrationModule - Lazy loaded module as wrapper for all application modules and components which
+ *                                  should be accessible in the AdministrationModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export class AdministrationModule { }

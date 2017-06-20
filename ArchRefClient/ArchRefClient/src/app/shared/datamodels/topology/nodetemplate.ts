@@ -24,11 +24,12 @@ import { TopologyTemplate } from './topologytemplate';
  * @fields - levelGraphNodeId: number - ID of the LevelGraphNode from which the NodeTemplate was created
  * @fields - nodeType: NodeType - NodeType of the NodeTemplate
  * @fields - nodeTypeId: number - ID of NodeType of the NodeTemplate
- * @fields - relationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
+ * @fields - inRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
+ * @fields - outRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
  * @fields - topologyTemplate: TopologyTemplate - TopologyTemplate of the NodeTemplate
  * @fields - topologyTemplateId: number - ID of TopologyTemplate of the NodeTemplate
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class NodeTemplate extends Node {
@@ -39,7 +40,8 @@ export class NodeTemplate extends Node {
   nodeType: NodeType;
   nodeTypeId: number;
 
-  relationshipTemplates: RelationshipTemplate[] = [];
+  inRelationshipTemplates: RelationshipTemplate[] = [];
+  outRelationshipTemplates: RelationshipTemplate[] = [];
 
   topologyTemplate: TopologyTemplate;
   topologyTemplateId: number;

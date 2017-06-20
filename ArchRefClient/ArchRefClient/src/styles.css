@@ -154,10 +154,15 @@ table tbody tr {
 	width: 100%;
 }
 
+table tbody tr:hover td {
+	background-color:#4681b4;
+}
+
 table thead, table tbody tr {
 	display: table;
 	table-layout: fixed;
 }
+
 
 table button {
 	width: 100%;

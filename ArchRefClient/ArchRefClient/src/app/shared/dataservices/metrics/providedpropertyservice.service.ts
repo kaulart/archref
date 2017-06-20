@@ -21,27 +21,31 @@ export class ProvidedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all ProvidedProperties REQUEST
+   * @request - getProvidedProperties - Send GET all ProvidedProperties REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getProvidedProperties(): Observable<ProvidedProperty[]> {
     Logger.info('[REQUEST - ProvidedProperty] Send GET ProvidedProperties Request', ProvidedPropertyService.name);
-    return this.http.get(this.providedPropertyUrl).map(this.extractProvidedPropertyDataList).catch(this.handleError);
+    return this.http.get(this.providedPropertyUrl).map(this.extractProvidedProperties).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET ProvidedProperty REQUEST
+   * @request - getProvidedProperty - Send GET ProvidedProperty REQUEST
+   *
+   * @param - id: number - ID of the ProvidedProperty which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getProvidedProperty(id: number): Observable<ProvidedProperty> {
     Logger.info('[REQUEST - ProvidedProperty] Send GET ProvidedProperty Request with ID:' + id, ProvidedPropertyService.name);
-    return this.http.get(this.providedPropertyUrl + '/' + id).map(this.extractProvidedPropertyData).catch(this.handleError);
+    return this.http.get(this.providedPropertyUrl + '/' + id).map(this.extractProvidedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST ProvidedProperty REQUEST
+   * @request - createProvidedProperty - Send POST ProvidedProperty REQUEST
+   *
+   * @param - providedProperty: ProvidedProperty - ProvidedProperty which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createProvidedProperty(providedProperty: ProvidedProperty): Observable<ProvidedProperty> {
@@ -49,12 +53,14 @@ export class ProvidedPropertyService {
     Logger.data('[REQUEST - ProvidedProperty]' + JSON.stringify(providedProperty), ProvidedPropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.providedPropertyUrl, providedProperty, options).map(this.extractProvidedPropertyData).catch(this.handleError);
+    return this.http.post(this.providedPropertyUrl, providedProperty, options).map(this.extractProvidedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT ProvidedProperty REQUEST
+   * @request - updateProvidedProperty - Send PUT ProvidedProperty REQUEST
+   *
+   * @param - providedProperty: ProvidedProperty - ProvidedProperty which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateProvidedProperty(providedProperty: ProvidedProperty): Observable<ProvidedProperty> {
@@ -62,12 +68,14 @@ export class ProvidedPropertyService {
     Logger.data('[REQUEST - ProvidedProperty] ' + JSON.stringify(providedProperty), ProvidedPropertyService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.providedPropertyUrl + '/' + providedProperty.id, providedProperty, options).map(this.extractProvidedPropertyData).catch(this.handleError);
+    return this.http.put(this.providedPropertyUrl + '/' + providedProperty.id, providedProperty, options).map(this.extractProvidedProperty).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE ProvidedProperty REQUEST
+   * @request - deleteProvidedProperty - Send DELETE ProvidedProperty REQUEST
+   *
+   * @param - id: number - ID of the ProvidedProperty which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteProvidedProperty(id: number): Observable<ProvidedProperty> {
@@ -79,10 +87,12 @@ export class ProvidedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response -  Extract data from response data list
+   * @response - extractProvidedProperties -  Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractProvidedPropertyDataList(res) {
+  public extractProvidedProperties(res: Response) {
     let body = res.json();
     let propertyList: ProvidedProperty[] = [];
     Logger.info('[RESPONSE - ProvidedProperty]: Extract Data of Response Body', ProvidedPropertyService.name);
@@ -98,10 +108,12 @@ export class ProvidedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractProvidedProperty - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  private extractProvidedPropertyData(res: Response) {
+  private extractProvidedProperty(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - ProvidedProperty]: Extract Data of Response Body', ProvidedPropertyService.name);
     Logger.data('[RESPONSE - PROPERTY]: ' + JSON.stringify(body), ProvidedPropertyService.name);
@@ -114,7 +126,9 @@ export class ProvidedPropertyService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

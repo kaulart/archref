@@ -41,6 +41,7 @@ export class TopologyTemplate {
     this.nodeTemplates = [];
     this.relationshipTemplates = [];
     this.childTopologyTemplates = [];
+    this.levelGraphs = [];
   }
 
   isSingleLevelGraphLevelKonform() {

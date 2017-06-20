@@ -23,7 +23,6 @@ public class LevelGraphController {
 	@Autowired
 	LevelGraphService levelGraphService;
 	
-	
 	@RequestMapping(value="/api/levelgraphs", method = RequestMethod.GET)
 	public ResponseEntity<Collection<LevelGraph>> getAllLevelGraphs() {
 		Collection<LevelGraph> levelGraphs =  levelGraphService.findAllLevelGraphs();

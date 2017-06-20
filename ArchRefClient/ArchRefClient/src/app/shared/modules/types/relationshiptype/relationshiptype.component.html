@@ -16,7 +16,7 @@
 
 			</div>
 
-			<!-- Controll Panel -->
+			<!-- Control Panel -->
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createRelationshipTypeFieldsArea">
 				<form #createRelationshipTypeForm="ngForm">
 					<div class="col-sm-6 form-group">
@@ -34,7 +34,7 @@
 
 		</div>
 		
-		<!-- Data Tabel -->
+		<!-- Data Table -->
 		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
 			<table class="w3-table-all table-striped w3-bordered">
 				<thead>
@@ -44,22 +44,18 @@
 						<th class="table-head">Name</th>
 						<th class="table-head">ID</th>
 						<th class="table-head">Edit</th>
-						<th class="table-head">Export</th>
 						<th class="table-head">Delete</th>
 					</tr>
 				</thead>
 
 				<tbody>
 					<tr *ngFor="let relationshipType of currentRepository.relationshipTypeList">
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.name }}</td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{name: relationshipType.name , id: relationshipType.id}">{{ relationshipType.id }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ relationshipType.name }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ relationshipType.id }}</td>
 						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn" (click)="setEditRelationshipType(relationshipType)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
-							</button></td>
-						<td><button class="btn" (click)="exportRelationshipType(relationshipType.id)">
-								<i class="fa fa-download" aria-hidden="true"></i>
 							</button></td>
 						<td><button class="w3-red btn" (click)="deleteRelationshipType(relationshipType.id)">
 								<i class="fa fa-trash" aria-hidden="true"></i>

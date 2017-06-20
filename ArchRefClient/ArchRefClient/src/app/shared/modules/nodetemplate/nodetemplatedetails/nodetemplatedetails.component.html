@@ -1,0 +1,61 @@
+<!-- LevelGraphNodeDetails Area -->
+<div class="dashboard_area">
+
+	<!-- Header -->
+	<div class="w3-theme-d4 row panel-heading control-panel">
+		<div class="col-sm-6">
+			<h2>
+				Node Template: <input disabled style="color: black" value="{{currentNodeTemplate.name}}" />
+			</h2>
+		</div>
+		<div class="col-sm-6">
+			<h2>
+				Node Template: <input disabled style="color: black" value="{{currentNodeTemplate.id}}" />
+			</h2>
+		</div>
+	</div>
+
+	<!-- Tab Panel for display data -->
+	<div class="data-panel ">
+
+		<!-- Tab Header -->
+		<ul class="tabrow nav" role="tablist">
+			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#generalData" style="color: white" role="tab">General Data</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#providedProperty" style="color: white" role="tab">Provided Property</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#expectedproperty" style="color: white" role="tab">Expected Property</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#outRelation" style="color: white" role="tab">Outgoing Relation</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inRelation" style="color: white" role="tab">Incoming Relation</a></li>
+		</ul>
+
+		<!-- Tab Content -->
+		<div class="tab-content tab-panel">
+
+			<div id="generalData" class="rounded tab-pane active" role="tabpanel">
+				<!-- Selector for the NodeTypeComponent -->
+				<app-generaldata [currentNodeTemplate]="currentNodeTemplate"></app-generaldata>
+			</div>
+
+			<div id="providedProperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ProvidedPropertyComponent -->
+				<app-providedproperty [entity]="currentNodeTemplate"></app-providedproperty>
+			</div>
+
+			<div id="expectedproperty" class="rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ExpectedPropertyComponent -->
+				<app-expectedproperty [entity]="currentNodeTemplate"></app-expectedproperty>
+			</div>
+
+			<div id="outRelation" class="rounded tab-pane " role="tabpanel">
+				<!-- Selector for the RelationshipTypeComponent -->
+				<app-relationshiptemplate [currentRelationshipTemplates]="currentNodeTemplate.outRelationshipTemplates"></app-relationshiptemplate>
+			</div>
+
+			<div id="inRelation" class="rounded tab-pane " role="tabpanel">
+				<!-- Selector for the RelationshipTypeComponent -->
+				<app-relationshiptemplate [currentRelationshipTemplates]="currentNodeTemplate.inRelationshipTemplates"></app-relationshiptemplate>
+			</div>
+
+		</div>
+	</div>
+</div>
+

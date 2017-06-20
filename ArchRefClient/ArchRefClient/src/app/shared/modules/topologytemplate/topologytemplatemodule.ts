@@ -16,4 +16,12 @@ import { RouterModule } from '@angular/router';
   exports: [TopologyTemplateComponent]
 })
 
+/**********************************************************************************************************************************************************************************************************
+ *
+ * @module - TopologyTemplateModule - Lazy loaded module as wrapper for all application modules and components which
+ *                                    should be accessible in the TopologyTemplateModule
+ *
+ * @author - Arthur Kaul
+ *
+ *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateModule {}

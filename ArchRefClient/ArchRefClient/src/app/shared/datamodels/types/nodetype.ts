@@ -26,9 +26,8 @@ export class NodeType extends Entity {
   repository: Repository;
   repositoryId: number;
 
-  constructor(name: string, repositoryId: number) {
+  constructor() {
     super();
-    this.repositoryId = repositoryId;
   }
 
 }

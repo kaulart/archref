@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 /**********************************************************************************************************************************************************************************************************
  *
  * @service - RelationshipTypeFragmentService  - Implements the calls to the rest interface of the application server and
- *                                             handle the request construction and response extraction for RelationshipTypeFragment data
+ *                                               handle the request construction and response extraction for RelationshipTypeFragment data
  *
  *********************************************************************************************************************************************************************************************************/
 @Injectable()
@@ -20,7 +20,7 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET RelationshipType Fragments REQUEST
+   * @request - getRelationshipTypeFragments - Send GET RelationshipType Fragments REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getRelationshipTypeFragments(): Observable<RelationshipTypeFragment[]> {
@@ -30,7 +30,9 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET RelationshipType Fragment REQUEST
+   * @request - getRelationshipTypeFragment - Send GET RelationshipType Fragment REQUEST
+   *
+   * @param - id: number - ID of the RelationshipTypeFragment which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getRelationshipTypeFragment(id: number): Observable<RelationshipTypeFragment> {
@@ -40,7 +42,9 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST RelationshipType Fragment REQUEST
+   * @request - createRelationshipTypeFragment - Send POST RelationshipType Fragment REQUEST
+   *
+   * @param - relationshipTypeFragment: RelationshipTypeFragment - RelationshipTypeFragment which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createRelationshipTypeFragment(relationshipTypeFragment: RelationshipTypeFragment): Observable<RelationshipTypeFragment> {
@@ -53,7 +57,9 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT RelationshipType Fragment REQUEST
+   * @request - updateRelationshipTypeFragment - Send PUT RelationshipType Fragment REQUEST
+   *
+   * @param - elationshipTypeFragment: RelationshipTypeFragment - RelationshipTypeFragment which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateRelationshipTypeFragment(relationshipTypeFragment: RelationshipTypeFragment): Observable<RelationshipTypeFragment> {
@@ -66,10 +72,12 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE RelationshipType Fragment REQUEST
+   * @request - deleteRelationshipTypeFragment - Send DELETE RelationshipType Fragment REQUEST
+   *
+   * @param - id: number - ID of the RelationshipTypeFragment which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
-  public deleteRelationshipType(id: number): Observable<RelationshipTypeFragment> {
+  public deleteRelationshipTypeFragment(id: number): Observable<RelationshipTypeFragment> {
     Logger.info('[REQUEST - RELATIONSHIPTYPEFRAGMENT] Send DELETE RelationshipType Request with ID: ' + id, RelationshipTypeFragmentService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -78,10 +86,12 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractRelationshipTypeFragments - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractRelationshipTypeFragments(res) {
+  public extractRelationshipTypeFragments(res: Response) {
     let body = res.json();
     let relationshipTypeFragments: RelationshipTypeFragment[] = [];
     Logger.info('[RESPONSE - RELATIONSHIPTYPEFRAGMENT]: Extract Data of Response Body', RelationshipTypeFragmentService.name);
@@ -100,7 +110,9 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractRelationshipTypeFragment - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractRelationshipTypeFragment(res: Response) {
@@ -118,7 +130,9 @@ export class RelationshipTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

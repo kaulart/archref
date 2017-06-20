@@ -26,6 +26,8 @@ export class LevelGraph {
   levelGraphRelations: LevelGraphRelation[];
   topologyTemplates: TopologyTemplate[];
 
+  checked = false;
+
   constructor() {
     this.name = 'Unnamed';
     this.levels = [];

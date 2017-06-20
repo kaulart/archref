@@ -20,7 +20,9 @@ export class LevelService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Level REQUEST
+   * @request - getLevel - Send GET Level REQUEST
+   *
+   * @param - id: number - ID of the Level which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getLevel(id: number): Observable<Level> {
@@ -30,7 +32,9 @@ export class LevelService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST Level REQUEST
+   * @request - createLevel - Send POST Level REQUEST
+   *
+   * @param - level: Level - Level which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createLevel(level: Level): Observable<Level> {
@@ -43,7 +47,9 @@ export class LevelService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT Level REQUEST
+   * @request - updateLevel - Send PUT Level REQUEST
+   *
+   * @param - level: Level - Level which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateLevel(level: Level): Observable<Level> {
@@ -56,7 +62,9 @@ export class LevelService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Level REQUEST
+   * @request - deleteLevel - Send DELETE Level REQUEST
+   *
+   * @param - id: number - ID of the Level which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteLevel(id: number): Observable<Level> {
@@ -68,22 +76,27 @@ export class LevelService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data Level object
+   * @response - extractLevel- Extract data from response data Level object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractLevel(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - LEVEL]:  Extract Level Data', LevelService.name);
     Logger.info('[RESPONSE - LEVEL]: ' + JSON.stringify(body), LevelService.name);
-    let level: Level = new Level(body.depth, body.visible, body.y, body.height, body.levelGraphId, body.levelGraphRelations, body.levelGraphNodes);
-    level.id = (body.id);
+    let level: Level = new Level(body.depth, body.visible, body.y, body.height, body.levelGraphId);
+    level.id = body.id;
+    level.levelGraph = body.levelGraph;
     level.levelGraphNodes = body.levelGraphNodes;
     return level || {};
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

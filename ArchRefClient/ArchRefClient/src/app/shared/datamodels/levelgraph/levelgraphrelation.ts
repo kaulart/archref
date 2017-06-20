@@ -19,32 +19,38 @@ import { LevelGraphNode } from './levelgraphnode';
  * @superFields - targetNodeId: number - ID of the Target Node of LevelGraphRelation
  * @superFields - path: Path - Path of the line from source node to target node
  *
- * @fields -  sourceLevelDepth: number - Depth of the level of the source node
+ * @fields - sourceLevelDepth: number - Depth of the level of the source node
  * @fields - targetLevelDepth: number - Depth of the level of the target node
- * @fields - levelGraphNodes: LevelGraphNode[] = [] - Source and Target Node of the levelGraphRelation // You may decide to split the nodes in two fields and move it up to relation
- * @fields - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
- * @fields - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
- * @fields - levels: Level[] = [] - Levels of the source node and target node // You may decide to split the levels in two fields
  * @fields - sourceLevelId: number - ID of the source level
  * @fields - targetLevelId: number - ID of the target level
- * @fields - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement late the types as a Class currently it is enough to implement it as constant Strings
+ * @fields - sourceLevel: Level - ID of the source level
+ * @fields - targetLevel: Level - ID of the target level
+ * @fields - targetLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
+ * @fields - sourceLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
+ * @fields - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
+ * @fields - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
+ * @fields - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further Improvments currently it is enough to
+ *                                            implement it as constant Strings
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class LevelGraphRelation extends Relation {
 
   sourceLevelDepth: number;
   targetLevelDepth: number;
+  sourceLevelId: number;
+  targetLevelId: number;
+  sourceLevel: Level;
+  targetLevel: Level;
 
-  levelGraphNodes: LevelGraphNode[] = [];
+  targetLevelGraphNode: LevelGraphNode;
+  sourceLevelGraphNode: LevelGraphNode;
 
   levelGraph: LevelGraph;
   levelGraphId: number;
 
   levels: Level[] = [];
-  sourceLevelId: number;
-  targetLevelId: number;
 
   levelGraphRelationType: string;
 

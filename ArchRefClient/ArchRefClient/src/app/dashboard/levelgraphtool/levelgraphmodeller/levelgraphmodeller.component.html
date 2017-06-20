@@ -1,8 +1,9 @@
-<div id="modeller" class="container-fluid" (mouseup)="stopAllEvents()" >
+<!-- LevelGraphModellerComponent Area -->
+<div id="modeller" class="container-fluid" (mouseup)="stopAllEvents()">
 
 	<div class="row">
 
-		<!-- Heading where you can see the current selected Level Graph save the level graph and open/close the control panel-->
+		<!-- Header-->
 		<div class="heading col-sm-12 w3-theme-d3 w3-card-4">
 			<div class="col-sm-5">
 				<h3>
@@ -17,9 +18,9 @@
 			</div>
 
 			<div class="col-sm-2">
-			<!-- 	<button id="collapseBtn" class=" w3-theme-d1 btn btn-primary w3-right btn-10" type="button" data-toggle="collapse" data-target="#control_level_graph_tool" aria-expanded="false" aria-controls="control_level_graph_tool">
+				<button id="collapseBtn" class=" w3-theme-d1 btn btn-primary w3-right btn-10" type="button" data-toggle="collapse" data-target="#control_level_graph_tool" aria-expanded="false" aria-controls="control_level_graph_tool">
 					<i class="fa fa-caret-down w3-right fa-lg" aria-hidden="true"></i>
-				</button> -->
+				</button>
 				<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateLevelGraph()">
 					<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
 				</button>
@@ -58,7 +59,7 @@
 		</div>
 	</div>
 
-	<div class="row" style="height:100%">
+	<div class="row" style="height: 100%">
 
 		<!-- Tool box Panel for the tool box groups like ModellingTools / LevelGraphNodes / RepositoryNodes -->
 		<div id="toolbox_area" class="w3-col w3-card-4 w3-theme">
@@ -94,13 +95,7 @@
 						<li class="fragmentNodeType w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'NODETYPEFRAGMENT')" (dragover)="onDragOver($event)">
 							<h3>New NodeType Fragment</h3>
 						</li>
-						
-				<!-- 		<li class="nodeType w3-round" draggable="true" (drag)="onDrag($event, fragmentType, '')" (dragover)="onDragOver($event)">
-							<h3>New NodeType</h3>
-						</li>
-						<li class="relationshipType w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'FRAGMENTTYPE')" (dragover)="onDragOver($event)">
-							<h3>New RelationshipType</h3>
-						</li> -->
+
 					</ul>
 				</div>
 
@@ -108,13 +103,13 @@
 
 			<!-- Repository Nodes -->
 			<div class="toolbox-group">
-				<label>Repository Nodes:</label>
+				<label>Repository Types:</label>
 				<div class="dropdown">
 					<label>Selected Repository:</label>
 					<button id="selectRepository" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}</button>
 
 					<ul class="dropdown-menu" style="width: 100%;">
-						<li class="repositoryListItem" *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY AVAILABLE</li>
+						<li class="w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY AVAILABLE</li>
 						<li class="repositoryListItem" *ngFor="let repository of repositories" (click)="onSelectRepository(repository)">{{ repository.name }}</li>
 					</ul>
 
@@ -126,10 +121,10 @@
 					</button>
 
 					<div class="collapse toolbox" id="toolbox_nodes">
-						<ul id="nodeTypesList" class=" list-group">
-							<li class="warning-item, w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
-
-							<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.nodeTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY SELECTED OR NO NODETYPES AVAILABLE</li>
+						<ul id="nodeTypesList" class=" list-group" style="max-height: 300px; overflow: auto; padding: 5px">
+							<li class="warning-item w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
+							<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
+							<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.name !== 'Select Repository'  && selectedRepository.nodeTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
 							<li class="nodeType w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList" (drag)="onDrag($event, nodeType, 'NODETYPE')" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{nodeType.icon}}" />
 								<h3>{{nodeType.name}}</h3></li>
 
@@ -143,9 +138,10 @@
 					</button>
 
 					<div class="collapse toolbox" id="toolbox_relations">
-						<ul style="padding: 5px" id="relationTypesList" class="  list-group" style="height:300px; overflow: auto">
+						<ul id="relationTypesList" class="list-group" style="max-height: 300px; overflow: auto; padding: 5px">
 							<li class="warning-item, w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
-							<li class="warning-item, w3-pale-yellow" *ngIf="repositories.length > 0 &&  selectedRepository.relationshipTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RELATIONSHIPTYPES AVAILABLE</li>
+							<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
+							<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.name !== 'Select Repository' &&  selectedRepository.relationshipTypeList.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RELATIONSHIPTYPES AVAILABLE</li>
 							<li class="relationshipType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypeList" (drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{relationshipType.icon}}" />
 								<h3>{{relationshipType.name}}</h3></li>
 						</ul>
@@ -154,6 +150,7 @@
 			</div>
 		</div>
 
+		<!-- Complet draw area of the level graph -->
 		<div id="draw_area" class="w3-rest w3-theme-l5 scroll-panel" (mousemove)="onDrawRelation($event)">
 
 			<svg id="parent">
@@ -205,25 +202,24 @@
 				</defs>
 				
 			    <defs> 
-					<linearGradient id="lgradFragmentRelationshipType" x1="50%" y1="100%" x2="50%" y2="0%" > 
-<stop offset="0%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-<stop offset="15%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-<stop offset="50%" style="stop-color:rgb(0,255,255);stop-opacity:1" />
-<stop offset="85%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-<stop offset="100%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-</linearGradient> 
+					<linearGradient id="lgradFragmentRelationshipType" x1="50%" y1="100%" x2="50%" y2="0%"> 
+						<stop offset="0%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
+						<stop offset="15%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
+						<stop offset="50%" style="stop-color:rgb(0,255,255);stop-opacity:1" />
+						<stop offset="85%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
+					</linearGradient> 
 				</defs>
 				
-				<!-- Definition of the refineTo LevelGraphRelations -->
 				
+				<!-- Polyline of the refineTo LevelGraphRelations -->
 				<polyline *ngIf="drawRelation && currentLevelGraphRelation.levelGraphRelationType === 'REFINE_TO'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#TriangleDraw)" />
 						
 				<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
 					<polyline *ngIf="(levelGraphRelationTypes[2].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO') && showRefineToRelation(levelGraphRelation)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#Triangle)" />
 			    </g>
 				
-				<!-- Definition of the level draw areas-->
-				
+				<!-- Level Draw Area -->				
 				<g *ngFor="let level of currentLevelGraph.levels.reverse()">
 				   	
 				   <g *ngIf="level.visible">
@@ -235,8 +231,7 @@
 				   		<!-- Definition of the move bar to change the height of the level draw areas-->
 				   		<rect class="level-move-bar" [attr.x]="0" [attr.y]="level.y + level.height + 10" [attr.height]="20" (mousedown)="startChangeLevelHeight($event)" (mousemove)="onChangeLevelHeight($event, level)" (mouseup)="stopChangeLevelHeight($event)"></rect>
 				
-						<!-- Definition of the level draw areas-->
-			       		
+						<!-- Definition of the level draw areas-->    		
 			       		<svg id="child" [attr.id]="level.depth" [attr.x]="50" [attr.y]="level.y" [attr.height]="level.height" (dragover)="onDragOver($event)" (drop)="onDrop($event, level)"> 
 				   			<rect class="level-panel" [attr.x]="0" [attr.y]="0" [attr.height]="level.height"></rect>
 								
@@ -244,23 +239,25 @@
 				    		<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
 					    		<polyline *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'HOSTED_ON') && (levelGraphRelation.sourceLevelDepth === level.depth)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#Triangle)" />
 							</g>
+
+				    		<polyline *ngIf="drawRelation && currentLevelGraphRelation.sourceLevelDepth === level.depth && currentLevelGraphRelation.levelGraphRelationType === 'HOSTED_ON'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#TriangleDraw)" />					
 					
 							<!-- Definition of the connectedToRelation-->
 					 		<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
 					   			<polyline *ngIf="(levelGraphRelationTypes[0].checked == true) && (level.depth === levelGraphRelation.sourceLevelDepth) && (levelGraphRelation.levelGraphRelationType === 'CONNECTED_TO')" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#Triangle)" />
 							</g>
-				
+										
 							<polyline *ngIf="drawRelation && currentLevelGraphRelation.sourceLevelDepth === level.depth  && currentLevelGraphRelation.levelGraphRelationType === 'CONNECTED_TO'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:green;stroke-width:6" marker-end="url(#TriangleDraw)" />
-						
-				    		<polyline *ngIf="drawRelation && currentLevelGraphRelation.sourceLevelDepth === level.depth && currentLevelGraphRelation.levelGraphRelationType === 'HOSTED_ON'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:blue;stroke-width:6" marker-end="url(#TriangleDraw)" />	
 					
-								<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
+							<!-- Definition of the RELATIONSHIPTYPEFRAGMENT-->
+							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradFragmentRelationshipType)" style="stroke:black;stroke-width:5;" />
 									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2" font-family="Verdana" font-size="35" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>
 								</g> 	
 							</g>
 							
+							<!-- Definition of the NODETYPEFRAGMENT-->
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradFragmentNodeType)" style="stroke:black;stroke-width:5;" />
@@ -268,6 +265,7 @@
 								</g> 	
 							</g>
 					
+							<!-- Definition of the NODETYPE-->
 				 			<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
@@ -275,6 +273,7 @@
 								</g>
 							</g>
 					
+							<!-- Definition of the RELATIONSHIPTYPE-->
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />
@@ -292,9 +291,10 @@
 <contextmenu #levelGraphNodeContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
-		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
-		<li><a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
+		<li><a class="dropdown-item" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: levelGraphNodeContextMenu.get('levelGraphNode').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
 </contextmenu>
@@ -302,17 +302,16 @@
 <contextmenu #levelGraphRelationContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
-		<li><a class="dropdown-item"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
-		<li><a class="dropdown-item" (click)="deleteLevelGraphRelation(levelGraphRelationContextMenu.get('levelGraphRelation').id)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
+		<li><a class="dropdown-item" routerLink="/dashboard/levelgraphrelationdetails" [queryParams]="{id: levelGraphRelationContextMenu.get('levelGraphRelation').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
+		<li><a class="dropdown-item" (click)="deleteLevelGraphRelation(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
 </div>
 </contextmenu>
 
-
 <!-- Modal for Create ProvidedProperty -->
-<div class="modal fade modal-position" id="createProvidedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+<div class="modal fade modal-position" id="createProvidedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
@@ -324,8 +323,7 @@
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createProvidedProperty.name" #nameProperty type="text"
-							class="form-control" id="nameProperty" value="{{createProvidedProperty.name}}" required>
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createdProvidedProperty.name" #nameProperty type="text" class="form-control" id="nameProperty" value="{{createdProvidedProperty.name}}" required>
 						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!nameProperty.errors.required">Name is required</div>
 
@@ -334,15 +332,52 @@
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createProvidedProperty.value" #valueProperty type="text"
-							class="form-control" id="valueProperty" value="{{createProvidedProperty.value}}" required>
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createdProvidedProperty.value" #valueProperty type="text" class="form-control" id="valueProperty" value="{{createdProvidedProperty.value}}" required>
 						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
 							<div [hidden]="!valueProperty.errors.required">Value is required</div>
 
 						</div>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="addProvidedProperties()" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-primary" (click)="addProvidedProperty()" data-dismiss="modal">Save</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal for ExpectedProperty -->
+<div class="modal fade modal-position" id="createExpectedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create ExpectedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+				
+					<div class="col-sm-6 form-group">
+						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createdExpectedProperty.name" #nameProperty type="text" class="form-control" id="nameProperty" value="{{createdExpectedProperty.name}}" required>
+						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-6 form-group">
+
+						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createdExpectedProperty.value" #valueProperty type="text" class="form-control" id="valueProperty" value="{{createdExpectedProperty.value}}" required>
+						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="addExpectedProperty()" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

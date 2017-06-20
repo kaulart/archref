@@ -12,38 +12,34 @@ import { FlashMessage } from 'angular2-flash-message';
   styleUrls: ['./nodetypedetails.component.css']
 })
 
-/*********************************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @component NodeTypeDetailsComponent Class - The component displays the details of a NodeType Object.
+ * @component - NodeTypeDetailsComponent Class - The component displays the details of a NodeType Object.
  *
  *
- * @field currentNodeType: NodeType -  NodeType which is currently selected
- * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
- *                                     cause a "Over Flash" for the user experience
+ * @field - currentNodeType: NodeType -  NodeType which is currently selected
+ * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ *                                       cause a "Over Flash" for the user experience
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ********************************************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class NodeTypeDetailsComponent implements OnInit {
 
-  currentNodeType: NodeType = new NodeType('', null);
+  currentNodeType: NodeType = new NodeType();
 
   public flashMessage = new FlashMessage();
 
   constructor(private route: ActivatedRoute,
     private router: Router, private nodeTypeService: NodeTypeService, private flashMessageService: FlashMessageService) { }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method ngOnInit is called when the component is initialized
+   * @method - ngOnInit - Is called when the component is initialized
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Iniitalize NodeTypeDetails Component', NodeTypeDetailsComponent.name);
-   this.route.queryParams.subscribe(params => {
-      this.currentNodeType.name = params['name'] || 'Unnamed';
-    });
-
     this.route.queryParams.subscribe(params => {
       this.currentNodeType.id = params['id'] || null;
     });
@@ -52,12 +48,13 @@ export class NodeTypeDetailsComponent implements OnInit {
 
   }
 
-  /****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * Retrieve NodeType - Load NodeType with id from the database
-   * @param id: number - ID of the NodeType witch should be loaded
+   * @method - retrieveNodeType - Load NodeType with id from the database
    *
-   ****************************************************************************************************************/
+   * @param - id: number - ID of the NodeType witch should be loaded
+   *
+   *******************************************************************************************************************************************************************************************************/
   retrieveNodeType(id: number) {
     Logger.info('Retrieve Node Type Data', NodeTypeDetailsComponent.name);
     this.nodeTypeService.getNodeType(id)
@@ -71,6 +68,5 @@ export class NodeTypeDetailsComponent implements OnInit {
         this.flashMessageService.display(this.flashMessage);
       });
   }
-
 
 }

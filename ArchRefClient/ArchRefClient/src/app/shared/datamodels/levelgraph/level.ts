@@ -30,17 +30,14 @@ export class Level {
   height: number;
   levelGraph: LevelGraph;
   levelGraphId: number;
-  levelGraphRelations: LevelGraphRelation[];
   levelGraphNodes: LevelGraphNode[];
 
-  constructor(depth: number, visible: boolean, y: number, height: number, levelGraphId: number, levelGraphRelations: LevelGraphRelation[], levelGraphNodes: LevelGraphNode[]) {
+  constructor(depth: number, visible: boolean, y: number, height: number, levelGraphId: number) {
     this.depth = depth;
     this.visible = visible;
     this.y = y;
     this.height = height;
-    this.levelGraphId = levelGraphId;
-    this.levelGraphRelations = levelGraphRelations;
-    this.levelGraphNodes = levelGraphNodes;
+    this.levelGraphId = levelGraphId;    this.levelGraphNodes = [];
   }
 
 }

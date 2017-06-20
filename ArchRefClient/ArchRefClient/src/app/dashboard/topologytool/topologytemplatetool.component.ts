@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 
 /****************************************************************************************************************************************
  *
- * @component TopologyTemplateToolComponent - Lazy loaded component as wrapper for a better view result and for decoupling header 
- *                                            from the data panel
+ * @component - TopologyTemplateToolComponent - Lazy loaded component as wrapper for a better view result and for decoupling header 
+ *                                              from the data panel
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ***************************************************************************************************************************************/
 export class TopologyTemplateToolComponent implements OnInit {

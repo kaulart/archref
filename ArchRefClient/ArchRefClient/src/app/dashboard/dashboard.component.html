@@ -2,10 +2,10 @@
 <app-top-nav></app-top-nav>
 
 <!-- Application Content -->
-<section class=" dashboard-container">
+<section class="dashboard-container">
 	
 	<!-- Flash Message for display errors/warnings/success messages -->
-	<flash-message></flash-message>
+	<div><flash-message messagePositioning="top-right"></flash-message></div>
 	
 	<!-- Router Outlet is used for display the components which are registered in the dashboard.routes.ts file-->
 	<router-outlet class="dashboard-router-outlet"></router-outlet>

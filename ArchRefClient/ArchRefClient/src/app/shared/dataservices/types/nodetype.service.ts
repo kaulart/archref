@@ -20,27 +20,31 @@ export class NodeTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all NodeTypes REQUEST
+   * @request - getNodeTypes - Send GET all NodeTypes REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getNodeTypes(): Observable<NodeType[]> {
     Logger.info('[REQUEST - NODETYPE] Send GET Node Types Request', NodeTypeService.name);
-    return this.http.get(this.nodetypeUrl).map(this.extractNodeTypesDataList).catch(this.handleError);
+    return this.http.get(this.nodetypeUrl).map(this.extractNodeTypes).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET Node Type REQUEST
+   * @request - getNodeType - Send GET NodeType REQUEST
+   *
+   * @param - id: number - ID of the NodeType which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getNodeType(id: number): Observable<NodeType> {
     Logger.info('[REQUEST - NODETYPE] Send GET Node Type Request with ID:' + id, NodeTypeService.name);
-    return this.http.get(this.nodetypeUrl + '/' + id).map(this.extractNodeTypesData).catch(this.handleError);
+    return this.http.get(this.nodetypeUrl + '/' + id).map(this.extractNodeType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST NodeType REQUEST
+   * @request - createNodeType - Send POST NodeType REQUEST
+   *
+   * @param - nodeType: NodeType - NodeType which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createNodeType(nodeType: NodeType): Observable<NodeType> {
@@ -48,12 +52,14 @@ export class NodeTypeService {
     Logger.data('[REQUEST - NODETYPE]' + JSON.stringify(nodeType), NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.nodetypeUrl, nodeType, options).map(this.extractNodeTypesData).catch(this.handleError);
+    return this.http.post(this.nodetypeUrl, nodeType, options).map(this.extractNodeType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT Repository REQUEST
+   * @request - updateNodeType - Send PUT NodeType REQUEST
+   *
+   * @param - nodeType: NodeType - NodeType which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateNodeType(nodeType: NodeType): Observable<NodeType> {
@@ -61,12 +67,15 @@ export class NodeTypeService {
     Logger.data('[REQUEST - NODETYPE] ' + JSON.stringify(nodeType), NodeTypeService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.put(this.nodetypeUrl + '/' + nodeType.id, nodeType, options).map(this.extractNodeTypesData).catch(this.handleError);
+    return this.http.put(this.nodetypeUrl + '/' + nodeType.id, nodeType, options).map(this.extractNodeType).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE Repository REQUEST
+   * @request - Send DELETE NodeType REQUEST
+   *
+   * @param - id: number - ID of the NodeType which should be deleted from the database
+   *
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteNodeType(id: number): Observable<NodeType> {
@@ -78,18 +87,24 @@ export class NodeTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractNodeTypes - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractNodeTypesDataList(res) {
+  public extractNodeTypes(res: Response) {
     let body = res.json();
     let nodeTypeList: NodeType[] = [];
     Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
     for (let nodeType of body) {
-      let tempNodeType: NodeType = new NodeType(nodeType.name, nodeType.repositoryId);
+      let tempNodeType: NodeType = new NodeType();
       tempNodeType.id = nodeType.id;
+      tempNodeType.name = nodeType.name;
+      tempNodeType.repository = nodeType.repository;
+      tempNodeType.repositoryId = nodeType.repositoryId;
       tempNodeType.icon = nodeType.icon;
+      tempNodeType.expectedProperties = nodeType.expectedProperties;
       tempNodeType.providedProperties = nodeType.providedProperties;
       nodeTypeList.push(tempNodeType);
     }
@@ -98,23 +113,31 @@ export class NodeTypeService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   *  @response - Extract data from response data object
+   * @response - extractNodeTypes - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  private extractNodeTypesData(res: Response) {
+  private extractNodeType(res: Response) {
     let body = res.json();
     Logger.info('[RESPONSE - NODETYPE]: Extract Data of Response Body', NodeTypeService.name);
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
-    let nodeType: NodeType = new NodeType(body.name, body.repositoryId);
+    let nodeType: NodeType = new NodeType();
     nodeType.id = body.id;
+    nodeType.name = body.name;
+    nodeType.repository = body.repository;
+    nodeType.repositoryId = body.repositoryId;
     nodeType.icon = body.icon;
+    nodeType.expectedProperties = body.expectedProperties;
     nodeType.providedProperties = body.providedProperties;
     return nodeType || {};
   }
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @error - Error Handling
+   * @error - handleError - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

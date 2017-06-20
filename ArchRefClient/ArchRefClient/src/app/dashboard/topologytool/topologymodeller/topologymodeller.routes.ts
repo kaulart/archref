@@ -1,13 +1,11 @@
-
-
 import { TopologyModellerComponent } from './topologymodeller.component';
 import { Route } from '@angular/router';
 
 /*******************************************************************************************************************
  *
- * @route TopologyModellerRoutes - Path to the TopologyModellerComponent
+ * @route - TopologyModellerRoutes - Path to the TopologyModellerComponent
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export const TopologyModellerRoutes: Route[] = [

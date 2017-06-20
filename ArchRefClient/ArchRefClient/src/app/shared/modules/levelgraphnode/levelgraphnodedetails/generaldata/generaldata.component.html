@@ -1,0 +1,74 @@
+<!-- General Data Component currently only for display data but you can extends later this component with update functionality -->
+<div class="tab-panel rounded">
+
+	<div class="w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+		<form>
+			<div class="row">
+
+				<div class="col-sm-6 form-group">
+					<label>ID: </label> <input class="form-control" value="{{currentLevelGraphNode.id}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label for="nameLevelGraphNode">Name: </label> <input disabled #nameLevelGraphNode type="text" class="form-control" value="{{currentLevelGraphNode.name}}" required>
+				</div>
+
+				<div class="col-sm-4 form-group">
+					<label for="icon">Icon Path: </label> <input class="  form-control" #icon value="{{currentLevelGraphNode.icon}}" disabled />
+				</div>
+
+				<div class="col-sm-2 form-group">
+					<label>Icon View: </label> <img class=" form-control w3-right icon" src="{{currentLevelGraphNode.icon}}" />
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>X (in px): </label> <input class="form-control" value="{{currentLevelGraphNode.x}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Y (in px): </label> <input class="form-control" value="{{currentLevelGraphNode.y}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Width (in px): </label> <input class="form-control" value="{{currentLevelGraphNode.width}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Height (in px): </label> <input class="form-control" value="{{currentLevelGraphNode.height}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level Depth: </label> <input class="form-control" value="{{currentLevelGraphNode.levelDepth}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Type: </label> <input class="form-control" value="{{currentLevelGraphNode.levelGraphNodeType}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Node Type ID: </label>
+					<input class="form-control col-sm-5" value="{{currentLevelGraphNode.levelGraphNodeTypeId}}" disabled>
+					<button *ngIf="currentLevelGraphNode.levelGraphNodeType === 'NODETYPE'" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/nodetypedetails" [queryParams]="{id: currentLevelGraphNode.levelGraphNodeTypeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+					<button *ngIf="currentLevelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE'" class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/relationshipdetails" [queryParams]="{id: currentLevelGraphNode.levelGraphNodeTypeId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level ID: </label> <input class="form-control" value="{{currentLevelGraphNode.levelId}}" disabled>
+				</div>
+
+				<div class="col-sm-6 form-group">
+					<label>Level Graph ID: </label>
+					<input class="form-control col-sm-5" value="{{currentLevelGraphNode.levelGraphId}}" disabled><button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphmodeller" [queryParams]="{id: currentLevelGraphNode.levelGraphId}">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</button>
+				</div>
+				
+			</div>
+		</form>
+	</div>
+
+</div>

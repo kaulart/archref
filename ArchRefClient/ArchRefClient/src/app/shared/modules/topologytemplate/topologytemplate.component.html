@@ -1,8 +1,9 @@
+<!-- TopologyTemplateComponent Area -->
 <div id="accordion" class="panel-group collapsed_area tab-panel">
 
 	<div class="panel panel-default ">
 
-		<!-- Header for the TopologyTemplateComponent component and buttons for open and close the collapsable areas-->
+		<!-- Header -->
 		<div class="row panel-heading control-panel">
 			<h3 class="col-sm-6">Topology Templates</h3>
 			<button class="w3-right w3-green btn btn-primary" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createTopologyTemplateArea">
@@ -26,7 +27,7 @@
 
 	</div>
 
-	<!-- Data table for display all TopologyTemplates -->
+	<!-- Data Table -->
 	<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
 
 		<table class="w3-table-all table-striped w3-bordered">
@@ -37,18 +38,19 @@
 					<th class="table-head">Nr.</th>
 					<th class="table-head">Name</th>
 					<th class="table-head">ID</th>
+					<th class="table-head">Modeller</th>
 					<th class="table-head">Edit</th>
-					<th class="table-head">Export</th>
 					<th class="table-head">Delete</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<tr *ngFor="let topology of topologyTemplates">
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topologyTemplates.indexOf(topology) +1 }}</td>
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.name }}</td>
-					<td routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">{{ topology.id }}</td>
+					<td routerLink="/dashboard/topologytemplatedetails" [queryParams]="{id: topology.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+					<td routerLink="/dashboard/topologytemplatedetails" [queryParams]="{id: topology.id}">{{ topologyTemplates.indexOf(topology) +1 }}</td>
+					<td routerLink="/dashboard/topologytemplatedetails" [queryParams]="{id: topology.id}">{{ topology.name }}</td>
+					<td routerLink="/dashboard/topologytemplatedetails" [queryParams]="{id: topology.id}">{{ topology.id }}</td>
+					<td><button class="w3-blue btn" type="button" routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">Modeller</button></td>
 					<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal" (click)="setEditTopologyTemplate(topology)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</button></td>
@@ -64,7 +66,7 @@
 
 </div>
 
-<!-- Modal for Edit TopologyTemplate MetaData-->
+<!-- Modal for Edit TopologyTemplate -->
 <div class="modal fade modal-position" id="editTopologyTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">

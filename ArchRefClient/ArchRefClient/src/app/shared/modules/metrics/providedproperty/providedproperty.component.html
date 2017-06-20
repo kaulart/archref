@@ -1,9 +1,11 @@
+<!-- ProvidedProperty Area -->
 <div class="tab-panel rounded">
 
 	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area ">
 
 		<div class="panel panel-default">
-
+			
+			<!-- Header -->
 			<div class="row panel-heading control-panel">
 
 				<h3 class="col-sm-6">Provided Properties</h3>
@@ -14,7 +16,8 @@
 				</button>
 
 			</div>
-
+			
+			<!-- Input Panel -->
 			<div class="collapse panel-collapse w3-theme-l1 input-panel" id="createPropertyArea">
 				<form #createNodeTypeForm="ngForm">
 
@@ -36,12 +39,13 @@
 
 						</div>
 					</div>
-					<button type="submit" class="btn btn-success" [disabled]="!createNodeTypeForm.form.valid" (click)="createProperty()">Create</button>
+					<button type="submit" class="btn btn-success" [disabled]="!createNodeTypeForm.form.valid" (click)="createProvidedProperty()">Create</button>
 				</form>
 			</div>
 
 		</div>
 
+		<!-- Data Table -->
 		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
 			<table class="w3-table-all table-striped w3-bordered">
 				<thead>
@@ -51,7 +55,6 @@
 						<th class="table-head">Name</th>
 						<th class="table-head">Value</th>
 						<th class="table-head">Edit</th>
-						<th class="table-head">Export</th>
 						<th class="table-head">Delete</th>
 					</tr>
 				</thead>
@@ -62,13 +65,10 @@
 					    <td>{{ property.id }}</td>
 						<td>{{ property.name }}</td>
 						<td>{{ property.value }}</td>
-						<td><button type="button" data-toggle="modal" data-target="#editPropertyModal" class="w3-blue btn" (click)="setProperty(property)">
+						<td><button type="button" data-toggle="modal" data-target="#editPropertyModal" class="w3-blue btn" (click)="setProvidedProperty(property)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button></td>
-						<td><button class="btn" disabled (click)="exportProperty(nodeType.id)">
-								<i class="fa fa-download" aria-hidden="true"></i>
-							</button></td>
-						<td><button class="w3-red btn" (click)="deleteProperty(property.id)">
+						<td><button class="w3-red btn" (click)="deleteProvidedProperty(property.id)">
 								<i class="fa fa-trash" aria-hidden="true"></i>
 							</button></td>
 					</tr>
@@ -78,13 +78,13 @@
 	</div>
 </div>
 
-<!-- Modal for Edit Repository-->
+<!-- Modal for Edit Provided Property-->
 <div class="modal fade modal-position" id=editPropertyModal tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel"
 	aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Edit Property</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Edit Provided Property</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -92,25 +92,17 @@
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="editProvidedProperty.name" #nameProperty type="text"
+						<label for="nameProperty">Name: </label> <input #nameProperty type="text"
 							class="form-control" id="nameProperty" value="{{editProvidedProperty.name}}" required>
-						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!nameProperty.errors.required">Name is required</div>
-
-						</div>
 					</div>
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="editProvidedProperty.value" #valueProperty type="text"
+						<label for="valueProperty">Value: </label> <input #valueProperty type="text"
 							class="form-control" id="valueProperty" value="{{editProvidedProperty.value}}" required>
-						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!valueProperty.errors.required">Value is required</div>
-
-						</div>
 					</div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="updateProperty()" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-primary" (click)="updateProvidedProperty(nameProperty.value, valueProperty.value)" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>

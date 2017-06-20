@@ -1,0 +1,36 @@
+<!-- NodeTemplate Component -->
+<div class="tab-panel rounded">
+
+	<div id="accordion" class="w3-theme-d2 panel-group collapsed_area ">
+		
+		<!-- Header -->
+		<div class="panel panel-default">
+			<div class="row panel-heading control-panel">
+				<h3 class="col-sm-3">Node Template</h3>
+			</div>
+		</div>
+		
+		<!-- DataTable -->
+		<div class="middle_collapse_area col-12-sm w3-responsive w3-theme-l1 table-container">
+			<table class="w3-table-all table-striped w3-bordered">
+				<thead>
+					<tr class="w3-theme-d3">
+						<th class="table-head"></th>
+						<th class="table-head">Nr.</th>
+						<th class="table-head">Name</th>
+						<th class="table-head">ID</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: nodeTemplate.id}" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates">
+						<td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td>{{ currentTopologyTemplate.nodeTemplates.indexOf(nodeTemplate) + 1 }}</td>
+						<td>{{ nodeTemplate.name }}</td>
+						<td>{{ nodeTemplate.id }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

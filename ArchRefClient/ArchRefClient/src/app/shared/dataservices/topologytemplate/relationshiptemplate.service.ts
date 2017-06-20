@@ -20,7 +20,7 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all RelationshipTemplate REQUEST
+   * @request - getRelationshipTemplates - Send GET all RelationshipTemplate REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getRelationshipTemplates(): Observable<RelationshipTemplate[]> {
@@ -30,7 +30,21 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST RelationshipTemplate REQUEST
+   * @request - getRelationshipTemplate - Send GET RelationshipTemplate REQUEST
+   *
+   * @param - id: number - ID of the RelationshipTemplate which should be retrieved from the database
+   *
+   *******************************************************************************************************************************************************************************************************/
+  public getRelationshipTemplate(id: number): Observable<RelationshipTemplate> {
+    Logger.info('[REQUEST - RELATIONSHIPTEMPLATE]: Send GET Relationship Template Request with ID: ' + id, RelationshipTemplateService.name);
+    return this.http.get(this.relationshipTempalteUrl + '/' + id).map(this.extractRelationshipTemplateData).catch(this.handleError);
+  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @request - createRelationshipTemplate - Send POST RelationshipTemplate REQUEST
+   *
+   * @param - relationshipTemplate: RelationshipTemplate - RelationshipTemplate which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
@@ -43,7 +57,9 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT RelationshipTemplate REQUEST
+   * @request - updateRelationshipTemplate - Send PUT RelationshipTemplate REQUEST
+   *
+   * @param - relationshipTemplate: RelationshipTemplate - RelationshipTemplate which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateRelationshipTemplate(relationshipTemplate: RelationshipTemplate): Observable<RelationshipTemplate> {
@@ -56,7 +72,9 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE RelationshipTemplate REQUEST
+   * @request - deleteRelationshipTemplate - Send DELETE RelationshipTemplate REQUEST
+   *
+   * @param - id: number - ID of the RelationshipTemplate which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteRelationshipTemplate(id: number): Observable<RelationshipTemplate> {
@@ -68,18 +86,27 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractRelationshipTemplateDataList - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractRelationshipTemplateDataList(res) {
+  public extractRelationshipTemplateDataList(res: Response) {
     let body = res.json();
     let relationshipTemplateList: RelationshipTemplate[] = [];
     Logger.info('[RESPONSE - RELATIONSHIPTEMPLATE]: Extract Data of Response Body', RelationshipTemplateService.name);
     Logger.data('[RESPONSE - RELATIONSHIPTEMPLATE]: ' + JSON.stringify(body), RelationshipTemplateService.name);
     for (let relationshipTemplate of body) {
       let tempRelationshipTemplate: RelationshipTemplate = new RelationshipTemplate(relationshipTemplate.sourceNodeId, relationshipTemplate.targetNodeId, relationshipTemplate.path, relationshipTemplate.relationshipTypeId, relationshipTemplate.topologyTemplateId);
-      relationshipTemplate.name = tempRelationshipTemplate.name;
       tempRelationshipTemplate.id = relationshipTemplate.id;
+      tempRelationshipTemplate.name = relationshipTemplate.name;
+      tempRelationshipTemplate.icon = relationshipTemplate.icon;
+      tempRelationshipTemplate.expectedProperties = relationshipTemplate.expectedProperties;
+      tempRelationshipTemplate.providedProperties = relationshipTemplate.providedProperties;
+      tempRelationshipTemplate.levelGraphNode = relationshipTemplate.levelGraphNode;
+      tempRelationshipTemplate.levelGraphNodeId = relationshipTemplate.levelGraphNodeId;
+      tempRelationshipTemplate.sourceNodeTemplate = relationshipTemplate.sourceNodeTemplate;
+      tempRelationshipTemplate.targetNodeTemplate = relationshipTemplate.targetNodeTemplate;
       relationshipTemplateList.push(tempRelationshipTemplate);
     }
     return relationshipTemplateList || {};
@@ -87,7 +114,9 @@ export class RelationshipTemplateService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractRelationshipTemplateData - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractRelationshipTemplateData(res: Response) {
@@ -97,12 +126,21 @@ export class RelationshipTemplateService {
     let relationshipTemplate: RelationshipTemplate = new RelationshipTemplate(body.sourceNodeId, body.targetNodeId, body.path, body.relationshipTypeId, body.topologyTemplateId);
     relationshipTemplate.id = body.id;
     relationshipTemplate.name = body.name;
+    relationshipTemplate.icon = body.icon;
+    relationshipTemplate.expectedProperties = body.expectedProperties;
+    relationshipTemplate.providedProperties = body.providedProperties;
+    relationshipTemplate.levelGraphNode = body.levelGraphNode;
+    relationshipTemplate.levelGraphNodeId = body.levelGraphNodeId;
+    relationshipTemplate.sourceNodeTemplate = body.sourceNodeTemplate;
+    relationshipTemplate.targetNodeTemplate = body.targetNodeTemplate;
     return relationshipTemplate || {};
   }
 
   /********************************************************************************************************************************************************************************************************
    *
    * @error - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

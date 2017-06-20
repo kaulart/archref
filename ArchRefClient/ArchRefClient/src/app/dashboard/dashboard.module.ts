@@ -27,10 +27,10 @@ import { ContextmenuModule } from 'ng2-contextmenu';
 
 /*******************************************************************************************************************
  *
- * @module DashboardModule - Lazy loaded module as wrapper for all application modules and components which should
- *                           be accessible in the TopologyToolModule
+ * @module - DashboardModule - Lazy loaded module as wrapper for all application modules and components which should
+ *                             be accessible in the TopologyToolModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export class DashboardModule { }

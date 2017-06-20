@@ -3,9 +3,9 @@ import { Route } from '@angular/router';
 
 /*******************************************************************************************************************
  *
- * @route TopologyTemplateToolRoutes - Path to the TopologyTemplateToolComponent
+ * @route - TopologyTemplateToolRoutes - Path to the TopologyTemplateToolComponent
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************/
 export const TopologyTemplateToolRoutes: Route[] = [

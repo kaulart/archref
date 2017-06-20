@@ -1,8 +1,8 @@
 /*********************************************************************************************************************************************************************************************************
  *
- * @class Logger Helper class for customized logging
+ * @class - Logger - Helper class for customized logging
  *
- * //TODO - Further improvement write a log file to the file system and improve the representation of JSON Objects in the console currently only displayed as string
+ * // TODO - Further improvement write a log file to the file system and improve the representation of JSON Objects in the console currently only displayed as string
  *
  * @author Arthur Kaul
  *
@@ -13,19 +13,25 @@ export class Logger {
    *
    * @method data - Logger for data objects
    *
+   * @param - msg: string - String which should be written to log
+   * @param - className: any - Name of the class where the Logger was called
+   *
    ******************************************************************************************************************************************************************************************************/
-  static data(msg: string, classType: any) {
-    console.log('[DATA] ' + classType + '  [Message:]  ' + msg);
+  static data(msg: string, className: any) {
+    console.log('[DATA] ' + className + '  [Message:]  ' + msg);
   }
 
   /*******************************************************************************************************************************************************************************************************
    *
    * @method data - Logger for info messages
    *
+   * @param - msg: string - String which should be written to log
+   * @param - className: any - Name of the class where the Logger was called
+   *
    ******************************************************************************************************************************************************************************************************/
-  static info(msg: string, classType: any) {
+  static info(msg: string, className: any) {
 
-    console.log('[INFO] ' + classType + '  [Message:]  ' + msg);
+    console.log('[INFO] ' + className + '  [Message:]  ' + msg);
 
   }
 
@@ -33,10 +39,13 @@ export class Logger {
    *
    * @method warning - Logger for warning messages
    *
+   * @param - msg: string - String which should be written to log
+   * @param - className: any - Name of the class where the Logger was called
+   *
    ******************************************************************************************************************************************************************************************************/
-  static warning(msg: string, classType: any) {
+  static warning(msg: string, className: any) {
 
-    console.warn('[WARNING] ' + classType + '  [Message:]  ' + msg);
+    console.warn('[WARNING] ' + className + '  [Message:]  ' + msg);
 
   }
 
@@ -44,10 +53,13 @@ export class Logger {
    *
    * @method error - Logger for error messages
    *
+   * @param - msg: string - String which should be written to log
+   * @param - className: any - Name of the class where the Logger was called
+   *
    ******************************************************************************************************************************************************************************************************/
-  static error(msg: string, classType: any) {
+  static error(msg: string, className: any) {
 
-    console.error('[ERROR] ' + classType + '  [Message:]  ' + msg);
+    console.error('[ERROR] ' + className + '  [Message:]  ' + msg);
 
   }
 

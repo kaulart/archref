@@ -48,22 +48,18 @@
 						<th class="table-head">Name</th>
 						<th class="table-head">ID</th>
 						<th class="table-head">Edit</th>
-						<th class="table-head">Export</th>
 						<th class="table-head">Delete</th>
 					</tr>
 				</thead>
 
 				<tbody>
 					<tr *ngFor="let nodeType of currentRepository.nodeTypeList">
-						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{name: nodeType.name , id: nodeType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{name: nodeType.name , id: nodeType.id}">{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
-						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{name: nodeType.name , id: nodeType.id}">{{ nodeType.name }}</td>
-						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{name: nodeType.name , id: nodeType.id}">{{ nodeType.id }}</td>
+						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
+						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ nodeType.name }}</td>
+						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ nodeType.id }}</td>
 						<td><button type="button" data-toggle="modal" data-target="#editNodeTypeModal" class="w3-blue btn" (click)="setEditNodeType(nodeType)">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
-							</button></td>
-						<td><button class="btn" disabled (click)="exportNodeType(nodeType.id)">
-								<i class="fa fa-download" aria-hidden="true"></i>
 							</button></td>
 						<td><button class="w3-red btn" (click)="deleteNodeType(nodeType.id)">
 								<i class="fa fa-trash" aria-hidden="true"></i>

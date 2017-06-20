@@ -16,12 +16,12 @@ import { RouterModule } from '@angular/router';
   exports: [RepositoryComponent]
 })
 
-/*******************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @module RepositoryModule - Lazy loaded module as wrapper for all application modules and components which
- *                            should be accessible in the RepositoryModule
+ * @module - RepositoryModule - Lazy loaded module as wrapper for all application modules and components which
+ *                              should be accessible in the RepositoryModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ******************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class RepositoryModule {}

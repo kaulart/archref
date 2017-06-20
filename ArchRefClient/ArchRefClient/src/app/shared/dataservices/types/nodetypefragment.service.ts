@@ -20,7 +20,7 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET all NodeTypeFragment REQUEST
+   * @request - getNodeTypeFragments - Send GET all NodeTypeFragment REQUEST
    *
    *******************************************************************************************************************************************************************************************************/
   public getNodeTypeFragments(): Observable<NodeTypeFragment[]> {
@@ -30,7 +30,9 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send GET NodeTypeFragment REQUEST
+   * @request - getNodeTypeFragment - Send GET NodeTypeFragment REQUEST
+   *
+   * @param - id: number - ID of the NodeTypeFragment which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public getNodeTypeFragment(id: number): Observable<NodeTypeFragment> {
@@ -40,7 +42,9 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send POST NodeTypeFragment REQUEST
+   * @request - createNodeTypeFragment - Send POST NodeTypeFragment REQUEST
+   *
+   * @param - nodeTypeFragment: NodeTypeFragment - NodeTypeFragment which should be created
    *
    *******************************************************************************************************************************************************************************************************/
   public createNodeTypeFragment(nodeTypeFragment: NodeTypeFragment): Observable<NodeTypeFragment> {
@@ -53,7 +57,9 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send PUT NodeTypeFragment REQUEST
+   * @request - updateNodeTypeFragment - Send PUT NodeTypeFragment REQUEST
+   *
+   * @param - nodeTypeFragment: NodeTypeFragment - NodeTypeFragment which should be updated
    *
    *******************************************************************************************************************************************************************************************************/
   public updateNodeTypeFragment(nodeTypeFragment: NodeTypeFragment): Observable<NodeTypeFragment> {
@@ -66,7 +72,9 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @request - Send DELETE NodeTypeFragment REQUEST
+   * @request - deleteNodeTypeFragment - Send DELETE NodeTypeFragment REQUEST
+   *
+   * @param - id: number - ID of the NodeTypeFragment which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
   public deleteNodeTypeFragment(id: number): Observable<NodeTypeFragment> {
@@ -78,10 +86,12 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data list
+   * @response - extractNodeTypeFragments - Extract data from response data list
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
-  public extractNodeTypeFragments(res) {
+  public extractNodeTypeFragments(res: Response) {
     let body = res.json();
     let nodeTypeFragments: NodeTypeFragment[] = [];
     Logger.info('[RESPONSE - NODETYPEFRAGMENT]: Extract Data of Response Body', NodeTypeFragmentService.name);
@@ -100,7 +110,9 @@ export class NodeTypeFragmentService {
 
   /********************************************************************************************************************************************************************************************************
    *
-   * @response - Extract data from response data object
+   * @response - extractNodeTypeFragment - Extract data from response data object
+   *
+   * @param - res: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private extractNodeTypeFragment(res: Response) {
@@ -119,6 +131,8 @@ export class NodeTypeFragmentService {
   /********************************************************************************************************************************************************************************************************
    *
    * @error - Error Handling
+   *
+   * @param - error: Response - Response Object
    *
    *******************************************************************************************************************************************************************************************************/
   private handleError(error: Response | any) {

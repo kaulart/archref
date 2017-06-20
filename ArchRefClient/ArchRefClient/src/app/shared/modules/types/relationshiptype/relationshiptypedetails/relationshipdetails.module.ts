@@ -13,12 +13,12 @@ import { FileUploadModule } from 'ng2-file-upload';
   exports: [RelationshipTypeDetailsComponent, GeneralDataComponent]
 })
 
-/*******************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @module RelationshipTypeDetailsModule - Lazy loaded module as wrapper for all application modules and components which
- *                                         should be accessible in the RelationshipTypeDetailsModule
+ * @module - RelationshipTypeDetailsModule - Lazy loaded module as wrapper for all application modules and components which
+ *                                           should be accessible in the RelationshipTypeDetailsModule
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ******************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class RelationshipTypeDetailsModule { }

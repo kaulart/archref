@@ -12,18 +12,18 @@ import { FlashMessage } from 'angular2-flash-message';
   styleUrls: ['./relationshiptypedetails.component.css']
 })
 
-/*********************************************************************************************************************************************
+/**********************************************************************************************************************************************************************************************************
  *
- * @component RelationshipTypeDetailsComponent Class - The component displays the detaisl of a RelationshipType Object.
+ * @component - RelationshipTypeDetailsComponent Class - The component displays the detaisl of a RelationshipType Object.
  *
  *
- * @field currentRelationshipType: RelationshipType -  RelationshipType which is currently selected
- * @field flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
- *                                     cause a "Over Flash" for the user experience
+ * @field - currentRelationshipType: RelationshipType -  RelationshipType which is currently selected
+ * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
+ *                                       cause a "Over Flash" for the user experience
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
- ********************************************************************************************************************************************/
+ *********************************************************************************************************************************************************************************************************/
 export class RelationshipTypeDetailsComponent implements OnInit {
 
   currentRelationshipType: RelationshipType = new RelationshipType();
@@ -31,18 +31,17 @@ export class RelationshipTypeDetailsComponent implements OnInit {
   public flashMessage = new FlashMessage();
 
   constructor(private route: ActivatedRoute,
-    private router: Router, private relationshipTypeService: RelationshipTypeService, private flashMessageService: FlashMessageService) { }
+    private router: Router,
+    private relationshipTypeService: RelationshipTypeService,
+    private flashMessageService: FlashMessageService) { }
 
-  /*********************************************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method ngOnInit is called when the component is initialized
+   * @method - ngOnInit - Is called when the component is initialized
    *
-   ********************************************************************************************************************************************/
+   *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Iniitalize RelationshipTypeDetails Component', RelationshipTypeDetailsComponent.name);
-    this.route.queryParams.subscribe(params => {
-      this.currentRelationshipType.name = params['name'] || 'Unnamed';
-    });
 
     this.route.queryParams.subscribe(params => {
       this.currentRelationshipType.id = params['id'] || null;
@@ -52,12 +51,13 @@ export class RelationshipTypeDetailsComponent implements OnInit {
 
   }
 
-  /****************************************************************************************************************
+  /********************************************************************************************************************************************************************************************************
    *
-   * @method - Retrieve RelationshipType - Load RelationshipType with id from the database
-   * @param id: number - ID of the RelationshipType witch should be loaded
+   * @method - retrieveRelationshipType - Load RelationshipType with id from the database
    *
-   ****************************************************************************************************************/
+   * @param - id: number - ID of the RelationshipType witch should be loaded
+   *
+   *******************************************************************************************************************************************************************************************************/
   retrieveRelationshipType(id: number) {
      Logger.info('Retrieve RelationshipType Data', RelationshipTypeDetailsComponent.name);
     this.relationshipTypeService.getRelationshipType(id)

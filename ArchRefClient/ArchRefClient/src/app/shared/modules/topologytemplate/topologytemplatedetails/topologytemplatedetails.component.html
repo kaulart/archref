@@ -1,3 +1,42 @@
-<p>
-  topologytemplatedetails works!
-</p>
+<!-- LevelGraphDetailsComponent -->
+<div class="dashboard_area">
+	
+	<!-- Header -->
+	<div class="w3-theme-d4 row panel-heading control-panel">
+		<div class="col-sm-6">
+			<h2>
+				Topology Template Name: <input disabled style="color: black" value="{{currentTopologyTemplate.name}}"/>
+			</h2>
+		</div>
+		<div class="col-sm-6">
+			<h2>
+				Topology Template ID: <input disabled style="color: black" value="{{currentTopologyTemplate.id}}"/>
+			</h2>
+		</div>
+	</div>
+	
+	<!-- Tab Panel -->
+	<div class="data-panel ">
+		
+		<!-- Tab Header -->
+		<ul class="tabrow nav" role="tablist">
+			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#levelGraphNode" style="color: white" role="tab">Node Template</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#levelGraphRelation" style="color: white" role="tab">Relationship Template</a></li>
+		</ul>
+
+		<!-- Tab Content -->
+		<div class="tab-content tab-panel">
+			
+			<div id="levelGraphNode" class="rounded tab-pane active" role="tabpanel">
+				<!--  Selector for the NodeTypeComponent -->
+				<app-nodetemplate [currentTopologyTemplate]="currentTopologyTemplate"></app-nodetemplate>
+			</div>
+			
+		    <div id="levelGraphRelation" class="rounded tab-pane " role="tabpanel">
+				<!-- Selector for the RelationshipTypeComponent -->
+				<app-relationshiptemplate [currentRelationshipTemplates]="currentTopologyTemplate.relationshipTemplates"></app-relationshiptemplate>
+			</div>
+		
+		</div>
+	</div>
+</div>
