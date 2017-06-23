@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model.types;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -17,21 +19,20 @@ import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.model.topology.NodeTemplate;
 
 @Entity
-@Table(name="NODETYPE")
-public class NodeType extends de.arthurkaul.archref.model.Entity{
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="REPOSITORY")
-	@JsonBackReference(value="repository-nodeType")
+@Table(name = "NODETYPE")
+public class NodeType extends de.arthurkaul.archref.model.Entity {
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "REPOSITORY")
+	@JsonBackReference(value = "repository-nodeType")
 	private Repository repository;
-	
-	@Column(name="REPOSITORY_ID")
+
+	@Column(name = "REPOSITORY_ID")
 	private Long repositoryId;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="levelGraphNode")
-	@JsonManagedReference (value = "nodeType-nodeTemplate")
-	private Collection<NodeTemplate> nodeTemplates;
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
+	@JsonManagedReference(value = "nodeType-nodeTemplate")
+	private List<NodeTemplate> nodeTemplates = new ArrayList<NodeTemplate>();
 
 	public Repository getRepository() {
 		return repository;
@@ -40,7 +41,7 @@ public class NodeType extends de.arthurkaul.archref.model.Entity{
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
-	
+
 	public Long getRepositoryId() {
 		return repositoryId;
 	}

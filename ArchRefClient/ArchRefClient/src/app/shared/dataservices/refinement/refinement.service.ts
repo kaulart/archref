@@ -25,15 +25,31 @@ export class RefinementService {
    *
    * @param - idTopologyTemplate: number - ID of the TopologyTemplate which should be refined
    * @param - steps: number - Number of refinement steps
-   * @param - levelGraphs: LevelGraphs - which should be used for refinement
+   * @param - levelGraphs: LevelGraphs - Merged Level Graph which should be used for refinement
    *
    *******************************************************************************************************************************************************************************************************/
-  public refineTopologyTemplate(idTopologyTemplate: number, steps: number, levelGraph: LevelGraph): Observable<TopologyTemplate> {
+  public refineTopologyTemplate(idTopologyTemplate: number, levelGraph: LevelGraph, smi: number): Observable<TopologyTemplate> {
     Logger.info('[REQUEST - REFINEMNET]: Send GET Refined Topology Template Request', RefinementService.name);
     Logger.info('[REQUEST - REFINEMNET]: ' + JSON.stringify(levelGraph), TopologyTemplateService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.refinmentAlgorithmURL + '/refineTopologyTemplate/' + idTopologyTemplate + '/' + steps, levelGraph, options).map(this.extractTopologyTemplate).catch(this.handleError);
+    return this.http.post(this.refinmentAlgorithmURL + '/refineTopologyTemplate/' + idTopologyTemplate + '/' + smi, levelGraph, options).map(this.extractTopologyTemplate).catch(this.handleError);
+  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @request - Send GET refineOneStepTopologyTemplate REQUEST
+   *
+   * @param - idTopologyTemplate: number - ID of the TopologyTemplate which should be refined
+   * @param - levelGraph: LevelGraph - Merged Level Graph which should be used for refinement
+   *
+   *******************************************************************************************************************************************************************************************************/
+  public refineOneStepTopologyTemplate(idTopologyTemplate: number, levelGraph: LevelGraph, smi: number): Observable<TopologyTemplate> {
+    Logger.info('[REQUEST - REFINEMNET]: Send GET Refined Topology Template Request', RefinementService.name);
+    Logger.info('[REQUEST - REFINEMNET]: ' + JSON.stringify(levelGraph), TopologyTemplateService.name);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.refinmentAlgorithmURL + '/refineOneStepTopologyTemplate/' + idTopologyTemplate + '/' + smi, levelGraph, options).map(this.extractTopologyTemplate).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -50,13 +66,14 @@ export class RefinementService {
     Logger.info('[RESPONSE - REFINEMNET]: ' + JSON.stringify(body), TopologyTemplateService.name);
     for (let topologytemplate of body) {
       let tempTopologyTemplate: TopologyTemplate = new TopologyTemplate();
-      tempTopologyTemplate.id = topologytemplate.id;
-      tempTopologyTemplate.name = topologytemplate.name;
-      tempTopologyTemplate.nodeTemplates = topologytemplate.nodeTemplates;
-      tempTopologyTemplate.relationshipTemplates = topologytemplate.relationshipTemplates;
-      tempTopologyTemplate.parentTopologyTemplate = topologytemplate.parentTopologyTemplate;
-      tempTopologyTemplate.childTopologyTemplates = topologytemplate.childTopologyTemplates;
-      tempTopologyTemplate.abstractionLevel = topologytemplate.abstractionLevel;
+      tempTopologyTemplate = topologytemplate;
+//      tempTopologyTemplate.id = topologytemplate.id;
+//      tempTopologyTemplate.name = topologytemplate.name;
+//      tempTopologyTemplate.nodeTemplates = topologytemplate.nodeTemplates;
+//      tempTopologyTemplate.relationshipTemplates = topologytemplate.relationshipTemplates;
+//      tempTopologyTemplate.parentTopologyTemplate = topologytemplate.parentTopologyTemplate;
+//      tempTopologyTemplate.childTopologyTemplates = topologytemplate.childTopologyTemplates;
+//      tempTopologyTemplate.abstractionLevel = topologytemplate.abstractionLevel;
 
       topologyTemplateList.push(tempTopologyTemplate);
     }
@@ -75,13 +92,14 @@ export class RefinementService {
     Logger.info('[RESPONSE - REFINEMNET]: ' + JSON.stringify(body), TopologyTemplateService.name);
     Logger.info('[RESPONSE - REFINEMNET]: Extract Topology Template Data', TopologyTemplateService.name);
     let topologyTemplate: TopologyTemplate = new TopologyTemplate();
-    topologyTemplate.id = body.id;
-    topologyTemplate.name = body.name;
-    topologyTemplate.nodeTemplates = body.nodeTemplates;
-    topologyTemplate.relationshipTemplates = body.relationshipTemplates;
-    topologyTemplate.parentTopologyTemplate = body.parentTopologyTemplate;
-    topologyTemplate.childTopologyTemplates = body.childTopologyTemplates;
-    topologyTemplate.abstractionLevel = body.abstractionLevel;
+    topologyTemplate = body;
+//    topologyTemplate.id = body.id;
+//    topologyTemplate.name = body.name;
+//    topologyTemplate.nodeTemplates = body.nodeTemplates;
+//    topologyTemplate.relationshipTemplates = body.relationshipTemplates;
+//    topologyTemplate.parentTopologyTemplate = body.parentTopologyTemplate;
+//    topologyTemplate.childTopologyTemplates = body.childTopologyTemplates;
+//    topologyTemplate.abstractionLevel = body.abstractionLevel;
     return topologyTemplate || {};
   }
 

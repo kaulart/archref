@@ -25,7 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  *********************************************************************************************************************************************************************************************************/
 export class NodeTemplateDetailsComponent implements OnInit {
 
-  currentNodeTemplate: NodeTemplate = new NodeTemplate(null, null, null, null, null, null);
+  currentNodeTemplate: NodeTemplate = new NodeTemplate();
   public flashMessage = new FlashMessage();
 
   constructor(private route: ActivatedRoute,

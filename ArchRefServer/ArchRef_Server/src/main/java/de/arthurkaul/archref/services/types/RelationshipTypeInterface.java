@@ -4,18 +4,24 @@ import java.util.Collection;
 
 import de.arthurkaul.archref.model.types.RelationshipType;
 
-
+/********************************************************************************************************************************************************************************************************
+ * 
+ * @interface - RelationshipTypeInterface - Interface for the RelationshipTypes define all Methods which should be implemented by this interface
+ * 
+ * @author - Arthur Kaul
+ *
+ *******************************************************************************************************************************************************************************************************/
 public interface RelationshipTypeInterface {
 
-	  Collection<RelationshipType> findAllRelationshipTypes();
-	    
-	  RelationshipType findById(long id);
+	Collection<RelationshipType> findAllRelationshipTypes();
 
-	  RelationshipType create(RelationshipType relationshipType);
+	RelationshipType findById(long id);
 
-	  RelationshipType update(RelationshipType relationshipType);
+	RelationshipType create(RelationshipType relationshipType);
 
-	  void delete(long id);
-	    
-	  void deleteAllRelationshipTypes();
+	RelationshipType update(RelationshipType relationshipType);
+
+	void delete(long id);
+
+	void deleteAllRelationshipTypes();
 }

@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model.levelgraph;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,30 +9,24 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.topology.TopologyTemplate;
+import de.arthurkaul.archref.model.Constants;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraph Data Model - LevelGraph Model is used for the refinement
- *       of TopologyTemplate Data Models
+ * @class - LevelGraph - LevelGraph Model is used for the refinement of TopologyTemplate Data Models
  *
- * @fields - id: number - ID of the LevelGraph
- * @fields - name: string - Name of the LevelGraph
- * @fields - levels: Level[] - Array of the different levels of a LevelGraph
- * @fields - levelGraphNodes: LevelGraphNode[] - Array of all LevelGraphNodes in
- *         the LevelGraph
- * @fields - levelGraphRelations: LevelGraphRelation[] - Array of all
- *         LevelGraphRelations in the LevelGraph
- * @fields - topologyTemplates: TopologyTemplate[] - Array of all
- *         TopologyTemplates which were created/generated with the LevelGraph
+ * @field - Long id - ID of the LevelGraph
+ * @field - String name - Name of the LevelGraph
+ * @field - List<Level> levels - List of the different levels of a LevelGraph
+ * @field - List<LevelGraphNode> levelGraphNodes - List of all LevelGraphNodes in the LevelGraph
+ * @field - List<LevelGraphRelation> levelGraphRelations - List of all LevelGraphRelations in the LevelGraph
+ * @field - List<TopologyTemplate> topologyTemplates - List of all TopologyTemplates which were created/generated with the LevelGraph
  *
  * @author Arthur Kaul
  *
@@ -47,11 +42,6 @@ public class LevelGraph {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	// private Long levelGraphMatrix[][][];
-	// private Long levelGraphRefineToMatrix[][][];
-	// private Long levelGraphConnectToMatrix[][][];
-	// private Long levelGraphHostedOnMatrix[][][];
-
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")
@@ -62,47 +52,50 @@ public class LevelGraph {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levels")
-	private Collection<Level> levels;
+	private List<Level> levels = new ArrayList<Level>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levelgraphnodes")
-	private Collection<LevelGraphNode> levelGraphNodes;
+	private List<LevelGraphNode> levelGraphNodes = new ArrayList<LevelGraphNode>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levelgraphrelation")
-	private Collection<LevelGraphRelation> levelGraphRelations;
+	private List<LevelGraphRelation> levelGraphRelations = new ArrayList<LevelGraphRelation>();
 
-	@ManyToMany
-	@JoinTable(name = "LEVELGRAPH_TOPOLOGYTEMPLATE", joinColumns = @JoinColumn(name = "LEVELGRAPH_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "TOPOLOGY_ID", referencedColumnName = "ID"))
-	private Collection<TopologyTemplate> topologyTemplates;
+	private ArrayList<ArrayList<LevelGraphNode>> nodeTypes = new ArrayList<ArrayList<LevelGraphNode>>();
+	private ArrayList<ArrayList<LevelGraphNode>> nodeTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
+	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypes = new ArrayList<ArrayList<LevelGraphNode>>();
+	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
+
+	private int depth = 0;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
-	 * Getter and Setter for the fields
+	 * @getter/ @setter - Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	public Collection<Level> getLevels() {
+	public List<Level> getLevels() {
 		return levels;
 	}
 
-	public void setLevels(Collection<Level> levels) {
+	public void setLevels(List<Level> levels) {
 		this.levels = levels;
 	}
 
-	public Collection<LevelGraphNode> getLevelGraphNodes() {
+	public List<LevelGraphNode> getLevelGraphNodes() {
 		return levelGraphNodes;
 	}
 
-	public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+	public void setLevelGraphNodes(List<LevelGraphNode> levelGraphNodes) {
 		this.levelGraphNodes = levelGraphNodes;
 	}
 
-	public Collection<LevelGraphRelation> getLevelGraphRelations() {
+	public List<LevelGraphRelation> getLevelGraphRelations() {
 		return levelGraphRelations;
 	}
 
-	public void setLevelGraphRelations(Collection<LevelGraphRelation> levelGraphRelations) {
+	public void setLevelGraphRelations(List<LevelGraphRelation> levelGraphRelations) {
 		this.levelGraphRelations = levelGraphRelations;
 	}
 
@@ -122,17 +115,104 @@ public class LevelGraph {
 		this.name = name;
 	}
 
-	public Collection<TopologyTemplate> getTopologyTemplates() {
-		return topologyTemplates;
+	@JsonIgnore
+	public ArrayList<ArrayList<LevelGraphNode>> getNodeTypes() {
+		return nodeTypes;
 	}
 
-	public void setTopologyTemplates(Collection<TopologyTemplate> topologyTemplates) {
-		this.topologyTemplates = topologyTemplates;
+	@JsonIgnore
+	public void setNodeTypes(ArrayList<ArrayList<LevelGraphNode>> nodeTypes) {
+		this.nodeTypes = nodeTypes;
 	}
 
-	public void constructLevelGraphMatrix() {
+	@JsonIgnore
+	public ArrayList<ArrayList<LevelGraphNode>> getNodeTypeFragments() {
+		return nodeTypeFragments;
+	}
 
-		// TODO
+	@JsonIgnore
+	public void setNodeTypeFragments(ArrayList<ArrayList<LevelGraphNode>> nodeTypeFragments) {
+		this.nodeTypeFragments = nodeTypeFragments;
+	}
+
+	@JsonIgnore
+	public ArrayList<ArrayList<LevelGraphNode>> getRelationshipTypes() {
+		return relationshipTypes;
+	}
+
+	@JsonIgnore
+	public void setRelationshipTypes(ArrayList<ArrayList<LevelGraphNode>> relationshipTypes) {
+		this.relationshipTypes = relationshipTypes;
+	}
+
+	@JsonIgnore
+	public ArrayList<ArrayList<LevelGraphNode>> getRelationshipTypeFragments() {
+		return relationshipTypeFragments;
+	}
+
+	@JsonIgnore
+	public void setRelationshipTypeFragments(ArrayList<ArrayList<LevelGraphNode>> relationshipTypeFragments) {
+		this.relationshipTypeFragments = relationshipTypeFragments;
+	}
+
+	// public ArrayList<ArrayList<LevelGraphRelation>> getConnectOverToRelations() {
+	// return connectOverToRelations;
+	// }
+	//
+	// public void setConnectOverToRelations(ArrayList<ArrayList<LevelGraphRelation>> connectedToRelations) {
+	// this.connectOverToRelations = connectedToRelations;
+	// }
+	//
+	// public ArrayList<ArrayList<LevelGraphRelation>> getRefineToRelations() {
+	// return refineToRelations;
+	// }
+	//
+	// public void setRefineToRelations(ArrayList<ArrayList<LevelGraphRelation>> refineToRelations) {
+	// this.refineToRelations = refineToRelations;
+	// }
+
+	@JsonIgnore
+	public int getDepth() {
+		return depth;
+	}
+
+	@JsonIgnore
+	public void setDepth(int maxLevel) {
+		this.depth = maxLevel;
+	}
+
+	/**
+	 * 
+	 * @method - splitNodesAndRelations - Split the nodes and relations of a level graph in separate list according to the type and level of the LevelGraphNode / LevelGraphRelation Source
+	 * 
+	 */
+	public void splitNodesAndRelations() {
+
+		this.setNodeTypes(new ArrayList<ArrayList<LevelGraphNode>>());
+		this.setNodeTypeFragments(new ArrayList<ArrayList<LevelGraphNode>>());
+		this.setRelationshipTypes(new ArrayList<ArrayList<LevelGraphNode>>());
+		this.setRelationshipTypeFragments(new ArrayList<ArrayList<LevelGraphNode>>());
+
+		for (int i = 0; i <= this.depth; i++) {
+			this.nodeTypes.add(new ArrayList<LevelGraphNode>());
+			this.nodeTypeFragments.add(new ArrayList<LevelGraphNode>());
+			this.relationshipTypes.add(new ArrayList<LevelGraphNode>());
+			this.relationshipTypeFragments.add(new ArrayList<LevelGraphNode>());
+		}
+
+		for (LevelGraphNode levelGraphNode : this.levelGraphNodes) {
+			if (levelGraphNode.getLevelGraphNodeType().equals(Constants.NODETYPE)) {
+				this.nodeTypes.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.RELATIONSHIPTYPE)) {
+				this.relationshipTypes.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.NODETYPEFRAGMENT)) {
+				this.nodeTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.RELATIONSHIPTYPEFRAGMENT)) {
+				this.relationshipTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
+			}
+
+		}
+
 	}
 
 }

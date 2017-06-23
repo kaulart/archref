@@ -51,40 +51,24 @@ export class LevelGraph {
     return null;
   }
 
-  public getVisibleLevels(): Level[] {
 
-    let visibleLevels = [];
-
-    for (let i = 0; i < this.levels.length; i++) {
-      if (this.levels[i].visible) {
-        visibleLevels.push(this.levels[i]);
-      }
-    }
-
-    return visibleLevels;
-  }
-
-  public getLevelGraphRelation(levelGraphRelationId: number): LevelGraphRelation {
-    for (let i = 0; i < this.levelGraphRelations.length; i++) {
-      if (this.levelGraphRelations[i].id === levelGraphRelationId) {
-        return this.levelGraphRelations[i];
-      }
-    }
-    return null;
-  }
-
-  public getLevelGraphNode(levelGraphNodeId: number): LevelGraphNode {
-    for (let i = 0; i < this.levelGraphNodes.length; i++) {
-      if (this.levelGraphNodes[i].id === levelGraphNodeId) {
-        return this.levelGraphNodes[i];
-      }
-    }
-    return null;
-  }
-
-  public getNumberOfLevels(): number {
-    return this.levels.length;
-  }
+//  public getLevelGraphRelation(levelGraphRelationId: number): LevelGraphRelation {
+//    for (let i = 0; i < this.levelGraphRelations.length; i++) {
+//      if (this.levelGraphRelations[i].id === levelGraphRelationId) {
+//        return this.levelGraphRelations[i];
+//      }
+//    }
+//    return null;
+//  }
+//
+//  public getLevelGraphNode(levelGraphNodeId: number): LevelGraphNode {
+//    for (let i = 0; i < this.levelGraphNodes.length; i++) {
+//      if (this.levelGraphNodes[i].id === levelGraphNodeId) {
+//        return this.levelGraphNodes[i];
+//      }
+//    }
+//    return null;
+//  }
 
   /*******************************************************************************************************************************************************************************************************
    *

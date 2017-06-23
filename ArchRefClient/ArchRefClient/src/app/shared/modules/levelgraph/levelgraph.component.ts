@@ -1,5 +1,5 @@
 import { Logger } from '../../../../logger/logger';
-import { LEVELGRAPHCONSTANTS } from '../../constants/levelgraphconstants';
+import { Constants } from '../../constants/constants';
 import { Level } from '../../datamodels/levelgraph/level';
 import { LevelGraph } from '../../datamodels/levelgraph/levelgraph';
 import { Component, OnInit } from '@angular/core';
@@ -62,7 +62,7 @@ export class LevelGraphComponent implements OnInit {
     Logger.info('Create LevelGraph', LevelGraphComponent.name);
     this.levelGraphService.createLevelGraph(this.createdLevelGraph).subscribe(levelGraphResponse => {
       for (let i = 0; i < numberOfLevels; i++) {
-        let tempLevel = new Level((i + 1), true, (i * LEVELGRAPHCONSTANTS.LEVELHEIGHT + i * LEVELGRAPHCONSTANTS.LEVELGAPOFFSET), LEVELGRAPHCONSTANTS.LEVELHEIGHT, levelGraphResponse.id);
+        let tempLevel = new Level((i), true, (i * Constants.LEVELHEIGHT + i * Constants.LEVELGAPOFFSET), Constants.LEVELHEIGHT, levelGraphResponse.id);
         tempLevel.levelGraph = levelGraphResponse;
         this.levelService.createLevel(tempLevel)
           .subscribe(levelResponse => {

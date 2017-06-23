@@ -1,4 +1,0 @@
-export class TOPOLOGYTEMPLATECONSTANTS {
-  public static readonly TOPOLOGYTEMPLATENODEHEIGHT = 100;
-  public static readonly TOPOLOGYTEMPLATENODEWIDTH = 200;
-}

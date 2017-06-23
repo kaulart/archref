@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model.levelgraph;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,9 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -23,29 +21,29 @@ import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraphNode Data Model - A node of a LevelGraph
+ * @class - LevelGraphNode - A node of a LevelGraph
  *
- * @Entity
- * @superFields - id: number - ID of the LevelGraphNode
- * @superFields - name: string - Name of the LevelGraphNode
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
+ * @class Entity
+ * @superField - Long id - ID of the LevelGraphNode
+ * @superField - String name - Name of the LevelGraphNode
+ * @superField - List<ExpectedProperty> expectedProperties - Array of expected properties of the LevelGraphNode
+ * @superField - List<ProvidedProperty> providedProperties - Array of provided properties of the LevelGraphNode
  *
- * @Node
- * @superFields - x: number - x Position of the left upper corner of a rectangle
- * @superFields - y: number - y Position of the left upper corner of a rectangle
- * @superFields - width: number - Width of the rectangle
- * @superFields - height: number - Height of the rectangle
+ * @class Node
+ * @superField - float x - x Position of the left upper corner of a rectangle
+ * @superField - float y - y Position of the left upper corner of a rectangle
+ * @superField - float width - Width of the rectangle
+ * @superField - float height - Height of the rectangle
  *
- * @fields - level: Level - Level of the Node
- * @fields - levelId: number - ID of the Level of the Node
- * @fields - levelDepth: number - Level depth of the node
- * @fields - levelGraph: LevelGraph - LevelGraph of the Node
- * @fields - levelGraphId: number - ID of the LevelGraph of the Node
- * @fields - inLevelGraphRelations: LevelGraphRelation[] - Array of all incoming relations of the node
- * @fields - outLevelGraphRelations: LevelGraphRelation[] - Array of all outgoing relations of the node
- * @fields - levelGraphNodeType: string - Type of the LevelGraphNode;
- * @fields - levelGraphNodeTypeId: number - ID of the Type of the LevelGraphNode
+ * @field - Level level - Level of the Node
+ * @field - Long levelId - ID of the Level of the Node
+ * @field - Integer levelDepth - Level depth of the node
+ * @field - LevelGraph levelGraph - LevelGraph of the Node
+ * @field - Long levelGraphId - ID of the LevelGraph of the Node
+ * @field - List<LevelGraphRelation> inLevelGraphRelations - Array of all incoming relations of the node
+ * @field - List<LevelGraphRelation> outLevelGraphRelations - Array of all outgoing relations of the node
+ * @field - String levelGraphNodeType - Type of the LevelGraphNode;
+ * @field - Long levelGraphNodeTypeId - ID of the Type of the LevelGraphNode
  *
  * @author Arthur Kaul
  *
@@ -60,7 +58,7 @@ public class LevelGraphNode extends Node {
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVEL")
 	@JsonBackReference(value = "level-levelGraphNode")
@@ -70,7 +68,7 @@ public class LevelGraphNode extends Node {
 	private Long levelId;
 
 	@Column(name = "LEVEL_DEPTH")
-	private Long levelDepth;
+	private int levelDepth;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPH")
@@ -79,14 +77,14 @@ public class LevelGraphNode extends Node {
 
 	@Column(name = "LEVELGRAPH_ID")
 	private Long levelGraphId;
-	
-	@OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
-	@JsonManagedReference(value = "inLevelGraphRelations-sourceLevelGraphNode")
-	private Collection<LevelGraphRelation> inLevelGraphRelations;
 
-	@OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
+	@JsonManagedReference(value = "inLevelGraphRelations-sourceLevelGraphNode")
+	private List<LevelGraphRelation> inLevelGraphRelations;
+
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
 	@JsonManagedReference(value = "outLevelGraphRelations-targetLevelGraphNode")
-	private Collection<LevelGraphRelation> outLevelGraphRelations;
+	private List<LevelGraphRelation> outLevelGraphRelations;
 
 	@Column(name = "LEVELGRAPHNODETYPE")
 	private String levelGraphNodeType;
@@ -94,20 +92,20 @@ public class LevelGraphNode extends Node {
 	@Column(name = "LEVELGRAPHNODETYPE_ID")
 	private long levelGraphNodeTypeId;
 
-	@OneToMany( fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
 	@JsonManagedReference(value = "levelGraphNode-nodeTemplate")
-	private Collection<NodeTemplate> nodeTemplates;
+	private List<NodeTemplate> nodeTemplates = new ArrayList<NodeTemplate>();
 
-	@OneToMany( fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
 	@JsonManagedReference(value = "levelGraphNode-relationshipTemplates")
-	private Collection<RelationshipTemplate> relationshipTemplates;
+	private List<RelationshipTemplate> relationshipTemplates = new ArrayList<RelationshipTemplate>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
-	 * Getter and Setter for the fields
+	 * @getter / @setter - Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	
+
 	public Level getLevel() {
 		return level;
 	}
@@ -156,28 +154,48 @@ public class LevelGraphNode extends Node {
 		this.levelGraphNodeTypeId = levelGraphNodeTypeId;
 	}
 
-	public Collection<LevelGraphRelation> getInLevelGraphRelations() {
+	public List<LevelGraphRelation> getInLevelGraphRelations() {
 		return inLevelGraphRelations;
 	}
 
-	public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
+	public void setInLevelGraphRelations(List<LevelGraphRelation> inLevelGraphRelations) {
 		this.inLevelGraphRelations = inLevelGraphRelations;
 	}
 
-	public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
+	public List<LevelGraphRelation> getOutLevelGraphRelations() {
 		return outLevelGraphRelations;
 	}
 
-	public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
+	public void setOutLevelGraphRelations(List<LevelGraphRelation> outLevelGraphRelations) {
 		this.outLevelGraphRelations = outLevelGraphRelations;
 	}
 
-	public Long getLevelDepth() {
+	public int getLevelDepth() {
 		return levelDepth;
 	}
 
-	public void setLevelDepth(Long levelDepth) {
+	public void setLevelDepth(int levelDepth) {
 		this.levelDepth = levelDepth;
 	}
+
+	// @JsonIgnore
+	// public List<NodeTemplate> getNodeTemplates() {
+	// return nodeTemplates;
+	// }
+	//
+	// @JsonIgnore
+	// public void setNodeTemplates(List<NodeTemplate> nodeTemplates) {
+	// this.nodeTemplates = nodeTemplates;
+	// }
+	//
+	// @JsonIgnore
+	// public List<RelationshipTemplate> getRelationshipTemplates() {
+	// return relationshipTemplates;
+	// }
+	//
+	// @JsonIgnore
+	// public void setRelationshipTemplates(List<RelationshipTemplate> relationshipTemplates) {
+	// this.relationshipTemplates = relationshipTemplates;
+	// }
 
 }

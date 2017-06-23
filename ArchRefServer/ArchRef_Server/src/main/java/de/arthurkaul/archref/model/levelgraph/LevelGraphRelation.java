@@ -4,12 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -17,31 +13,31 @@ import de.arthurkaul.archref.model.graph.Relation;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraphRelation Data Model - A relation of a LevelGraph
+ * @class - LevelGraphRelation - A relation of a LevelGraph
  *
- * @Entity
- * @superFields - id: number - ID of the LevelGraphNode
- * @superFields - name: string - Name of the LevelGraphNode
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
+ * @class Entity
+ * @superField - id: number - ID of the LevelGraphNode
+ * @superField - name: string - Name of the LevelGraphNode
+ * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
+ * @superField - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
  *
- * @Relation
- * @superFields - sourceNodeId: number - ID of the Source Node of LevelGraphRelation
- * @superFields - targetNodeId: number - ID of the Target Node of LevelGraphRelation
- * @superFields - path: Path - Path of the line from source node to target node
+ * @class Relation
+ * @superField - sourceNodeId: number - ID of the Source Node of LevelGraphRelation
+ * @superField - targetNodeId: number - ID of the Target Node of LevelGraphRelation
+ * @superField - path: Path - Path of the line from source node to target node
  *
- * @fields - sourceLevelDepth: number - Depth of the level of the source node
- * @fields - targetLevelDepth: number - Depth of the level of the target node
- * @fields - sourceLevelId: number - ID of the source level
- * @fields - targetLevelId: number - ID of the target level
- * @fields - sourceLevel: Level - ID of the source level
- * @fields - targetLevel: Level - ID of the target level
- * @fields - targetLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @fields - sourceLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @fields - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
- * @fields - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
- * @fields - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further
- *                                                                              Improvments currently it is enough to implement it as constant Strings
+ * @field - sourceLevelDepth: number - Depth of the level of the source node
+ * @field - targetLevelDepth: number - Depth of the level of the target node
+ * @field - sourceLevelId: number - ID of the source level
+ * @field - targetLevelId: number - ID of the target level
+ * @field - sourceLevel: Level - ID of the source level
+ * @field - targetLevel: Level - ID of the target level
+ * @field - targetLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
+ * @field - sourceLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
+ * @field - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
+ * @field - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
+ * @field - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further Improvments currently it is enough to implement it as
+ *        constant Strings
  *
  * @author - Arthur Kaul
  *
@@ -49,13 +45,13 @@ import de.arthurkaul.archref.model.graph.Relation;
 @Entity
 @Table(name = "LEVELGRAPHRELATION")
 public class LevelGraphRelation extends Relation {
-	
+
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	
+
 	@Column(name = "SOURCE_LEVEL_DEPTH")
 	private Integer sourceLevelDepth;
 
@@ -69,33 +65,34 @@ public class LevelGraphRelation extends Relation {
 	private Long targetLevelId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_LEVEL")
+	@JoinColumn(name = "SOURCE_LEVEL", updatable = false)
 	@JsonBackReference(value = "outLevelGraphRelation-sourceLevel")
-//	@Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})	
+	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
 	private Level sourceLevel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_LEVEL")
+	@JoinColumn(name = "TARGET_LEVEL", updatable = false)
 	@JsonBackReference(value = "inLevelGraphRelations-targetLevel")
-//	@Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})	
+	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
 	private Level targetLevel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_LEVELGRAPHNODE")
+	@JoinColumn(name = "TARGET_LEVELGRAPHNODE", updatable = false)
 	@JsonBackReference(value = "inLevelGraphRelations-sourceLevelGraphNode")
-//	@Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})	
+	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
+
 	private LevelGraphNode targetLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_LEVELGRAPHNODE")
+	@JoinColumn(name = "SOURCE_LEVELGRAPHNODE", updatable = false)
 	@JsonBackReference(value = "outLevelGraphRelations-targetLevelGraphNode")
-//	@Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})	
+	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
 	private LevelGraphNode sourceLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVELGRAPH")
+	@JoinColumn(name = "LEVELGRAPH", updatable = false)
 	@JsonBackReference(value = "levelgraph-levelgraphrelation")
-//	@Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})	
+	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
@@ -109,7 +106,7 @@ public class LevelGraphRelation extends Relation {
 	 * Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	
+
 	public LevelGraph getLevelGraph() {
 		return levelGraph;
 	}

@@ -1,20 +1,18 @@
-import { LevelGraph } from '../levelgraph/levelgraph';
 import { NodeTemplate } from './nodetemplate';
 import { RelationshipTemplate } from './relationshiptemplate';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - TopologyTemplate Data Model - TopologyTemplate Model is used for model a system architecture
+ * @class - TopologyTemplate -  TopologyTemplate Model is used for model a abstract or specific system architecture
  *
- * @fields - id: number - ID of the TopologyTemplate
- * @fields - name: string - Name of the TopologyTemplate
- * @fields - nodeTemplates: NodeTemplate[] - Array of all NodeTemplates in the LevelGraph
- * @fields - relationshipTemplates: RelationshipTemplate[] - Array of all RelationshipTemplates in the LevelGraph
- * @fields - parentTopologyTemplate: TopologyTemplate - Parent of the TopologyTemplate from which it was derived
- * @fields - parentTopologyTemplateId: number - ID of the parent of the topology
- * @fields - childTopologyTemplates: TopologyTemplate - Child of the TopologyTemplate are all TopologyTemplate which are generated through the refinement from this topology
- * @fields - levelGraphs: LevelGraph[] - Array of all LevelGraphs which were used to create or generated the TopologyTemplate
- * @fields - abstractionLevel: number : Level is calculated from the Root Topology
+ * @field - id: number - ID of the TopologyTemplate
+ * @field - name: string - Name of the TopologyTemplate
+ * @field - nodeTemplates: NodeTemplate[] - Array of all NodeTemplates in the LevelGraph
+ * @field - relationshipTemplates: RelationshipTemplate[] - Array of all RelationshipTemplates in the LevelGraph
+ * @field - parentTopologyTemplate: TopologyTemplate - Parent of the TopologyTemplate from which it was derived
+ * @field - parentTopologyTemplateId: number - ID of the parent of the topology
+ * @field - childTopologyTemplates: TopologyTemplate[] - Array of child of the TopologyTemplate. Child are all TopologyTemplate which are generated through the refinement from this topology
+ * @field - abstractionLevel: number : Level is calculated from the Root Topology
  *
  * @author Arthur Kaul
  *
@@ -31,8 +29,6 @@ export class TopologyTemplate {
   parentTopologyTemplateId: number;
   childTopologyTemplates: TopologyTemplate[];
 
-  levelGraphs: LevelGraph[];
-
   abstractionLevel: number;
 
   constructor() {
@@ -41,10 +37,9 @@ export class TopologyTemplate {
     this.nodeTemplates = [];
     this.relationshipTemplates = [];
     this.childTopologyTemplates = [];
-    this.levelGraphs = [];
   }
 
-  isSingleLevelGraphLevelKonform() {
+  isSingleLevelGraphLevelKonform(LevelGraph) {
     // TODO
   }
 
@@ -52,12 +47,12 @@ export class TopologyTemplate {
     // TODO
   }
 
-  isMultiLevelGraphLevelKonform() {
-    // TODO
-  }
-
-  isMultiLevelGraphKonform() {
-    // TODO
-  }
+//  isMultiLevelGraphLevelKonform() {
+//    // TODO
+//  }
+//
+//  isMultiLevelGraphKonform() {
+//    // TODO
+//  }
 
 }

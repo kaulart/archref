@@ -4,6 +4,14 @@ import java.util.Collection;
 
 import de.arthurkaul.archref.model.types.FragmentType;
 
+/********************************************************************************************************************************************************************************************************
+ * 
+ * @interface - FragmentTypeInterface - Interface for the FragmentType define all Methods which should be implemented by this interface.
+ *  									Currently not needed.
+ * 
+ * @author - Arthur Kaul
+ *
+ *******************************************************************************************************************************************************************************************************/
 public interface FragmentTypeInterface {
 	  Collection<FragmentType> findAllFragmentNodes();
 	    

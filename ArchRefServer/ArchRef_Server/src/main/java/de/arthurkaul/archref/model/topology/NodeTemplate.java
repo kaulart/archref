@@ -1,13 +1,13 @@
 package de.arthurkaul.archref.model.topology;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,28 +21,29 @@ import de.arthurkaul.archref.model.types.NodeType;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - NodeTemplate Data Model - A node of a TopologyTemplate
+ * @class - NodeTemplate - A node of a TopologyTemplate
  *
- * @Entity
- * @superFields - id: number - ID of the NodeTemplate
- * @superFields - name: string - Name of the NodeTemplate
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the NodeTemplate
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the NodeTemplate
+ * @class Entity
+ * @superField - Long id - ID of the RelationshipTemplate
+ * @superField - String name - Name of the RelationshipTemplate
+ * @superField - List<ExpectedProperty> expectedProperties - Array of expected properties of the NodeTemplate
+ * @superField - List<ProvidedProperty> providedProperties - Array of provided properties of the NodeTemplate
  *
- * @Node
- * @superFields - x: number - x Position of the left upper corner of a rectangle
- * @superFields - y: number - y Position of the left upper corner of a rectangle
- * @superFields - width: number - Width of the rectangle
- * @superFields - height: number - Height of the rectangle
+ * @class Node
+ * @superField - Float x - x Position of the left upper corner of a rectangle
+ * @superField - Float y - y Position of the left upper corner of a rectangle
+ * @superField - Float width - Width of the rectangle
+ * @superField - Float height - Height of the rectangle
  *
- * @fields - levelGraphNode: LevelGraphNode - LevelGraphNode from which the NodeTemplate was created
- * @fields - levelGraphNodeId: number - ID of the LevelGraphNode from which the NodeTemplate was created
- * @fields - nodeType: NodeType - NodeType of the NodeTemplate
- * @fields - nodeTypeId: number - ID of NodeType of the NodeTemplate
- * @fields - inRelationshipTemplates: RelationshipTemplate[] - Array of all incoming RelationshipTemplates of the NodeTemplate
- * @fields - outRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing RelationshipTemplates of the NodeTemplate
- * @fields - topologyTemplate: TopologyTemplate - TopologyTemplate of the NodeTemplate
- * @fields - topologyTemplateId: number - ID of TopologyTemplate of the NodeTemplate
+ * @field - LevelGraphNode levelGraphNode - LevelGraphNode from which the NodeTemplate was created
+ * @field - Long levelGraphNodeId: number - ID of the LevelGraphNode from which the NodeTemplate was created
+ * @field - NodeType nodeType: NodeType - NodeType of the NodeTemplate
+ * @field - Long nodeTypeId: number - ID of NodeType of the NodeTemplate
+ * @field - List<RelationshipTemplate> inRelationshipTemplates - Array of all incoming RelationshipTemplates of the NodeTemplate
+ * @field - List<RelationshipTemplate> outRelationshipTemplates - Array of all outgoing RelationshipTemplates of the NodeTemplate
+ * @field - TopologyTemplate topologyTemplate - TopologyTemplate of the NodeTemplate
+ * @field - TopologyTemplate topologyTemplateId - ID of TopologyTemplate of the NodeTemplate
+ * @field - Integer abstractionLevel - Level of abstraction of the NodeTemplate
  *
  * @author - Arthur Kaul
  *
@@ -57,7 +58,7 @@ public class NodeTemplate extends Node {
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPHNODE")
 	@JsonBackReference(value = "levelGraphNode-nodeTemplate")
@@ -74,13 +75,13 @@ public class NodeTemplate extends Node {
 	@Column(name = "NODETYPE_ID")
 	private Long nodeTypeId;
 
-	@OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
 	@JsonManagedReference(value = "inRelationshipTemplates-sourceNodeTemplate")
-	private Collection<RelationshipTemplate> inRelationshipTemplates;
-	
-	@OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "targetNodeTemplate")
+	private List<RelationshipTemplate> inRelationshipTemplates = new ArrayList<RelationshipTemplate>();
+
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetNodeTemplate")
 	@JsonManagedReference(value = "outRelationshipTemplates-targetNodeTemplate")
-	private Collection<RelationshipTemplate> outRelationshipTemplates;
+	private List<RelationshipTemplate> outRelationshipTemplates = new ArrayList<RelationshipTemplate>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOPOLOGYTEMPLATE")
@@ -90,37 +91,14 @@ public class NodeTemplate extends Node {
 	@Column(name = "TOPOLOGYTEMPLATE_ID")
 	private Long topologyTemplateId;
 
-	public NodeType getNodeType() {
-		return nodeType;
-	}
+	@Column(name = "ABSTRACTION_LEVEL")
+	private Integer abstractionLevel;
 
-	public void setNodeType(NodeType nodeType) {
-		this.nodeType = nodeType;
-	}
-
-	public Long getTopologyTemplateId() {
-		return topologyTemplateId;
-	}
-
-	public void setTopologyTemplateId(Long topologyTemplateId) {
-		this.topologyTemplateId = topologyTemplateId;
-	}
-
-	public TopologyTemplate getTopologyTemplate() {
-		return topologyTemplate;
-	}
-
-	public void setTopologyTemplate(TopologyTemplate topologyTemplate) {
-		this.topologyTemplate = topologyTemplate;
-	}
-
-	public Long getNodeTypeId() {
-		return nodeTypeId;
-	}
-
-	public void setNodeTypeId(Long nodeTypeId) {
-		this.nodeTypeId = nodeTypeId;
-	}
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @getter / @setter Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 
 	public LevelGraphNode getLevelGraphNode() {
 		return levelGraphNode;
@@ -138,20 +116,52 @@ public class NodeTemplate extends Node {
 		this.levelGraphNodeId = levelGraphNodeId;
 	}
 
-	public Collection<RelationshipTemplate> getInRelationshipTemplates() {
+	public NodeType getNodeType() {
+		return nodeType;
+	}
+
+	public void setNodeType(NodeType nodeType) {
+		this.nodeType = nodeType;
+	}
+
+	public Long getNodeTypeId() {
+		return nodeTypeId;
+	}
+
+	public void setNodeTypeId(Long nodeTypeId) {
+		this.nodeTypeId = nodeTypeId;
+	}
+
+	public List<RelationshipTemplate> getInRelationshipTemplates() {
 		return inRelationshipTemplates;
 	}
 
-	public void setInRelationshipTemplates(Collection<RelationshipTemplate> inRelationshipTemplates) {
+	public void setInRelationshipTemplates(List<RelationshipTemplate> inRelationshipTemplates) {
 		this.inRelationshipTemplates = inRelationshipTemplates;
 	}
 
-	public Collection<RelationshipTemplate> getOutRelationshipTemplates() {
+	public List<RelationshipTemplate> getOutRelationshipTemplates() {
 		return outRelationshipTemplates;
 	}
 
-	public void setOutRelationshipTemplates(Collection<RelationshipTemplate> outRelationshipTemplates) {
+	public void setOutRelationshipTemplates(List<RelationshipTemplate> outRelationshipTemplates) {
 		this.outRelationshipTemplates = outRelationshipTemplates;
+	}
+
+	public TopologyTemplate getTopologyTemplate() {
+		return topologyTemplate;
+	}
+
+	public void setTopologyTemplate(TopologyTemplate topologyTemplate) {
+		this.topologyTemplate = topologyTemplate;
+	}
+
+	public Integer getAbstractionLevel() {
+		return abstractionLevel;
+	}
+
+	public void setAbstractionLevel(Integer abstractionLevel) {
+		this.abstractionLevel = abstractionLevel;
 	}
 
 }

@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,11 +31,11 @@ public class Repository {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "repository")
 	@JsonManagedReference(value = "repository-nodeType")
-	private Collection<NodeType> nodeTypeList;
+	private List<NodeType> nodeTypeList = new ArrayList<NodeType>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "repository")
 	@JsonManagedReference(value = "repository-relationshipType")
-	private Collection<RelationshipType> relationshipTypeList;
+	private List<RelationshipType> relationshipTypeList = new ArrayList<RelationshipType>();
 
 	public Long getId() {
 		return id;
@@ -51,20 +52,20 @@ public class Repository {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Collection<NodeType> getNodeTypeList() {
+
+	public List<NodeType> getNodeTypeList() {
 		return nodeTypeList;
 	}
 
-	public void setNodeTypeList(Collection<NodeType> nodeTypeList) {
+	public void setNodeTypeList(List<NodeType> nodeTypeList) {
 		this.nodeTypeList = nodeTypeList;
 	}
 
-	public Collection<RelationshipType> getRelationshipTypeList() {
+	public List<RelationshipType> getRelationshipTypeList() {
 		return relationshipTypeList;
 	}
 
-	public void setRelationshipTypeList(Collection<RelationshipType> relationshipTypeList) {
+	public void setRelationshipTypeList(List<RelationshipType> relationshipTypeList) {
 		this.relationshipTypeList = relationshipTypeList;
 	}
 

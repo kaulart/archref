@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,11 +34,11 @@ public class Entity {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityExpected")
 	@JsonManagedReference(value = "entity-expectedProperties")
-	private Collection<ExpectedProperty> expectedProperties;
+	private List<ExpectedProperty> expectedProperties = new ArrayList<ExpectedProperty>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityProvided")
 	@JsonManagedReference(value = "entity-providedProperties")
-	private Collection<ProvidedProperty> providedProperties;
+	private List<ProvidedProperty> providedProperties = new ArrayList<ProvidedProperty>();
 
 	@Column(name = "ICON_PATH")
 	private String icon;
@@ -58,22 +59,22 @@ public class Entity {
 		this.name = name;
 	}
 
-	public Collection<ExpectedProperty> getExpectedProperties() {
+	public List<ExpectedProperty> getExpectedProperties() {
 		return expectedProperties;
 	}
 
-	public void setExpectedProperties(Collection<ExpectedProperty> expectedProperties) {
+	public void setExpectedProperties(List<ExpectedProperty> expectedProperties) {
 		this.expectedProperties = expectedProperties;
 	}
 
-	public Collection<ProvidedProperty> getProvidedProperties() {
+	public List<ProvidedProperty> getProvidedProperties() {
 		return providedProperties;
 	}
 
-	public void setProvidedProperties(Collection<ProvidedProperty> providedProperties) {
+	public void setProvidedProperties(List<ProvidedProperty> providedProperties) {
 		this.providedProperties = providedProperties;
 	}
-	
+
 	public String getIcon() {
 		return icon;
 	}

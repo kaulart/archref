@@ -56,7 +56,7 @@ export class TopologyTemplateComponent implements OnInit {
    *******************************************************************************************************************************************************************************************************/
   createTopologyTemplate() {
     Logger.info('Create TopologyTemplate', TopologyTemplateComponent.name);
-    this.createdTopologyTemplate.abstractionLevel = 1;
+    this.createdTopologyTemplate.abstractionLevel = 0;
     this.topologyTemplateService.createTopologyTemplate(this.createdTopologyTemplate)
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates.push(topologyTemplateResponse);

@@ -1,4 +1,4 @@
-import { Node } from '../graph/node';
+  import { Node } from '../graph/node';
 import { Level } from './level';
 import { LevelGraph } from './levelgraph';
 import { LevelGraphRelation } from './levelgraphrelation';
@@ -47,12 +47,8 @@ export class LevelGraphNode extends Node {
   levelGraphNodeType: string;
   levelGraphNodeTypeId: number;
 
-  constructor(x: number, y: number, width: number, height: number, levelId: number, levelGraphNodeType: string, levelGraphNodeTypeId: number, levelGraphId: number) {
-    super(x, y, width, height);
-    this.levelId = levelId;
-    this.levelGraphNodeType = levelGraphNodeType;
-    this.levelGraphNodeTypeId = levelGraphNodeTypeId;
-    this.levelGraphId = levelGraphId;
+  constructor() {
+    super();
   }
 
 }

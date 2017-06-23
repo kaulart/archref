@@ -26,7 +26,7 @@ import { FlashMessage } from 'angular2-flash-message';
  *********************************************************************************************************************************************************************************************************/
 export class LevelGraphNodeDetailsComponent implements OnInit {
 
-  currentLevelGraphNode: LevelGraphNode = new LevelGraphNode(null, null, null, null, null, null, null, null);
+  currentLevelGraphNode: LevelGraphNode = new LevelGraphNode();
   public flashMessage = new FlashMessage();
 
   constructor(private route: ActivatedRoute,

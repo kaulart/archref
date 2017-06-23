@@ -7,9 +7,7 @@
 		<div class="col-sm-12 w3-theme-d3 w3-card-4 heading">
 
 			<div class="col-sm-12">
-				<button class="btn btn-default  btn-circle w3-green w3-left" type="button" (click)="prevTopology()">
-					<i class="fa fa-arrow-left" aria-hidden="true"></i>
-				</button>
+			
 				<div class="col-sm-5">
 					<h3>
 						Topology Template Name: <input disabled style="color: black" value="{{currentTopologyTemplate.name}}" />
@@ -21,22 +19,26 @@
 					</h3>
 
 				</div>
-
-				<button class="btn btn-default btn-circle w3-green w3-right" type="button" (click)="nextTopology()">
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</button>
+				
 			</div>
 
 			<!-- Slider for show the abstrakt or spezific Topology Template -->
 			<div class="col-sm-12 w3-center control-group">
 				<label class="col-sm-2 ">Abstract Topology</label>
-				<md-slider class="col-sm-8" ng-model="currentTopologyTemplate.abstractionLevel" step="1" min="1" max="{{maxAbstractionLevel}}"> </md-slider>
+				<md-slider class="col-sm-8" tickInterval="1" thumbLabel  (change)="onChangeAbstractionLevel()" [(ngModel)]="currentAbstractionLevel" [value]="currentAbstractionLevel" step="1" min="0" max="{{maxAbstractionLevel}}"> </md-slider>
 				<label class="col-sm-2">Specific Topology</label>
 			</div>
 
 			<!-- Refinement -->
 			<div class="col-sm-12 w3-center control-group">
+				<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) - 1 < 0" class="btn btn-default  btn-circle w3-green w3-left" type="button" (click)="prevTopology()">
+					<i class="fa fa-arrow-left" aria-hidden="true"></i>
+				</button>
+				<label>Current Abstraction Level: </label><input style="color: black" disabled ng-model="currentAbstractionLevel" value="{{currentAbstractionLevel}}"/>
 				<button class="btn btn-primary w3-green" type="button" data-toggle="modal" data-target="#refinementModal" (click)="setUsedLevelGraphs()">Refinement</button>
+				<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) + 1 >= currentTopologyTemplates.length" class="btn btn-default btn-circle w3-green w3-right" type="button" (click)="nextTopology()">
+					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+				</button>
 			</div>
 
 		</div>
@@ -358,11 +360,12 @@
 					<div class="col-sm-12 form-group">
 						<label for="smi">Satisfaction Index (between 0 and 1): </label> <input #smi type="number" min="0" max="1" class="form-control" value="1" required>
 					</div>
+					
 
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" (click)="setUsedLevelGraphs()">Restore</button>
-					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value)" data-dismiss="modal">Refinement</button>
-					<button type="button" class="btn btn-primary" (click)="startOneStepRefinement(smi.value)" data-dismiss="modal">One Step Refinement</button>
+					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value, steps)" data-dismiss="modal">Refinement</button>
+					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value, 1)" data-dismiss="modal">One Step Refinement</button>
 
 				</form>
 			</div>

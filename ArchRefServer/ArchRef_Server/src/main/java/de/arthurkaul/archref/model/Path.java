@@ -1,6 +1,7 @@
 package de.arthurkaul.archref.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,13 +27,13 @@ public class Path {
 
 	@Column(name = "PATH_DATA_STRING")
 	private String pathDataString;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="path")
-	@JsonManagedReference (value="path-point")
-	private Collection<Point> points;
-	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="path")
-	@JsonBackReference  (value="relation-path")
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "path")
+	@JsonManagedReference(value = "path-point")
+	private List<Point> points = new ArrayList<Point>();
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "path")
+	@JsonBackReference(value = "relation-path")
 	private Relation relation;
 
 	public Long getId() {
@@ -51,11 +52,11 @@ public class Path {
 		this.pathDataString = pathDataString;
 	}
 
-	public Collection<Point> getPoints() {
+	public List<Point> getPoints() {
 		return points;
 	}
 
-	public void setPoints(Collection<Point> points) {
+	public void setPoints(List<Point> points) {
 		this.points = points;
 	}
 

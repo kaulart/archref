@@ -98,11 +98,7 @@ export class RelationshipTypeFragmentService {
     Logger.data('[RESPONSE - RELATIONSHIPTYPEFRAGMENT]: ' + JSON.stringify(body), RelationshipTypeFragmentService.name);
     for (let relationshipTypeFragment of body) {
       let tempRelationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment();
-      tempRelationshipTypeFragment.id = relationshipTypeFragment.id;
-      tempRelationshipTypeFragment.name = relationshipTypeFragment.name;
-      tempRelationshipTypeFragment.providedProperties = relationshipTypeFragment.providedProperties;
-      tempRelationshipTypeFragment.expectedProperties = relationshipTypeFragment.providedProperties;
-      tempRelationshipTypeFragment.icon = relationshipTypeFragment.icon;
+      tempRelationshipTypeFragment = relationshipTypeFragment;
       relationshipTypeFragments.push(relationshipTypeFragment);
     }
     return relationshipTypeFragments || {};
@@ -120,11 +116,7 @@ export class RelationshipTypeFragmentService {
     Logger.info('[RESPONSE - RELATIONSHIPTYPE]: Extract Data of Response Body', RelationshipTypeFragmentService.name);
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeFragmentService.name);
     let relationshipTypeFragment: RelationshipTypeFragment = new RelationshipTypeFragment();
-    relationshipTypeFragment.id = body.id;
-    relationshipTypeFragment.name = body.name;
-    relationshipTypeFragment.icon = body.icon;
-    relationshipTypeFragment.providedProperties = body.providedProperties;
-    relationshipTypeFragment.expectedProperties = body.expectedProperties;
+    relationshipTypeFragment = body;
     return relationshipTypeFragment || {};
   }
 

@@ -98,11 +98,12 @@ export class NodeTypeFragmentService {
     Logger.data('[RESPONSE - NODETYPEFRAGMENT]: ' + JSON.stringify(body), NodeTypeFragmentService.name);
     for (let nodeTypeFragment of body) {
       let tempNodeTypeFragment: NodeTypeFragment = new NodeTypeFragment();
-      tempNodeTypeFragment.id = nodeTypeFragment.id;
-      tempNodeTypeFragment.name = nodeTypeFragment.name;
-      tempNodeTypeFragment.icon = nodeTypeFragment.icon;
-      tempNodeTypeFragment.providedProperties = nodeTypeFragment.providedProperties;
-      tempNodeTypeFragment.expectedProperties = nodeTypeFragment.expectedProperties;
+      tempNodeTypeFragment = nodeTypeFragment;
+      //      tempNodeTypeFragment.id = nodeTypeFragment.id;
+      //      tempNodeTypeFragment.name = nodeTypeFragment.name;
+      //      tempNodeTypeFragment.icon = nodeTypeFragment.icon;
+      //      tempNodeTypeFragment.providedProperties = nodeTypeFragment.providedProperties;
+      //      tempNodeTypeFragment.expectedProperties = nodeTypeFragment.expectedProperties;
       nodeTypeFragments.push(tempNodeTypeFragment);
     }
     return nodeTypeFragments || {};
@@ -120,11 +121,12 @@ export class NodeTypeFragmentService {
     Logger.info('[RESPONSE - NODETYPEFRAGMENT]: Extract Data of Response Body', NodeTypeFragmentService.name);
     Logger.data('[RESPONSE - NODETYPEFRAGMENT]: ' + JSON.stringify(body), NodeTypeFragmentService.name);
     let nodeTypeFragment: NodeTypeFragment = new NodeTypeFragment();
-    nodeTypeFragment.name = body.name;
-    nodeTypeFragment.id = body.id;
-    nodeTypeFragment.icon = body.icon;
-    nodeTypeFragment.providedProperties = body.providedProperties;
-    nodeTypeFragment.expectedProperties = body.expectedProperties;
+    nodeTypeFragment = body;
+    //    nodeTypeFragment.name = body.name;
+    //    nodeTypeFragment.id = body.id;
+    //    nodeTypeFragment.icon = body.icon;
+    //    nodeTypeFragment.providedProperties = body.providedProperties;
+    //    nodeTypeFragment.expectedProperties = body.expectedProperties;
     return nodeTypeFragment || {};
   }
 

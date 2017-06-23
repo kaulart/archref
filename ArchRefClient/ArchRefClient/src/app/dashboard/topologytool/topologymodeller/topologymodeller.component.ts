@@ -1,7 +1,7 @@
 import { Logger } from '../../../../logger/logger';
-import { TOPOLOGYTEMPLATECONSTANTS } from '../../../shared/constants/topologytemplateconstants';
-import { LEVELGRAPHNODETYPES } from '../../../shared/constants/levelgraphnodetype';
-import { LEVELGRAPHRELATIONTYPE } from '../../../shared/constants/levelgraphrelationtype';
+import { Constants } from '../../../shared/constants/constants';
+import { LevelGraphNodeType } from '../../../shared/constants/levelgraphnodetype';
+import { LevelGraphRelationType } from '../../../shared/constants/levelgraphrelationtype';
 import { Entity } from '../../../shared/datamodels/entity/entity';
 import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
 import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
@@ -76,11 +76,14 @@ import { FlashMessage } from 'angular2-flash-message';
 export class TopologyModellerComponent implements OnInit {
 
   rootTopologyTemplate = new TopologyTemplate();
-  parentTopologyTemplate = new TopologyTemplate();
   currentTopologyTemplate = new TopologyTemplate();
+  currentTopologyTemplates: TopologyTemplate[] = [];
+
   currentNodeTemplate: NodeTemplate;
   currentRelationshipTemplate: RelationshipTemplate;
+
   levelGraphs: LevelGraph[] = [];
+
   selectedLevelGraph: LevelGraph = new LevelGraph();
   selectedLevelGraphNodeNodeType: LevelGraphNode[] = [];
   selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel: LevelGraphNode[] = [];
@@ -88,8 +91,11 @@ export class TopologyModellerComponent implements OnInit {
   selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel: LevelGraphNode[] = [];
 
   repositories: Repository[] = [];
+
   selectedRepository: Repository = new Repository();
-  maxAbstractionLevel = 2;
+
+  currentAbstractionLevel = 0;
+  maxAbstractionLevel = 4;
 
   lastMousePositionY = 0;
   lastMousePositionX = 0;
@@ -167,7 +173,9 @@ export class TopologyModellerComponent implements OnInit {
     this.topologyTemplateService.getTopologyTemplate(id)
       .subscribe(topologyTemplateResponse => {
         this.currentTopologyTemplate = topologyTemplateResponse;
-        this.setRootTopology(this.currentTopologyTemplate);
+        this.currentAbstractionLevel = topologyTemplateResponse.abstractionLevel;
+        this.setRootTopology();
+        this.currentTopologyTemplates.push(topologyTemplateResponse);
         Logger.info('Topology Template with id: ' + topologyTemplateResponse.id + ' and name: ' + topologyTemplateResponse.name + 'was retrieved sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
@@ -394,32 +402,44 @@ export class TopologyModellerComponent implements OnInit {
    ****************************************************************************************************************************************/
   onDrop(event) {
 
-    if (this.dragNodeType) {
+    if (this.dragNodeType || this.dragLevelGraphNode) {
+      let tempNodeTemplate = new NodeTemplate();
+      tempNodeTemplate.x = event.offsetX - Constants.NODEWIDTH / 2;
+      tempNodeTemplate.y = event.offsetY - Constants.NODEHEIGHT / 2;
+      tempNodeTemplate.width = Constants.NODEWIDTH;
+      tempNodeTemplate.height = Constants.NODEHEIGHT;
 
-      let tempNodeTemplate = new NodeTemplate(event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, this.currentDragData.id, this.currentTopologyTemplate.id);
-      tempNodeTemplate.name = this.currentDragData.name;
-      tempNodeTemplate.nodeType = this.currentDragData;
-      tempNodeTemplate.icon = this.currentDragData.icon;
-      tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
-      this.createNodeTemplate(tempNodeTemplate);
+      if (this.dragNodeType) {
 
-      this.dragNodeType = false;
-    }
-
-    if (this.dragLevelGraphNode) {
-      this.nodeTypeService.getNodeType(this.currentDragData.levelGraphNodeTypeId).subscribe(nodeTypeResponse => {
-        let tempNodeTemplate = new NodeTemplate(event.offsetX - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH / 2, event.offsetY - TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT / 2, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEWIDTH, TOPOLOGYTEMPLATECONSTANTS.TOPOLOGYTEMPLATENODEHEIGHT, nodeTypeResponse.id, this.currentTopologyTemplate.id);
         tempNodeTemplate.name = this.currentDragData.name;
-        tempNodeTemplate.levelGraphNode = this.currentDragData;
-        tempNodeTemplate.levelGraphNodeId = this.currentDragData.id;
-        tempNodeTemplate.icon = nodeTypeResponse.icon;
-        tempNodeTemplate.nodeType = nodeTypeResponse;
+        tempNodeTemplate.nodeTypeId = this.currentDragData.id;
+        tempNodeTemplate.topologyTemplateId = this.currentTopologyTemplate.id;
+        tempNodeTemplate.nodeType = this.currentDragData;
+        tempNodeTemplate.icon = this.currentDragData.icon;
         tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
         this.createNodeTemplate(tempNodeTemplate);
-      });
+
+      }
+
+      if (this.dragLevelGraphNode) {
+        this.nodeTypeService.getNodeType(this.currentDragData.levelGraphNodeTypeId).subscribe(nodeTypeResponse => {
+          tempNodeTemplate.name = this.currentDragData.name;
+          tempNodeTemplate.nodeTypeId = this.currentDragData.levelGraphNodeTypeId;
+          tempNodeTemplate.topologyTemplateId = this.currentTopologyTemplate.id;
+          tempNodeTemplate.nodeType = nodeTypeResponse;
+          tempNodeTemplate.levelGraphNode = this.currentDragData;
+          tempNodeTemplate.levelGraphNodeId = this.currentDragData.id;
+          tempNodeTemplate.icon = nodeTypeResponse.icon;
+          tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
+          this.createNodeTemplate(tempNodeTemplate);
+
+        });
+
+      }
+
+      this.dragNodeType = false;
       this.dragLevelGraphNode = false;
     }
-
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -522,70 +542,80 @@ export class TopologyModellerComponent implements OnInit {
    *
    *
    ****************************************************************************************************************************************/
-  startRefinement() {
+  startRefinement(smi: number, steps: number) {
 
-    let steps = 1;
-    for (let levelGraph of this.currentTopologyTemplate.levelGraphs) {
-      if (steps < (levelGraph.levels.length - 1)) {
-        steps = (levelGraph.levels.length - 1);
+    let levelGraph: LevelGraph = this.mergeLevelGraphs();
+
+    let maxLevel = 0;
+    for (let level of levelGraph.levels) {
+      if (level.depth > maxLevel) {
+        alert(level.depth);
+        maxLevel = level.depth;
       }
     }
 
-    // Merge LevelGraphs
-    let levelGraph: LevelGraph = new LevelGraph();
-    for (let levelGraphTemp of this.levelGraphs) {
-      if (levelGraphTemp.checked) {
-        levelGraph.levelGraphNodes = levelGraph.levelGraphNodes.concat(levelGraphTemp.levelGraphNodes);
-        levelGraph.levelGraphRelations = levelGraph.levelGraphRelations.concat(levelGraphTemp.levelGraphRelations);
-      }
-    }
+    if (maxLevel <= this.currentTopologyTemplate.abstractionLevel) {
+      this.flashMessage.message = 'Topology Template can`t be refined with this Level Graphs, because the level of abstraction of the Topology Template is higher or equal to the abstraction levels of the selected Level Graphs';
+      this.flashMessage.isSuccess = false;
+      this.flashMessage.isError = true;
+      this.flashMessageService.display(this.flashMessage);
+    } else {
 
-    this.refinementService.refineTopologyTemplate(this.currentTopologyTemplate.id, steps, levelGraph).subscribe(topologyTemplateResponse => {
-      this.currentTopologyTemplate = topologyTemplateResponse;
-    },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isSuccess = false;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-
-  }
-
-  /*****************************************************************************************************************************************
-   *
-   * @method - startOneStepRefinement - Call the RefinementSerive for refine the currentTopologyTemplate one step and subscribe for a callback.
-   *
-   *
-   ****************************************************************************************************************************************/
-  startOneStepRefinement() {
-    let steps = 1;
-
-    let levelGraph: LevelGraph = new LevelGraph();
-    for (let levelGraphTemp of this.levelGraphs) {
-      if (levelGraphTemp.checked) {
-        levelGraph.levelGraphNodes = levelGraph.levelGraphNodes.concat(levelGraphTemp.levelGraphNodes);
-        levelGraph.levelGraphRelations = levelGraph.levelGraphRelations.concat(levelGraphTemp.levelGraphRelations);
-      }
-    }
-
-    this.flashMessage.message = 'Refinement Startet in Background';
-    this.flashMessage.isSuccess = true;
-    this.flashMessageService.display(this.flashMessage);
-    let startTime = Date.now();
-    this.refinementService.refineTopologyTemplate(this.currentTopologyTemplate.id, steps, levelGraph).subscribe(topologyTemplateResponse => {
-      this.currentTopologyTemplate = topologyTemplateResponse;
-      let endTime = Date.now();
-      this.flashMessage.message = 'Refinement Finished successfuly in' + (startTime - endTime);
+      this.flashMessage.message = 'Refinement Startet in Background';
       this.flashMessage.isSuccess = true;
       this.flashMessageService.display(this.flashMessage);
-    },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isSuccess = false;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
+      let startTime = Date.now();
+
+      if (steps === 1) {
+        this.refinementService.refineOneStepTopologyTemplate(this.currentTopologyTemplate.id, levelGraph, smi).subscribe(topologyTemplateResponse => {
+          this.currentTopologyTemplate = topologyTemplateResponse;
+          let endTime = Date.now();
+          this.flashMessage.message = 'Refinement Finished successfuly in' + (startTime - endTime);
+          this.flashMessage.isSuccess = true;
+          this.flashMessageService.display(this.flashMessage);
+        },
+          (error) => {
+            this.flashMessage.message = error;
+            this.flashMessage.isSuccess = false;
+            this.flashMessage.isError = true;
+            this.flashMessageService.display(this.flashMessage);
+          });
+      } else {
+        this.refinementService.refineTopologyTemplate(this.currentTopologyTemplate.id, levelGraph, smi).subscribe(topologyTemplateResponse => {
+          this.currentTopologyTemplate = topologyTemplateResponse;
+          let endTime = Date.now();
+          this.flashMessage.message = 'Refinement Finished successfuly in' + (startTime - endTime);
+          this.flashMessage.isSuccess = true;
+          this.flashMessageService.display(this.flashMessage);
+        },
+          (error) => {
+            this.flashMessage.message = error;
+            this.flashMessage.isSuccess = false;
+            this.flashMessage.isError = true;
+            this.flashMessageService.display(this.flashMessage);
+          });
+      }
+
+    }
+  }
+
+  /*************************************************************************************************************************************
+   *
+   * @method - mergeLevelGraph - Merge all data of the selected Level Graphs into one Level Graph which will be used for the refinement
+   *
+   **************************************************************************************************************************************/
+  mergeLevelGraphs() {
+
+    let levelGraph: LevelGraph = new LevelGraph();
+    for (let levelGraphTemp of this.levelGraphs) {
+      if (levelGraphTemp.checked) {
+        levelGraph.levels = levelGraph.levels.concat(levelGraphTemp.levels);
+        levelGraph.levelGraphNodes = levelGraph.levelGraphNodes.concat(levelGraphTemp.levelGraphNodes);
+        levelGraph.levelGraphRelations = levelGraph.levelGraphRelations.concat(levelGraphTemp.levelGraphRelations);
+      }
+    }
+
+    return levelGraph;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -770,27 +800,6 @@ export class TopologyModellerComponent implements OnInit {
     return false;
   }
 
-  /*****************************************************************************************************************************************
-   *
-   * @method stopDrawRelation - Stop the draw relation event and draw a relation if it is allowed to draw it
-   *
-   * @param event: MouseEvent - Event Object of the onMouseUp Event
-   * @param targetNode: LevelGraphNode - Target Node of the relation which should be draw
-   * @param targetLevel: Level - Target Level is the level of the target node
-   *
-   ****************************************************************************************************************************************/
-  //  isInCurrentLevel(levelId: number) {
-  //    for (let level of this.selectedLevelGraph.levels) {
-  //      if (level.id === levelId) {
-  //        if (level.depth === this.currentTopologyTemplate.abstractionLevel) {
-  //          return true;
-  //        } else {
-  //          return false;
-  //        }
-  //      }
-  //    }
-  //  }
-
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   // @section - Small Helper Methods like change, select, view, add methods
@@ -813,12 +822,12 @@ export class TopologyModellerComponent implements OnInit {
 
     for (let levelGraphNode of this.selectedLevelGraph.levelGraphNodes) {
 
-      if (levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPES.NODETYPE) {
+      if (levelGraphNode.levelGraphNodeType === LevelGraphNodeType.NODETYPE) {
         if (levelGraphNode.levelDepth === this.currentTopologyTemplate.abstractionLevel) {
           this.selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel.push(levelGraphNode);
         }
         this.selectedLevelGraphNodeNodeType.push(levelGraphNode);
-      } else if (levelGraphNode.levelGraphNodeType === LEVELGRAPHNODETYPES.RELATIONSHIPTYPE) {
+      } else if (levelGraphNode.levelGraphNodeType === LevelGraphNodeType.RELATIONSHIPTYPE) {
         if (levelGraphNode.levelDepth === this.currentTopologyTemplate.abstractionLevel) {
           this.selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel.push(levelGraphNode);
         }
@@ -887,16 +896,46 @@ export class TopologyModellerComponent implements OnInit {
   * @param targetLevel: Level - Target Level is the level of the target node
   *
   ****************************************************************************************************************************************/
-  setRootTopology(topologyTemplate: TopologyTemplate) {
+  setRootTopology() {
 
-    if (topologyTemplate.abstractionLevel === 1) {
-      this.rootTopologyTemplate = topologyTemplate;
+    if (this.currentTopologyTemplate.abstractionLevel === 0) {
+      this.rootTopologyTemplate = this.currentTopologyTemplate;
     } else {
-      // TODO
+      let tempTopologyTemplate = new TopologyTemplate();
+      tempTopologyTemplate = this.currentTopologyTemplate;
+
+      while (tempTopologyTemplate.abstractionLevel !== 0) {
+        tempTopologyTemplate = this.currentTopologyTemplate.parentTopologyTemplate;
+      }
+      this.rootTopologyTemplate = tempTopologyTemplate;
     }
+
+    this.setMaxAbstractionLevel();
 
   }
 
+  setMaxAbstractionLevel() {
+
+    if (this.rootTopologyTemplate.childTopologyTemplates.length < 1) {
+      this.maxAbstractionLevel = 0;
+    } else {
+      this.maxAbstractionLevel = this.calcMaxAbstractionLevel(this.rootTopologyTemplate);
+    }
+  }
+
+  calcMaxAbstractionLevel(topologyTemplate: TopologyTemplate) {
+    let tempMaxAbstractionLevel = 0;
+    if (topologyTemplate.childTopologyTemplates.length < 1) {
+      return topologyTemplate.abstractionLevel;
+    }
+    for (let childTopologyTemplate of topologyTemplate.childTopologyTemplates) {
+      let tempAbstractionLevel = this.calcMaxAbstractionLevel(childTopologyTemplate);
+      if (tempMaxAbstractionLevel < tempAbstractionLevel) {
+        tempMaxAbstractionLevel = tempAbstractionLevel;
+      }
+    }
+    return tempMaxAbstractionLevel;
+  }
   /*****************************************************************************************************************************************
   *
   * @method stopDrawRelation - Stop the draw relation event and draw a relation if it is allowed to draw it
@@ -938,8 +977,26 @@ export class TopologyModellerComponent implements OnInit {
    * @param targetLevel: Level - Target Level is the level of the target node
    *
    ****************************************************************************************************************************************/
-  onChangeAbstraktionLevel() {
-    // TODO
+  // TODO All Topology of the abstraction level
+  onChangeAbstractionLevel() {
+    let temp = this.currentTopologyTemplate.abstractionLevel;
+    while (this.currentAbstractionLevel !== this.currentTopologyTemplate.abstractionLevel) {
+      if (this.currentAbstractionLevel > this.currentTopologyTemplate.abstractionLevel) {
+        if (this.currentTopologyTemplate.childTopologyTemplates.length < 1) {
+          this.flashMessage.message = 'There are no Topology Templates in this abstraction level for the current selected Topology Template. Select a other Topology Template in previous abstraction level Topology';
+          this.flashMessage.isSuccess = false;
+          this.flashMessage.isError = true;
+          this.flashMessageService.display(this.flashMessage);
+          this.currentAbstractionLevel = temp;
+        } else {
+          this.currentTopologyTemplate = this.currentTopologyTemplate.childTopologyTemplates[0];
+        }
+      } else {
+        this.currentTopologyTemplate = this.currentTopologyTemplate.parentTopologyTemplate;
+      }
+    }
+
+    this.currentTopologyTemplates = this.currentTopologyTemplate.parentTopologyTemplate.childTopologyTemplates;
   }
 
   /*****************************************************************************************************************************************
@@ -952,7 +1009,7 @@ export class TopologyModellerComponent implements OnInit {
    *
    ****************************************************************************************************************************************/
   prevTopology() {
-    // TODO
+    this.currentTopologyTemplate = this.currentTopologyTemplates[this.currentTopologyTemplates.indexOf(this.currentTopologyTemplate) - 1];
   }
 
   /*****************************************************************************************************************************************
@@ -965,7 +1022,7 @@ export class TopologyModellerComponent implements OnInit {
    *
    ****************************************************************************************************************************************/
   nextTopology() {
-    // TODO
+    this.currentTopologyTemplate = this.currentTopologyTemplates[this.currentTopologyTemplates.indexOf(this.currentTopologyTemplate) + 1];
   }
 
   /*****************************************************************************************************************************************

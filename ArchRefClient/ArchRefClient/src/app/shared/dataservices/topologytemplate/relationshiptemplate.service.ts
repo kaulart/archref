@@ -98,15 +98,16 @@ export class RelationshipTemplateService {
     Logger.data('[RESPONSE - RELATIONSHIPTEMPLATE]: ' + JSON.stringify(body), RelationshipTemplateService.name);
     for (let relationshipTemplate of body) {
       let tempRelationshipTemplate: RelationshipTemplate = new RelationshipTemplate(relationshipTemplate.sourceNodeId, relationshipTemplate.targetNodeId, relationshipTemplate.path, relationshipTemplate.relationshipTypeId, relationshipTemplate.topologyTemplateId);
-      tempRelationshipTemplate.id = relationshipTemplate.id;
-      tempRelationshipTemplate.name = relationshipTemplate.name;
-      tempRelationshipTemplate.icon = relationshipTemplate.icon;
-      tempRelationshipTemplate.expectedProperties = relationshipTemplate.expectedProperties;
-      tempRelationshipTemplate.providedProperties = relationshipTemplate.providedProperties;
-      tempRelationshipTemplate.levelGraphNode = relationshipTemplate.levelGraphNode;
-      tempRelationshipTemplate.levelGraphNodeId = relationshipTemplate.levelGraphNodeId;
-      tempRelationshipTemplate.sourceNodeTemplate = relationshipTemplate.sourceNodeTemplate;
-      tempRelationshipTemplate.targetNodeTemplate = relationshipTemplate.targetNodeTemplate;
+      tempRelationshipTemplate = relationshipTemplate;
+//      tempRelationshipTemplate.id = relationshipTemplate.id;
+//      tempRelationshipTemplate.name = relationshipTemplate.name;
+//      tempRelationshipTemplate.icon = relationshipTemplate.icon;
+//      tempRelationshipTemplate.expectedProperties = relationshipTemplate.expectedProperties;
+//      tempRelationshipTemplate.providedProperties = relationshipTemplate.providedProperties;
+//      tempRelationshipTemplate.levelGraphNode = relationshipTemplate.levelGraphNode;
+//      tempRelationshipTemplate.levelGraphNodeId = relationshipTemplate.levelGraphNodeId;
+//      tempRelationshipTemplate.sourceNodeTemplate = relationshipTemplate.sourceNodeTemplate;
+//      tempRelationshipTemplate.targetNodeTemplate = relationshipTemplate.targetNodeTemplate;
       relationshipTemplateList.push(tempRelationshipTemplate);
     }
     return relationshipTemplateList || {};
@@ -124,15 +125,16 @@ export class RelationshipTemplateService {
     Logger.info('[RESPONSE - RELATIONSHIPTEMPLATE]: Extract Data of Response Body', RelationshipTemplateService.name);
     Logger.data('[RESPONSE - RELATIONSHIPTEMPLATE]: ' + JSON.stringify(body), RelationshipTemplateService.name);
     let relationshipTemplate: RelationshipTemplate = new RelationshipTemplate(body.sourceNodeId, body.targetNodeId, body.path, body.relationshipTypeId, body.topologyTemplateId);
-    relationshipTemplate.id = body.id;
-    relationshipTemplate.name = body.name;
-    relationshipTemplate.icon = body.icon;
-    relationshipTemplate.expectedProperties = body.expectedProperties;
-    relationshipTemplate.providedProperties = body.providedProperties;
-    relationshipTemplate.levelGraphNode = body.levelGraphNode;
-    relationshipTemplate.levelGraphNodeId = body.levelGraphNodeId;
-    relationshipTemplate.sourceNodeTemplate = body.sourceNodeTemplate;
-    relationshipTemplate.targetNodeTemplate = body.targetNodeTemplate;
+    relationshipTemplate = body;
+//    relationshipTemplate.id = body.id;
+//    relationshipTemplate.name = body.name;
+//    relationshipTemplate.icon = body.icon;
+//    relationshipTemplate.expectedProperties = body.expectedProperties;
+//    relationshipTemplate.providedProperties = body.providedProperties;
+//    relationshipTemplate.levelGraphNode = body.levelGraphNode;
+//    relationshipTemplate.levelGraphNodeId = body.levelGraphNodeId;
+//    relationshipTemplate.sourceNodeTemplate = body.sourceNodeTemplate;
+//    relationshipTemplate.targetNodeTemplate = body.targetNodeTemplate;
     return relationshipTemplate || {};
   }
 

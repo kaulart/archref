@@ -86,9 +86,10 @@ export class LevelService {
     Logger.info('[RESPONSE - LEVEL]:  Extract Level Data', LevelService.name);
     Logger.info('[RESPONSE - LEVEL]: ' + JSON.stringify(body), LevelService.name);
     let level: Level = new Level(body.depth, body.visible, body.y, body.height, body.levelGraphId);
-    level.id = body.id;
-    level.levelGraph = body.levelGraph;
-    level.levelGraphNodes = body.levelGraphNodes;
+    level = body;
+//    level.id = body.id;
+//    level.levelGraph = body.levelGraph;
+//    level.levelGraphNodes = body.levelGraphNodes;
     return level || {};
   }
 

@@ -6,28 +6,29 @@ import { TopologyTemplate } from './topologytemplate';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - NodeTemplate Data Model - A node of a TopologyTemplate
+ * @class - NodeTemplate - A node of a TopologyTemplate
  *
- * @Entity
- * @superFields - id: number - ID of the NodeTemplate
- * @superFields - name: string - Name of the NodeTemplate
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the NodeTemplate
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the NodeTemplate
+ * @Class Entity
+ * @superField - id: number - ID of the NodeTemplate
+ * @superField - name: string - Name of the NodeTemplate
+ * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the NodeTemplate
+ * @superField - providedProperties: ProvidedProperty[] - Array of provided properties of the NodeTemplate
  *
- * @Node
- * @superFields - x: number - x Position of the left upper corner of a rectangle
- * @superFields - y: number - y Position of the left upper corner of a rectangle
- * @superFields - width: number - Width of the rectangle
- * @superFields - height: number - Height of the rectangle
+ * @Class Node
+ * @superField - x: number - x Position of the left upper corner of a rectangle
+ * @superField - y: number - y Position of the left upper corner of a rectangle
+ * @superField - width: number - Width of the rectangle
+ * @superField - height: number - Height of the rectangle
  *
- * @fields - levelGraphNode: LevelGraphNode - LevelGraphNode from which the NodeTemplate was created
- * @fields - levelGraphNodeId: number - ID of the LevelGraphNode from which the NodeTemplate was created
- * @fields - nodeType: NodeType - NodeType of the NodeTemplate
- * @fields - nodeTypeId: number - ID of NodeType of the NodeTemplate
- * @fields - inRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
- * @fields - outRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
- * @fields - topologyTemplate: TopologyTemplate - TopologyTemplate of the NodeTemplate
- * @fields - topologyTemplateId: number - ID of TopologyTemplate of the NodeTemplate
+ * @field - levelGraphNode: LevelGraphNode - LevelGraphNode from which the NodeTemplate was created
+ * @field - levelGraphNodeId: number - ID of the LevelGraphNode from which the NodeTemplate was created
+ * @field - nodeType: NodeType - NodeType of the NodeTemplate
+ * @field - nodeTypeId: number - ID of NodeType of the NodeTemplate
+ * @field - inRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
+ * @field - outRelationshipTemplates: RelationshipTemplate[] - Array of all outgoing and incoming RelationshipTemplates of the NodeTemplate
+ * @field - topologyTemplate: TopologyTemplate - TopologyTemplate of the NodeTemplate
+ * @field - topologyTemplateId: number - ID of TopologyTemplate of the NodeTemplate
+ * @field - abstractionLevel: number - Level of abstraction of the NodeTemplate
  *
  * @author - Arthur Kaul
  *
@@ -46,10 +47,10 @@ export class NodeTemplate extends Node {
   topologyTemplate: TopologyTemplate;
   topologyTemplateId: number;
 
-  constructor(x: number, y: number, width: number, height: number, nodeTypeId: number, topologyTemplateId: number) {
-    super(x, y, width, height);
-    this.nodeTypeId = nodeTypeId;
-    this.topologyTemplateId = topologyTemplateId;
+  abstractionLevel: number;
+
+  constructor() {
+    super();
   }
 
 }

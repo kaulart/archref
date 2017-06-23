@@ -1,77 +1,148 @@
 package de.arthurkaul.archref.model.topology;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import de.arthurkaul.archref.model.levelgraph.LevelGraph;
+
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @class - TopologyTemplate - TopologyTemplate Model is used for model a abstract or specific system architecture
+ *
+ * @field - Long id - ID of the TopologyTemplate
+ * @field - String name - Name of the TopologyTemplate
+ * @field - List<NodeTemplate> nodeTemplates - Collection of all NodeTemplates in the LevelGraph
+ * @field - List<RelationshipTemplate> relationshipTemplates - Collection of all RelationshipTemplates in the LevelGraph
+ * @field - TopologyTemplate parentTopologyTemplate - Parent of the TopologyTemplate from which it was derived
+ * @field - Long parentTopologyTemplateId - ID of the parent of the topology
+ * @field - Collection<TopologyTemplate> childTopologyTemplates - Collection of child of the TopologyTemplate. Child are all TopologyTemplate which are generated through the refinement from this
+ *        topology
+ * @field - Integer abstractionLevel - Level is calculated from the Root Topology
+ *
+ * @author Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
 
 @Entity
-@Table(name="TOPOLOGYTEMPLATE")
-public class TopologyTemplate extends de.arthurkaul.archref.model.Entity {
+@Table(name = "TOPOLOGYTEMPLATE")
+public class TopologyTemplate {
 
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="topologyTemplate")
-	@JsonManagedReference (value="topologyTemplate-nodeTemplate")
-	private Collection<NodeTemplate> nodeTemplates;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="topologyTemplate")
-	@JsonManagedReference (value="topologyTemplate-relationshipTemplate")
-	private Collection<RelationshipTemplate> relationshipTemplates;
-	
-	@Column(name = "PARENT_TOPOLOGYTEMPLATE_ID")
-	private Long parentTopologyTemplateID;
-	
-	//TODO probleme möglicherweisße mit der Referenz
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+	@Id
+	@GeneratedValue()
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "NAME")
+	private String name;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topologyTemplate")
+	@JsonManagedReference(value = "topologyTemplate-nodeTemplate")
+	private List<NodeTemplate> nodeTemplates = new ArrayList<NodeTemplate>();
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topologyTemplate")
+	@JsonManagedReference(value = "topologyTemplate-relationshipTemplate")
+	private List<RelationshipTemplate> relationshipTemplates = new ArrayList<RelationshipTemplate>();
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PARENT_TOPOLOGYTEMPLATE")
-	@JsonBackReference (value="topologyTemplate-topologyTemplate")
+	@JsonBackReference(value = "topologyTemplate-topologyTemplate")
 	private TopologyTemplate parentTopologyTemplate;
-	
-	@OneToMany (cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="parentTopologyTemplate")
-	@JsonManagedReference (value="topologyTemplate-topologyTemplate")
-	private Collection<TopologyTemplate> childTopologyTemplates;
-	
-	@ManyToMany
-	@JoinTable(name = "LEVELGRAPH_TOPOLOGYTEMPLATE", 
-			joinColumns = @JoinColumn(name = "TOPOLOGY_ID", referencedColumnName = "ID"), 
-			inverseJoinColumns = @JoinColumn(name = "LEVELGRAPH_ID", referencedColumnName = "ID"))
-	private Collection<LevelGraph> levelGraphs;
-	
-	@Column(name = "ABSTRACTIONLEVEL")
-	private Long abstractionLevel;
 
+	@Column(name = "PARENT_TOPOLOGYTEMPLATE_ID")
+	private Long parentTopologyTemplateID;
 
-	public Collection<NodeTemplate> getNodeTemplates() {
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentTopologyTemplate")
+	@JsonManagedReference(value = "topologyTemplate-topologyTemplate")
+	private List<TopologyTemplate> childTopologyTemplates = new ArrayList<TopologyTemplate>();
+
+	@Column(name = "ABSTRACTION_LEVEL")
+	private int abstractionLevel = 0;
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @getter / @setter Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<NodeTemplate> getNodeTemplates() {
 		return nodeTemplates;
 	}
 
-	public void setNodeTemplates(Collection<NodeTemplate> nodeTemplates) {
+	public void setNodeTemplates(ArrayList<NodeTemplate> nodeTemplates) {
 		this.nodeTemplates = nodeTemplates;
 	}
 
-	public Collection<RelationshipTemplate> getRelationshipTemplates() {
+	public List<RelationshipTemplate> getRelationshipTemplates() {
 		return relationshipTemplates;
 	}
 
-	public void setRelationshipTemplates(Collection<RelationshipTemplate> relationshipTemplates) {
+	public void setRelationshipTemplates(ArrayList<RelationshipTemplate> relationshipTemplates) {
 		this.relationshipTemplates = relationshipTemplates;
 	}
 
-	public Long getAbstractionLevel() {
+	public TopologyTemplate getParentTopologyTemplate() {
+		return parentTopologyTemplate;
+	}
+
+	public void setParentTopologyTemplate(TopologyTemplate parentTopologyTemplate) {
+		this.parentTopologyTemplate = parentTopologyTemplate;
+	}
+
+	public Long getParentTopologyTemplateID() {
+		return parentTopologyTemplateID;
+	}
+
+	public void setParentTopologyTemplateID(Long parentTopologyTemplateID) {
+		this.parentTopologyTemplateID = parentTopologyTemplateID;
+	}
+
+	public List<TopologyTemplate> getChildTopologyTemplates() {
+		return childTopologyTemplates;
+	}
+
+	public void setChildTopologyTemplates(ArrayList<TopologyTemplate> childTopologyTemplates) {
+		this.childTopologyTemplates = childTopologyTemplates;
+	}
+
+	public int getAbstractionLevel() {
 		return abstractionLevel;
 	}
 
-	public void setAbstractionLevel(Long abstractionLevel) {
+	public void setAbstractionLevel(int abstractionLevel) {
 		this.abstractionLevel = abstractionLevel;
 	}
-	
+
 }
