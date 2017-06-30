@@ -1,24 +1,22 @@
+import { Constants } from '../../constants/constants';
 import { LevelGraph } from './levelgraph';
-import { LevelGraphNode } from './levelgraphnode';
-import { LevelGraphRelation } from './levelgraphrelation';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - Level Data Model - Level for the Level Graph Model for display the levels in the LevelGraphModellerComponent
+ * @class - Level - Level for the Level Graph Model for display the levels in the LevelGraphModellerComponent
  *
- * @fields - id: number - ID of the level
- * @fields - depth: number - Depth of the level in the LevelGraph
- * @fields - visible: boolean - Indicates if a level should be displayed or not in the LevelGraphModellerComponent
- * @fields - y: number - Y-Position of the level layer in the LevelGraphModellerComponent
- * @fields - height: number - Height of the level layer in the LevelGraphModellerComponent
- * @fields - levelGraph: LevelGraph height: number - Corresponding LevelGraph for the Level
- * @fields - levelGraphId: number - ID of the corresponding LevelGraph
- * @fields - levelGraphRelations: LevelGraphRelation[] = [] - Array of all Relations which have the target or source node in this level
- * @fields - levelGraphNodes: LevelGraphNode[] = [] - Array of all Node which are in this level
+ * @field - id: number - ID of the level
+ * @field - depth: number - Depth of the level in the LevelGraph
+ * @field - visible: boolean - Indicates if a level should be displayed or not in the LevelGraphModellerComponent
+ * @field - y: number - Y-Position of the level layer in the LevelGraphModellerComponent
+ * @field - height: number - Height of the level layer in the LevelGraphModellerComponent
+ * @field - levelGraph: LevelGraph height: number - Corresponding LevelGraph for the Level
+ * @field - levelGraphId: number - ID of the corresponding LevelGraph
  *
- * //TODO You may decide to decouple level data from data which is only be used for display reasons in the LevelGraphModellerComponent
+ * //hint: You may decide to decouple level data from data which is only be used for display reasons in the LevelGraphModellerComponent
+ * //hint: You may decide to add list for the nodes and relations which are in a level for faster access
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class Level {
@@ -30,14 +28,13 @@ export class Level {
   height: number;
   levelGraph: LevelGraph;
   levelGraphId: number;
-  levelGraphNodes: LevelGraphNode[];
 
-  constructor(depth: number, visible: boolean, y: number, height: number, levelGraphId: number) {
+  constructor(depth: number, y: number, levelGraphId: number) {
     this.depth = depth;
-    this.visible = visible;
     this.y = y;
-    this.height = height;
-    this.levelGraphId = levelGraphId;    this.levelGraphNodes = [];
+    this.height = Constants.LEVELHEIGHT;
+    this.visible = true;
+    this.levelGraphId = levelGraphId;
   }
 
 }

@@ -2,12 +2,19 @@
 <div id="accordion" class="panel-group collapsed_area tab-panel">
 
 	<div class="panel panel-default ">
-		
+
 		<!-- Header -->
 		<div class="row panel-heading control-panel">
 			<h3 class="col-sm-3">Repositories</h3>
+			
+			<!-- New Button -->
 			<button class="w3-right w3-green btn btn-primary" id="addRepository" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#addRepositoriesFieldsArea">
 				<i class="fa fa-plus" aria-hidden="true"></i> New
+			</button>
+
+			<!-- Import Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="import" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importAreaRepository">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
 			</button>
 		</div>
 
@@ -25,6 +32,18 @@
 			</form>
 		</div>
 
+		<!-- Import Panel -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importAreaRepository">
+			<form>
+
+				<div class="form-group">
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)="importRepository()">Upload</button>
+			</form>
+		</div>
+
 	</div>
 
 	<!-- Data table -->
@@ -39,18 +58,22 @@
 					<th class="table-head">Name</th>
 					<th class="table-head">ID</th>
 					<th class="table-head">Edit</th>
+					<th class="table-head">Export</th>
 					<th class="table-head">Delete</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				<tr  class="height" *ngFor="let repository of repositories">
+				<tr class="height" *ngFor="let repository of repositories">
 					<td routerLink="/dashboard/repository" [queryParams]="{id: repository.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
 					<td routerLink="/dashboard/repository" [queryParams]="{id: repository.id}">{{ repositories.indexOf(repository) +1 }}</td>
 					<td routerLink="/dashboard/repository" [queryParams]="{id: repository.id}">{{ repository.name }}</td>
 					<td routerLink="/dashboard/repository" [queryParams]="{id: repository.id}">{{ repository.id }}</td>
 					<td><button type="button" data-toggle="modal" data-target="#editRepositoryModal" class="w3-blue btn" (click)=setEditRepositoryData(repository)>
 							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button></td>
+					<td><button class="btn" type="button" (click)="exportRepository(repository)">
+							<i class="fa fa-download" aria-hidden="true"></i>
 						</button></td>
 					<td><button class="w3-red btn" (click)="deleteRepository(repository.id, $event)">
 							<i class="fa fa-trash" aria-hidden="true"></i>

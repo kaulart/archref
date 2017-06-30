@@ -7,7 +7,7 @@
 		<div class="col-sm-12 w3-theme-d3 w3-card-4 heading">
 
 			<div class="col-sm-12">
-			
+
 				<div class="col-sm-5">
 					<h3>
 						Topology Template Name: <input disabled style="color: black" value="{{currentTopologyTemplate.name}}" />
@@ -19,26 +19,41 @@
 					</h3>
 
 				</div>
-				
+
+				<div class="w3-right col-sm-4 row">
+					<button [disabled]="this.levelGraphs.length < 1" class="btn btn-primary w3-green" type="button" data-toggle="modal" data-target="#refinementModal" (click)="setUsedLevelGraphs()">Refinement</button>
+					<label *ngIf="this.levelGraphs.length < 1" class="w3-pale-yellow"> <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>No LevelGraph for Refinement Available
+					</label>
+				</div>
+
 			</div>
 
-			<!-- Slider for show the abstrakt or spezific Topology Template -->
-			<div class="col-sm-12 w3-center control-group">
-				<label class="col-sm-2 ">Abstract Topology</label>
-				<md-slider class="col-sm-8" tickInterval="1" thumbLabel  (change)="onChangeAbstractionLevel()" [(ngModel)]="currentAbstractionLevel" [value]="currentAbstractionLevel" step="1" min="0" max="{{maxAbstractionLevel}}"> </md-slider>
-				<label class="col-sm-2">Specific Topology</label>
-			</div>
 
 			<!-- Refinement -->
 			<div class="col-sm-12 w3-center control-group">
-				<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) - 1 < 0" class="btn btn-default  btn-circle w3-green w3-left" type="button" (click)="prevTopology()">
-					<i class="fa fa-arrow-left" aria-hidden="true"></i>
-				</button>
-				<label>Current Abstraction Level: </label><input style="color: black" disabled ng-model="currentAbstractionLevel" value="{{currentAbstractionLevel}}"/>
-				<button class="btn btn-primary w3-green" type="button" data-toggle="modal" data-target="#refinementModal" (click)="setUsedLevelGraphs()">Refinement</button>
-				<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) + 1 >= currentTopologyTemplates.length" class="btn btn-default btn-circle w3-green w3-right" type="button" (click)="nextTopology()">
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</button>
+
+				<div class="row">
+					<button [disabled]="currentTopologyTemplate.parentTopologyTemplateId === undefined || currentTopologyTemplate.parentTopologyTemplateId === null" class="btn w3-green" (click)="loadAbstractTopologyTemplates()" style="color: black">
+						<i class="fa fa-arrow-up icon" aria-hidden="true">Abstract Topology</i>
+					</button>
+				</div>
+
+
+				<div class="row">
+					<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) - 1 < 0" class="btn btn-default  btn-circle w3-green" type="button" (click)="prevTopology()">
+						<i class="fa fa-arrow-left icon" aria-hidden="true">Prev Topology</i>
+					</button>
+					<input id="abstractionLevel" class=" w3-center" style="color: black" disabled value="Abstraction Level: {{currentTopologyTemplate.abstractionLevel}}" />
+					<button [disabled]="currentTopologyTemplates.length <= 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) + 1 >= currentTopologyTemplates.length" class="btn btn-default w3-green" type="button" (click)="nextTopology()">
+						<i class="icon fa fa-arrow-right" aria-hidden="true">Next Topology</i>
+					</button>
+				</div>
+				<div class="row">
+					<button [disabled]="currentTopologyTemplate.childTopologyTemplates.length < 1" class="btn w3-green" (click)="loadSpecificTopologyTemplates()" style="color: black">
+						<i class="fa fa-arrow-down icon" aria-hidden="true">Specific Topology</i>
+					</button>
+				</div>
+
 			</div>
 
 		</div>
@@ -78,7 +93,7 @@
 						<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
 						<li class="w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
 						<li class="w3-pale-yellow" *ngIf="selectedRepository.nodeTypeList.length < 1 && selectedRepository.name !== 'Select Repository'" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
-						<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList" (drag)=" onDragNodeType($event, nodeType)" (dragover)="onDragOver($event)"><img src="http://lorempixum.com/100/100/nature/1" />
+						<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypeList" (drag)=" onDragNodeType($event, nodeType)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{nodeType.icon}}" />
 							<h3>{{nodeType.name}}</h3></li>
 					</ul>
 				</div>
@@ -108,7 +123,7 @@
 							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH SELECTED</li>
 							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
 							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name !== 'Select Level Graph' && selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
-							<li class="nodeTemplate w3-round" draggable="true" *ngFor="let levelGraphNode of selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="/test" />
+							<li class="nodeTemplate w3-round" draggable="true" *ngFor="let levelGraphNode of selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
 								<h3>{{levelGraphNode.name}}</h3></li>
 						</ul>
 					</div>
@@ -131,7 +146,7 @@
 
 							<ng-container *ngFor="let levelGraphNode of selectedLevelGraphNodeNodeType">
 
-							<li class="nodeTemplate w3-round" draggable="true" *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE')" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="/test" />
+							<li class="nodeTemplate w3-round" draggable="true" *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE')" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
 								<h3>{{levelGraphNode.name}}</h3></li>
 							</ng-container>
 						</ul>
@@ -164,7 +179,7 @@
    					</marker>
  				</defs>
  				
- 				<defs>
+ 			<!-- 	<defs>
    					<marker id="TriangleStart" viewBox="0 0 10 10" refX="-40" refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 10 0 L 10 10 L 0 5 z" />
    					</marker>
@@ -174,7 +189,7 @@
    					<marker id="TriangleStartDraw" viewBox="0 0 10 10" refX="-8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 10 0 L 10 10 L 0 5 z" />
    					</marker>
- 				</defs>
+ 				</defs> -->
  				
  				
  				<defs> 
@@ -196,7 +211,7 @@
 				</g>
 				
 				<!-- Node Templates -->
-				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mouseup)="stopDrawLevelGraphRelation(nodeTemplate)" (mousedown)="startMoveNode($event); setCurrentLevelGraphCompliantRelationshipTypes($event, nodeTemplate.levelGraphNodeId)" (mousemove)="onMoveNode($event, nodeTemplate)"
+				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mouseup)="stopDrawLevelGraphRelation(nodeTemplate)" (mousedown)="startMoveNode($event, nodeTemplate); setCurrentLevelGraphCompliantRelationshipTypes($event, nodeTemplate.levelGraphNodeId)" (mousemove)="onMoveNode($event)"
 					(mouseup)="stopMoveNode($event)">
 						
 					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />
@@ -349,18 +364,18 @@
 			</div>
 			<div class="  input-panel">
 				<div class="col-sm-12 form-group">
-						<label>Select Level Graphs which should be used for the Refinement:</label>
-						<div id="refineGraphList" class="w3-light-grey" style="max-height: 300px; overflow: auto">
-							<label *ngFor="let levelGraph of levelGraphs" class="form-control"> <input type="checkbox" name="levelGraphs" [(ngModel)]="levelGraph.checked" value="{{levelGraph.id}}" (click)="onCheckLevelGraph(levelGraph)" /> Name: {{levelGraph.name}} ID: {{levelGraph.id}}
-							</label>
-						</div>
+					<label>Select Level Graphs which should be used for the Refinement:</label>
+					<div id="refineGraphList" class="w3-light-grey" style="max-height: 300px; overflow: auto">
+						<label *ngFor="let levelGraph of levelGraphs" class="form-control"> <input type="checkbox" name="levelGraphs" [(ngModel)]="levelGraph.checked" value="{{levelGraph.id}}" (click)="onCheckLevelGraph(levelGraph)" /> Name: {{levelGraph.name}} ID: {{levelGraph.id}}
+						</label>
 					</div>
+				</div>
 				<form>
-					
+
 					<div class="col-sm-12 form-group">
 						<label for="smi">Satisfaction Index (between 0 and 1): </label> <input #smi type="number" min="0" max="1" class="form-control" value="1" required>
 					</div>
-					
+
 
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" (click)="setUsedLevelGraphs()">Restore</button>

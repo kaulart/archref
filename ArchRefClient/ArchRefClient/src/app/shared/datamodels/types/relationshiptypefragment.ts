@@ -12,7 +12,7 @@ import { Entity } from '../entity/entity';
  * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the RelationshipTypeFragment
  * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the RelationshipTypeFragment
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class RelationshipTypeFragment extends Entity {
@@ -22,3 +22,5 @@ export class RelationshipTypeFragment extends Entity {
   }
 
 }
+
+/// TODO löschen wenn nicht benötigt am schluss

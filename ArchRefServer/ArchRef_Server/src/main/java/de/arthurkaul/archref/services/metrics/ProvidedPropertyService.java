@@ -1,8 +1,10 @@
 package de.arthurkaul.archref.services.metrics;
 
 import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.model.metrics.ProvidedProperty;
 import de.arthurkaul.archref.repositories.metrics.ProvidedPropertyRepository;
@@ -28,6 +30,7 @@ public class ProvidedPropertyService implements ProvidedPropertyInterface {
 		if (providedProperty.getId() != null) {
 			return null;
 		}
+
 		return providedPropertyRepository.save(providedProperty);
 	}
 

@@ -29,8 +29,7 @@ public class LevelController {
 		Collection<Level> levels = levelService.findAllLevels();
 
 		if (levels.isEmpty()) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
 
 		}
 		return ResponseEntity.ok().body(levels);
@@ -42,8 +41,7 @@ public class LevelController {
 		Level level = levelService.findById(id);
 
 		if (level == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(level);
@@ -53,14 +51,11 @@ public class LevelController {
 	public ResponseEntity<Level> createLevel(@RequestBody Level level, UriComponentsBuilder ucBuilder) {
 
 		if (level.getId() != null) {
-			throw new EntityAlreadyExistException(
-					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + level.getId()
-							+ " already exist.");
+			throw new EntityAlreadyExistException("LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + level.getId() + " already exist.");
 		}
 		Level saved = levelService.create(level);
 
-		return ResponseEntity.created(ucBuilder.path("/api/level/{id}").buildAndExpand(level.getId()).toUri())
-				.body(saved);
+		return ResponseEntity.created(ucBuilder.path("/api/level/{id}").buildAndExpand(level.getId()).toUri()).body(saved);
 
 	}
 
@@ -70,9 +65,7 @@ public class LevelController {
 		Level currentLevel = levelService.findById(id);
 
 		if (currentLevel == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id + " not found.");
 		}
 
 		currentLevel = level;
@@ -87,9 +80,7 @@ public class LevelController {
 		Level level = levelService.findById(id);
 
 		if (level == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to delete LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to delete LevelGraph. LevelGraph with id " + id + " not found.");
 		}
 
 		levelService.delete(id);
@@ -104,7 +95,7 @@ public class LevelController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@ExceptionHandler({EntityNotFoundException.class, EntityAlreadyExistException.class})
+	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistException.class })
 
 	public String exceptionHandler(Exception e) {
 

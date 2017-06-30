@@ -99,8 +99,7 @@ export class ProvidedPropertyService {
     Logger.data('[RESPONSE - ProvidedProperty]: ' + JSON.stringify(body), ProvidedPropertyService.name);
     for (let providedProperty of body) {
       let tempProvidedProperty: ProvidedProperty = new ProvidedProperty(providedProperty.name, providedProperty.value);
-      tempProvidedProperty.id = providedProperty.id;
-      tempProvidedProperty.entityProvidedId = providedProperty.entityProvidedId;
+      tempProvidedProperty = providedProperty;
       propertyList.push(tempProvidedProperty);
     }
     return propertyList || {};
@@ -118,9 +117,7 @@ export class ProvidedPropertyService {
     Logger.info('[RESPONSE - ProvidedProperty]: Extract Data of Response Body', ProvidedPropertyService.name);
     Logger.data('[RESPONSE - PROPERTY]: ' + JSON.stringify(body), ProvidedPropertyService.name);
     let providedProperty: ProvidedProperty = new ProvidedProperty(body.name, body.value);
-    providedProperty.id = body.id;
-
-    providedProperty.entityProvidedId = body.entityProvidedId;
+    providedProperty = body;
     return providedProperty || {};
   }
 

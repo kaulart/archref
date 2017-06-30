@@ -1,6 +1,5 @@
 package de.arthurkaul.archref.model.levelgraph;
 
-import javax.persistence.CascadeType;
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,29 +8,38 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - Level - Level for the Level Graph Model for display the levels in the LevelGraphModellerComponent
+ * @class - <Level> - Level of a <LevelGraph> for display the levels and assign the <LevelGraphNode> and <LevelGraphRelation> to the different levels of a <LevelGraph>
  *
  * @field - Long id - ID of the level
  * @field - Integer depth - Depth of the level in the LevelGraph
  * @field - boolean visible - Indicates if a level should be displayed or not in the LevelGraphModellerComponent
  * @field - float y - Y-Position of the level layer in the LevelGraphModellerComponent
  * @field - float height - Height of the level layer in the LevelGraphModellerComponent
- * @field - LevelGraph levelGraph - Corresponding LevelGraph for the Level
- * @field - Long levelGraphId: number - ID of the corresponding LevelGraph
+ * @field - <LevelGraph> levelGraph - Corresponding LevelGraph for the Level
+ * @field - Long levelGraphId - ID of the corresponding LevelGraph
  *
  * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 
 @Entity
-@Table(name = "LEVEL")
+@XmlRootElement(name = "LevelGraph")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tAbstrationLevel")
 public class Level {
 
 	/***************************************************************************************************************************************************************************************************
@@ -43,43 +51,51 @@ public class Level {
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")
+	@XmlAttribute(name = "id")
+	@XmlIDExtension
 	private Long id;
 
 	@Column(name = "DEPTH")
 	@NotNull
-	private int depth;
+	@XmlAttribute(name = "abstractionDepth")
+	private Integer depth;
 
 	@Column(name = "VISIBLE")
 	@NotNull
-	private Boolean visible;
+	@XmlAttribute(name = "visible")
+	private Boolean visible = true;
 
 	@Column(name = "Y")
 	@NotNull
+	@XmlAttribute(name = "y")
 	private Integer y;
 
 	@Column(name = "HEIGHT")
 	@NotNull
+	@XmlAttribute(name = "height")
 	private Integer height;
 
-	@ManyToOne(cascade = { CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPH")
 	@JsonBackReference(value = "levelgraph-levels")
+	@XmlInverseReference(mappedBy = "levels")
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
+	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
-	// @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "targetLevel")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevel")
 	// @JsonManagedReference(value = "inLevelGraphRelations-targetLevel")
-	// private Collection<LevelGraphRelation> inLevelGraphRelations;
+	// private List<LevelGraphRelation> inLevelGraphRelations;
 	//
-	// @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "sourceLevel")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevel")
 	// @JsonManagedReference(value = "outLevelGraphRelation-sourceLevel")
-	// private Collection<LevelGraphRelation> outLevelGraphRelations;
+	// private List<LevelGraphRelation> outLevelGraphRelations;
 	//
-	// @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "level")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "level")
 	// @JsonManagedReference(value = "level-levelGraphNode")
-	// private Collection<LevelGraphNode> levelGraphNodes;
+	// private List<LevelGraphNode> levelGraphNodes;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -143,28 +159,44 @@ public class Level {
 		this.levelGraphId = levelGraphId;
 	}
 
-	// public Collection<LevelGraphNode> getLevelGraphNodes() {
+	// @JsonIgnore
+	// public List<LevelGraphNode> getLevelGraphNodes() {
 	// return levelGraphNodes;
 	// }
 	//
-	// public void setLevelGraphNodes(Collection<LevelGraphNode> levelGraphNodes) {
+	// @JsonIgnore
+	// public void setLevelGraphNodes(List<LevelGraphNode> levelGraphNodes) {
 	// this.levelGraphNodes = levelGraphNodes;
 	// }
 	//
-	// public Collection<LevelGraphRelation> getOutLevelGraphRelations() {
+	// @JsonIgnore
+	// public List<LevelGraphRelation> getOutLevelGraphRelations() {
 	// return outLevelGraphRelations;
 	// }
 	//
-	// public void setOutLevelGraphRelations(Collection<LevelGraphRelation> outLevelGraphRelations) {
+	// @JsonIgnore
+	// public void setOutLevelGraphRelations(List<LevelGraphRelation> outLevelGraphRelations) {
 	// this.outLevelGraphRelations = outLevelGraphRelations;
 	// }
 	//
-	// public Collection<LevelGraphRelation> getInLevelGraphRelations() {
+	// @JsonIgnore
+	// public List<LevelGraphRelation> getInLevelGraphRelations() {
 	// return inLevelGraphRelations;
 	// }
 	//
-	// public void setInLevelGraphRelations(Collection<LevelGraphRelation> inLevelGraphRelations) {
+	// @JsonIgnore
+	// public void setInLevelGraphRelations(List<LevelGraphRelation> inLevelGraphRelations) {
 	// this.inLevelGraphRelations = inLevelGraphRelations;
 	// }
+
+	public Level clone() {
+		Level level = new Level();
+		level.setDepth(this.depth);
+		level.setHeight(this.height);
+		level.setLevelGraphId(this.levelGraphId);
+		level.setVisible(this.visible);
+		level.setY(this.y);
+		return level;
+	}
 
 }

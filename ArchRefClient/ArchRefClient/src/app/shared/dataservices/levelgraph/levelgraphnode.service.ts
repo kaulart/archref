@@ -99,25 +99,6 @@ export class LevelGraphNodeService {
     for (let levelGraphNode of body) {
       let tempLevelGraphNode: LevelGraphNode = new LevelGraphNode();
       tempLevelGraphNode = levelGraphNode;
-//      tempLevelGraphNode.id = levelGraphNode.id;
-//      tempLevelGraphNode.name = levelGraphNode.name;
-//      tempLevelGraphNode.providedProperties = levelGraphNode.providedProperties;
-//      tempLevelGraphNode.expectedProperties = levelGraphNode.expectedProperties;
-//
-//      tempLevelGraphNode.x = levelGraphNode.x;
-//      tempLevelGraphNode.y = levelGraphNode.y;
-//      tempLevelGraphNode.width = levelGraphNode.width;
-//      tempLevelGraphNode.height = levelGraphNode.height;
-//
-//      tempLevelGraphNode.levelGraphId = levelGraphNode.levelGraphId;
-//      tempLevelGraphNode.icon = levelGraphNode.icon;
-//      tempLevelGraphNode.levelGraphNodeType = levelGraphNode.levelGraphNodeType;
-//      tempLevelGraphNode.levelGraphNodeTypeId = levelGraphNode.levelGraphNodeTypeId;
-//      tempLevelGraphNode.levelDepth = levelGraphNode.levelDepth;
-//      tempLevelGraphNode.inLevelGraphRelations = levelGraphNode.inLevelGraphRelations;
-//      tempLevelGraphNode.outLevelGraphRelations = levelGraphNode.outLevelGraphRelations;
-//      tempLevelGraphNode.level = levelGraphNode.level;
-//      tempLevelGraphNode.levelGraph = levelGraphNode.levelGraph;
       levelGraphList.push(tempLevelGraphNode);
     }
     return levelGraphList || {};
@@ -136,25 +117,6 @@ export class LevelGraphNodeService {
     Logger.info('[RESPONSE - LEVELGRAPHNODE]: ' + JSON.stringify(body), LevelGraphNodeService.name);
     let levelGraphNode: LevelGraphNode = new LevelGraphNode();
     levelGraphNode = body;
-//    levelGraphNode.id = body.id;
-//    levelGraphNode.name = body.name;
-//    levelGraphNode.providedProperties = body.providedProperties;
-//    levelGraphNode.expectedProperties = body.expectedProperties;
-//
-//    levelGraphNode.x = body.x;
-//    levelGraphNode.y = body.y;
-//    levelGraphNode.width = body.width;
-//    levelGraphNode.height = body.height;
-//
-//    levelGraphNode.levelGraphId = body.levelGraphId;
-//    levelGraphNode.icon = body.icon;
-//    levelGraphNode.levelGraphNodeType = body.levelGraphNodeType;
-//    levelGraphNode.levelGraphNodeTypeId = body.levelGraphNodeTypeId;
-//    levelGraphNode.levelDepth = body.levelDepth;
-//    levelGraphNode.inLevelGraphRelations = body.inLevelGraphRelations;
-//    levelGraphNode.outLevelGraphRelations = body.outLevelGraphRelations;
-//    levelGraphNode.level = body.level;
-//    levelGraphNode.levelGraph = body.levelGraph;
     return levelGraphNode || {};
   }
 

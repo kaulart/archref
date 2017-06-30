@@ -34,6 +34,7 @@ export class AdministrationComponent implements OnInit {
     this.uploader.setOptions({ url: URL_IMPORT });
     this.uploader.uploadAll();
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      
     };
   }
 

@@ -99,13 +99,6 @@ export class RelationshipTypeService {
     for (let relationshipType of body) {
       let tempRelationshipType: RelationshipType = new RelationshipType();
       tempRelationshipType = relationshipType;
-      //      tempRelationshipType.id = relationshipType.id;
-      //      tempRelationshipType.name = relationshipType.name;
-      //      tempRelationshipType.repository = relationshipType.repository;
-      //      tempRelationshipType.repositoryId = relationshipType.repositoryId;
-      //      tempRelationshipType.icon = relationshipType.icon;
-      //      tempRelationshipType.providedProperties = relationshipType.providedProperties;
-      //      tempRelationshipType.expectedProperties = relationshipType.providedProperties;
       relationshipTypeList.push(tempRelationshipType);
     }
     return relationshipTypeList || {};
@@ -124,13 +117,6 @@ export class RelationshipTypeService {
     Logger.data('[RESPONSE - RELATIONSHIPTYPE]: ' + JSON.stringify(body), RelationshipTypeService.name);
     let relationshipType: RelationshipType = new RelationshipType();
     relationshipType = body;
-    //    relationshipType.id = body.id;
-    //    relationshipType.name = body.name;
-    //    relationshipType.repository = body.repository;
-    //    relationshipType.repositoryId = body.repositoryId;
-    //    relationshipType.icon = body.icon;
-    //    relationshipType.providedProperties = body.providedProperties;
-    //    relationshipType.expectedProperties = body.expectedProperties;
     return relationshipType || {};
   }
 

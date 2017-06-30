@@ -2,9 +2,19 @@ import { Logger } from '../../../../logger/logger';
 import { Repository } from '../../datamodels/repository/repository';
 import { RepositoryService } from '../../dataservices/repository/repository.service';
 import { Utility } from '../../../utility';
+import { ExportXmlService } from '../../dataservices/exportxml.service';
 import { Component, OnInit } from '@angular/core';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
+import * as FileSaver from 'file-saver';
+import { FileUploader } from 'ng2-file-upload';
+
+// URL for XML Import
+const URL_IMPORT = '/api/import/repository';
+
+// URL for XML Export
+const URL_EXPORT = '/repository';
+
 
 @Component({
   selector: 'app-repository',
@@ -34,7 +44,9 @@ export class RepositoryComponent implements OnInit {
   public editedRepository: Repository = new Repository();
   public flashMessage = new FlashMessage();
 
-  constructor(private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
+  public uploader: FileUploader = new FileUploader({});
+
+  constructor(private xmlExportSerivce: ExportXmlService, private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -121,6 +133,27 @@ export class RepositoryComponent implements OnInit {
       .subscribe(repositoryResponse => {
         this.repositories = Utility.deleteElementFromArry(id, this.repositories);
         Logger.info('Repository with id: ' + id + ' was deleted sucessfully.', RepositoryComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
+
+  importRepository() {
+    this.uploader.setOptions({ url: URL_IMPORT });
+    this.uploader.uploadAll();
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.repositories.push(response);
+    };
+  }
+
+  exportRepository(repository: Repository) {
+    this.xmlExportSerivce.getXmlFile(URL_EXPORT + '/' + repository.id).subscribe(
+      res => {
+        window.open(window.URL.createObjectURL(res));
+        FileSaver.saveAs(res, repository.name + '.xml');
       },
       (error) => {
         this.flashMessage.message = error;

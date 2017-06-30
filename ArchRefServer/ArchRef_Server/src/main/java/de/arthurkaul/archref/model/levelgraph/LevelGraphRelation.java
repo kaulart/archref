@@ -6,6 +6,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -13,37 +21,33 @@ import de.arthurkaul.archref.model.graph.Relation;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - LevelGraphRelation - A relation of a LevelGraph
+ * @class - <LevelGraphRelation> - A relation of a <LevelGraph>. Extends the superclass <Relation> which extends the superclass <Entity>
  *
- * @class Entity
- * @superField - id: number - ID of the LevelGraphNode
- * @superField - name: string - Name of the LevelGraphNode
- * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
- * @superField - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
- *
- * @class Relation
- * @superField - sourceNodeId: number - ID of the Source Node of LevelGraphRelation
- * @superField - targetNodeId: number - ID of the Target Node of LevelGraphRelation
- * @superField - path: Path - Path of the line from source node to target node
- *
- * @field - sourceLevelDepth: number - Depth of the level of the source node
- * @field - targetLevelDepth: number - Depth of the level of the target node
- * @field - sourceLevelId: number - ID of the source level
- * @field - targetLevelId: number - ID of the target level
- * @field - sourceLevel: Level - ID of the source level
- * @field - targetLevel: Level - ID of the target level
- * @field - targetLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @field - sourceLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @field - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
- * @field - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
- * @field - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further Improvments currently it is enough to implement it as
+ * @field - Integer sourceLevelDepth - Depth of the level of the source LevelGraphNode
+ * @field - Integer targetLevelDepth - Depth of the level of the target LevelGraphNode
+ * @field - Long sourceLevelId - ID of the source level
+ * @field - Long targetLevelId - ID of the target level
+ * @field - <Level> sourceLevel - Source level object
+ * @field - <Level> targetLevel - Target level object
+ * @field - <LevelGraphNode> targetLevelGraphNode - Target LevelGraphNode of the levelGraphRelation
+ * @field - <LevelGraphNode> sourceLevelGraphNode - Source LevelGraphNode of the levelGraphRelation
+ * @field - <LevelGraph> levelGraph - LevelGraph of the LevelGraphReltation
+ * @field - Long levelGraphId - ID of the LevelGraph of the LevelGraphRelation
+ * @field - String levelGraphRelationType - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further Improvments currently it is enough to implement it as
  *        constant Strings
+ * @field - boolean entryPoint - True if a LevelGraphRelation of type REFINE_TO is a outgoing relation of a LevelGraphNode of type NODEFTYPERAGMENT or RELATIONSHIPTYPEFRAGMENT and its target
+ *        LevelGraphNode is a EntryPoint of the Fragment. Default is false.
+ * @field - boolean exitPoint - True if a LevelGraphRelation of type REFINE_TO is a outgoing relation of a LevelGraphNode of type fragment and its target LevelGraphNode is a ExitPoint of the Fragment.
+ *        Default is false.
  *
  * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 @Entity
 @Table(name = "LEVELGRAPHRELATION")
+@XmlRootElement(name = "LevelGraphRelation")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tLevelGraphRelation")
 public class LevelGraphRelation extends Relation {
 
 	/***************************************************************************************************************************************************************************************************
@@ -53,53 +57,66 @@ public class LevelGraphRelation extends Relation {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "SOURCE_LEVEL_DEPTH")
+	@XmlElement(name = "SourceAbstractioLevel")
 	private Integer sourceLevelDepth;
 
 	@Column(name = "TARGET_LEVEL_DEPTH")
+	@XmlElement(name = "TargetAbstractioLevel")
 	private Integer targetLevelDepth;
 
 	@Column(name = "SOURCE_LEVEL_ID")
+	@XmlAttribute(name = "sourceLevelId")
 	private Long sourceLevelId;
 
 	@Column(name = "TARGET_LEVEL_ID")
+	@XmlAttribute(name = "targetLevelId")
 	private Long targetLevelId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_LEVEL", updatable = false)
-	@JsonBackReference(value = "outLevelGraphRelation-sourceLevel")
-	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
-	private Level sourceLevel;
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "SOURCE_LEVEL")
+	// @JsonBackReference(value = "outLevelGraphRelation-sourceLevel")
+	// @XmlElement(name = "SourceAbstractionLevel")
+	// private Level sourceLevel;
+	//
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "TARGET_LEVEL")
+	// @JsonBackReference(value = "inLevelGraphRelations-targetLevel")
+	// @XmlElement(name = "TargetAbstractionLevel")
+	// private Level targetLevel;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_LEVEL", updatable = false)
-	@JsonBackReference(value = "inLevelGraphRelations-targetLevel")
-	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
-	private Level targetLevel;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TARGET_LEVELGRAPHNODE", updatable = false)
-	@JsonBackReference(value = "inLevelGraphRelations-sourceLevelGraphNode")
-	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
-
+	@JsonBackReference(value = "inLevelGraphRelations-targetLevelGraphNode")
+	@XmlElement(name = "TargetLevelGraphNode")
 	private LevelGraphNode targetLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SOURCE_LEVELGRAPHNODE", updatable = false)
-	@JsonBackReference(value = "outLevelGraphRelations-targetLevelGraphNode")
-	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
+	@JsonBackReference(value = "outLevelGraphRelations-sourceLevelGraphNode")
+	@XmlElement(name = "SourceLevelGraphNode")
 	private LevelGraphNode sourceLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPH", updatable = false)
 	@JsonBackReference(value = "levelgraph-levelgraphrelation")
-	// @Cascade({CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH})
+	@XmlInverseReference(mappedBy = "levelGraphRelations")
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
+	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
 	@Column(name = "TYPE")
+	@XmlElement(name = "Type")
 	private String levelGraphRelationType;
+
+	@Column(name = "ENTRY_POINT")
+	@XmlAttribute(name = "entryPoint")
+	private Boolean entryPoint = false;
+
+	@Column(name = "EXIT_POINT")
+	@XmlAttribute(name = "exitPoint")
+	private Boolean exitPoint = false;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -179,20 +196,36 @@ public class LevelGraphRelation extends Relation {
 		this.sourceLevelGraphNode = sourceLevelGraphNode;
 	}
 
-	public Level getSourceLevel() {
-		return sourceLevel;
+	// public Level getSourceLevel() {
+	// return sourceLevel;
+	// }
+	//
+	// public void setSourceLevel(Level sourceLevel) {
+	// this.sourceLevel = sourceLevel;
+	// }
+	//
+	// public Level getTargetLevel() {
+	// return targetLevel;
+	// }
+	//
+	// public void setTargetLevel(Level targetLevel) {
+	// this.targetLevel = targetLevel;
+	// }
+
+	public Boolean isEntryPoint() {
+		return entryPoint;
 	}
 
-	public void setSourceLevel(Level sourceLevel) {
-		this.sourceLevel = sourceLevel;
+	public void setEntryPoint(Boolean entryPoint) {
+		this.entryPoint = entryPoint;
 	}
 
-	public Level getTargetLevel() {
-		return targetLevel;
+	public Boolean isExitPoint() {
+		return exitPoint;
 	}
 
-	public void setTargetLevel(Level targetLevel) {
-		this.targetLevel = targetLevel;
+	public void setExitPoint(Boolean exitPoint) {
+		this.exitPoint = exitPoint;
 	}
 
 }

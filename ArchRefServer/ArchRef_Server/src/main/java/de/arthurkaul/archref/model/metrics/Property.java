@@ -8,26 +8,60 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
+
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @class - <Property> - Properties are name value pairs
+ *
+ * @field - Long id - Id of the Property
+ * @field - String name - Name of the Property
+ * @field - String value - Value of the Property
+ *
+ * @author - Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-@Table(name="PROPERTY")
-public class Property{
-	
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "PROPERTY")
+@XmlRootElement(name = "Property")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tProperty")
+public class Property {
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	@Column(name="ID")
+	@Column(name = "ID")
+	@XmlAttribute(name = "id")
+	@XmlIDExtension
 	private Long id;
-	
-	@Column(name="NAME")
-	@NotNull
+
+	@Column(name = "NAME")
+	@XmlAttribute(name = "name")
 	private String name;
-	
-	@Column(name="VALUE")
-	@NotNull
+
+	@Column(name = "VALUE")
+	@XmlAttribute(name = "value")
 	private String value;
-	
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @getter / @setter Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 
 	public Long getId() {
 		return id;
@@ -44,7 +78,7 @@ public class Property{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getValue() {
 		return value;
 	}
@@ -53,4 +87,10 @@ public class Property{
 		this.value = value;
 	}
 
+	public Property clone() {
+		Property property = new Property();
+		property.setName(this.name);
+		property.setValue(this.value);
+		return property;
+	}
 }

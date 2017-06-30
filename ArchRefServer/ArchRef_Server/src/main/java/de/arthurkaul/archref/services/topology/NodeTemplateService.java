@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.topology.NodeTemplate;
 import de.arthurkaul.archref.repositories.topology.NodeTemplateRepository;
 
-@Service	
-public class NodeTemplateService implements NodeTemplateInterface{
+@Service
+public class NodeTemplateService implements NodeTemplateInterface {
 
 	@Autowired
 	NodeTemplateRepository nodeTemplateRepository;
-	
+
 	@Override
 	public Collection<NodeTemplate> findAllNodeTemplates() {
 		return nodeTemplateRepository.findAll();
@@ -21,17 +21,16 @@ public class NodeTemplateService implements NodeTemplateInterface{
 
 	@Override
 	public NodeTemplate findById(long id) {
-		
+
 		return nodeTemplateRepository.findOne(id);
 	}
 
 	@Override
 	public NodeTemplate create(NodeTemplate nodeTemplate) {
-
 		if (nodeTemplate.getId() != null) {
 			return null;
-        }		
-	
+		}
+
 		return nodeTemplateRepository.save(nodeTemplate);
 	}
 
@@ -39,22 +38,22 @@ public class NodeTemplateService implements NodeTemplateInterface{
 	public NodeTemplate update(NodeTemplate nodeTemplate) {
 		NodeTemplate persistedNodeTemplate = nodeTemplateRepository.findOne(nodeTemplate.getId());
 
-        if (persistedNodeTemplate == null) {
-            return null;
-        }
+		if (persistedNodeTemplate == null) {
+			return null;
+		}
 		return nodeTemplateRepository.save(nodeTemplate);
 	}
 
 	@Override
 	public void delete(long id) {
 		nodeTemplateRepository.delete(id);
-		
+
 	}
 
 	@Override
 	public void deleteAllNodeTemplates() {
 		nodeTemplateRepository.deleteAll();
-		
+
 	}
 
 }

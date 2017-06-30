@@ -98,11 +98,6 @@ export class FragmentTypeService {
     for (let fragmentType of body) {
       let tempFragmentType: FragmentType = new FragmentType();
       tempFragmentType = fragmentType;
-//      tempFragmentType.id = fragmentType.id;
-//      tempFragmentType.name = fragmentType.name;
-//      tempFragmentType.icon = fragmentType.icon;
-//      tempFragmentType.expectedProperties = fragmentType.expectedProperties;
-//      tempFragmentType.providedProperties = fragmentType.providedProperties;
       fragmentTypes.push(tempFragmentType);
     }
     return fragmentTypes || {};
@@ -121,11 +116,6 @@ export class FragmentTypeService {
     Logger.data('[RESPONSE - FRAGMENTTYPE]: ' + JSON.stringify(body), FragmentTypeService.name);
     let fragmentType: FragmentType = new FragmentType();
     fragmentType = body;
-//    fragmentType.id = body.id;
-//    fragmentType.name = body.name;
-//    fragmentType.icon = body.icon;
-//    fragmentType.expectedProperties = body.expectedProperties;
-//    fragmentType.providedProperties = body.providedProperties;
     return fragmentType || {};
   }
 

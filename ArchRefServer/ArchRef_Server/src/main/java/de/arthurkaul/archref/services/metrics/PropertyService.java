@@ -26,6 +26,7 @@ public class PropertyService implements PropertyInterface {
 
 	@Override
 	public Property create(Property property) {
+
 		if (property.getId() != null) {
 			return null;
 		}
@@ -42,7 +43,7 @@ public class PropertyService implements PropertyInterface {
 			return null;
 		}
 
-		return  propertyRepository.save(property);
+		return propertyRepository.save(property);
 	}
 
 	@Override

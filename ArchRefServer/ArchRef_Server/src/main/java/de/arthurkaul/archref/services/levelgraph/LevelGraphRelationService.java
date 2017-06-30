@@ -9,11 +9,11 @@ import de.arthurkaul.archref.model.levelgraph.LevelGraphRelation;
 import de.arthurkaul.archref.repositories.levelgraph.LevelGraphRelationRepository;
 
 @Service
-public class LevelGraphRelationService implements LevelGraphRelationInterface{
-		
+public class LevelGraphRelationService implements LevelGraphRelationInterface {
+
 	@Autowired
 	LevelGraphRelationRepository levelGraphRelationRepository;
-	
+
 	@Override
 	public Collection<LevelGraphRelation> findAllLevelGraphRelations() {
 		return levelGraphRelationRepository.findAll();
@@ -26,9 +26,11 @@ public class LevelGraphRelationService implements LevelGraphRelationInterface{
 
 	@Override
 	public LevelGraphRelation create(LevelGraphRelation levelGraphRelation) {
+
 		if (levelGraphRelation.getId() != null) {
 			return null;
-        }
+		}
+
 		return levelGraphRelationRepository.save(levelGraphRelation);
 	}
 
@@ -36,21 +38,21 @@ public class LevelGraphRelationService implements LevelGraphRelationInterface{
 	public LevelGraphRelation update(LevelGraphRelation levelGraphRelation) {
 		LevelGraphRelation persistedLevelGraphRelation = levelGraphRelationRepository.findOne(levelGraphRelation.getId());
 
-        if (persistedLevelGraphRelation == null) {
-            return null;
-        }
-		
+		if (persistedLevelGraphRelation == null) {
+			return null;
+		}
+
 		return levelGraphRelationRepository.save(levelGraphRelation);
 	}
 
 	@Override
 	public void delete(long id) {
-		levelGraphRelationRepository.delete(id);		
+		levelGraphRelationRepository.delete(id);
 	}
 
 	@Override
 	public void deleteAllLevelGraphRelations() {
-		levelGraphRelationRepository.deleteAll();		
+		levelGraphRelationRepository.deleteAll();
 	}
 
 }

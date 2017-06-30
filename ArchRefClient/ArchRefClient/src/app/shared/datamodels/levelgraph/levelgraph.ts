@@ -1,20 +1,18 @@
-import { TopologyTemplate } from '../topology/topologytemplate';
 import { Level } from './level';
 import { LevelGraphNode } from './levelgraphnode';
 import { LevelGraphRelation } from './levelgraphrelation';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraph Data Model - LevelGraph Model is used for the refinement of TopologyTemplate Data Models
+ * @class - LevelGraph - LevelGraph Model is used for the refinement of TopologyTemplate Data Models
  *
- * @fields - id: number - ID of the LevelGraph
- * @fields - name: string - Name of the LevelGraph
- * @fields - levels: Level[] - Array of the different levels of a LevelGraph
- * @fields - levelGraphNodes: LevelGraphNode[] - Array of all LevelGraphNodes in the LevelGraph
- * @fields - levelGraphRelations: LevelGraphRelation[] - Array of all LevelGraphRelations in the LevelGraph
- * @fields - topologyTemplates: TopologyTemplate[] - Array of all TopologyTemplates which were created/generated with the LevelGraph
+ * @field - id: number - ID of the LevelGraph
+ * @field - name: string - Name of the LevelGraph
+ * @field - levels: Level[] - Array of the different levels of a LevelGraph
+ * @field - levelGraphNodes: LevelGraphNode[] - Array of all LevelGraphNodes in the LevelGraph
+ * @field - levelGraphRelations: LevelGraphRelation[] - Array of all LevelGraphRelations in the LevelGraph
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class LevelGraph {
@@ -24,7 +22,6 @@ export class LevelGraph {
   levels: Level[];
   levelGraphNodes: LevelGraphNode[];
   levelGraphRelations: LevelGraphRelation[];
-  topologyTemplates: TopologyTemplate[];
 
   checked = false;
 
@@ -33,7 +30,6 @@ export class LevelGraph {
     this.levels = [];
     this.levelGraphRelations = [];
     this.levelGraphNodes = [];
-    this.topologyTemplates = [];
   }
 
   /*******************************************************************************************************************************************************************************************************

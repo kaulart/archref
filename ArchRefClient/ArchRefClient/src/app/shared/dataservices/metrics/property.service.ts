@@ -98,7 +98,7 @@ export class PropertyService {
     Logger.data('[RESPONSE - PROPERTY]: ' + JSON.stringify(body), PropertyService.name);
     for (let property of body) {
       let tempProperty: Property = new Property(property.name, property.value);
-      tempProperty.id = property.id;
+      tempProperty = property;
       propertyList.push(tempProperty);
     }
     return propertyList || {};
@@ -116,7 +116,7 @@ export class PropertyService {
     let body = res.json();
     Logger.data('[RESPONSE - PROPERTY]: ' + JSON.stringify(body), PropertyService.name);
     let property: Property = new Property(body.name, body.value);
-    property.id = body.id;
+    property = body;
     return property || {};
   }
 

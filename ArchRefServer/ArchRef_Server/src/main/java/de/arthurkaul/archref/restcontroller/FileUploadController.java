@@ -20,53 +20,33 @@ import de.arthurkaul.archref.services.StorageService;
 @RestController
 public class FileUploadController {
 
-	  private final StorageService storageService;
+	private final StorageService storageService;
 
-	    @Autowired
-	    public FileUploadController(StorageService storageService) {
-	        this.storageService = storageService;
-	    }
+	@Autowired
+	public FileUploadController(StorageService storageService) {
+		this.storageService = storageService;
+	}
 
-//	    @GetMapping("/")
-//	    public String listUploadedFiles(Model model) throws IOException {
-//
-//	        model.addAttribute("files", storageService
-//	                .loadAll()
-//	                .map(path ->
-//	                        MvcUriComponentsBuilder
-//	                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-//	                                .build().toString())
-//	                .collect(Collectors.toList()));
-//
-//	        return "uploadForm";
-//	    }
-//
-	    @GetMapping("/api/fileupload/{type}/{id}/{filename:.+}")
-	    @ResponseBody
-	    public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable long id, @PathVariable String type) {
+	@GetMapping("/api/fileupload/{type}/{id}/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<Resource> serveFile(@PathVariable String filename, @PathVariable long id, @PathVariable String type) {
 
-	     Resource file = storageService.loadAsResource(filename, id, type);
-	        return ResponseEntity
-	                .ok()
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
-	                .body(file);
-	    }
+		Resource file = storageService.loadAsResource(filename, id, type);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+	}
 
-	    @PostMapping("/api/fileupload/{type}/{id}")
-	    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-	                                   RedirectAttributes redirectAttributes, @PathVariable("id") long id, @PathVariable("type") String type) {
-	    	System.out.println("Fileupload: " +  file.getContentType());
-	        storageService.store(file, id, type);
-	        redirectAttributes.addFlashAttribute("message",
-	                "You successfully uploaded " + file.getOriginalFilename() + "!");
-	    	
-	        return file.getOriginalFilename() ;
-	    }
+	@PostMapping("/api/fileupload/{type}/{id}")
+	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, @PathVariable("id") long id, @PathVariable("type") String type) {
+		System.out.println("Fileupload: " + file.getContentType());
+		storageService.store(file, id, type);
+		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-	    @ExceptionHandler(StorageFileNotFoundException.class)
-	    public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
-	        return ResponseEntity.notFound().build();
-	    }
+		return file.getOriginalFilename();
+	}
 
-	
+	@ExceptionHandler(StorageFileNotFoundException.class)
+	public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
+		return ResponseEntity.notFound().build();
+	}
+
 }

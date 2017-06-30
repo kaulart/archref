@@ -8,13 +8,20 @@ import { FlashMessage } from 'angular2-flash-message';
 import { LevelService } from '../../dataservices/levelgraph/level.service';
 import { LevelGraphService } from '../../dataservices/levelgraph/levelgraph.service';
 import { Utility } from '../../../utility';
+import { ExportXmlService } from '../../dataservices/exportxml.service';
 import { FlashMessageService } from 'angular2-flash-message';
+import * as FileSaver from 'file-saver';
+
+
+const URL = '/levelgraph';
+
 
 @Component({
   selector: 'app-levelgraph',
   templateUrl: './levelgraph.component.html',
   styleUrls: ['./levelgraph.component.css']
 })
+
 
 /**********************************************************************************************************************************************************************************************************
  *
@@ -38,7 +45,7 @@ export class LevelGraphComponent implements OnInit {
   editedLevelGraph: LevelGraph = new LevelGraph();
   private flashMessage = new FlashMessage();
 
-  constructor(private levelGraphService: LevelGraphService, private levelService: LevelService, private flashMessageService: FlashMessageService) { }
+  constructor(private xmlExportSerivce: ExportXmlService, private levelGraphService: LevelGraphService, private levelService: LevelService, private flashMessageService: FlashMessageService) { }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -62,7 +69,7 @@ export class LevelGraphComponent implements OnInit {
     Logger.info('Create LevelGraph', LevelGraphComponent.name);
     this.levelGraphService.createLevelGraph(this.createdLevelGraph).subscribe(levelGraphResponse => {
       for (let i = 0; i < numberOfLevels; i++) {
-        let tempLevel = new Level((i), true, (i * Constants.LEVELHEIGHT + i * Constants.LEVELGAPOFFSET), Constants.LEVELHEIGHT, levelGraphResponse.id);
+        let tempLevel = new Level((i), (i * Constants.LEVELHEIGHT + i * Constants.LEVELGAPOFFSET), levelGraphResponse.id);
         tempLevel.levelGraph = levelGraphResponse;
         this.levelService.createLevel(tempLevel)
           .subscribe(levelResponse => {
@@ -139,6 +146,18 @@ export class LevelGraphComponent implements OnInit {
       .subscribe(response => {
         this.levelGraphs = Utility.deleteElementFromArry(id, this.levelGraphs);
         Logger.info('Level Graph with id: ' + id + ' was deleted sucessfully.', LevelGraphComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
+
+  exportLevelGraph(levelGraph: LevelGraph) {
+    this.xmlExportSerivce.getXmlFile(URL + '/' + levelGraph.id).subscribe(
+      res => {
+        FileSaver.saveAs(res, levelGraph.name + '.xml');
       },
       (error) => {
         this.flashMessage.message = error;

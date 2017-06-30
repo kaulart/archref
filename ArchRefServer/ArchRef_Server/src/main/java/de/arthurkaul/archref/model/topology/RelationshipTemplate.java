@@ -6,27 +6,22 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import de.arthurkaul.archref.model.graph.Relation;
 import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
+import de.arthurkaul.archref.model.metrics.ExpectedProperty;
+import de.arthurkaul.archref.model.metrics.ProvidedProperty;
 import de.arthurkaul.archref.model.types.RelationshipType;
 
 /*******************************************************************************************************************************************************************************************************
  *
  * @class - RelationshipTemplate - A relation between two NodeTemplates
- *
- * @class Entity
- * @superField - Long id - ID of the RelationshipTemplate
- * @superField - String name - Name of the RelationshipTemplate
- * @superField - List<ExpectedProperty> expectedProperties - Array of expected properties of the RelationshipTemplate
- * @superField - List<ProvidedProperty> providedProperties - Array of provided properties of the RelationshipTemplate
- *
- * @class Relation
- * @superField - Long sourceNodeId - ID of the Source Node of RelationshipTemplate
- * @superField - Long targetNodeId - ID of the Target Node of RelationshipTemplate
- * @superField - Path path - Path of the line from source node to target node
  *
  * @field - LevelGraphNode levelGraphNode - LevelGraph Node from which this RelationshipTemplate is derived
  * @field - Long levelGraphNodeId - ID of the LevelGraph Node form which the RelationshipTemplate is derived
@@ -54,40 +49,47 @@ public class RelationshipTemplate extends Relation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPHNODE")
 	@JsonBackReference(value = "levelGraphNode-relationshipTemplates")
+	@XmlInverseReference(mappedBy = "relationshipTemplates")
 	private LevelGraphNode levelGraphNode;
 
 	@Column(name = "LEVELGRAPHNODE_ID")
+	@XmlAttribute(name = "levelGraphNodeId")
 	private Long levelGraphNodeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RELATIONSHIPTYPE")
 	@JsonBackReference(value = "relationshipType-relationshipTemplate")
+	@XmlInverseReference(mappedBy = "relationshipTemplates")
 	private RelationshipType relationshipType;
 
 	@Column(name = "RELATIONSHIPTYPE_ID")
+	@XmlAttribute(name = "relationshipTypeId")
 	private Long relationshipTypeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SOURCE_NODETEMPLATE")
-	@JsonBackReference(value = "inRelationshipTemplates-sourceNodeTemplate")
-	// @Cascade({ CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH })
+	@JoinColumn(name = "SOURCE_NODETEMPLATE", updatable = false)
+	@JsonBackReference(value = "outRelationshipTemplates-sourceNodeTemplate")
+	@XmlElement(name = "SourceNodeTemplate")
 	private NodeTemplate sourceNodeTemplate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TARGET_NODETEMPLATE")
-	@JsonBackReference(value = "outRelationshipTemplates-targetNodeTemplate")
-	// @Cascade({ CascadeType.MERGE, CascadeType.REFRESH, CascadeType.SAVE_UPDATE, CascadeType.DETACH })
+	@JoinColumn(name = "TARGET_NODETEMPLATE", updatable = false)
+	@JsonBackReference(value = "inRelationshipTemplates-targetNodeTemplate")
+	@XmlElement(name = "TargetNodeTemplate")
 	private NodeTemplate targetNodeTemplate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOPOLOGYTEMPLATE")
 	@JsonBackReference(value = "topologyTemplate-relationshipTemplate")
+	@XmlInverseReference(mappedBy = "relationshipTemplates")
 	private TopologyTemplate topologyTemplate;
 
 	@Column(name = "TOPOLOGYTEMPLATE_ID")
+	@XmlAttribute(name = "topologyTemplateId")
 	private Long topologyTemplateId;
 
 	@Column(name = "ABSTRACTION_LEVEL")
+	@XmlAttribute(name = "abstractionLevelDepth")
 	private Integer abstractionLevel;
 
 	/***************************************************************************************************************************************************************************************************
@@ -166,6 +168,42 @@ public class RelationshipTemplate extends Relation {
 
 	public void setAbstractionLevel(Integer abstractionLevel) {
 		this.abstractionLevel = abstractionLevel;
+	}
+
+	public RelationshipTemplate clone(TopologyTemplate topologyTemplate, NodeTemplate sourceNodeTemplate, NodeTemplate targetNodeTemplate) {
+		RelationshipTemplate relationshipTemplate = new RelationshipTemplate();
+		relationshipTemplate.setAbstractionLevel(this.abstractionLevel);
+		relationshipTemplate.setName(this.getName());
+		relationshipTemplate.setPath(this.getPath().clone());
+		relationshipTemplate.setSourceNodeId(sourceNodeTemplate.getId());
+		relationshipTemplate.setSourceNodeTemplate(sourceNodeTemplate);
+		relationshipTemplate.setTargetNodeId(targetNodeTemplate.getId());
+		relationshipTemplate.setTargetNodeTemplate(targetNodeTemplate);
+		relationshipTemplate.setIcon(this.getIcon());
+
+		relationshipTemplate.setLevelGraphNode(this.levelGraphNode);
+		relationshipTemplate.setLevelGraphNodeId(this.getLevelGraphNodeId());
+		relationshipTemplate.setRelationshipType(this.relationshipType);
+		relationshipTemplate.setRelationshipTypeId(this.relationshipTypeId);
+
+		relationshipTemplate.setTopologyTemplate(topologyTemplate);
+		relationshipTemplate.setTopologyTemplateId(topologyTemplate.getId());
+
+		for (ExpectedProperty property : this.getExpectedProperties()) {
+			relationshipTemplate.getExpectedProperties().add(property.clone());
+		}
+		for (ProvidedProperty property : this.getProvidedProperties()) {
+			relationshipTemplate.getProvidedProperties().add(property.clone());
+		}
+
+		return relationshipTemplate;
+	}
+
+	public void updateForeignKey() {
+		this.setTopologyTemplateId(this.topologyTemplate.getId());
+		this.setSourceNodeId(this.getSourceNodeTemplate().getId());
+		this.setTargetNodeId(this.getTargetNodeTemplate().getId());
+
 	}
 
 }

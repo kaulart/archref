@@ -5,8 +5,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { FlashMessageModule } from 'angular2-flash-message';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ExportXmlService } from './shared/dataservices/exportxml.service';
 import { ContextmenuModule } from 'ng2-contextmenu';
 import { RepositoryService } from './shared/dataservices/repository/repository.service';
 import { LevelService } from './shared/dataservices/levelgraph/level.service';
@@ -24,20 +24,20 @@ import { ProvidedPropertyService } from './shared/dataservices/metrics/providedp
 import { RefinementService } from './shared/dataservices/refinement/refinement.service';
 import 'hammerjs';
 
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    FlashMessageModule,
     ContextmenuModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     DashboardModule
   ],
-  providers: [RefinementService, ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService],
+  providers: [ExportXmlService, RefinementService, ExpectedPropertyService, ProvidedPropertyService, PropertyService, RepositoryService, RelationshipTemplateService, NodeTemplateService, LevelGraphRelationService, NodeTypeService, RelationshipTypeService, LevelGraphService, LevelService, LevelGraphNodeService, TopologyTemplateService],
   bootstrap: [AppComponent]
 })
 

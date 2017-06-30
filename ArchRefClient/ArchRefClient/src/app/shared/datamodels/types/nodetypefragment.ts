@@ -21,3 +21,5 @@ export class NodeTypeFragment extends Entity {
   }
 
 }
+
+// Löschen wenn nciht benötigt am schluss

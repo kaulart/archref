@@ -39,6 +39,7 @@
 					<th class="table-head">Name</th>
 					<th class="table-head">ID</th>
 					<th class="table-head">Modeller</th>
+					<th class="table-head">Export</th>
 					<th class="table-head">Edit</th>
 					<th class="table-head">Delete</th>
 				</tr>
@@ -53,6 +54,9 @@
 					<td><button class="w3-blue btn" type="button" routerLink="/dashboard/topologymodeller" [queryParams]="{name: topology.name, id: topology.id}">Modeller</button></td>
 					<td><button class="w3-blue btn" type="button" data-toggle="modal" data-target="#editTopologyTemplateModal" (click)="setEditTopologyTemplate(topology)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button></td>
+					<td><button class="btn" type="button" (click)="exportTopologyTemplate(topology)">
+							<i class="fa fa-download" aria-hidden="true"></i>
 						</button></td>
 					<td><button class="w3-red btn" (click)="deleteTopologyTemplate(topology.id)">
 							<i class="fa fa-trash" aria-hidden="true"></i>

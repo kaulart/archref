@@ -11,29 +11,41 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.model.LevelGraphNodeType;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - LevelGraph - LevelGraph Model is used for the refinement of TopologyTemplate Data Models
+ * @class - <LevelGraph> - LevelGraph is used for the refinement of <TopologyTemplate> Data Models
  *
  * @field - Long id - ID of the LevelGraph
  * @field - String name - Name of the LevelGraph
  * @field - List<Level> levels - List of the different levels of a LevelGraph
  * @field - List<LevelGraphNode> levelGraphNodes - List of all LevelGraphNodes in the LevelGraph
  * @field - List<LevelGraphRelation> levelGraphRelations - List of all LevelGraphRelations in the LevelGraph
- * @field - List<TopologyTemplate> topologyTemplates - List of all TopologyTemplates which were created/generated with the LevelGraph
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 
 @Entity
 @Table(name = "LEVELGRAPH")
+@XmlRootElement(name = "LevelGraph")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tLevelGraph")
 public class LevelGraph {
 
 	/***************************************************************************************************************************************************************************************************
@@ -45,28 +57,45 @@ public class LevelGraph {
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")
+	@XmlAttribute(name = "id")
+	@XmlIDExtension
 	private Long id;
 
 	@Column(name = "NAME")
-	private String name;
+	@XmlAttribute(name = "name")
+	private String name = "Unnamed";
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levels")
+	@XmlElementWrapper(name = "AbstractionLevels")
+	@XmlElement(name = "AbstractioLevel")
 	private List<Level> levels = new ArrayList<Level>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levelgraphnodes")
+	@XmlElementWrapper(name = "LevelGraphNodes")
+	@XmlElement(name = "LevelGraphNode")
 	private List<LevelGraphNode> levelGraphNodes = new ArrayList<LevelGraphNode>();
 
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "levelGraph")
 	@JsonManagedReference(value = "levelgraph-levelgraphrelation")
+	@XmlElementWrapper(name = "LevelGraphRelations")
+	@XmlElement(name = "LevelGraphRelation")
 	private List<LevelGraphRelation> levelGraphRelations = new ArrayList<LevelGraphRelation>();
 
+	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> nodeTypes = new ArrayList<ArrayList<LevelGraphNode>>();
+
+	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> nodeTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
+
+	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypes = new ArrayList<ArrayList<LevelGraphNode>>();
+
+	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
 
+	@XmlTransient
 	private int depth = 0;
 
 	/***************************************************************************************************************************************************************************************************
@@ -155,22 +184,6 @@ public class LevelGraph {
 		this.relationshipTypeFragments = relationshipTypeFragments;
 	}
 
-	// public ArrayList<ArrayList<LevelGraphRelation>> getConnectOverToRelations() {
-	// return connectOverToRelations;
-	// }
-	//
-	// public void setConnectOverToRelations(ArrayList<ArrayList<LevelGraphRelation>> connectedToRelations) {
-	// this.connectOverToRelations = connectedToRelations;
-	// }
-	//
-	// public ArrayList<ArrayList<LevelGraphRelation>> getRefineToRelations() {
-	// return refineToRelations;
-	// }
-	//
-	// public void setRefineToRelations(ArrayList<ArrayList<LevelGraphRelation>> refineToRelations) {
-	// this.refineToRelations = refineToRelations;
-	// }
-
 	@JsonIgnore
 	public int getDepth() {
 		return depth;
@@ -181,12 +194,12 @@ public class LevelGraph {
 		this.depth = maxLevel;
 	}
 
-	/**
+	/***************************************************************************************************************************************************************************************************
 	 * 
-	 * @method - splitNodesAndRelations - Split the nodes and relations of a level graph in separate list according to the type and level of the LevelGraphNode / LevelGraphRelation Source
+	 * @method - splitNodes - Split the nodes of a level graph in separate list according to the type and level of the LevelGraphNode
 	 * 
-	 */
-	public void splitNodesAndRelations() {
+	 ***************************************************************************************************************************************************************************************************/
+	public void splitNodes() {
 
 		this.setNodeTypes(new ArrayList<ArrayList<LevelGraphNode>>());
 		this.setNodeTypeFragments(new ArrayList<ArrayList<LevelGraphNode>>());
@@ -201,18 +214,35 @@ public class LevelGraph {
 		}
 
 		for (LevelGraphNode levelGraphNode : this.levelGraphNodes) {
-			if (levelGraphNode.getLevelGraphNodeType().equals(Constants.NODETYPE)) {
+			if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPE)) {
+				levelGraphNode.splitRelations();
 				this.nodeTypes.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
-			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.RELATIONSHIPTYPE)) {
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
+				levelGraphNode.splitRelations();
 				this.relationshipTypes.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
-			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.NODETYPEFRAGMENT)) {
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
+				levelGraphNode.splitFragmentRelations();
 				this.nodeTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
-			} else if (levelGraphNode.getLevelGraphNodeType().equals(Constants.RELATIONSHIPTYPEFRAGMENT)) {
+			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPEFRAGMENT)) {
+				levelGraphNode.splitFragmentRelations();
 				this.relationshipTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
 			}
 
 		}
 
 	}
+
+	// public void setIdToNull() {
+	// this.setId(null);
+	// for (LevelGraphNode levelGraphNode : this.levelGraphNodes) {
+	// levelGraphNode.setIdToNull();
+	// }
+	// for (LevelGraphRelation levelGraphRelation : this.levelGraphRelations) {
+	// levelGraphRelation.setIdToNull();
+	// }
+	// for (Level level : this.levels) {
+	// level.setIdToNull();
+	// }
+	// }
 
 }

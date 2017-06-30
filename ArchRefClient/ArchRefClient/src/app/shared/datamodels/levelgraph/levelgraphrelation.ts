@@ -6,31 +6,35 @@ import { LevelGraphNode } from './levelgraphnode';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraphRelation Data Model - A relation of a LevelGraph
+ * @class - LevelGraphRelation - A relation of a LevelGraph
  *
  * @Entity
- * @superFields - id: number - ID of the LevelGraphNode
- * @superFields - name: string - Name of the LevelGraphNode
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
+ * @superField - id: number - ID of the LevelGraphNode
+ * @superField - name: string - Name of the LevelGraphNode
+ * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
+ * @superField - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
  *
  * @Relation
- * @superFields - sourceNodeId: number - ID of the Source Node of LevelGraphRelation
- * @superFields - targetNodeId: number - ID of the Target Node of LevelGraphRelation
- * @superFields - path: Path - Path of the line from source node to target node
+ * @superField - sourceNodeId: number - ID of the Source Node of LevelGraphRelation
+ * @superField - targetNodeId: number - ID of the Target Node of LevelGraphRelation
+ * @superField - path: Path - Path of the line from source node to target node
  *
- * @fields - sourceLevelDepth: number - Depth of the level of the source node
- * @fields - targetLevelDepth: number - Depth of the level of the target node
- * @fields - sourceLevelId: number - ID of the source level
- * @fields - targetLevelId: number - ID of the target level
- * @fields - sourceLevel: Level - ID of the source level
- * @fields - targetLevel: Level - ID of the target level
- * @fields - targetLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @fields - sourceLevelGraphNode: LevelGraphNode - Source and Target Node of the levelGraphRelation
- * @fields - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
- * @fields - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
- * @fields - levelGraphRelationType: string - Type of the LevelGraphRelation // You may decide to implement later the types as a Class for further Improvments currently it is enough to
- *                                            implement it as constant Strings
+ * @field - sourceLevelDepth: number - Depth of the level of the source node
+ * @field - targetLevelDepth: number - Depth of the level of the target node
+ * @field - sourceLevelId: number - ID of the source level
+ * @field - targetLevelId: number - ID of the target level
+ * @field - sourceLevel: Level - Source level object
+ * @field - targetLevel: Level - Target level object
+ * @field - targetLevelGraphNode: LevelGraphNode - Target LevelGraphNode of the levelGraphRelation
+ * @field - sourceLevelGraphNode: LevelGraphNode - Source LevelGraphNode of the levelGraphRelation
+ * @field - levelGraph: LevelGraph - LevelGraph of the LevelGraphReltation
+ * @field - levelGraphId: number - ID of the LevelGraph of the LevelGraphRelation
+ * @field - levelGraphRelationType: string - Type of the LevelGraphRelation
+ * @hint:    You may decide to implement later the types as a Class for further improvment currently it is enough to implement it as constant Strings
+ * @field - entryPoint: boolean - True if a LevelGraphRelation of type REFINE_TO is a outgoing relation of a LevelGraphNode of type NODEFTYPERAGMENT or RELATIONSHIPTYPEFRAGMENT and its target
+ *                                LevelGraphNode is a EntryPoint of the Fragment. Default is false.
+ * @field - exitPoint: boolean - True if a LevelGraphRelation of type REFINE_TO is a outgoing relation of a LevelGraphNode of type fragment and its target LevelGraphNode is a ExitPoint of the Fragment.
+ *                               Default is false.
  *
  * @author - Arthur Kaul
  *
@@ -53,6 +57,9 @@ export class LevelGraphRelation extends Relation {
   levels: Level[] = [];
 
   levelGraphRelationType: string;
+
+  entryPoint = false;
+  exitPoint = false;
 
   constructor(sourceLevelDepth: number, targetLevelDepth: number, sourceNodeId: number, targetNodeId: number, levelGraphId: number, path: Path, levelGraphRelationType: string) {
     super(sourceNodeId, targetNodeId, path);

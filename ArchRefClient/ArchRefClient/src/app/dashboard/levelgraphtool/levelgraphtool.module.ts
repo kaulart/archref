@@ -11,7 +11,7 @@ import { ContextmenuModule } from 'ng2-contextmenu';
 import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
-  imports: [LevelGraphModule, NodeTypeDetailsModule, RelationshipTypeDetailsModule, FileUploadModule, ContextmenuModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
+  imports: [ LevelGraphModule, NodeTypeDetailsModule, RelationshipTypeDetailsModule, FileUploadModule, ContextmenuModule, CommonModule, RouterModule, Ng2BootstrapModule.forRoot()],
   declarations: [LevelGraphToolComponent, LevelGraphModellerComponent ],
   exports: [LevelGraphToolComponent, LevelGraphModellerComponent ]
 })

@@ -28,9 +28,11 @@ public class LevelGraphService implements LevelGraphInterface {
 
 	@Override
 	public LevelGraph create(LevelGraph levelGraph) {
+
 		if (levelGraph.getId() != null) {
 			return null;
 		}
+
 		return levelGraphRepository.save(levelGraph);
 	}
 

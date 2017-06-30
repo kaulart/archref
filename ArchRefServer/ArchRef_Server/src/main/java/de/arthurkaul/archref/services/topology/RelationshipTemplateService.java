@@ -9,11 +9,11 @@ import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 import de.arthurkaul.archref.repositories.topology.RelationshipTemplateRepository;
 
 @Service
-public class RelationshipTemplateService implements RelationshipTemplateInterface{
-	
+public class RelationshipTemplateService implements RelationshipTemplateInterface {
+
 	@Autowired
 	RelationshipTemplateRepository relationshipTemplateRepository;
-	
+
 	@Override
 	public Collection<RelationshipTemplate> findAllRelationshipTemplates() {
 		return relationshipTemplateRepository.findAll();
@@ -28,29 +28,30 @@ public class RelationshipTemplateService implements RelationshipTemplateInterfac
 	public RelationshipTemplate create(RelationshipTemplate relationshipTemplate) {
 		if (relationshipTemplate.getId() != null) {
 			return null;
-        }
+		}
+
 		return relationshipTemplateRepository.save(relationshipTemplate);
 	}
 
 	@Override
 	public RelationshipTemplate update(RelationshipTemplate relationshipTemplate) {
-		RelationshipTemplate persistedRelationshipTemplate= relationshipTemplateRepository.findOne(relationshipTemplate.getId());
+		RelationshipTemplate persistedRelationshipTemplate = relationshipTemplateRepository.findOne(relationshipTemplate.getId());
 
-        if (persistedRelationshipTemplate == null) {
-            return null;
-        }
+		if (persistedRelationshipTemplate == null) {
+			return null;
+		}
 
 		return relationshipTemplateRepository.save(relationshipTemplate);
 	}
 
 	@Override
 	public void delete(long id) {
-		relationshipTemplateRepository.delete(id);		
+		relationshipTemplateRepository.delete(id);
 	}
 
 	@Override
 	public void deleteAllRelationshipTemplates() {
 		relationshipTemplateRepository.deleteAll();
-	} 
+	}
 
 }

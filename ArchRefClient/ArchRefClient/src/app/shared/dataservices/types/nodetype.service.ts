@@ -100,13 +100,6 @@ export class NodeTypeService {
     for (let nodeType of body) {
       let tempNodeType: NodeType = new NodeType();
       tempNodeType = nodeType;
-//      tempNodeType.id = nodeType.id;
-//      tempNodeType.name = nodeType.name;
-//      tempNodeType.repository = nodeType.repository;
-//      tempNodeType.repositoryId = nodeType.repositoryId;
-//      tempNodeType.icon = nodeType.icon;
-//      tempNodeType.expectedProperties = nodeType.expectedProperties;
-//      tempNodeType.providedProperties = nodeType.providedProperties;
       nodeTypeList.push(tempNodeType);
     }
     return nodeTypeList || {};
@@ -125,13 +118,6 @@ export class NodeTypeService {
     Logger.data('[RESPONSE - NODETYPE]: ' + JSON.stringify(body), NodeTypeService.name);
     let nodeType: NodeType = new NodeType();
     nodeType = body;
-//    nodeType.id = body.id;
-//    nodeType.name = body.name;
-//    nodeType.repository = body.repository;
-//    nodeType.repositoryId = body.repositoryId;
-//    nodeType.icon = body.icon;
-//    nodeType.expectedProperties = body.expectedProperties;
-//    nodeType.providedProperties = body.providedProperties;
     return nodeType || {};
   }
 

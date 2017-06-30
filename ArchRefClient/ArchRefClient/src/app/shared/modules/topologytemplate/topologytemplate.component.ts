@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
 import { Utility } from '../../../utility';
 import { FlashMessageService } from 'angular2-flash-message';
 import { FlashMessage } from 'angular2-flash-message';
+import * as FileSaver from 'file-saver';
+import { ExportXmlService } from '../../dataservices/exportxml.service';
+
+const URL = '/topologytemplate';
+
 
 @Component({
   selector: 'app-topologytemplate',
@@ -35,7 +40,7 @@ export class TopologyTemplateComponent implements OnInit {
   editTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   public flashMessage = new FlashMessage();
 
-  constructor(private flashMessageService: FlashMessageService, private topologyTemplateService: TopologyTemplateService, private levelGraphService: LevelGraphService) { }
+  constructor(private xmlExportSerivce: ExportXmlService, private flashMessageService: FlashMessageService, private topologyTemplateService: TopologyTemplateService, private levelGraphService: LevelGraphService) { }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -132,6 +137,19 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
+  
+  exportTopologyTemplate(topologyTemplate: TopologyTemplate){
+      this.xmlExportSerivce.getXmlFile(URL + '/' + topologyTemplate.id).subscribe(
+      res => {
+        FileSaver.saveAs(res, topologyTemplate.name + '.xml');
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
+  
   /********************************************************************************************************************************************************************************************************
    *
    * Set the editable TopologyTemplate Data

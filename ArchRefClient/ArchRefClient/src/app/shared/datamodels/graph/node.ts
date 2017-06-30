@@ -2,7 +2,7 @@
  *
  * @class - Node - Superclass for all models which should be displayed as rectangles in the GraphModellerComponents or in the TopologyTemplateModell. It extends the entity class.
  *
- * @class Entity
+ * @superclass - Entity
  * @superField - id: number - ID of the Node
  * @superField - name: string - Name of the Node
  * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the Node
@@ -13,9 +13,10 @@
  * @field - width: number - Width of the rectangle
  * @field - height: number - Height of the rectangle
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
+import { Constants } from '../../constants/constants';
 import { Entity } from '../entity/entity';
 
 export class Node extends Entity {
@@ -27,6 +28,10 @@ export class Node extends Entity {
 
   constructor() {
     super();
+    this.x = 0;
+    this.y = 0;
+    this.width = Constants.NODEWIDTH;
+    this.height = Constants.NODEHEIGHT;
   }
 
 }

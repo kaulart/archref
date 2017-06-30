@@ -39,20 +39,4 @@ export class TopologyTemplate {
     this.childTopologyTemplates = [];
   }
 
-  isSingleLevelGraphLevelKonform(LevelGraph) {
-    // TODO
-  }
-
-  isSingleLevelGraphKonform() {
-    // TODO
-  }
-
-//  isMultiLevelGraphLevelKonform() {
-//    // TODO
-//  }
-//
-//  isMultiLevelGraphKonform() {
-//    // TODO
-//  }
-
 }

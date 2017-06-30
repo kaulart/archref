@@ -99,17 +99,6 @@ export class LevelGraphRelationService {
     for (let levelGraphRelation of body) {
       let tempLevelGraphRelation: LevelGraphRelation = new LevelGraphRelation(levelGraphRelation.sourceLevelDepth, levelGraphRelation.targetLevelDepth, levelGraphRelation.sourceNodeId, levelGraphRelation.targetNodeId, levelGraphRelation.levelGraphId, levelGraphRelation.path, levelGraphRelation.levelGraphRelationType);
       tempLevelGraphRelation = levelGraphRelation;
-//      tempLevelGraphRelation.id = levelGraphRelation.id;
-//      tempLevelGraphRelation.name = levelGraphRelation.name;
-//      tempLevelGraphRelation.expectedProperties = levelGraphRelation.expectedProperties;
-//      tempLevelGraphRelation.providedProperties = levelGraphRelation.providedProperties;
-//      tempLevelGraphRelation.levelGraph = levelGraphRelation.levelGraph;
-//      tempLevelGraphRelation.targetLevelGraphNode = levelGraphRelation.targetLevelGraphNode;
-//      tempLevelGraphRelation.sourceLevelGraphNode = levelGraphRelation.sourceLevelGraphNode;
-//      tempLevelGraphRelation.sourceLevelId = levelGraphRelation.sourceLevelId;
-//      tempLevelGraphRelation.targetLevelId = levelGraphRelation.targetLevelId;
-//      tempLevelGraphRelation.sourceLevel = levelGraphRelation.sourceLevel;
-//      tempLevelGraphRelation.targetLevel = levelGraphRelation.targetLevel;
       levelGraphRelationList.push(levelGraphRelation);
     }
     return levelGraphRelationList || {};
@@ -128,17 +117,6 @@ export class LevelGraphRelationService {
     Logger.info('[RESPONSE - LEVELGRAPHRELATION]: ' + JSON.stringify(body), LevelGraphRelationService.name);
     let levelGraphRelation: LevelGraphRelation = new LevelGraphRelation(body.sourceLevelDepth, body.targetLevelDepth, body.sourceNodeId, body.targetNodeId, body.levelGraphId, body.path, body.levelGraphRelationType);
     levelGraphRelation = body;
-//    levelGraphRelation.id = body.id;
-//    levelGraphRelation.name = body.name;
-//    levelGraphRelation.expectedProperties = body.expectedProperties;
-//    levelGraphRelation.providedProperties = body.providedProperties;
-//    levelGraphRelation.levelGraph = body.levelGraph;
-//    levelGraphRelation.targetLevelGraphNode = body.targetLevelGraphNode;
-//    levelGraphRelation.sourceLevelGraphNode = body.sourceLevelGraphNode;
-//    levelGraphRelation.sourceLevelId = body.sourceLevelId;
-//    levelGraphRelation.targetLevelId = body.targetLevelId;
-//    levelGraphRelation.sourceLevel = body.sourceLevel;
-//    levelGraphRelation.targetLevel = body.targetLevel;
     return levelGraphRelation || {};
   }
 

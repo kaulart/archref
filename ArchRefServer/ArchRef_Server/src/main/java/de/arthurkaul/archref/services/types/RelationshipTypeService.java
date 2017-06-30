@@ -9,11 +9,11 @@ import de.arthurkaul.archref.model.types.RelationshipType;
 import de.arthurkaul.archref.repositories.types.RelationshipTypeRepository;
 
 @Service
-public class RelationshipTypeService implements RelationshipTypeInterface{
+public class RelationshipTypeService implements RelationshipTypeInterface {
 
 	@Autowired
 	RelationshipTypeRepository relationshipRepository;
-	
+
 	@Override
 	public Collection<RelationshipType> findAllRelationshipTypes() {
 		return relationshipRepository.findAll();
@@ -26,29 +26,30 @@ public class RelationshipTypeService implements RelationshipTypeInterface{
 
 	@Override
 	public RelationshipType create(RelationshipType relationshipType) {
+
 		if (relationshipType.getId() != null) {
 			return null;
-        }
-		
+		}
+
 		return relationshipRepository.save(relationshipType);
 	}
 
 	@Override
 	public RelationshipType update(RelationshipType relationshipType) {
-		
+
 		RelationshipType persistedRelationshipType = relationshipRepository.findOne(relationshipType.getId());
-        
+
 		if (persistedRelationshipType == null) {
-            return null;
-        }
-		
+			return null;
+		}
+
 		return relationshipRepository.save(relationshipType);
 	}
 
 	@Override
 	public void delete(long id) {
 		relationshipRepository.delete(id);
-		
+
 	}
 
 	@Override

@@ -107,11 +107,6 @@ export class LevelGraphService {
     for (let levelGraph of body) {
       let tempLevelGraph: LevelGraph = new LevelGraph();
       tempLevelGraph = levelGraph;
-//      tempLevelGraph.id = levelGraph.id;
-//      tempLevelGraph.name = levelGraph.name;
-//      tempLevelGraph.levels = levelGraph.levels;
-//      tempLevelGraph.levelGraphRelations = levelGraph.levelGraphRelations;
-//      tempLevelGraph.levelGraphNodes = levelGraph.levelGraphNodes;
       levelGraphList.push(tempLevelGraph);
     }
     return levelGraphList || {};
@@ -130,11 +125,6 @@ export class LevelGraphService {
     Logger.info('[RESPONSE - LEVELGRAPH]: ' + JSON.stringify(body), LevelGraphService.name);
     let levelGraph: LevelGraph = new LevelGraph();
     levelGraph = body;
-//    levelGraph.id = body.id;
-//    levelGraph.name = body.name;
-//    levelGraph.levels = body.levels;
-//    levelGraph.levelGraphRelations = body.levelGraphRelations;
-//    levelGraph.levelGraphNodes = body.levelGraphNodes;
     return levelGraph || {};
   }
 

@@ -3,19 +3,19 @@ import { RelationshipType } from '../types/relationshiptype';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data Repository - Collection of NodeTypes and RelationshipTypes
+ * @class - Repository - Collection of NodeTypes and RelationshipTypes
  *
- * @field id: number - ID of the Repository
- * @field name: name - Name of the Repository
- * @field nodeTypeList: NodeTypeList[] - Array of the NodeTypes in the Repository
- * @field relationshipType: RelationshipType[] - Array of the RelationshipTypes in the Repository
+ * @field - id: number - ID of the Repository
+ * @field - name: name - Name of the Repository
+ * @field - nodeTypeList: NodeTypeList[] - Array of the NodeTypes in the Repository
+ * @field - relationshipType: RelationshipType[] - Array of the RelationshipTypes in the Repository
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class Repository {
 
-  id: number;
+  id: number = null;
   name: string;
   nodeTypeList: NodeType[];
   relationshipTypeList: RelationshipType[];

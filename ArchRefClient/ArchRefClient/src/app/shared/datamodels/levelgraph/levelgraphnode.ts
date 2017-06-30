@@ -5,29 +5,29 @@ import { LevelGraphRelation } from './levelgraphrelation';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data - LevelGraphNode Data Model - A node of a LevelGraph
+ * @class - LevelGraphNode - A node of a LevelGraph
  *
- * @Entity
- * @superFields - id: number - ID of the LevelGraphNode
- * @superFields - name: string - Name of the LevelGraphNode
- * @superFields - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
- * @superFields - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
+ * @superclass - Entity
+ * @superField - id: number - ID of the LevelGraphNode
+ * @superField - name: string - Name of the LevelGraphNode
+ * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the LevelGraphNode
+ * @superField - providedProperties: ProvidedProperty[] - Array of provided properties of the LevelGraphNode
  *
- * @Node
- * @superFields - x: number - x Position of the left upper corner of a rectangle
- * @superFields - y: number - y Position of the left upper corner of a rectangle
- * @superFields - width: number - Width of the rectangle
- * @superFields - height: number - Height of the rectangle
+ * @superclass - Node
+ * @superField - x: number - x Position of the left upper corner of a rectangle
+ * @superField - y: number - y Position of the left upper corner of a rectangle
+ * @superField - width: number - Width of the rectangle
+ * @superField - height: number - Height of the rectangle
  *
- * @fields - level: Level - Level of the Node
- * @fields - levelId: number - ID of the Level of the Node
- * @fields - levelDepth: number - Level depth of the node
- * @fields - levelGraph: LevelGraph - LevelGraph of the Node
- * @fields - levelGraphId: number - ID of the LevelGraph of the Node
- * @fields - inLevelGraphRelations: LevelGraphRelation[] - Array of all incoming relations of the node
- * @fields - outLevelGraphRelations: LevelGraphRelation[] - Array of all outgoing relations of the node
- * @fields - levelGraphNodeType: string - Type of the LevelGraphNode;
- * @fields - levelGraphNodeTypeId: number - ID of the Type of the LevelGraphNode
+ * @field - level: Level - Level of the LevelGraphNode
+ * @field - levelId: number - ID of the Level of the LevelGraphNode
+ * @field - levelDepth: number - Level depth of the LevelGraphNode
+ * @field - levelGraph: LevelGraph - LevelGraph of the LevelGraphNode
+ * @field - levelGraphId: number - ID of the LevelGraph of the LevelGraphNode
+ * @field - inLevelGraphRelations: LevelGraphRelation[] - Array of all incoming relations of the node
+ * @field - outLevelGraphRelations: LevelGraphRelation[] - Array of all outgoing relations of the node
+ * @field - levelGraphNodeType: string - Type of the LevelGraphNode;
+ * @field - levelGraphNodeTypeId: number - ID of the Type of the LevelGraphNode
  *
  * @author Arthur Kaul
  *

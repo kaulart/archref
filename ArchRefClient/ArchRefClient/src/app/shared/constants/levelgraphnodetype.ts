@@ -1,8 +1,8 @@
 /**********************************************************************************************************************************************************************************************************
  *
- * @class LevelGraphNodeType - Collection of all constant types of a LevelGraphNode which are currently supported by the application.
+ * @class - LevelGraphNodeType - Collection of all constant types of a LevelGraphNode which are currently supported by the application.
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  *********************************************************************************************************************************************************************************************************/
 export class LevelGraphNodeType {

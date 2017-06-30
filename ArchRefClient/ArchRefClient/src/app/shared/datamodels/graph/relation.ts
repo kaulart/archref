@@ -5,7 +5,7 @@ import { Path } from '../utility/path';
  *
  * @class - Relation - Superclass for all models which should be displayed as lines in GraphModellerComponents. It extends the entity class.
  *
- * @class Entity
+ * @superclass - Entity
  * @superField - id: number - ID of the Relation
  * @superField - name: string - Name of the Relation
  * @superField - expectedProperties: ExpectedProperty[] - Array of expected properties of the Relation
@@ -15,7 +15,7 @@ import { Path } from '../utility/path';
  * @field - targetNodeId: number - ID of the Target Node of relation
  * @field - path: Path - Path of the line from source node to target node
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class Relation extends Entity {

@@ -41,27 +41,21 @@ public class RefinementController {
 		TopologyTemplate topologyTemplate = topologyTemplateService.findById(idTopologyTemplate);
 
 		if (topologyTemplate == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("No refinement could be processed because <TopologyTemplate> with id" + idTopologyTemplate + "was not found in the database.");
 		}
 
-		// Determine the depth of the LevelGraph. ATTENTION the depth is in this case not the number of different levels
-		// of the Graph
-		// because it is a merged LevelGraph
+		/*
+		 * Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
+		 */
 		for (Level level : levelGraph.getLevels()) {
 			if (level.getDepth() > levelGraph.getDepth()) {
 				levelGraph.setDepth(level.getDepth());
 			}
 		}
 
-		// Set Variable of the service
-		refinementService.levelGraph = levelGraph;
-		refinementService.startTopologyTemplate = topologyTemplate;
-		refinementService.targetAbstractionLevel = levelGraph.getDepth();
-		refinementService.smi = smi;
+		topologyTemplate = refinementService.initializeRefinement(levelGraph, topologyTemplate, levelGraph.getDepth(), smi);
 
-		topologyTemplate = refinementService.initializeRefinement();
-
-		topologyTemplateService.update(topologyTemplate);
+		topologyTemplate = topologyTemplateService.findById(topologyTemplate.getId());
 
 		return ResponseEntity.ok().body(topologyTemplate);
 	}
@@ -80,16 +74,19 @@ public class RefinementController {
 		TopologyTemplate topologyTemplate = topologyTemplateService.findById(idTopologyTemplate);
 
 		if (topologyTemplate == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("No refinement could be processed because <TopologyTemplate> with id" + idTopologyTemplate + "was not found in the database.");
 		}
 
-		// Set Variable of the service
-		refinementService.levelGraph = levelGraph;
-		refinementService.startTopologyTemplate = topologyTemplate;
-		refinementService.targetAbstractionLevel = topologyTemplate.getAbstractionLevel() + 1;
-		refinementService.smi = smi;
+		/*
+		 * Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
+		 */
+		for (Level level : levelGraph.getLevels()) {
+			if (level.getDepth() > levelGraph.getDepth()) {
+				levelGraph.setDepth(level.getDepth());
+			}
+		}
 
-		topologyTemplate = refinementService.initializeRefinement();
+		topologyTemplate = refinementService.initializeRefinement(levelGraph, topologyTemplate, topologyTemplate.getAbstractionLevel() + 1, smi);
 
 		topologyTemplateService.update(topologyTemplate);
 

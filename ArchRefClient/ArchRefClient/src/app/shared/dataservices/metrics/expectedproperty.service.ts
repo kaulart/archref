@@ -98,8 +98,7 @@ export class ExpectedPropertyService {
     Logger.data('[RESPONSE - ExpectedProperty]: ' + JSON.stringify(body), ExpectedPropertyService.name);
     for (let expectedProperty of body) {
       let tempExpectedProperty: ExpectedProperty = new ExpectedProperty(expectedProperty.name, expectedProperty.value);
-      tempExpectedProperty.id = expectedProperty.id;
-      tempExpectedProperty.entityExpectedId = expectedProperty.entityExpectedId;
+      tempExpectedProperty = expectedProperty;
       expectedPropertyList.push(tempExpectedProperty);
     }
     return expectedPropertyList || {};
@@ -117,8 +116,7 @@ export class ExpectedPropertyService {
     Logger.info('[RESPONSE - ExpectedProperty]: Extract Data of Response Body', ExpectedPropertyService.name);
     Logger.data('[RESPONSE - ExpectedProperty]: ' + JSON.stringify(body), ExpectedPropertyService.name);
     let expectedProperty: ExpectedProperty = new ExpectedProperty(body.name, body.value);
-    expectedProperty.id = body.id;
-    expectedProperty.entityExpectedId = body.entityExpectedId;
+    expectedProperty = body;
     return expectedProperty || {};
   }
 

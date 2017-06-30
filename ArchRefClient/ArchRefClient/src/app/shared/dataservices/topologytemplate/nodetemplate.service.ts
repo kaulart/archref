@@ -99,13 +99,6 @@ export class NodeTemplateService {
     for (let nodeTemplate of body) {
       let tempNodeTemplate: NodeTemplate = new NodeTemplate();
       tempNodeTemplate = nodeTemplate;
-      //      tempNodeTemplate.name = nodeTemplate.name;
-      //      tempNodeTemplate.id = nodeTemplate.id;
-      //      tempNodeTemplate.expectedProperties = nodeTemplate.expectedProperties;
-      //      tempNodeTemplate.providedProperties = nodeTemplate.providedProperties;
-      //      tempNodeTemplate.inRelationshipTemplates = nodeTemplate.inRelationshipTemplates;
-      //      tempNodeTemplate.outRelationshipTemplates = nodeTemplate.outRelationshipTemplates;
-      //      tempNodeTemplate.levelGraphNodeId = nodeTemplate.levelGraphNodeId;
       nodeTemplateList.push(tempNodeTemplate);
     }
     return nodeTemplateList || {};
@@ -124,13 +117,6 @@ export class NodeTemplateService {
     Logger.data('[RESPONSE - NODETEMPLATE]: ' + JSON.stringify(body), NodeTemplateService.name);
     let nodeTemplate: NodeTemplate = new NodeTemplate();
     nodeTemplate = body;
-    //    nodeTemplate.name = body.name;
-    //    nodeTemplate.id = body.id;
-    //    nodeTemplate.expectedProperties = body.expectedProperties;
-    //    nodeTemplate.providedProperties = body.providedProperties;
-    //    nodeTemplate.inRelationshipTemplates = body.inRelationshipTemplates;
-    //    nodeTemplate.outRelationshipTemplates = body.outRelationshipTemplates;
-    //    nodeTemplate.levelGraphNodeId = body.levelGraphNodeId;
     return nodeTemplate || {};
   }
 

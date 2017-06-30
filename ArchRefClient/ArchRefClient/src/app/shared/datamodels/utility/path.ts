@@ -2,13 +2,13 @@ import { Point } from './point';
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @data Path - A Collection of Points used for drawing relations/paths in a view
+ * @class - Path - A Collection of Points used for drawing relations/paths in a view
  *
- * @field id: number - ID of a path in a view
- * @field pathDataString: string - Specific representation of a path as a string so that SVG Path/Line elements can interpret the data
- * @field points: Point[] - Array of all point in a path
+ * @field - id: number - ID of a path in a view
+ * @field - pathDataString: string - Specific representation of a path as a string so that SVG Path/Line elements can interpret the data
+ * @field - points: Point[] - Array of all point in a path
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 export class Path {

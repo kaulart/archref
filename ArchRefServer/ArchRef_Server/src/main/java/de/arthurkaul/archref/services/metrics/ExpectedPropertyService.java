@@ -30,6 +30,7 @@ public class ExpectedPropertyService implements ExpectedPropertyInterface {
 		if (expectedProperty.getId() != null) {
 			return null;
 		}
+
 		return expectedPropertyRepository.save(expectedProperty);
 	}
 

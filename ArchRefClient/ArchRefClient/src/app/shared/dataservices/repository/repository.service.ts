@@ -100,10 +100,6 @@ export class RepositoryService {
     for (let repository of body) {
       let tempRepository: Repository = new Repository();
       tempRepository = repository;
-//      tempRepository.id = repository.id;
-//      tempRepository.name = repository.name;
-//      tempRepository.nodeTypeList = repository.nodeTypeList;
-//      tempRepository.relationshipTypeList = repository.relationshipTypeList;
       repoList.push(tempRepository);
     }
     return repoList || {};
@@ -123,10 +119,6 @@ export class RepositoryService {
     Logger.data('[RESPONSE - REPOSITORY]: ' + JSON.stringify(body), RepositoryService.name);
     let rep: Repository = new Repository();
     rep = body;
-//    rep.id = body.id;
-//    rep.name = body.name;
-//    rep.nodeTypeList = body.nodeTypeList;
-//    rep.relationshipTypeList = body.relationshipTypeList;
     return rep || {};
   }
 

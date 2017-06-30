@@ -99,14 +99,6 @@ export class TopologyTemplateService {
     for (let topologytemplate of body) {
       let tempTopologyTemplate: TopologyTemplate = new TopologyTemplate();
       tempTopologyTemplate = topologytemplate;
-//      tempTopologyTemplate.id = topologytemplate.id;
-//      tempTopologyTemplate.name = topologytemplate.name;
-//      tempTopologyTemplate.nodeTemplates = topologytemplate.nodeTemplates;
-//      tempTopologyTemplate.relationshipTemplates = topologytemplate.relationshipTemplates;
-//      tempTopologyTemplate.parentTopologyTemplate = topologytemplate.parentTopologyTemplate;
-//      tempTopologyTemplate.childTopologyTemplates = topologytemplate.childTopologyTemplates;
-//      tempTopologyTemplate.abstractionLevel = topologytemplate.abstractionLevel;
-
       topologyTemplateList.push(tempTopologyTemplate);
     }
     return topologyTemplateList || {};
@@ -125,13 +117,6 @@ export class TopologyTemplateService {
     Logger.info('[RESPONSE - TOPOLOGYTEMPLATE]: Extract Topology Template Data', TopologyTemplateService.name);
     let topologyTemplate: TopologyTemplate = new TopologyTemplate();
     topologyTemplate = body;
-//    topologyTemplate.id = body.id;
-//    topologyTemplate.name = body.name;
-//    topologyTemplate.nodeTemplates = body.nodeTemplates;
-//    topologyTemplate.relationshipTemplates = body.relationshipTemplates;
-//    topologyTemplate.parentTopologyTemplate = body.parentTopologyTemplate;
-//    topologyTemplate.childTopologyTemplates = body.childTopologyTemplates;
-//    topologyTemplate.abstractionLevel = body.abstractionLevel;
     return topologyTemplate || {};
   }
 

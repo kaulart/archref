@@ -10,9 +10,19 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * @field - String name - Name of the TopologyTemplate
  * @field - List<NodeTemplate> nodeTemplates - Collection of all NodeTemplates in the LevelGraph
  * @field - List<RelationshipTemplate> relationshipTemplates - Collection of all RelationshipTemplates in the LevelGraph
- * @field - TopologyTemplate parentTopologyTemplate - Parent of the TopologyTemplate from which it was derived
+ * @field - <TopologyTemplate> parentTopologyTemplate - Parent of the TopologyTemplate from which it was derived
  * @field - Long parentTopologyTemplateId - ID of the parent of the topology
  * @field - Collection<TopologyTemplate> childTopologyTemplates - Collection of child of the TopologyTemplate. Child are all TopologyTemplate which are generated through the refinement from this
  *        topology
@@ -37,6 +47,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "TOPOLOGYTEMPLATE")
+@XmlRootElement(name = "TopologyTemplate")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tTopologyTemplate")
 public class TopologyTemplate {
 
 	/***************************************************************************************************************************************************************************************************
@@ -47,32 +60,43 @@ public class TopologyTemplate {
 	@Id
 	@GeneratedValue()
 	@Column(name = "ID")
+	@XmlAttribute(name = "id")
+	@XmlIDExtension
 	private Long id;
 
 	@Column(name = "NAME")
+	@XmlAttribute(name = "name")
 	private String name;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topologyTemplate")
 	@JsonManagedReference(value = "topologyTemplate-nodeTemplate")
+	@XmlElementWrapper(name = "NodeTemplates")
+	@XmlElement(name = "NodeTemplate")
 	private List<NodeTemplate> nodeTemplates = new ArrayList<NodeTemplate>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topologyTemplate")
 	@JsonManagedReference(value = "topologyTemplate-relationshipTemplate")
+	@XmlElementWrapper(name = "RelationshipTemplates")
+	@XmlElement(name = "RelationshipTemplate")
 	private List<RelationshipTemplate> relationshipTemplates = new ArrayList<RelationshipTemplate>();
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PARENT_TOPOLOGYTEMPLATE")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PARENT_TOPOLOGYTEMPLATE", updatable = false)
 	@JsonBackReference(value = "topologyTemplate-topologyTemplate")
+	@XmlInverseReference(mappedBy = "childTopologyTemplates")
 	private TopologyTemplate parentTopologyTemplate;
 
 	@Column(name = "PARENT_TOPOLOGYTEMPLATE_ID")
-	private Long parentTopologyTemplateID;
+	private Long parentTopologyTemplateId;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentTopologyTemplate")
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "parentTopologyTemplate")
 	@JsonManagedReference(value = "topologyTemplate-topologyTemplate")
+	@XmlElementWrapper(name = "ChildTopologyTemplates")
+	@XmlElement(name = "TopologyTemplate")
 	private List<TopologyTemplate> childTopologyTemplates = new ArrayList<TopologyTemplate>();
 
 	@Column(name = "ABSTRACTION_LEVEL")
+	@XmlAttribute(name = "abstractionLevelDepth")
 	private int abstractionLevel = 0;
 
 	/***************************************************************************************************************************************************************************************************
@@ -121,12 +145,12 @@ public class TopologyTemplate {
 		this.parentTopologyTemplate = parentTopologyTemplate;
 	}
 
-	public Long getParentTopologyTemplateID() {
-		return parentTopologyTemplateID;
+	public Long getParentTopologyTemplateId() {
+		return parentTopologyTemplateId;
 	}
 
-	public void setParentTopologyTemplateID(Long parentTopologyTemplateID) {
-		this.parentTopologyTemplateID = parentTopologyTemplateID;
+	public void setParentTopologyTemplateId(Long parentTopologyTemplateId) {
+		this.parentTopologyTemplateId = parentTopologyTemplateId;
 	}
 
 	public List<TopologyTemplate> getChildTopologyTemplates() {
@@ -143,6 +167,48 @@ public class TopologyTemplate {
 
 	public void setAbstractionLevel(int abstractionLevel) {
 		this.abstractionLevel = abstractionLevel;
+	}
+
+	public TopologyTemplate clone() {
+		TopologyTemplate topologyTemplate = new TopologyTemplate();
+		topologyTemplate.setAbstractionLevel(this.abstractionLevel);
+		topologyTemplate.setName(this.name);
+		topologyTemplate.setParentTopologyTemplate(this.parentTopologyTemplate);
+		topologyTemplate.setParentTopologyTemplateId(this.parentTopologyTemplateId);
+
+		for (NodeTemplate node : this.nodeTemplates) {
+			topologyTemplate.getNodeTemplates().add(node.clone(topologyTemplate));
+		}
+
+		for (RelationshipTemplate relation : this.relationshipTemplates) {
+			NodeTemplate sourceNode = new NodeTemplate();
+			NodeTemplate targetNode = new NodeTemplate();
+
+			for (int i = 0; i < topologyTemplate.getNodeTemplates().size(); i++) {
+				System.out.println(topologyTemplate.getNodeTemplates().get(i).getTempId() + " == " + relation.getSourceNodeId());
+				if (topologyTemplate.getNodeTemplates().get(i).getTempId() == relation.getSourceNodeId()) {
+					sourceNode = topologyTemplate.getNodeTemplates().get(i);
+				}
+				System.out.println(topologyTemplate.getNodeTemplates().get(i).getTempId() + " == " + relation.getTargetNodeId());
+				if (topologyTemplate.getNodeTemplates().get(i).getTempId() == relation.getTargetNodeId()) {
+					targetNode = topologyTemplate.getNodeTemplates().get(i);
+				}
+			}
+			topologyTemplate.getRelationshipTemplates().add(relation.clone(topologyTemplate, sourceNode, targetNode));
+		}
+
+		return topologyTemplate;
+	}
+
+	public void updateForeignKey() {
+
+		for (NodeTemplate node : this.nodeTemplates) {
+			node.updateForeignKey();
+		}
+
+		for (RelationshipTemplate relation : this.relationshipTemplates) {
+			relation.updateForeignKey();
+		}
 	}
 
 }

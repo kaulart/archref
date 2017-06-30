@@ -11,46 +11,48 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.LevelGraphRelationType;
 import de.arthurkaul.archref.model.graph.Node;
 import de.arthurkaul.archref.model.topology.NodeTemplate;
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - LevelGraphNode - A node of a LevelGraph
+ * @class - <LevelGraphNode> - A node of a <LevelGraph>. Extends the superclass <Node> which extends the superclass <Entity>.
  *
- * @class Entity
- * @superField - Long id - ID of the LevelGraphNode
- * @superField - String name - Name of the LevelGraphNode
- * @superField - List<ExpectedProperty> expectedProperties - Array of expected properties of the LevelGraphNode
- * @superField - List<ProvidedProperty> providedProperties - Array of provided properties of the LevelGraphNode
- *
- * @class Node
- * @superField - float x - x Position of the left upper corner of a rectangle
- * @superField - float y - y Position of the left upper corner of a rectangle
- * @superField - float width - Width of the rectangle
- * @superField - float height - Height of the rectangle
- *
- * @field - Level level - Level of the Node
- * @field - Long levelId - ID of the Level of the Node
- * @field - Integer levelDepth - Level depth of the node
- * @field - LevelGraph levelGraph - LevelGraph of the Node
- * @field - Long levelGraphId - ID of the LevelGraph of the Node
- * @field - List<LevelGraphRelation> inLevelGraphRelations - Array of all incoming relations of the node
- * @field - List<LevelGraphRelation> outLevelGraphRelations - Array of all outgoing relations of the node
+ * @field - <Level> level - Level of the LevelGraphNode
+ * @field - Long levelId - ID of the Level of the LevelGraphNode
+ * @field - Integer levelDepth - Level depth of the LevelGraphNode
+ * @field - <LevelGraph> levelGraph - LevelGraph of the LevelGraphNode
+ * @field - Long levelGraphId - ID of the LevelGraph of the LevelGraphNode
+ * @field - List<LevelGraphRelation> inLevelGraphRelations - List of all incoming relations of the LevelGraphNode
+ * @field - List<LevelGraphRelation> outLevelGraphRelations - List of all outgoing relations of the LevelGraphNode
  * @field - String levelGraphNodeType - Type of the LevelGraphNode;
  * @field - Long levelGraphNodeTypeId - ID of the Type of the LevelGraphNode
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 
 @Entity
 @Table(name = "LEVELGRAPHNODE")
+@XmlRootElement(name = "LevelGraphNode")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tLevelGraphNode")
 public class LevelGraphNode extends Node {
 
 	/***************************************************************************************************************************************************************************************************
@@ -58,47 +60,76 @@ public class LevelGraphNode extends Node {
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LEVEL")
-	@JsonBackReference(value = "level-levelGraphNode")
-	private Level level;
+	// // TODO ENabeln oder XML auf Transient lassen
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "LEVEL")
+	// @JsonBackReference(value = "level-levelGraphNode")
+	// // @XmlInverseReference(mappedBy = "LevelGraphNode")
+	// @XmlTransient
+	// private Level level;
 
 	@Column(name = "LEVEL_ID")
+	@XmlAttribute(name = "abstractionLevelId")
 	private Long levelId;
 
 	@Column(name = "LEVEL_DEPTH")
+	@XmlAttribute(name = "abstractionDepth")
 	private int levelDepth;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEVELGRAPH")
 	@JsonBackReference(value = "levelgraph-levelgraphnodes")
+	@XmlInverseReference(mappedBy = "levelGraphNodes")
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
+	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
 	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
-	@JsonManagedReference(value = "inLevelGraphRelations-sourceLevelGraphNode")
+	@JsonManagedReference(value = "inLevelGraphRelations-targetLevelGraphNode")
+	@XmlInverseReference(mappedBy = "targetLevelGraphNode")
 	private List<LevelGraphRelation> inLevelGraphRelations;
 
-	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
-	@JsonManagedReference(value = "outLevelGraphRelations-targetLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.EAGER, mappedBy = "sourceLevelGraphNode")
+	@JsonManagedReference(value = "outLevelGraphRelations-sourceLevelGraphNode")
+	@XmlInverseReference(mappedBy = "sourceLevelGraphNode")
 	private List<LevelGraphRelation> outLevelGraphRelations;
 
 	@Column(name = "LEVELGRAPHNODETYPE")
+	@XmlElement(name = "Type")
 	private String levelGraphNodeType;
 
 	@Column(name = "LEVELGRAPHNODETYPE_ID")
+	@XmlAttribute(name = "levelGraphNodeTypeId")
 	private long levelGraphNodeTypeId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
 	@JsonManagedReference(value = "levelGraphNode-nodeTemplate")
+	@XmlTransient
+	@JsonIgnore
 	private List<NodeTemplate> nodeTemplates = new ArrayList<NodeTemplate>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraphNode")
 	@JsonManagedReference(value = "levelGraphNode-relationshipTemplates")
+	@XmlTransient
+	@JsonIgnore
 	private List<RelationshipTemplate> relationshipTemplates = new ArrayList<RelationshipTemplate>();
+
+	@XmlTransient
+	private ArrayList<LevelGraphRelation> outRefineRelations = new ArrayList<LevelGraphRelation>();
+
+	@XmlTransient
+	private ArrayList<LevelGraphRelation> outConnectRelations = new ArrayList<LevelGraphRelation>();
+
+	@XmlTransient
+	private ArrayList<LevelGraphRelation> outRefineEntryRelations = new ArrayList<LevelGraphRelation>();
+
+	@XmlTransient
+	private ArrayList<LevelGraphRelation> outRefineExitRelations = new ArrayList<LevelGraphRelation>();
+
+	@XmlTransient
+	private ArrayList<LevelGraphRelation> outRefineIncludeRelations = new ArrayList<LevelGraphRelation>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -106,13 +137,13 @@ public class LevelGraphNode extends Node {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	public Level getLevel() {
-		return level;
-	}
-
-	public void setLevel(Level level) {
-		this.level = level;
-	}
+	// public Level getLevel() {
+	// return level;
+	// }
+	//
+	// public void setLevel(Level level) {
+	// this.level = level;
+	// }
 
 	public Long getLevelId() {
 		return levelId;
@@ -178,24 +209,83 @@ public class LevelGraphNode extends Node {
 		this.levelDepth = levelDepth;
 	}
 
-	// @JsonIgnore
-	// public List<NodeTemplate> getNodeTemplates() {
-	// return nodeTemplates;
-	// }
-	//
-	// @JsonIgnore
-	// public void setNodeTemplates(List<NodeTemplate> nodeTemplates) {
-	// this.nodeTemplates = nodeTemplates;
-	// }
-	//
-	// @JsonIgnore
-	// public List<RelationshipTemplate> getRelationshipTemplates() {
-	// return relationshipTemplates;
-	// }
-	//
-	// @JsonIgnore
-	// public void setRelationshipTemplates(List<RelationshipTemplate> relationshipTemplates) {
-	// this.relationshipTemplates = relationshipTemplates;
-	// }
+	@JsonIgnore
+	public ArrayList<LevelGraphRelation> getOutRefineRelations() {
+		return outRefineRelations;
+	}
+
+	@JsonIgnore
+	public void setOutRefineRelations(ArrayList<LevelGraphRelation> outRefineRelations) {
+		this.outRefineRelations = outRefineRelations;
+	}
+
+	@JsonIgnore
+	public ArrayList<LevelGraphRelation> getOutConnectRelations() {
+		return outConnectRelations;
+	}
+
+	@JsonIgnore
+	public void setOutConnectRelations(ArrayList<LevelGraphRelation> outConnectRelations) {
+		this.outConnectRelations = outConnectRelations;
+	}
+
+	@JsonIgnore
+	public ArrayList<LevelGraphRelation> getOutRefineEntryRelations() {
+		return outRefineEntryRelations;
+	}
+
+	@JsonIgnore
+	public void setOutRefineEntryRelations(ArrayList<LevelGraphRelation> outRefineEntryRelations) {
+		this.outRefineEntryRelations = outRefineEntryRelations;
+	}
+
+	@JsonIgnore
+	public ArrayList<LevelGraphRelation> getOutRefineExitRelations() {
+		return outRefineExitRelations;
+	}
+
+	@JsonIgnore
+	public void setOutRefineExitRelations(ArrayList<LevelGraphRelation> outRefineExitRelations) {
+		this.outRefineExitRelations = outRefineExitRelations;
+	}
+
+	@JsonIgnore
+	public ArrayList<LevelGraphRelation> getOutRefineIncludeRelations() {
+		return outRefineIncludeRelations;
+	}
+
+	@JsonIgnore
+	public void setOutRefineIncludeRelations(ArrayList<LevelGraphRelation> outRefineIncludeRelations) {
+		this.outRefineIncludeRelations = outRefineIncludeRelations;
+	}
+
+	public void splitRelations() {
+
+		for (LevelGraphRelation levelGraphRelation : this.outLevelGraphRelations) {
+			if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.REFINE_TO)) {
+				this.outRefineRelations.add(levelGraphRelation);
+			} else if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.CONNECT_OVER_TO)) {
+				this.outConnectRelations.add(levelGraphRelation);
+			}
+		}
+
+	}
+
+	public void splitFragmentRelations() {
+
+		for (LevelGraphRelation levelGraphRelation : this.outLevelGraphRelations) {
+			if (levelGraphRelation.isEntryPoint() && levelGraphRelation.isExitPoint()) {
+				this.outRefineEntryRelations.add(levelGraphRelation);
+				this.outRefineExitRelations.add(levelGraphRelation);
+			} else if (levelGraphRelation.isEntryPoint() && !levelGraphRelation.isExitPoint()) {
+				this.outRefineEntryRelations.add(levelGraphRelation);
+			} else if (!levelGraphRelation.isEntryPoint() && levelGraphRelation.isExitPoint()) {
+				this.outRefineExitRelations.add(levelGraphRelation);
+			} else {
+				this.outRefineIncludeRelations.add(levelGraphRelation);
+			}
+		}
+
+	}
 
 }

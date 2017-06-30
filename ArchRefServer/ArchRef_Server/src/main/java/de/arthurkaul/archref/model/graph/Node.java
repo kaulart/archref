@@ -1,32 +1,36 @@
 package de.arthurkaul.archref.model.graph;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.model.metrics.ExpectedProperty;
+import de.arthurkaul.archref.model.metrics.ProvidedProperty;
+
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - Node - Superclass for all models which should be displayed as rectangles in GraphModellerComponents. It extends the entity class.
- *
- * @class Entity
- * @superField - Long id - ID of the RelationshipTemplate
- * @superField - String name - Name of the RelationshipTemplate
- * @superField - List<ExpectedProperty> expectedProperties - Array of expected properties of the Node
- * @superField - List<ProvidedProperty> providedProperties - Array of provided properties of the Node
+ * @class - <Node> - Superclass for all models which should be displayed as rectangles. It extends the <Entity> class.
  *
  * @field - float x - x Position of the left upper corner of a rectangle
  * @field - float y - y Position of the left upper corner of a rectangle
  * @field - float width - Width of the rectangle
  * @field - float height - Height of the rectangle
  *
- * @author Arthur Kaul
+ * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "NODE")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tNode")
 public class Node extends de.arthurkaul.archref.model.Entity {
 
 	/***************************************************************************************************************************************************************************************************
@@ -35,24 +39,24 @@ public class Node extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 	@Column(name = "X")
-	private float x;
+	@XmlAttribute(name = "x")
+	private float x = 0.0f;
 
 	@Column(name = "Y")
-	private float y;
+	@XmlAttribute(name = "y")
+	private float y = 0.0f;;
 
 	@Column(name = "WIDTH")
-	private float width;
+	@XmlAttribute(name = "width")
+	private float width = Constants.NODEWIDTH;
 
 	@Column(name = "HEIGHT")
-	private float height;
+	@XmlAttribute(name = "height")
+	private float height = Constants.NODEHEIGHT;
 
 	@JsonIgnore
-	private boolean refined;
-
-	@JsonIgnore
-	private boolean visited;
-
-	private int depthBFS;
+	@XmlTransient
+	private boolean refined = false;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -100,20 +104,23 @@ public class Node extends de.arthurkaul.archref.model.Entity {
 		this.refined = refined;
 	}
 
-	public boolean isVisited() {
-		return visited;
-	}
+	@Override
+	public Node clone() {
+		Node node = new Node();
+		node.setIcon(this.getIcon());
+		node.setName(this.getName());
+		for (ExpectedProperty property : this.getExpectedProperties()) {
+			node.getExpectedProperties().add(property.clone());
+		}
+		for (ProvidedProperty property : this.getProvidedProperties()) {
+			node.getProvidedProperties().add(property.clone());
+		}
+		node.setHeight(this.height);
+		node.setWidth(this.width);
+		node.setX(this.x);
+		node.setY(this.y);
 
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-
-	public int getDepthBFS() {
-		return depthBFS;
-	}
-
-	public void setDepthBFS(int depthBFS) {
-		this.depthBFS = depthBFS;
+		return node;
 	}
 
 }
