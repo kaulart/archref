@@ -17,6 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 import de.arthurkaul.archref.exceptions.StorageException;
 import de.arthurkaul.archref.exceptions.StorageFileNotFoundException;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - StorageService is the Service for the Repository Data it
+ *          implements CURD methods which create, update, retrieve and delete
+ *          data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class StorageService implements StorageInterface {
 
@@ -34,7 +43,6 @@ public class StorageService implements StorageInterface {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 			}
 			Files.copy(file.getInputStream(), this.rootLocation.resolve(type + id + file.getOriginalFilename()));
-			System.out.println("File get In:" + file.getInputStream() + "Fillt rr:" + this.rootLocation.resolve(id + "/" + file.getOriginalFilename()));
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
@@ -43,7 +51,8 @@ public class StorageService implements StorageInterface {
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation)).map(path -> this.rootLocation.relativize(path));
+			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation))
+					.map(path -> this.rootLocation.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}

@@ -1,19 +1,24 @@
-import { Logger } from '../../../../logger/logger';
-import { Constants } from '../../constants/constants';
-import { Level } from '../../datamodels/levelgraph/level';
-import { LevelGraph } from '../../datamodels/levelgraph/levelgraph';
-import { Component, OnInit } from '@angular/core';
+import {Logger} from '../../../../logger/logger';
+import {Constants} from '../../constants/constants';
+import {Level} from '../../datamodels/levelgraph/level';
+import {LevelGraph} from '../../datamodels/levelgraph/levelgraph';
+import {Component, OnInit, Input} from '@angular/core';
 
-import { FlashMessage } from 'angular2-flash-message';
-import { LevelService } from '../../dataservices/levelgraph/level.service';
-import { LevelGraphService } from '../../dataservices/levelgraph/levelgraph.service';
-import { Utility } from '../../../utility';
-import { ExportXmlService } from '../../dataservices/exportxml.service';
-import { FlashMessageService } from 'angular2-flash-message';
+import {FlashMessage} from 'angular2-flash-message';
+import {LevelService} from '../../dataservices/levelgraph/level.service';
+import {LevelGraphService} from '../../dataservices/levelgraph/levelgraph.service';
+import {Utility} from '../../../utility';
+import {ExportXmlService} from '../../dataservices/exportxml.service';
+import {FlashMessageService} from 'angular2-flash-message';
 import * as FileSaver from 'file-saver';
+import {FileUploader} from 'ng2-file-upload';
 
 
-const URL = '/levelgraph';
+// URL for XML Import
+const URL_IMPORT = '/api/import/levelgraph';
+
+// URL for XML Export
+const URL_EXPORT = '/levelgraph';
 
 
 @Component({
@@ -40,12 +45,16 @@ const URL = '/levelgraph';
 export class LevelGraphComponent implements OnInit {
 
   levels = 3;
+
+  @Input()
   levelGraphs: LevelGraph[] = [];
+  
   createdLevelGraph: LevelGraph = new LevelGraph();
   editedLevelGraph: LevelGraph = new LevelGraph();
   private flashMessage = new FlashMessage();
+  public uploader: FileUploader = new FileUploader({});
 
-  constructor(private xmlExportSerivce: ExportXmlService, private levelGraphService: LevelGraphService, private levelService: LevelService, private flashMessageService: FlashMessageService) { }
+  constructor(private xmlExportSerivce: ExportXmlService, private levelGraphService: LevelGraphService, private levelService: LevelService, private flashMessageService: FlashMessageService) {}
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -55,7 +64,7 @@ export class LevelGraphComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize LevelGraphComponent', LevelGraphComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.retrieveLevelGraphs();
+//    this.retrieveLevelGraphs();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -91,26 +100,26 @@ export class LevelGraphComponent implements OnInit {
         this.flashMessageService.display(this.flashMessage);
       });
   }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
-   *                                 for a callback. Currently no pagination/streaming of data is supported
-   *
-   *******************************************************************************************************************************************************************************************************/
-  retrieveLevelGraphs() {
-    Logger.info('Retrieve LevelGraph Data', LevelGraphComponent.name);
-    this.levelGraphService.getLevelGraphs()
-      .subscribe(levelGraphsResponse => {
-        this.levelGraphs = levelGraphsResponse;
-        Logger.info('Level Graphs sucessfully retrieved.', LevelGraphComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
+//
+//  /********************************************************************************************************************************************************************************************************
+//   *
+//   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
+//   *                                 for a callback. Currently no pagination/streaming of data is supported
+//   *
+//   *******************************************************************************************************************************************************************************************************/
+//  retrieveLevelGraphs() {
+//    Logger.info('Retrieve LevelGraph Data', LevelGraphComponent.name);
+//    this.levelGraphService.getLevelGraphs()
+//      .subscribe(levelGraphsResponse => {
+//        this.levelGraphs = levelGraphsResponse;
+//        Logger.info('Level Graphs sucessfully retrieved.', LevelGraphComponent.name);
+//      },
+//      (error) => {
+//        this.flashMessage.message = error;
+//        this.flashMessage.isError = true;
+//        this.flashMessageService.display(this.flashMessage);
+//      });
+//  }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -154,8 +163,30 @@ export class LevelGraphComponent implements OnInit {
       });
   }
 
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - importLevelGraph - Call the ImportService for upload a XML file to the server component and import the data of the XML file
+   *
+   *******************************************************************************************************************************************************************************************************/
+  importLevelGraph() {
+    this.uploader.setOptions({url: URL_IMPORT});
+    this.uploader.uploadAll();
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      let levelGraph: LevelGraph = new LevelGraph();
+      levelGraph = JSON.parse(response);
+      this.levelGraphs.push(levelGraph);
+    };
+  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - exportLevelGraph - Call the ExportService for retrieve a repository in XML data structure and export the data of the body as XML file to Client/Bowser
+   *
+   * @param - levelGraph: LevelGraph - LevelGraph which should be exported from the database
+   *
+   *******************************************************************************************************************************************************************************************************/
   exportLevelGraph(levelGraph: LevelGraph) {
-    this.xmlExportSerivce.getXmlFile(URL + '/' + levelGraph.id).subscribe(
+    this.xmlExportSerivce.getXmlFile(URL_EXPORT + '/' + levelGraph.id).subscribe(
       res => {
         FileSaver.saveAs(res, levelGraph.name + '.xml');
       },

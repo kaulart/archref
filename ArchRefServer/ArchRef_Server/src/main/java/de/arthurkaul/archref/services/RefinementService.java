@@ -200,6 +200,7 @@ public class RefinementService {
 								TopologyTemplate deepCopy = spezificTopologyTemplate.clone();
 								topologyTemplateService.create(deepCopy);
 								deepCopy.updateForeignKey();
+								deepCopy.updatePosition();
 								topologyTemplateService.update(deepCopy);
 
 								queueChildTopologyTemplate.add(deepCopy);
@@ -264,6 +265,7 @@ public class RefinementService {
 
 							if (!abstractRelationshipTemplate.getTargetNodeTemplate().isRefined()) {
 								refineNodeTemplate(exitRelationshipTemplates, abstractRelationshipTemplate.getTargetNodeTemplate(), abstractTopologyTemplate);
+
 							} else if (!queueNodeTemplates.isEmpty()) {
 
 								// Jump Call zum nächsten knoten in der liste
@@ -285,6 +287,7 @@ public class RefinementService {
 								TopologyTemplate deepCopy = spezificTopologyTemplate.clone();
 								topologyTemplateService.create(deepCopy);
 								deepCopy.updateForeignKey();
+								deepCopy.updatePosition();
 								topologyTemplateService.update(deepCopy);
 
 								queueChildTopologyTemplate.add(deepCopy);
@@ -316,7 +319,7 @@ public class RefinementService {
 		System.out.println("NodetypeFraghment: ");
 
 		if (refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
-			createSpezificRelationshipTemplate(fragment, refinLevelGraphNode, sourceNodeTemplates, abstractRelationshipTemplate, abstractTopologyTemplate);
+			exitRelationshipTemplates.addAll(createSpezificRelationshipTemplate(fragment, refinLevelGraphNode, sourceNodeTemplates, abstractRelationshipTemplate, abstractTopologyTemplate));
 		} else {
 
 			fragmentNodesQueue = new ArrayList<LevelGraphNode>();
@@ -494,18 +497,6 @@ public class RefinementService {
 
 	}
 
-	private boolean isSourceNodeEqualsTargetNode(ArrayList<NodeTemplate> sourceNodeTemplates, Long targetNodeId) {
-
-		for (NodeTemplate soruceNode : sourceNodeTemplates) {
-			System.out.println(soruceNode.getLevelGraphNodeId() + " == " + targetNodeId);
-			if (soruceNode.getLevelGraphNodeId() == targetNodeId) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private NodeTemplate createNewSpezificNodeTemplate(LevelGraphNode refineLevelGraphNode, NodeTemplate abstractNodeTemplate, ArrayList<RelationshipTemplate> prevRelationshipTemplates,
 			TopologyTemplate abstractTopologyTemplate, TopologyTemplate fragmentPart) {
 
@@ -515,8 +506,10 @@ public class RefinementService {
 		// Hole den NodeType vom LevelGraph Knoten
 		NodeType nodeType = nodeTypeService.findById(refineLevelGraphNode.getLevelGraphNodeTypeId());
 		spezificNodeTemplate.getProvidedProperties().addAll(refineLevelGraphNode.getProvidedProperties());
-		spezificNodeTemplate.getProvidedProperties().addAll(abstractNodeTemplate.getProvidedProperties());
-		spezificNodeTemplate.getExpectedProperties().addAll(abstractNodeTemplate.getExpectedProperties());
+		if (abstractNodeTemplate != null) {
+			spezificNodeTemplate.getProvidedProperties().addAll(abstractNodeTemplate.getProvidedProperties());
+			spezificNodeTemplate.getExpectedProperties().addAll(abstractNodeTemplate.getExpectedProperties());
+		}
 		spezificNodeTemplate.setTempId(tempIdGenerator);
 		spezificNodeTemplate.setName(refineLevelGraphNode.getName());
 		spezificNodeTemplate.setIcon(refineLevelGraphNode.getIcon());
@@ -628,37 +621,35 @@ public class RefinementService {
 	// Kompatibilitätsprüfung
 	private boolean isCompatibleToPrevRefinement(ArrayList<LevelGraphNode> sourceNodeQueue, ArrayList<LevelGraphNode> targetNodeQueue, boolean isNextRefined) {
 
-		for (LevelGraphNode source : sourceNodeQueue) {
+		for (LevelGraphNode source : new ArrayList<LevelGraphNode>(sourceNodeQueue)) {
 
 			for (LevelGraphRelation outConnectRelation : source.getOutLevelGraphRelations()) {
 
 				if (outConnectRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.CONNECT_OVER_TO)) {
 
-					for (LevelGraphNode target : targetNodeQueue) {
-
+					for (LevelGraphNode target : new ArrayList<LevelGraphNode>(targetNodeQueue)) {
 						if (outConnectRelation.getTargetNodeId() == target.getId()) {
-
-							if (isNextRefined) {
-								// TODO
-								// for (NodeTemplate nodeTemplate : abstractTopologyTemplate.getNodeTemplates()) {
-								// if (nodeTemplate.getId() == abstractRelationshipTemplate.getTargetNodeId()) {
-								//
-								// spezificRelationshipTemplate.setTargetNodeId(nodeTemplate.getTempId());
-								//
-								// }
-								// }
-								return false;
-							} else {
-								return true;
-							}
-
+							sourceNodeQueue.remove(source);
+							targetNodeQueue.remove(target);
 						}
 					}
 				}
 			}
 		}
 
-		return false;
+		// TODO
+		// if (isNextRefined) {
+		//
+		// return false;
+		// } else {
+		// return true;
+		// }
+
+		if (sourceNodeQueue.isEmpty() && targetNodeQueue.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
 
 	}
 
@@ -684,28 +675,16 @@ public class RefinementService {
 
 		return false;
 	}
-	// for (NodeTemplate nodeTemplate : abstractTopologyTemplate.getNodeTemplates()) {
-	// if (nodeTemplate.getId() == abstractRelationshipTemplate.getSourceNodeId()) {
-	// spezificRelationshipTemplate.setSourceNodeId(nodeTemplate.getTempId());
-	// }
-	// }
 
-	// sourceNodeTemplate.getOutRelationshipTemplates().add(spezificRelationshipTemplate);
+	private boolean isSourceNodeEqualsTargetNode(ArrayList<NodeTemplate> sourceNodeTemplates, Long targetNodeId) {
 
-	// if (abstractRelationshipTemplate != null && abstractRelationshipTemplate.getTargetNodeTemplate().isRefined()) {
-	//
-	// System.out.println(abstractRelationshipTemplate.getId());
-	// System.out.println(abstractRelationshipTemplate.getTargetNodeId());
-	//
-	// for (NodeTemplate nodeTemplate : abstractTopologyTemplate.getNodeTemplates()) {
-	// System.out.println(nodeTemplate.getTempId());
-	// if (nodeTemplate.getId() == abstractRelationshipTemplate.getTargetNodeId()) {
-	//
-	// System.out.println(nodeTemplate.getTempId());
-	// spezificRelationshipTemplate.setTargetNodeId(nodeTemplate.getTempId());
-	//
-	// }
-	// }
-	//
-	// }
+		for (NodeTemplate soruceNode : sourceNodeTemplates) {
+			System.out.println(soruceNode.getLevelGraphNodeId() + " == " + targetNodeId);
+			if (soruceNode.getLevelGraphNodeId() == targetNodeId) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

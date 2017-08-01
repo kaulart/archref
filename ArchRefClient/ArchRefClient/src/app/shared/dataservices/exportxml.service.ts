@@ -22,11 +22,11 @@ export class ExportXmlService {
    * @request - getXmlFile - XML export request to the server for different type of data
    *
    *******************************************************************************************************************************************************************************************************/
-  public getXmlFile(urlPart: string): Observable<ArrayBuffer> {
+  public getXmlFile(urlPart: string): Observable<Blob> {
     Logger.info('[REQUEST - EXPORT] Send GET XML-File Request', ExportXmlService.name);
-    let headers = new Headers({ 'Content-Type': 'application/xml', responseType: ResponseContentType.ArrayBuffer  });
+    let headers = new Headers({ 'Content-Type': 'application/xml', responseType: ResponseContentType.Text});
     let options = new RequestOptions(headers);
-    return this.http.get(this.exportUrl + urlPart, options).map(response => response.arrayBuffer).catch(this.handleError);
+    return this.http.get(this.exportUrl + urlPart, options).map(response => new Blob([response.text()], {type: 'application/xml'})).catch(this.handleError);
   }
 
   /********************************************************************************************************************************************************************************************************

@@ -2,7 +2,7 @@
  *
  * @class - Logger - Helper class for customized logging
  *
- * // TODO - Further improvement write a log file to the file system and improve the representation of JSON Objects in the console currently only displayed as string
+ * @hint - Further improvement write a log file to the file system and improve the representation of JSON Objects in the console currently only displayed as string
  *
  * @author Arthur Kaul
  *

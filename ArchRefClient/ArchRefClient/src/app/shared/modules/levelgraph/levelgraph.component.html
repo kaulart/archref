@@ -6,9 +6,17 @@
 		<!-- Header -->
 		<div class="row panel-heading control-panel">
 			<h3 class="col-sm-6">Level-Graphs</h3>
+			
+			<!-- New Button -->
 			<button class="w3-right w3-green btn btn-primary" id="createLevelGraph" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createLevelGraphFieldsArea">
 				<i class="fa fa-plus" aria-hidden="true"></i> New
 			</button>
+			
+			<!-- Import Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="import" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importAreaLevelGraph">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
+			</button>
+			
 		</div>
 
 		<!-- Input Panel -->
@@ -37,6 +45,18 @@
 				</div>
 
 				<button type="submit" [disabled]="!createLevelGraphForm.form.valid" class="btn btn-success" (click)="createLevelGraph(numberOfLevels.value)">Create</button>
+			</form>
+		</div>
+		
+		<!-- Import Panel -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importAreaLevelGraph">
+			<form>
+
+				<div class="form-group">
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)="importLevelGraph()">Upload</button>
 			</form>
 		</div>
 

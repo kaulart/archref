@@ -1,10 +1,21 @@
 package de.arthurkaul.archref.services;
 
-import org.springframework.core.io.Resource;
 import java.nio.file.Path;
-import java.util.stream.Stream;	
+import java.util.stream.Stream;
+
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Interface - StorageInterface is the Service for the FileStorage on the
+ *            Server Data it implements the interface for the methods which have
+ *            to be implemented by a storage service for storing files on the
+ *            server
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 public interface StorageInterface {
 
 	void init();

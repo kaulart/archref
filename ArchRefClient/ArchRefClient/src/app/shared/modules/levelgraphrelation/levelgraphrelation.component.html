@@ -24,7 +24,7 @@
 
 				<tbody>
 					<tr  routerLink="/dashboard/levelgraphrelationdetails" [queryParams]="{id: levelGraphRelation.id}" *ngFor="let levelGraphRelation of currentLevelGraphRelations">
-						<td><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
+						<td><i class="fa fa-folder-open-o"></i></td>
 						<td>{{ currentLevelGraphRelations.indexOf(levelGraphRelation) + 1 }}</td>
 						<td>{{ levelGraphRelation.id }}</td>
 						<td>{{ levelGraphRelation.levelGraphRelationType }}</td>

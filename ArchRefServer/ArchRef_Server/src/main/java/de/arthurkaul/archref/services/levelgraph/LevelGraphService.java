@@ -30,6 +30,10 @@ public class LevelGraphService implements LevelGraphInterface {
 	public LevelGraph create(LevelGraph levelGraph) {
 
 		if (levelGraph.getId() != null) {
+			LevelGraph persistedLevelGraph = levelGraphRepository.findOne(levelGraph.getId());
+			if (persistedLevelGraph == null) {
+				return levelGraphRepository.save(levelGraph);
+			}
 			return null;
 		}
 

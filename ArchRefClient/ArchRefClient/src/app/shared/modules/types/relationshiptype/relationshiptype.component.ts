@@ -37,7 +37,10 @@ const URL = '/api/fileupload/relationshiptype';
 export class RelationshipTypeComponent implements OnInit {
 
   @Input()
-  currentRepository: Repository;
+  relationshipTypes: RelationshipType[];
+
+  @Input()
+  repository: Repository;
 
   createdRelationshipType: RelationshipType = new RelationshipType();
   editRelationshipType: RelationshipType = new RelationshipType();
@@ -54,8 +57,8 @@ export class RelationshipTypeComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize RelationshipTypeComponent', RelationshipTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.createdRelationshipType.repositoryId = this.currentRepository.id;
-    this.createdRelationshipType.repository = this.currentRepository;
+//    this.createdRelationshipType.repositoryId = this.currentRepository.id;
+//    this.createdRelationshipType.repository = this.currentRepository;
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -75,7 +78,7 @@ export class RelationshipTypeComponent implements OnInit {
           relationshipTypeResponse.icon = item.url + '/' + response;
           this.relationshipTypeService.updateRelationshipType(relationshipTypeResponse).subscribe();
         };
-        this.currentRepository.relationshipTypeList.push(relationshipTypeResponse);
+        this.relationshipTypes.push(relationshipTypeResponse);
         Logger.info('RelationshipType with name: ' + relationshipTypeResponse.name + ' was created sucessfully with id: ' + relationshipTypeResponse.id, RelationshipTypeComponent.name);
       },
       (error) => {
@@ -96,7 +99,7 @@ export class RelationshipTypeComponent implements OnInit {
     this.editRelationshipType.name = name;
     this.relationshipTypeService.updateRelationshipType(this.editRelationshipType)
       .subscribe(relationshipTypeResponse => {
-        this.currentRepository.relationshipTypeList = Utility.updateElementInArry(relationshipTypeResponse, this.currentRepository.relationshipTypeList);
+        this.relationshipTypes = Utility.updateElementInArry(relationshipTypeResponse, this.relationshipTypes);
         Logger.info('RelationshipType with id: ' + relationshipTypeResponse.id + ' and name:' + relationshipTypeResponse.name + ' was updated sucessfully.', RelationshipTypeComponent.name);
       },
       (error) => {
@@ -117,7 +120,7 @@ export class RelationshipTypeComponent implements OnInit {
     Logger.info('Delete RelationshipType', RelationshipTypeComponent.name);
     this.relationshipTypeService.deleteRelationshipType(id)
       .subscribe(res =>
-        this.currentRepository.relationshipTypeList = Utility.deleteElementFromArry(id, this.currentRepository.relationshipTypeList)
+        this.relationshipTypes = Utility.deleteElementFromArry(id, this.relationshipTypes)
       );
   }
 

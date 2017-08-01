@@ -3,14 +3,14 @@ package de.arthurkaul.archref.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,8 +21,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import de.arthurkaul.archref.model.types.NodeType;
 import de.arthurkaul.archref.model.types.RelationshipType;
 
@@ -32,8 +30,10 @@ import de.arthurkaul.archref.model.types.RelationshipType;
  *
  * @field - Long id: number - ID of the Repository
  * @field - String name: name - Name of the Repository
- * @field - List<NodeType> nodeTypeList - List of the NodeTypes in the Repository
- * @field - List<RelationshipType> relationshipType - List of the RelationshipTypes in the Repository
+ * @field - List<NodeType> nodeTypeList - List of the NodeTypes in the
+ *        Repository
+ * @field - List<RelationshipType> relationshipType - List of the
+ *        RelationshipTypes in the Repository
  *
  * @author - Arthur Kaul
  *
@@ -61,19 +61,25 @@ public class Repository {
 
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
+	@NotNull
 	private String name;
 
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "repository")
-	@JsonManagedReference(value = "repository-nodeType")
+	@ManyToMany
+	@JoinTable(name = "REPOSITORY_NODETYPES")
+	// @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY,
+	// mappedBy = "repository")
+	// @JsonManagedReference(value = "repository-nodeType")
 	@XmlElementWrapper(name = "NodeTypes")
 	@XmlElement(name = "NodeType")
-	private List<NodeType> nodeTypeList = new ArrayList<NodeType>();
+	private List<NodeType> nodeTypes = new ArrayList<NodeType>();
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "repository")
-	@JsonManagedReference(value = "repository-relationshipType")
+	@ManyToMany
+	@JoinTable(name = "REPOSITORY_RelationshipTypes")
+	// @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "repository")
+	// @JsonManagedReference(value = "repository-relationshipType")
 	@XmlElementWrapper(name = "RelationshipTypes")
 	@XmlElement(name = "RelationshipType")
-	private List<RelationshipType> relationshipTypeList = new ArrayList<RelationshipType>();
+	private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -97,20 +103,20 @@ public class Repository {
 		this.name = name;
 	}
 
-	public List<NodeType> getNodeTypeList() {
-		return nodeTypeList;
+	public List<NodeType> getNodeTypes() {
+		return nodeTypes;
 	}
 
-	public void setNodeTypeList(List<NodeType> nodeTypeList) {
-		this.nodeTypeList = nodeTypeList;
+	public void setNodeTypes(List<NodeType> nodeTypes) {
+		this.nodeTypes = nodeTypes;
 	}
 
-	public List<RelationshipType> getRelationshipTypeList() {
-		return relationshipTypeList;
+	public List<RelationshipType> getRelationshipTypes() {
+		return relationshipTypes;
 	}
 
-	public void setRelationshipTypeList(List<RelationshipType> relationshipTypeList) {
-		this.relationshipTypeList = relationshipTypeList;
+	public void setRelationshipTypes(List<RelationshipType> relationshipTypes) {
+		this.relationshipTypes = relationshipTypes;
 	}
 
 }

@@ -28,7 +28,8 @@ import de.arthurkaul.archref.services.topology.TopologyTemplateService;
 
 /**
  * 
- * @class - <ExportXMLController> - Controller for handling the XML export requests from the client
+ * @class - <ExportXMLController> - Controller for handling the XML export
+ *        requests from the client
  * 
  * @author Arthur Kaul
  *
@@ -50,17 +51,20 @@ public class ExportXMLController {
 	 * 
 	 * @method - exportLevelGraph - Export a XML file of the <LevelGraph> data
 	 * 
-	 * @param Long id - ID of the <LevelGraph> which should be exported
+	 * @param Long
+	 *            id - ID of the <LevelGraph> which should be exported
 	 * @return
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/levelgraph/{id}", method = RequestMethod.GET)
-	public void exportLevelGraph(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) throws JAXBException, IOException {
+	public void exportLevelGraph(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response)
+			throws JAXBException, IOException {
 
 		LevelGraph levelGraph = levelGraphService.findById(id);
 		if (levelGraph == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException(
+					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
 
 		}
 
@@ -88,22 +92,24 @@ public class ExportXMLController {
 	 * 
 	 * @method - exportRepository - Export a XML file of the <Repository> data
 	 * 
-	 * @param Long id - ID of the <Repository>
+	 * @param Long
+	 *            id - ID of the <Repository>
 	 * @return
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/repository/{id}", method = RequestMethod.GET)
-	public void exportRepository(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) throws JAXBException, IOException {
+	public void exportRepository(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response)
+			throws JAXBException, IOException {
 
 		Repository repository = repositoryService.findById(id);
 		if (repository == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException(
+					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
 
 		}
 
 		File file = new File(repository.getName() + ".xml");
-		// ByteArrayOutputStream file = new ByteArrayOutputStream();
 
 		JAXBContext jc = JAXBContext.newInstance(Repository.class);
 		Marshaller marshaller = jc.createMarshaller();
@@ -124,15 +130,16 @@ public class ExportXMLController {
 	}
 
 	@RequestMapping(value = "/topologytemplate/{id}", method = RequestMethod.GET)
-	public void exportTopologyTemplate(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) throws JAXBException, IOException {
+	public void exportTopologyTemplate(@PathVariable("id") long id, HttpServletRequest request,
+			HttpServletResponse response) throws JAXBException, IOException {
 
 		TopologyTemplate topologyTemplate = topologyTemplateService.findById(id);
 		if (topologyTemplate == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException(
+					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
 		}
 
 		File file = new File(topologyTemplate.getName() + ".xml");
-		// ByteArrayOutputStream file = new ByteArrayOutputStream();
 
 		JAXBContext jc = JAXBContext.newInstance(TopologyTemplate.class);
 		Marshaller marshaller = jc.createMarshaller();

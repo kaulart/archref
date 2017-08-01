@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 /*********************************************************************************************************************************************************************************************************
  *
  * @service - RepositoryService  - Implements the calls to the rest interface of the application server and
- *                               handle the request construction and response extraction for Repository data
+ *                                 handle the request construction and response extraction for Repository data
  *
  *********************************************************************************************************************************************************************************************************/
 @Injectable()

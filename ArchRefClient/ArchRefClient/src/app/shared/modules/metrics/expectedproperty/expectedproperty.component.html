@@ -12,7 +12,7 @@
 
 				<button class="w3-right w3-green btn" id="createProperty" data-toggle="collapse" data-parent="#accordion" aria-expanded="true"
 					href="#createExpectedPropertyArea">
-					<i class="fa fa-plus" aria-hidden="true"></i> New
+					<i class="fa fa-plus"></i>New
 				</button>
 
 			</div>
@@ -60,8 +60,8 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let property of entity.expectedProperties">
-						<td>{{entity.expectedProperties.indexOf(property) + 1 }}</td>
+					<tr *ngFor="let property of expectedProperties">
+						<td>{{expectedProperties.indexOf(property) + 1 }}</td>
 					    <td>{{ property.id }}</td>
 						<td>{{ property.name }}</td>
 						<td>{{ property.value }}</td>

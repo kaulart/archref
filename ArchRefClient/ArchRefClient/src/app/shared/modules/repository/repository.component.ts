@@ -1,13 +1,14 @@
-import { Logger } from '../../../../logger/logger';
-import { Repository } from '../../datamodels/repository/repository';
-import { RepositoryService } from '../../dataservices/repository/repository.service';
-import { Utility } from '../../../utility';
-import { ExportXmlService } from '../../dataservices/exportxml.service';
-import { Component, OnInit } from '@angular/core';
-import { FlashMessageService } from 'angular2-flash-message';
-import { FlashMessage } from 'angular2-flash-message';
+import {Logger} from '../../../../logger/logger';
+import {Repository} from '../../datamodels/repository/repository';
+import {RepositoryService} from '../../dataservices/repository/repository.service';
+import {Utility} from '../../../utility';
+import {Constants} from '../../constants/constants';
+import {ExportXmlService} from '../../dataservices/exportxml.service';
+import {Component, OnInit, Input} from '@angular/core';
+import {FlashMessageService} from 'angular2-flash-message';
+import {FlashMessage} from 'angular2-flash-message';
 import * as FileSaver from 'file-saver';
-import { FileUploader } from 'ng2-file-upload';
+import {FileUploader} from 'ng2-file-upload';
 
 // URL for XML Import
 const URL_IMPORT = '/api/import/repository';
@@ -31,22 +32,26 @@ const URL_EXPORT = '/repository';
  * @field - repositories: Repository[] - List of all available Repositories in the database
  * @field - createdRepository: Repository -  Repository which should be created
  * @field - editedRepository: Repository - Repository which should be edit
- * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a
- *                                     cause a "Over Flash" for the user experience
+ * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may
+ *                                       cause a "Over Flash" for the user experience
  *
  * @author - Arthur Kaul
  *
  *********************************************************************************************************************************************************************************************************/
 export class RepositoryComponent implements OnInit {
-
+  
+  @Input()
   public repositories: Repository[] = [];
+  
   public createdRepository: Repository = new Repository();
   public editedRepository: Repository = new Repository();
   public flashMessage = new FlashMessage();
 
   public uploader: FileUploader = new FileUploader({});
 
-  constructor(private xmlExportSerivce: ExportXmlService, private repositoryService: RepositoryService, private flashMessageService: FlashMessageService) { }
+  constructor(private xmlExportSerivce: ExportXmlService,
+    private repositoryService: RepositoryService,
+    private flashMessageService: FlashMessageService) {}
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -55,8 +60,8 @@ export class RepositoryComponent implements OnInit {
    *******************************************************************************************************************************************************************************************************/
   ngOnInit() {
     Logger.info('Initialize Repository Component', RepositoryComponent.name);
-    this.flashMessage.timeoutInMS = 4000;
-    this.retrieveRepositories();
+    this.flashMessage.timeoutInMS = Constants.FLASHMESSAGETIMEOUT;
+//    this.retrieveRepositories();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -84,19 +89,19 @@ export class RepositoryComponent implements OnInit {
    *                                  for a callback. Currently no pagination/streaming of data is supported
    *
    *******************************************************************************************************************************************************************************************************/
-  retrieveRepositories() {
-    Logger.info('Retrieve Repository Data', RepositoryComponent.name);
-    this.repositoryService.getRepositories()
-      .subscribe(repositoriesResponse => {
-        this.repositories = repositoriesResponse;
-        Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
+//  retrieveRepositories() {
+//    Logger.info('Retrieve Repository Data', RepositoryComponent.name);
+//    this.repositoryService.getRepositories()
+//      .subscribe(repositoriesResponse => {
+//        this.repositories = repositoriesResponse;
+//        Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
+//      },
+//      (error) => {
+//        this.flashMessage.message = error;
+//        this.flashMessage.isError = true;
+//        this.flashMessageService.display(this.flashMessage);
+//      });
+//  }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -141,18 +146,31 @@ export class RepositoryComponent implements OnInit {
       });
   }
 
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - importRepository - Call the ImportService for upload a XML file to the server component and import the data of the XML file
+   * 
+   *******************************************************************************************************************************************************************************************************/
   importRepository() {
-    this.uploader.setOptions({ url: URL_IMPORT });
+    this.uploader.setOptions({url: URL_IMPORT});
     this.uploader.uploadAll();
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.repositories.push(response);
+      let rep: Repository = new Repository();
+      rep = JSON.parse(response);
+      this.repositories.push(rep);
     };
   }
 
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - exportRepository - Call the ExportService for retrieve a repository in XML data structure and export the data of the body as XML file to Client/Bowser
+   *
+   * @param - repository: Repository - Repository which should be exported from the database
+   *
+   *******************************************************************************************************************************************************************************************************/
   exportRepository(repository: Repository) {
     this.xmlExportSerivce.getXmlFile(URL_EXPORT + '/' + repository.id).subscribe(
       res => {
-        window.open(window.URL.createObjectURL(res));
         FileSaver.saveAs(res, repository.name + '.xml');
       },
       (error) => {

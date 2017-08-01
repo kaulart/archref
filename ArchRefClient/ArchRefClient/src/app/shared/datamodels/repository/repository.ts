@@ -17,14 +17,14 @@ export class Repository {
 
   id: number = null;
   name: string;
-  nodeTypeList: NodeType[];
-  relationshipTypeList: RelationshipType[];
+  nodeTypes: NodeType[];
+  relationshipTypes: RelationshipType[];
 
   constructor() {
     this.id = null;
     this.name = 'Unnamed';
-    this.nodeTypeList = [];
-    this.relationshipTypeList = [];
+    this.nodeTypes = [];
+    this.relationshipTypes = [];
   }
 
 }

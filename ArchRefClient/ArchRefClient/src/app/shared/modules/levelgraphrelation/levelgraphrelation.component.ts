@@ -19,7 +19,6 @@ export class LevelGraphRelationComponent implements OnInit {
 
   @Input()
   currentLevelGraphRelations: LevelGraphRelation[];
- // currentLevelGraph: LevelGraph;
 
   constructor() { }
   /********************************************************************************************************************************************************************************************************

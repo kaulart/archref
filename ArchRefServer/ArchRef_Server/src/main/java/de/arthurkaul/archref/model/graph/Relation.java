@@ -52,7 +52,7 @@ public class Relation extends de.arthurkaul.archref.model.Entity {
 	private Long targetNodeId;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "PATH_ID")
+	@JoinColumn(name = "PATH_ID", updatable = false)
 	@JsonManagedReference(value = "relation-path")
 	@XmlElement(name = "Path")
 	private Path path = new Path();

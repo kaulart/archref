@@ -1,7 +1,7 @@
 <!-- General Data Component -->
 <div class="tab-panel rounded">
 
-	<div class="w3-theme-l1 input-panel" id="createNodeTypeFieldsArea">
+	<div class="w3-theme-l1 input-panel">
 		<form>
 			<div class="row">
 
@@ -32,14 +32,14 @@
 				<div class="col-sm-6 form-group">
 					<label>Source Node ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.sourceNodeId}}" disabled>
 					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: currentLevelGraphRelation.sourceNodeId}">
-						<i class="fa fa-eye" aria-hidden="true"></i>
+						<i class="fa fa-eye"></i>
 					</button>
 				</div>
 
 				<div class="col-sm-6 form-group">
 					<label>Target Node ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.targetNodeId}}" disabled>
 					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: currentLevelGraphRelation.targetNodeId}">
-						<i class="fa fa-eye" aria-hidden="true"></i>
+						<i class="fa fa-eye"></i>
 					</button>
 				</div>
 
@@ -58,7 +58,7 @@
 				<div class="col-sm-6 form-group">
 					<label>Level Graph ID: </label> <input class="form-control col-sm-5" value="{{currentLevelGraphRelation.levelGraphId}}" disabled>
 					<button class="w3-blue col-sm-1 btn w3-right" type="button" routerLink="/dashboard/levelgraphmodeller" [queryParams]="{id: currentLevelGraphRelation.levelGraphId}">
-						<i class="fa fa-eye" aria-hidden="true"></i>
+						<i class="fa fa-eye"></i>
 					</button>
 				</div>
 

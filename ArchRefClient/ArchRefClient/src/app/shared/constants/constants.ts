@@ -17,8 +17,8 @@ export class Constants {
   public static readonly LEVELHEIGHT = 300;
   public static readonly LEVELGAPOFFSET = 40;
   public static readonly LABELOFFSET = 50;
-  public static readonly NODEHEIGHT = 100;
-  public static readonly NODEWIDTH = 200;
+  public static readonly NODEHEIGHT = 150;
+  public static readonly NODEWIDTH = 350;
   public static readonly FLASHMESSAGETIMEOUT = 4000;
   public static readonly LOWESTABSTRACTIONLEVEL = 0;
 }

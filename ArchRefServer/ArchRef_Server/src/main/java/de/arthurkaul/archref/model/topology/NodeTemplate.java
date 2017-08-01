@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -108,8 +107,8 @@ public class NodeTemplate extends Node {
 	@XmlAttribute(name = "abstractionLevelDepth")
 	private Integer abstractionLevel;
 
-	@Transient
-	private NodeTemplate specificTempNodeTemplate;
+	// @Transient
+	// private NodeTemplate specificTempNodeTemplate;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -219,15 +218,15 @@ public class NodeTemplate extends Node {
 		return nodeTemplate;
 	}
 
-	@JsonIgnore
-	public NodeTemplate getSpecificTempNodeTemplate() {
-		return specificTempNodeTemplate;
-	}
-
-	@JsonIgnore
-	public void setSpecificTempNodeTemplate(NodeTemplate specificTempNodeTemplate) {
-		this.specificTempNodeTemplate = specificTempNodeTemplate;
-	}
+	// @JsonIgnore
+	// public NodeTemplate getSpecificTempNodeTemplate() {
+	// return specificTempNodeTemplate;
+	// }
+	//
+	// @JsonIgnore
+	// public void setSpecificTempNodeTemplate(NodeTemplate specificTempNodeTemplate) {
+	// this.specificTempNodeTemplate = specificTempNodeTemplate;
+	// }
 
 	public void updateForeignKey() {
 		this.setTopologyTemplateId(this.topologyTemplate.getId());

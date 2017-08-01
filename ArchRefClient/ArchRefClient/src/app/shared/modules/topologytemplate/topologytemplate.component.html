@@ -6,8 +6,15 @@
 		<!-- Header -->
 		<div class="row panel-heading control-panel">
 			<h3 class="col-sm-6">Topology Templates</h3>
+			
+			<!-- New Button -->
 			<button class="w3-right w3-green btn btn-primary" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#createTopologyTemplateArea">
 				<i class="fa fa-plus" aria-hidden="true"></i> New
+			</button>
+			
+			<!-- Import Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="import" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importAreaTopologyTemplate">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
 			</button>
 		</div>
 
@@ -22,6 +29,18 @@
 				</div>
 
 				<button type="submit" class="btn btn-success" [disabled]="!createTopologyTemplateForm.form.valid" (click)="createTopologyTemplate()">Create</button>
+			</form>
+		</div>
+		
+		<!-- Import Panel -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importAreaTopologyTemplate">
+			<form>
+
+				<div class="form-group">
+					<label for="file">XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)="importTopologyTemplate()">Upload</button>
 			</form>
 		</div>
 

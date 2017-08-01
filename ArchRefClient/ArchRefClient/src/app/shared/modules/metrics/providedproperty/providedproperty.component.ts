@@ -34,6 +34,9 @@ export class ProvidedPropertyComponent implements OnInit {
   @Input()
   entity: Entity;
 
+  @Input()
+  providedProperties: ProvidedProperty[];
+
   createdProvidedProperty: ProvidedProperty = new ProvidedProperty('Unnamed', 'Undefined');
   editProvidedProperty: ProvidedProperty = new ProvidedProperty('Unnamed', 'Undefined');
 
@@ -51,8 +54,8 @@ export class ProvidedPropertyComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize ProvidedPropertyComponent', ProvidedPropertyComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.createdProvidedProperty.entityProvided = this.entity;
-    this.createdProvidedProperty.entityProvidedId = this.entity.id;
+//    this.createdProvidedProperty.entityProvided = this.entity;
+//    this.createdProvidedProperty.entityProvidedId = this.entity.id;
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -78,6 +81,7 @@ export class ProvidedPropertyComponent implements OnInit {
    * @method - updateProvidedProperty - Call the ProvidedPropertyService for updating the ProvidedProperty in the database and subscribe for a callback.
    *
    * @param - name: string - New name of the ProvidedProperty
+   * @param - value: string - New name of the ProvidedProperty
    *
    *******************************************************************************************************************************************************************************************************/
   updateProvidedProperty(name: string, value: string) {

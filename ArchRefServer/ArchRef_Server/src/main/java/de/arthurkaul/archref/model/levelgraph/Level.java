@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
@@ -22,13 +21,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <Level> - Level of a <LevelGraph> for display the levels and assign the <LevelGraphNode> and <LevelGraphRelation> to the different levels of a <LevelGraph>
+ * @class - <Level> - Level of a <LevelGraph> for display the levels and assign
+ *        the <LevelGraphNode> and <LevelGraphRelation> to the different levels
+ *        of a <LevelGraph>
  *
  * @field - Long id - ID of the level
  * @field - Integer depth - Depth of the level in the LevelGraph
- * @field - boolean visible - Indicates if a level should be displayed or not in the LevelGraphModellerComponent
- * @field - float y - Y-Position of the level layer in the LevelGraphModellerComponent
- * @field - float height - Height of the level layer in the LevelGraphModellerComponent
+ * @field - boolean visible - Indicates if a level should be displayed or not in
+ *        the LevelGraphModellerComponent
+ * @field - float y - Y-Position of the level layer in the
+ *        LevelGraphModellerComponent
+ * @field - float height - Height of the level layer in the
+ *        LevelGraphModellerComponent
  * @field - <LevelGraph> levelGraph - Corresponding LevelGraph for the Level
  * @field - Long levelGraphId - ID of the corresponding LevelGraph
  *
@@ -37,7 +41,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  ******************************************************************************************************************************************************************************************************/
 
 @Entity
-@XmlRootElement(name = "LevelGraph")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tAbstrationLevel")
 public class Level {
@@ -85,15 +88,18 @@ public class Level {
 	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
-	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevel")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch =
+	// FetchType.LAZY, mappedBy = "targetLevel")
 	// @JsonManagedReference(value = "inLevelGraphRelations-targetLevel")
 	// private List<LevelGraphRelation> inLevelGraphRelations;
 	//
-	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevel")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch =
+	// FetchType.LAZY, mappedBy = "sourceLevel")
 	// @JsonManagedReference(value = "outLevelGraphRelation-sourceLevel")
 	// private List<LevelGraphRelation> outLevelGraphRelations;
 	//
-	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "level")
+	// @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch =
+	// FetchType.LAZY, mappedBy = "level")
 	// @JsonManagedReference(value = "level-levelGraphNode")
 	// private List<LevelGraphNode> levelGraphNodes;
 
@@ -175,7 +181,8 @@ public class Level {
 	// }
 	//
 	// @JsonIgnore
-	// public void setOutLevelGraphRelations(List<LevelGraphRelation> outLevelGraphRelations) {
+	// public void setOutLevelGraphRelations(List<LevelGraphRelation>
+	// outLevelGraphRelations) {
 	// this.outLevelGraphRelations = outLevelGraphRelations;
 	// }
 	//
@@ -185,7 +192,8 @@ public class Level {
 	// }
 	//
 	// @JsonIgnore
-	// public void setInLevelGraphRelations(List<LevelGraphRelation> inLevelGraphRelations) {
+	// public void setInLevelGraphRelations(List<LevelGraphRelation>
+	// inLevelGraphRelations) {
 	// this.inLevelGraphRelations = inLevelGraphRelations;
 	// }
 

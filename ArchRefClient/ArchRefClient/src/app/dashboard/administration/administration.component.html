@@ -17,8 +17,12 @@
 		<!-- Tab Header -->
 		<ul class="tabrow nav" role="tablist">
 			<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#repository" style="color: white" role="tab">Repository</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#levelGraph" style="color: white" role="tab">Level Graph</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#topologyTemplate" style="color: white" role="tab">Topology Template</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#levelGraph" style="color: white" role="tab">Level Graphs</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#topologyTemplate" style="color: white" role="tab">Topology Templates</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#nodeType" style="color: white" role="tab">Node Types</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#relationshipType" style="color: white" role="tab">Relationship Types</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#expectedProperty" style="color: white" role="tab">Provided Properties</a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#providedProperty" style="color: white" role="tab">Expected Properties</a></li>
 		</ul>
 
 		<!-- Tab Content -->
@@ -26,17 +30,37 @@
 
 			<div id="repository" class="w3-card-4 rounded tab-pane active" role="tabpanel">
 				<!-- Selector for the RepositoryComponent -->
-				<app-repository></app-repository>
+				<app-repository [repositories]="repositories"></app-repository>
 			</div>
 
 			<div id="levelGraph" class="w3-card-4 rounded tab-pane" role="tabpanel">
 				<!-- Selector for the LevelGraphComponent -->
-				<app-levelgraph></app-levelgraph>
+				<app-levelgraph [levelGraphs]="levelGraphs"></app-levelgraph>
 			</div>
 
 			<div id="topologyTemplate" class="w3-card-4 rounded tab-pane" role="tabpanel">
 				<!-- Selector for the TopologyTemplateComponent -->
-				<app-topologytemplate></app-topologytemplate>
+				<app-topologytemplate [topologyTemplates]="topologyTemplates"></app-topologytemplate>
+			</div>
+
+			<div id="nodeType" class="w3-card-4 rounded tab-pane" role="tabpanel">
+				<!-- Selector for the NodeTypesComponent -->
+				<app-nodetype [nodeTypes]="nodeTypes"></app-nodetype>
+			</div>
+
+			<div id="relationshipType" class="w3-card-4 rounded tab-pane" role="tabpanel">
+				<!-- Selector for the RelationshipTypesComponent -->
+				<app-relationshiptype [relationshipTypes]="relationshipTypes"></app-relationshiptype>
+			</div>
+			
+		 	<div id="expectedProperty" class="w3-card-4 rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ExpectedPropertyComponent -->
+				<app-expectedproperty [expectedProperties]="expectedProperties"></app-expectedproperty>
+			</div>
+
+			<div id="providedProperty" class="w3-card-4 rounded tab-pane" role="tabpanel">
+				<!-- Selector for the ProvidedPropertyComponent -->
+				<app-providedproperty [providedProperties]="providedProperties"></app-providedproperty>
 			</div>
 
 		</div>

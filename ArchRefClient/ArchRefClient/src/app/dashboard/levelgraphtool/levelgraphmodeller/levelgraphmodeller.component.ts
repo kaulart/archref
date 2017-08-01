@@ -224,11 +224,9 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    ******************************************************************************************************************************************************************************************************/
   createLevelGraphNode(levelGraphNode: LevelGraphNode) {
-
     this.levelGraphNodeService.createLevelGraphNode(levelGraphNode)
       .subscribe(levelGraphNodeResponse => {
         this.currentLevelGraph.levelGraphNodes.push(levelGraphNodeResponse);
-
         Logger.info('Level Graph Node with id: ' + levelGraphNodeResponse.id + ' was created sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -249,15 +247,7 @@ export class LevelGraphModellerComponent implements OnInit {
     this.levelGraphRelationService.createLevelGraphRelation(this.currentLevelGraphRelation)
       .subscribe(levelGraphRelationResponse => {
         this.currentLevelGraph.levelGraphRelations.push(levelGraphRelationResponse);
-        //        for (let i = 0; i < this.currentLevelGraph.levelGraphNodes.length; i++) {
-        //          if (this.currentLevelGraph.levelGraphNodes[i].id === (levelGraphRelationResponse.targetNodeId)) {
-        //            this.currentLevelGraph.levelGraphNodes[i].inLevelGraphRelations.push(levelGraphRelationResponse);
-        //          } else if (this.currentLevelGraph.levelGraphNodes[i].id === (levelGraphRelationResponse.sourceNodeId)) {
-        //            this.currentLevelGraph.levelGraphNodes[i].outLevelGraphRelations.push(levelGraphRelationResponse);
-        //          }
-        //        }
         this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
-
         Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -284,14 +274,6 @@ export class LevelGraphModellerComponent implements OnInit {
    ******************************************************************************************************************************************************************************************************/
   deleteLevelGraphNode(levelGraphNode: LevelGraphNode) {
     this.levelGraphNodeService.deleteLevelGraphNode(levelGraphNode.id).subscribe(levelGraphNodeResponse => {
-
-      //      for (let levelGraphRelation of levelGraphNode.inLevelGraphRelations) {
-      //        this.deleteLevelGraphRelation(levelGraphRelation);
-      //      }
-      //
-      //      for (let levelGraphRelation of levelGraphNode.outLevelGraphRelations) {
-      //        this.deleteLevelGraphRelation(levelGraphRelation);
-      //      }
       this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
       Logger.info('Level Graph Node with id: ' + levelGraphNode.id + ' was deleted sucessfully.', LevelGraphModellerComponent.name);
     },
@@ -315,7 +297,6 @@ export class LevelGraphModellerComponent implements OnInit {
     this.levelGraphRelationService.deleteLevelGraphRelation(levelGraphRelation.id)
       .subscribe(levelGraphRelationResponse => {
         this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
-        //    this.currentLevelGraph.levelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, this.currentLevelGraph.levelGraphRelations);
         Logger.info('Level Graph Relation with id: ' + levelGraphRelation.id + ' was deleted sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -366,7 +347,6 @@ export class LevelGraphModellerComponent implements OnInit {
       let deltaY = (newMousePositionY - this.lastMousePositionY);
       let deltaX = (newMousePositionX - this.lastMousePositionX);
 
-      // TODO Right border check
       // Change Node Position
       if (((this.currentLevelGraphNode.x + deltaX) > 0)) {
         this.currentLevelGraphNode.x = (this.currentLevelGraphNode.x + deltaX);
@@ -477,11 +457,7 @@ export class LevelGraphModellerComponent implements OnInit {
       } else {
         startPoint = new Point(this.lastMousePositionX - 50, this.lastMousePositionY - level.y);
         endPoint = new Point(this.lastMousePositionX - 50 - 5, this.lastMousePositionY - level.y - 5);
-        if (this.toolList[1].checked) {
-          levelGraphRelationType = LevelGraphRelationType.CONNECT_OVER_TO;
-        } else if (this.toolList[2].checked) {
-          levelGraphRelationType = LevelGraphRelationType.HOSTED_ON;
-        }
+        levelGraphRelationType = LevelGraphRelationType.CONNECT_OVER_TO;
       }
 
       let tempPoints: Point[] = [];
@@ -683,6 +659,8 @@ export class LevelGraphModellerComponent implements OnInit {
 
         levelGraphNode.levelGraphNodeType = this.typeCurrentDragData;
         levelGraphNode.levelGraphNodeTypeId = this.currentDragData.id;
+        levelGraphNode.icon = this.currentDragData.icon;
+        
         this.createLevelGraphNode(levelGraphNode);
       }
       this.drag = false;
@@ -1106,12 +1084,9 @@ export class LevelGraphModellerComponent implements OnInit {
   }
 
   setEntryExitProperty() {
-    alert(this.entryPoint + "" + this.exitPoint);
-    this.currentLevelGraphRelation.exitPoint =  this.exitPoint
+    this.currentLevelGraphRelation.exitPoint = this.exitPoint;
     this.currentLevelGraphRelation.entryPoint = this.entryPoint;
-        this.updateLevelGraph();
-    
-    this.levelGraphRelationService.updateLevelGraphRelation(this.currentLevelGraphRelation).subscribe();
+    this.updateLevelGraph();
   }
 
   isEntryExitRelation(relation: LevelGraphRelation) {
@@ -1138,7 +1113,7 @@ export class LevelGraphModellerComponent implements OnInit {
   }
 
   setLevelGraphRelation(relation: LevelGraphRelation) {
-this.currentLevelGraphRelation = relation;
+    this.currentLevelGraphRelation = relation;
     this.entryPoint = relation.entryPoint;
     this.exitPoint = relation.exitPoint;
 

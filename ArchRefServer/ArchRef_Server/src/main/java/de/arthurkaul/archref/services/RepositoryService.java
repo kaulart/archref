@@ -8,6 +8,15 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.repositories.RepositoryRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - RepositoryService is the Service for the Repository Data it
+ *          implements CURD methods which create, update, retrieve and delete
+ *          data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class RepositoryService implements RepositoryInterface {
 
@@ -30,6 +39,10 @@ public class RepositoryService implements RepositoryInterface {
 	public Repository create(Repository repository) {
 
 		if (repository.getId() != null) {
+			Repository persistedRepository = repositoryRepository.findOne(repository.getId());
+			if (persistedRepository == null) {
+				return repositoryRepository.save(repository);
+			}
 			return null;
 		}
 

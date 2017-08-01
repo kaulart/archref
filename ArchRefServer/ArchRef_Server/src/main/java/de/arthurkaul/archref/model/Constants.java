@@ -15,8 +15,8 @@ package de.arthurkaul.archref.model;
 public class Constants {
 
 	public static final float LEVELHEIGHT = 300.0f;
-	public static final float NODEHEIGHT = 100.0f;
-	public static final float NODEWIDTH = 200.0f;
+	public static final float NODEHEIGHT = 150.0f;
+	public static final float NODEWIDTH = 350.0f;
 	public static final int LOWESTABSTRACTIONLEVEL = 0;
 
 }

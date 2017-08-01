@@ -22,7 +22,9 @@ import { FileUploadModule } from 'ng2-file-upload';
 /**********************************************************************************************************************************************************************************************************
  *
  * @module - RepositoryModule - Lazy loaded module as wrapper for all application modules and components which
- *                              should be accessible in the RepositoryModule
+ *                              should be accessible in the RepositoryModule, you can import this module in other
+ *                              modules where you need to display the repository view for create, update, delete
+ *                              or view repositories
  *
  * @author - Arthur Kaul
  *

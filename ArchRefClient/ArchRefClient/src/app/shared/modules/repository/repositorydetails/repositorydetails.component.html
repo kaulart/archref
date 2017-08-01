@@ -29,12 +29,12 @@
 
 			<div id="nodeType" class="rounded tab-pane active" role="tabpanel">
 				<!-- Selector for the NodeTypeComponent -->
-				<app-nodetype [currentRepository]="currentRepository"></app-nodetype>
+				<app-nodetype [repository]="currentRepository" [nodeTypes]="currentRepository.nodeTypes"></app-nodetype>
 			</div>
 
 			<div id="relationshipType" class="rounded tab-pane " role="tabpanel">
 				<!-- Selector for the RelationshipTypeComponent -->
-				<app-relationshiptype [currentRepository]="currentRepository"></app-relationshiptype>
+				<app-relationshiptype [repository]="currentRepository" [relationshipTypes]="currentRepository.relationshipTypes"></app-relationshiptype>
 			</div>
 
 		</div>

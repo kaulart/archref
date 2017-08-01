@@ -4,9 +4,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FileUploadModule } from 'ng2-file-upload';
+
 
 @NgModule({
   imports: [
+    FileUploadModule,
     FormsModule,
     CommonModule,
     LevelGraphDetailsModule,

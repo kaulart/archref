@@ -28,6 +28,10 @@ public class TopologyTemplateService implements TopologyTemplateInterface {
 	public TopologyTemplate create(TopologyTemplate topologyTemplate) {
 
 		if (topologyTemplate.getId() != null) {
+			TopologyTemplate persistedTopologyTemplate = topologyTemplateRepository.findOne(topologyTemplate.getId());
+			if (persistedTopologyTemplate == null) {
+				return topologyTemplateRepository.save(topologyTemplate);
+			}
 			return null;
 		}
 

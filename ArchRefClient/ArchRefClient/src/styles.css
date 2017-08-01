@@ -6,7 +6,7 @@
  *
  ***************************************************************************************************************************/ 
 html, body{
-		height: 100%;
+	height: 100%;
 }
 
 .navbar-item {
@@ -32,6 +32,11 @@ i {
 	padding: 10px;
 }
 
+/****************************************************************************************************************************
+ *
+ * Style for panels
+ *
+ ***************************************************************************************************************************/ 
 .control-panel button {
 	margin: 10px;
 }
@@ -41,21 +46,6 @@ i {
 	padding: 20px;
 }
 
-.tab-content {
-	
-	margin: 0px;
-	padding-right: 20px;
-	padding-left: 20px;
-
-}
-
-.tab-panel {
-	color:#fff;
-	padding-right: 30px;
-	padding-left: 30px;
-	padding-bottom: 25px;
-}
-
 .control-panel {
 	padding: 20px;
 }
@@ -63,14 +53,6 @@ i {
 .data_panel {
 	margin: 30px;
 	padding: 30px;
-}
-
-/* You can add global styles to this file, and also import other style files */
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-	/* display: none; <- Crashes Chrome on hover */
-	-webkit-appearance: none;
-	margin: 0;
-	/* <-- Apparently some margin are still there even though it's hidden */
 }
 
 .rounded {
@@ -90,6 +72,19 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 * style for Tab Panel
 *
 **************************************************************/
+.tab-content {
+	margin: 0px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.tab-panel {
+	color:#fff;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-bottom: 25px;
+}
+
 .tabrow {
 	text-align: center;
 	list-style: none;

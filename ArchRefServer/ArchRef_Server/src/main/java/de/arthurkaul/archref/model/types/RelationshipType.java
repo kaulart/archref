@@ -6,8 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -19,7 +18,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -28,7 +26,8 @@ import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <RelationshipType> - RelationshipType inherited from <Entity> it is the type of a <RelationshipTemplate> or of a <LevelGraphNode>
+ * @class - <RelationshipType> - RelationshipType inherited from <Entity> it is
+ *        the type of a <RelationshipTemplate> or of a <LevelGraphNode>
  *
  * @field - <Repository> repository - Repository of the RelationshipType
  * @field - Long repositoryId - ID of the Repository of the RelationshipType
@@ -50,11 +49,12 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "REPOSITORY")
-	@JsonBackReference(value = "repository-relationshipType")
+	@ManyToMany(mappedBy = "relationshipTypes")
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "REPOSITORY", updatable = false)
+	// @JsonBackReference(value = "repository-relationshipType")
 	@XmlInverseReference(mappedBy = "relationshipTypeList")
-	private Repository repository;
+	private List<Repository> repositories;
 
 	@Column(name = "REPOSITORY_ID")
 	@XmlAttribute(name = "repositoryRef")
@@ -72,20 +72,20 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-
 	public Long getRepositoryId() {
 		return repositoryId;
 	}
 
 	public void setRepositoryId(Long repositoryId) {
 		this.repositoryId = repositoryId;
+	}
+
+	public List<Repository> getRepositories() {
+		return repositories;
+	}
+
+	public void setRepositories(List<Repository> repositories) {
+		this.repositories = repositories;
 	}
 
 }

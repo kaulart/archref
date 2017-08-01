@@ -6,7 +6,6 @@
  *
  *********************************************************************************************************************************************************************************************************/
 export class LevelGraphRelationType {
-  public static readonly HOSTED_ON = 'HOSTED_ON';
   public static readonly REFINE_TO = 'REFINE_TO';
   public static readonly CONNECT_OVER_TO = 'CONNECT_OVER_TO';
 }

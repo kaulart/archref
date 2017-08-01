@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
+import de.arthurkaul.archref.model.topology.TopologyTemplate;
 import de.arthurkaul.archref.services.RepositoryService;
 import de.arthurkaul.archref.services.levelgraph.LevelGraphService;
 import de.arthurkaul.archref.services.topology.TopologyTemplateService;
@@ -37,7 +38,10 @@ public class ImportXMLController {
 	TopologyTemplateService topologyTemplateService;
 
 	@RequestMapping(value = "/api/import/levelgraph", method = RequestMethod.POST)
-	public ResponseEntity<LevelGraph> importLevelGraph(@RequestParam("file") File file, RedirectAttributes redirectAttributes) throws JAXBException {
+	public ResponseEntity<LevelGraph> importLevelGraph(@RequestParam("file") MultipartFile multipartFile,
+			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+
+		File file = convert(multipartFile);
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(LevelGraph.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -46,17 +50,17 @@ public class ImportXMLController {
 
 		if (levelGraph == null) {
 
-			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("NoLevelGraphCreated Exception: No LevelGraph created.");
 
 		}
-
-		levelGraphService.create(levelGraph);
+		levelGraph = levelGraphService.create(levelGraph);
 
 		return ResponseEntity.ok().body(levelGraph);
 	}
 
 	@RequestMapping(value = "/api/import/repository", method = RequestMethod.POST)
-	public ResponseEntity<Repository> importLevelRepository(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+	public ResponseEntity<Repository> importRepository(@RequestParam("file") MultipartFile multipartFile,
+			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
 
 		File file = convert(multipartFile);
 
@@ -67,13 +71,33 @@ public class ImportXMLController {
 
 		if (repository == null) {
 
-			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("NoRepositoryCreated Exception: No Repository created.");
 
 		}
-
-		repositoryService.create(repository);
+		repository = repositoryService.create(repository);
 
 		return ResponseEntity.ok().body(repository);
+	}
+
+	@RequestMapping(value = "/api/import/topologytemplate", method = RequestMethod.POST)
+	public ResponseEntity<TopologyTemplate> importTopologyTemplate(@RequestParam("file") MultipartFile multipartFile,
+			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+
+		File file = convert(multipartFile);
+
+		JAXBContext jaxbContext = JAXBContext.newInstance(TopologyTemplate.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+		TopologyTemplate topologyTemplate = (TopologyTemplate) jaxbUnmarshaller.unmarshal(file);
+
+		if (topologyTemplate == null) {
+
+			throw new EntityNotFoundException("NoTopologyTemplateCreated Exception: No TopologyTemplate created.");
+
+		}
+		topologyTemplate = topologyTemplateService.create(topologyTemplate);
+
+		return ResponseEntity.ok().body(topologyTemplate);
 	}
 
 	public File convert(MultipartFile file) throws IOException {

@@ -53,9 +53,9 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let nodeType of currentRepository.nodeTypeList">
+					<tr *ngFor="let nodeType of nodeTypes">
 						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ currentRepository.nodeTypeList.indexOf(nodeType) + 1 }}</td>
+						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ nodeTypes.indexOf(nodeType) + 1 }}</td>
 						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ nodeType.name }}</td>
 						<td routerLink="/dashboard/nodetypedetails" [queryParams]="{id: nodeType.id}">{{ nodeType.id }}</td>
 						<td><button type="button" data-toggle="modal" data-target="#editNodeTypeModal" class="w3-blue btn" (click)="setEditNodeType(nodeType)">

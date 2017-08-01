@@ -49,9 +49,9 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let relationshipType of currentRepository.relationshipTypeList">
+					<tr *ngFor="let relationshipType of relationshipTypes">
 						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}"><i class="fa fa-folder-open-o" aria-hidden="true"></i></td>
-						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ currentRepository.relationshipTypeList.indexOf(relationshipType) + 1 }}</td>
+						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ relationshipTypes.indexOf(relationshipType) + 1 }}</td>
 						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ relationshipType.name }}</td>
 						<td routerLink="/dashboard/relationshiptypedetails" [queryParams]="{id: relationshipType.id}">{{ relationshipType.id }}</td>
 						<td><button type="button" data-toggle="modal" data-target="#editRelationshipTypeModal" class="w3-blue btn" (click)="setEditRelationshipType(relationshipType)">

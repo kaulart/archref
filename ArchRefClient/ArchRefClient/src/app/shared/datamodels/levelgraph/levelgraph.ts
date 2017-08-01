@@ -47,25 +47,6 @@ export class LevelGraph {
     return null;
   }
 
-
-//  public getLevelGraphRelation(levelGraphRelationId: number): LevelGraphRelation {
-//    for (let i = 0; i < this.levelGraphRelations.length; i++) {
-//      if (this.levelGraphRelations[i].id === levelGraphRelationId) {
-//        return this.levelGraphRelations[i];
-//      }
-//    }
-//    return null;
-//  }
-//
-//  public getLevelGraphNode(levelGraphNodeId: number): LevelGraphNode {
-//    for (let i = 0; i < this.levelGraphNodes.length; i++) {
-//      if (this.levelGraphNodes[i].id === levelGraphNodeId) {
-//        return this.levelGraphNodes[i];
-//      }
-//    }
-//    return null;
-//  }
-
   /*******************************************************************************************************************************************************************************************************
    *
    * Setter Methods

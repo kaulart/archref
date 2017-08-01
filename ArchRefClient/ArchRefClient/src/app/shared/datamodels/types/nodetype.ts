@@ -22,7 +22,7 @@ export class NodeType extends Entity {
   // default icon
   icon = '/assets/img/nodeTypeDefault.png';
 
-  repository: Repository;
+  repositories: Repository[]=[];
   repositoryId: number;
 
   constructor() {

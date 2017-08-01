@@ -1,12 +1,12 @@
-import { Logger } from '../../../../../logger/logger';
-import { Repository } from '../../../datamodels/repository/repository';
-import { NodeType } from '../../../../shared/datamodels/types/nodetype';
-import { NodeTypeService } from '../../../../shared/dataservices/types/nodetype.service';
-import { Utility } from '../../../../utility';
-import { Component, OnInit, Input } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
-import { FlashMessageService } from 'angular2-flash-message';
-import { FlashMessage } from 'angular2-flash-message';
+import {Logger} from '../../../../../logger/logger';
+import {Repository} from '../../../datamodels/repository/repository';
+import {NodeType} from '../../../../shared/datamodels/types/nodetype';
+import {NodeTypeService} from '../../../../shared/dataservices/types/nodetype.service';
+import {Utility} from '../../../../utility';
+import {Component, OnInit, Input} from '@angular/core';
+import {FileUploader} from 'ng2-file-upload';
+import {FlashMessageService} from 'angular2-flash-message';
+import {FlashMessage} from 'angular2-flash-message';
 
 // URL for icon Upload
 const URL = '/api/fileupload/nodetype';
@@ -37,15 +37,18 @@ const URL = '/api/fileupload/nodetype';
 export class NodeTypeComponent implements OnInit {
 
   @Input()
-  currentRepository: Repository;
+  nodeTypes: NodeType[];
+
+  @Input()
+  repository: Repository;
 
   public createdNodeType: NodeType = new NodeType();
   public editNodeType: NodeType = new NodeType();
   public flashMessage = new FlashMessage();
 
-  public uploader: FileUploader = new FileUploader({ url: URL });
+  public uploader: FileUploader = new FileUploader({url: URL});
 
-  constructor(private nodeTypeService: NodeTypeService, private flashMessageService: FlashMessageService) { }
+  constructor(private nodeTypeService: NodeTypeService, private flashMessageService: FlashMessageService) {}
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -55,8 +58,8 @@ export class NodeTypeComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize NodeTypeComponent', NodeTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.createdNodeType.repository = this.currentRepository;
-    this.createdNodeType.repositoryId = this.currentRepository.id;
+    this.createdNodeType.repositories.push(this.repository);
+    //    this.createdNodeType.repositoryId = this.currentRepository.id;
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -70,13 +73,13 @@ export class NodeTypeComponent implements OnInit {
     this.nodeTypeService.createNodeType(this.createdNodeType)
       .subscribe(nodeTypeResponse => {
         let tempURL = URL + '/' + nodeTypeResponse.id;
-        this.uploader.setOptions({ url: tempURL });
+        this.uploader.setOptions({url: tempURL});
         this.uploader.uploadAll();
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
           nodeTypeResponse.icon = item.url + '/' + response;
           this.nodeTypeService.updateNodeType(nodeTypeResponse).subscribe();
         };
-        this.currentRepository.nodeTypeList.push(nodeTypeResponse);
+        this.nodeTypes.push(nodeTypeResponse);
         Logger.info('NodeType with name: ' + nodeTypeResponse.name + ' was created sucessfully with id: ' + nodeTypeResponse.id, NodeTypeComponent.name);
       },
       (error) => {
@@ -99,7 +102,7 @@ export class NodeTypeComponent implements OnInit {
     this.editNodeType.name = name;
     this.nodeTypeService.updateNodeType(this.editNodeType)
       .subscribe(nodeTypeResponse => {
-        this.currentRepository.nodeTypeList = Utility.updateElementInArry(nodeTypeResponse, this.currentRepository.nodeTypeList);
+        this.nodeTypes = Utility.updateElementInArry(nodeTypeResponse, this.nodeTypes);
         Logger.info('NodeType with id: ' + nodeTypeResponse.id + ' and name:' + nodeTypeResponse.name + ' was updated sucessfully.', NodeTypeComponent.name);
       },
       (error) => {
@@ -120,7 +123,7 @@ export class NodeTypeComponent implements OnInit {
     Logger.info('Delete NodeType', NodeTypeComponent.name);
     this.nodeTypeService.deleteNodeType(id)
       .subscribe(nodeTypeResponse => {
-        this.currentRepository.nodeTypeList = Utility.deleteElementFromArry(id, this.currentRepository.nodeTypeList);
+        this.nodeTypes = Utility.deleteElementFromArry(id, this.nodeTypes);
         Logger.info('NodeType with id: ' + id + ' was deleted sucessfully.', NodeTypeComponent.name);
       }, (error) => {
         this.flashMessage.message = error;

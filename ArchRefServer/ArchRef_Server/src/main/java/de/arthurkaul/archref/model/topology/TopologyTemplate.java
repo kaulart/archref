@@ -27,6 +27,8 @@ import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.model.Constants;
+
 /*******************************************************************************************************************************************************************************************************
  *
  * @class - TopologyTemplate - TopologyTemplate Model is used for model a abstract or specific system architecture
@@ -209,6 +211,49 @@ public class TopologyTemplate {
 		for (RelationshipTemplate relation : this.relationshipTemplates) {
 			relation.updateForeignKey();
 		}
+	}
+
+	public void updatePosition() {
+		System.out.println("Test");
+
+		int fieldsWidthHeight = (int) Math.sqrt(this.getNodeTemplates().size());
+		int count = 0;
+		// System.out.println("Test:" + fieldsWidthHeight);
+
+		for (int i = 0; i <= fieldsWidthHeight; i++) {
+			for (int j = 0; j <= fieldsWidthHeight; j++) {
+				// System.out.println("Size:" + this.getNodeTemplates().size());
+
+				if (count < this.getNodeTemplates().size()) {
+
+					float x = i * this.getNodeTemplates().get(count).getWidth() + i * Constants.NODEWIDTH;
+					float y = j * this.getNodeTemplates().get(count).getHeight() + j * Constants.NODEHEIGHT;
+
+					// System.out.println("X:" + x);
+					// System.out.println("Y:" + y);
+
+					this.getNodeTemplates().get(count).setX(x);
+					this.getNodeTemplates().get(count).setY(y);
+
+					for (int k = 0; k < this.getNodeTemplates().get(count).getOutRelationshipTemplates().size(); k++) {
+						this.getNodeTemplates().get(count).getOutRelationshipTemplates().get(k).getPath().getPoints().get(0).setX(x);
+						this.getNodeTemplates().get(count).getOutRelationshipTemplates().get(k).getPath().getPoints().get(0).setY(y);
+						this.getNodeTemplates().get(count).getOutRelationshipTemplates().get(k).getPath().updatePath();
+					}
+
+					for (int k = 0; k < this.getNodeTemplates().get(count).getInRelationshipTemplates().size(); k++) {
+						this.getNodeTemplates().get(count).getInRelationshipTemplates().get(k).getPath().getPoints().get(1).setX(x);
+						this.getNodeTemplates().get(count).getInRelationshipTemplates().get(k).getPath().getPoints().get(1).setY(y);
+						this.getNodeTemplates().get(count).getInRelationshipTemplates().get(k).getPath().updatePath();
+
+					}
+
+					count++;
+				}
+
+			}
+		}
+
 	}
 
 }

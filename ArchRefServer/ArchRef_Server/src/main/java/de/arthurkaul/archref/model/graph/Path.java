@@ -123,4 +123,11 @@ public class Path {
 		return path;
 	}
 
+	public void updatePath() {
+		this.pathDataString = "";
+		for (Point point : this.points) {
+			this.pathDataString = this.pathDataString + point.getX() + ',' + point.getY() + ' ';
+		}
+	}
+
 }

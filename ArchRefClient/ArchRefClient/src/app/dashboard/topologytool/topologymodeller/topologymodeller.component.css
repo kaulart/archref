@@ -12,6 +12,7 @@
 	padding: 5px;
 	marging: 5px;
 	font-size: 1.2em;
+
 }
 
 .listItem:hover {
@@ -20,38 +21,30 @@
 }
 
 .nodeTemplate {
-	background: -moz-linear-gradient(90deg, rgba(0, 51, 51, 1) 0%,
-		rgba(4, 148, 196, 1) 25%, rgba(5, 193, 255, 1) 50%,
-		rgba(4, 148, 196, 1) 75%, rgba(0, 51, 51, 1) 100%); /* ff3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,
-		51, 51, 1)), color-stop(25%, rgba(4, 148, 196, 1)),
-		color-stop(50%, rgba(5, 193, 255, 1)),
-		color-stop(75%, rgba(4, 148, 196, 1)),
-		color-stop(100%, rgba(0, 51, 51, 1))); /* safari4+,chrome */
-	background: -webkit-linear-gradient(90deg, rgba(0, 51, 51, 1) 0%,
-		rgba(4, 148, 196, 1) 25%, rgba(5, 193, 255, 1) 50%,
-		rgba(4, 148, 196, 1) 75%, rgba(0, 51, 51, 1) 100%);
-	/* safari5.1+,chrome10+ */
-	background: -o-linear-gradient(90deg, rgba(0, 51, 51, 1) 0%,
-		rgba(4, 148, 196, 1) 25%, rgba(5, 193, 255, 1) 50%,
-		rgba(4, 148, 196, 1) 75%, rgba(0, 51, 51, 1) 100%); /* opera 11.10+ */
-	background: -ms-linear-gradient(90deg, rgba(0, 51, 51, 1) 0%,
-		rgba(4, 148, 196, 1) 25%, rgba(5, 193, 255, 1) 50%,
-		rgba(4, 148, 196, 1) 75%, rgba(0, 51, 51, 1) 100%); /* ie10+ */
-	background: linear-gradient(0deg, rgba(0, 51, 51, 1) 0%,
-		rgba(4, 148, 196, 1) 25%, rgba(5, 193, 255, 1) 50%,
-		rgba(4, 148, 196, 1) 75%, rgba(0, 51, 51, 1) 100%); /* w3c */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#003333',
-		endColorstr='#003333', GradientType=0); /* ie6-9 */
+	background: -moz-linear-gradient(89deg, rgba(143,193,242,1) 0%, rgba(123,166,209,1) 50%, rgba(143,193,242,1) 100%); /* ff3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(143,193,242,1)), color-stop(50%, rgba(123,166,209,1)), color-stop(100%, rgba(143,193,242,1))); /* safari4+,chrome */
+background: -webkit-linear-gradient(89deg, rgba(143,193,242,1) 0%, rgba(123,166,209,1) 50%, rgba(143,193,242,1) 100%); /* safari5.1+,chrome10+ */
+background: -o-linear-gradient(89deg, rgba(143,193,242,1) 0%, rgba(123,166,209,1) 50%, rgba(143,193,242,1) 100%); /* opera 11.10+ */
+background: -ms-linear-gradient(89deg, rgba(143,193,242,1) 0%, rgba(123,166,209,1) 50%, rgba(143,193,242,1) 100%); /* ie10+ */
+background: linear-gradient(1deg, rgba(143,193,242,1) 0%, rgba(123,166,209,1) 50%, rgba(143,193,242,1) 100%); /* w3c */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8FC1F2', endColorstr='#8FC1F2',GradientType=0 ); /* ie6-9 */
 	margin-top: 5px;
 	margin-bottom: 5px;
 	padding: 10px;
 	width: 100%;
+		 border-style: solid;
+    border-width: 3px;
+    border-color:black;
+}
+
+.nodeTemplate:hover {
+	background: #3c6e9a;
+	cursor: pointer;
 }
 
 svg {
-	height: 3000px;
-	width: 3000px;
+	height: 30000px;
+	width: 30000px;
 }
 
 /*********************************************************************************************************************************
@@ -71,7 +64,7 @@ svg {
  ********************************************************************************************************************************/
 #toolbox_area {
 	margin-top: 10px;
-	height: 700px;
+	height: 100%;
 	width:300px;
 	overflow: auto;
 }
@@ -101,7 +94,7 @@ svg {
  *
  ********************************************************************************************************************************/
 #draw_area {
-	height: 700px;
+	height: 100%;
 	margin-top: 10px;
 	margin-right: 0px;
 	margin-left: 0px;
@@ -184,4 +177,8 @@ li img {
 #selectRepository {
 	width: 100%;
 	margin-bottom: 10px;
+}
+
+#level_graph_tool{
+	 height: 98%;
 }
