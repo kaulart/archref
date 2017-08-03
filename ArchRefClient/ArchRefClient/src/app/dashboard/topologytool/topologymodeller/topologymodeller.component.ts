@@ -1,35 +1,35 @@
-import { Logger } from '../../../../logger/logger';
-import { Constants } from '../../../shared/constants/constants';
-import { LevelGraphNodeType } from '../../../shared/constants/levelgraphnodetype';
-import { LevelGraphRelationType } from '../../../shared/constants/levelgraphrelationtype';
-import { Entity } from '../../../shared/datamodels/entity/entity';
-import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
-import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
-import { ExpectedProperty } from '../../../shared/datamodels/metrics/expectedproperty';
-import { ProvidedProperty } from '../../../shared/datamodels/metrics/providedproperty';
-import { Repository } from '../../../shared/datamodels/repository/repository';
-import { NodeTemplate } from '../../../shared/datamodels/topology/nodetemplate';
-import { RelationshipTemplate } from '../../../shared/datamodels/topology/relationshiptemplate';
-import { TopologyTemplate } from '../../../shared/datamodels/topology/topologytemplate';
-import { RelationshipType } from '../../../shared/datamodels/types/relationshiptype';
-import { Path } from '../../../shared/datamodels/utility/path';
-import { Point } from '../../../shared/datamodels/utility/point';
-import { LevelService } from '../../../shared/dataservices/levelgraph/level.service';
-import { LevelGraphService } from '../../../shared/dataservices/levelgraph/levelgraph.service';
-import { LevelGraphNodeService } from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
-import { ExpectedPropertyService } from '../../../shared/dataservices/metrics/expectedproperty.service';
-import { ProvidedPropertyService } from '../../../shared/dataservices/metrics/providedpropertyservice.service';
-import { RefinementService } from '../../../shared/dataservices/refinement/refinement.service';
-import { RepositoryService } from '../../../shared/dataservices/repository/repository.service';
-import { NodeTemplateService } from '../../../shared/dataservices/topologytemplate/nodetemplate.service';
-import { NodeTypeService } from '../../../shared/dataservices/types/nodetype.service';
-import { RelationshipTemplateService } from '../../../shared/dataservices/topologytemplate/relationshiptemplate.service';
-import { RelationshipTypeService } from '../../../shared/dataservices/types/relationshiptype.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TopologyTemplateService } from '../../../shared/dataservices/topologytemplate/topologytemplate.service';
-import { FlashMessageService } from 'angular2-flash-message';
-import { FlashMessage } from 'angular2-flash-message';
+import {Logger} from '../../../../logger/logger';
+import {Constants} from '../../../shared/constants/constants';
+import {LevelGraphNodeType} from '../../../shared/constants/levelgraphnodetype';
+import {LevelGraphRelationType} from '../../../shared/constants/levelgraphrelationtype';
+import {Entity} from '../../../shared/datamodels/entity/entity';
+import {LevelGraph} from '../../../shared/datamodels/levelgraph/levelgraph';
+import {LevelGraphNode} from '../../../shared/datamodels/levelgraph/levelgraphnode';
+import {ExpectedProperty} from '../../../shared/datamodels/metrics/expectedproperty';
+import {ProvidedProperty} from '../../../shared/datamodels/metrics/providedproperty';
+import {Repository} from '../../../shared/datamodels/repository/repository';
+import {NodeTemplate} from '../../../shared/datamodels/topology/nodetemplate';
+import {RelationshipTemplate} from '../../../shared/datamodels/topology/relationshiptemplate';
+import {TopologyTemplate} from '../../../shared/datamodels/topology/topologytemplate';
+import {RelationshipType} from '../../../shared/datamodels/types/relationshiptype';
+import {Path} from '../../../shared/datamodels/utility/path';
+import {Point} from '../../../shared/datamodels/utility/point';
+import {LevelService} from '../../../shared/dataservices/levelgraph/level.service';
+import {LevelGraphService} from '../../../shared/dataservices/levelgraph/levelgraph.service';
+import {LevelGraphNodeService} from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
+import {ExpectedPropertyService} from '../../../shared/dataservices/metrics/expectedproperty.service';
+import {ProvidedPropertyService} from '../../../shared/dataservices/metrics/providedpropertyservice.service';
+import {RefinementService} from '../../../shared/dataservices/refinement/refinement.service';
+import {RepositoryService} from '../../../shared/dataservices/repository/repository.service';
+import {NodeTemplateService} from '../../../shared/dataservices/topologytemplate/nodetemplate.service';
+import {NodeTypeService} from '../../../shared/dataservices/types/nodetype.service';
+import {RelationshipTemplateService} from '../../../shared/dataservices/topologytemplate/relationshiptemplate.service';
+import {RelationshipTypeService} from '../../../shared/dataservices/types/relationshiptype.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TopologyTemplateService} from '../../../shared/dataservices/topologytemplate/topologytemplate.service';
+import {FlashMessageService} from 'angular2-flash-message';
+import {FlashMessage} from 'angular2-flash-message';
 
 @Component({
   selector: 'app-topologymodeller',
@@ -128,7 +128,7 @@ export class TopologyModellerComponent implements OnInit {
     private providedPropertyService: ProvidedPropertyService,
     private expectedPropertyService: ExpectedPropertyService,
     private relationshipTemplateService: RelationshipTemplateService,
-    private refinementService: RefinementService) { }
+    private refinementService: RefinementService) {}
 
   /*****************************************************************************************************************************************
    *
@@ -285,7 +285,7 @@ export class TopologyModellerComponent implements OnInit {
     Logger.info('Create RelationshipTemplate', TopologyModellerComponent.name);
     this.relationshipTemplateService.createRelationshipTemplate(relationshipTemplate).subscribe(relationshipTemplateResponse => {
       this.currentTopologyTemplate.relationshipTemplates.push(relationshipTemplateResponse);
-      this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
+      // this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
 
       //      for (let i = 0; i < this.currentTopologyTemplate.nodeTemplates.length; i++) {
       //        if (this.currentTopologyTemplate.nodeTemplates[i].id === (relationshipTemplateResponse.targetNodeId)) {
@@ -501,7 +501,6 @@ export class TopologyModellerComponent implements OnInit {
       let deltaY = (newMousePositionY - this.lastMousePositionY);
       let deltaX = (newMousePositionX - this.lastMousePositionX);
 
-      // TODO Check again right and bottom border
       if ((this.currentNodeTemplate.x + deltaX) > 0) {
         this.currentNodeTemplate.x = (this.currentNodeTemplate.x + deltaX);
       }
@@ -510,7 +509,6 @@ export class TopologyModellerComponent implements OnInit {
         this.currentNodeTemplate.y = (this.currentNodeTemplate.y + deltaY);
       }
 
-      // TODO Check again right and bottom border
       for (let relationshipTemplate of this.currentTopologyTemplate.relationshipTemplates) {
         if (this.currentNodeTemplate.id === relationshipTemplate.targetNodeId) {
           if ((relationshipTemplate.path.points[1].x + deltaX) > (0 + this.currentNodeTemplate.width / 2)) {
@@ -550,7 +548,7 @@ export class TopologyModellerComponent implements OnInit {
       this.moveNode = false;
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
-      this.updateTopologyTemplate();
+      //  this.updateTopologyTemplate();
     }
   }
 
@@ -723,7 +721,10 @@ export class TopologyModellerComponent implements OnInit {
     } else {
 
       this.currentRelationshipTemplate = new RelationshipTemplate(sourceNode.id, sourceNode.id, tempPath, parentData.id, this.currentTopologyTemplate.id);
-      this.currentRelationshipTemplate.relationshipType = parentData;
+      this.relationshipTypeService.getRelationshipType(parentData.id).subscribe(relationshipTypeResponse => {
+        this.currentRelationshipTemplate.relationshipType = relationshipTypeResponse;
+      });
+
     }
 
     for (let property of parentData.expectedProperties) {
@@ -908,7 +909,7 @@ export class TopologyModellerComponent implements OnInit {
     }
 
   }
- 
+
   /*****************************************************************************************************************************************
   *
   * @method stopDrawRelation - Stop the draw relation event and draw a relation if it is allowed to draw it
@@ -935,19 +936,18 @@ export class TopologyModellerComponent implements OnInit {
    * @param targetLevel: Level - Target Level is the level of the target node
    *
    ****************************************************************************************************************************************/
-
   loadSpecificTopologyTemplates() {
-    this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.childTopologyTemplates[0].id)
-      .subscribe(topologyTemplateResponse => {
-        this.currentTopologyTemplates = this.currentTopologyTemplate.childTopologyTemplates;
-        this.currentTopologyTemplate = topologyTemplateResponse;
+//        this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.childTopologyTemplates[0].id)
+//           .subscribe(topologyTemplateResponse => {
+    this.currentTopologyTemplates = this.currentTopologyTemplate.childTopologyTemplates;
+    this.currentTopologyTemplate = this.currentTopologyTemplate.childTopologyTemplates[0];
 
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
+//      },
+//      (error) => {
+//        this.flashMessage.message = error;
+//        this.flashMessage.isError = true;
+//       this.flashMessageService.display(this.flashMessage);
+//      });
 
   }
 
@@ -959,6 +959,11 @@ export class TopologyModellerComponent implements OnInit {
           this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.parentTopologyTemplateId)
             .subscribe(parent => {
               this.currentTopologyTemplates = parent.childTopologyTemplates;
+              for (let i = 0; i < this.currentTopologyTemplates.length; i++) {
+                if (this.currentTopologyTemplates[i].id === this.currentTopologyTemplate.id) {
+                  this.currentTopologyTemplate = this.currentTopologyTemplates[i];
+                }
+              }
             },
             (error) => {
               this.flashMessage.message = error;
@@ -969,6 +974,7 @@ export class TopologyModellerComponent implements OnInit {
         } else {
           this.currentTopologyTemplates = [];
           this.currentTopologyTemplates.push(this.currentTopologyTemplate);
+
         }
 
       },

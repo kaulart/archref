@@ -46,9 +46,8 @@ export class LevelGraphComponent implements OnInit {
 
   levels = 3;
 
-  @Input()
   levelGraphs: LevelGraph[] = [];
-  
+
   createdLevelGraph: LevelGraph = new LevelGraph();
   editedLevelGraph: LevelGraph = new LevelGraph();
   private flashMessage = new FlashMessage();
@@ -64,7 +63,7 @@ export class LevelGraphComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize LevelGraphComponent', LevelGraphComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-//    this.retrieveLevelGraphs();
+    this.retrieveLevelGraphs();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -100,26 +99,26 @@ export class LevelGraphComponent implements OnInit {
         this.flashMessageService.display(this.flashMessage);
       });
   }
-//
-//  /********************************************************************************************************************************************************************************************************
-//   *
-//   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
-//   *                                 for a callback. Currently no pagination/streaming of data is supported
-//   *
-//   *******************************************************************************************************************************************************************************************************/
-//  retrieveLevelGraphs() {
-//    Logger.info('Retrieve LevelGraph Data', LevelGraphComponent.name);
-//    this.levelGraphService.getLevelGraphs()
-//      .subscribe(levelGraphsResponse => {
-//        this.levelGraphs = levelGraphsResponse;
-//        Logger.info('Level Graphs sucessfully retrieved.', LevelGraphComponent.name);
-//      },
-//      (error) => {
-//        this.flashMessage.message = error;
-//        this.flashMessage.isError = true;
-//        this.flashMessageService.display(this.flashMessage);
-//      });
-//  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
+   *                                 for a callback. Currently no pagination/streaming of data is supported
+   *
+   *******************************************************************************************************************************************************************************************************/
+  retrieveLevelGraphs() {
+    Logger.info('Retrieve LevelGraph Data', LevelGraphComponent.name);
+    this.levelGraphService.getLevelGraphs()
+      .subscribe(levelGraphsResponse => {
+        this.levelGraphs = levelGraphsResponse;
+        Logger.info('Level Graphs sucessfully retrieved.', LevelGraphComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
 
   /********************************************************************************************************************************************************************************************************
    *

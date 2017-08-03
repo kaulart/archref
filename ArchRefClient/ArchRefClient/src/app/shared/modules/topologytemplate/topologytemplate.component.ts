@@ -39,7 +39,6 @@ const URL_EXPORT = '/topologytemplate';
  *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateComponent implements OnInit {
   
-  @Input()
   topologyTemplates: TopologyTemplate[] = [];
   
   createdTopologyTemplate: TopologyTemplate = new TopologyTemplate();
@@ -58,7 +57,7 @@ export class TopologyTemplateComponent implements OnInit {
   ngOnInit() {
     Logger.info('Initialize TopologyTemplateComponent', TopologyTemplateComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    //this.retrieveTopologyTemplates();
+    this.retrieveTopologyTemplates();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -82,25 +81,25 @@ export class TopologyTemplateComponent implements OnInit {
       });
   }
 
-//  /********************************************************************************************************************************************************************************************************
-//   *
-//   *  @method - retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
-//   *                                        and subscribe for a callback. Currently no pagination/streaming of data is supported
-//   *
-//   *******************************************************************************************************************************************************************************************************/
-//  retrieveTopologyTemplates() {
-//    Logger.info('Retrieve TopologyTemplate Data', TopologyTemplateComponent.name);
-//    this.topologyTemplateService.getTopologyTemplates()
-//      .subscribe(topologyTemplateResponse => {
-//        this.topologyTemplates = topologyTemplateResponse;
-//        Logger.info('Topology Template sucessfully retrieved.', TopologyTemplateComponent.name);
-//      },
-//      (error) => {
-//        this.flashMessage.message = error;
-//        this.flashMessage.isError = true;
-//        this.flashMessageService.display(this.flashMessage);
-//      });
-//  }
+  /********************************************************************************************************************************************************************************************************
+   *
+   *  @method - retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
+   *                                        and subscribe for a callback. Currently no pagination/streaming of data is supported
+   *
+   *******************************************************************************************************************************************************************************************************/
+  retrieveTopologyTemplates() {
+    Logger.info('Retrieve TopologyTemplate Data', TopologyTemplateComponent.name);
+    this.topologyTemplateService.getTopologyTemplates()
+      .subscribe(topologyTemplateResponse => {
+        this.topologyTemplates = topologyTemplateResponse;
+        Logger.info('Topology Template sucessfully retrieved.', TopologyTemplateComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
 
   /********************************************************************************************************************************************************************************************************
    *

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
+import de.arthurkaul.archref.model.topology.NodeTemplate;
+import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 import de.arthurkaul.archref.repositories.levelgraph.LevelGraphNodeRepository;
 
 @Service
@@ -48,6 +50,15 @@ public class LevelGraphNodeService implements LevelGraphNodeInterface {
 
 	@Override
 	public void delete(long id) {
+		LevelGraphNode persistedLevelGraphNode = levelGraphNodeRepository.findOne(id);
+		for (NodeTemplate nodeTemplate : persistedLevelGraphNode.getNodeTemplates()) {
+			nodeTemplate.setLevelGraphNode(null);
+			nodeTemplate.setLevelGraphNodeId(null);
+		}
+		for (RelationshipTemplate relationshipTemplate : persistedLevelGraphNode.getRelationshipTemplates()) {
+			relationshipTemplate.setLevelGraphNode(null);
+			relationshipTemplate.setLevelGraphNodeId(null);
+		}
 		levelGraphNodeRepository.delete(id);
 
 	}
@@ -55,7 +66,6 @@ public class LevelGraphNodeService implements LevelGraphNodeInterface {
 	@Override
 	public void deleteAllLevelGraphNodes() {
 		levelGraphNodeRepository.deleteAll();
-
 	}
 
 }

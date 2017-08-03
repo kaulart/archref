@@ -39,10 +39,9 @@ const URL_EXPORT = '/repository';
  *
  *********************************************************************************************************************************************************************************************************/
 export class RepositoryComponent implements OnInit {
-  
-  @Input()
+
   public repositories: Repository[] = [];
-  
+
   public createdRepository: Repository = new Repository();
   public editedRepository: Repository = new Repository();
   public flashMessage = new FlashMessage();
@@ -61,7 +60,7 @@ export class RepositoryComponent implements OnInit {
   ngOnInit() {
     Logger.info('Initialize Repository Component', RepositoryComponent.name);
     this.flashMessage.timeoutInMS = Constants.FLASHMESSAGETIMEOUT;
-//    this.retrieveRepositories();
+    this.retrieveRepositories();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -89,19 +88,19 @@ export class RepositoryComponent implements OnInit {
    *                                  for a callback. Currently no pagination/streaming of data is supported
    *
    *******************************************************************************************************************************************************************************************************/
-//  retrieveRepositories() {
-//    Logger.info('Retrieve Repository Data', RepositoryComponent.name);
-//    this.repositoryService.getRepositories()
-//      .subscribe(repositoriesResponse => {
-//        this.repositories = repositoriesResponse;
-//        Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
-//      },
-//      (error) => {
-//        this.flashMessage.message = error;
-//        this.flashMessage.isError = true;
-//        this.flashMessageService.display(this.flashMessage);
-//      });
-//  }
+  retrieveRepositories() {
+    Logger.info('Retrieve Repository Data', RepositoryComponent.name);
+    this.repositoryService.getRepositories()
+      .subscribe(repositoriesResponse => {
+        this.repositories = repositoriesResponse;
+        Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
+  }
 
   /********************************************************************************************************************************************************************************************************
    *

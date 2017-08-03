@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.metrics.ExpectedProperty;
 import de.arthurkaul.archref.model.metrics.ProvidedProperty;
+import de.arthurkaul.archref.model.topology.NodeTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -83,9 +84,11 @@ public class Entity {
 	@XmlTransient
 	private String icon = "/assets/img/nodeTypeDefault.png";
 
-	@JsonIgnore
 	@XmlTransient
 	private Long tempId;
+
+	@XmlTransient
+	private ArrayList<NodeTemplate> entryNodeTemplates = new ArrayList<NodeTemplate>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -146,12 +149,24 @@ public class Entity {
 		return entity;
 	}
 
+	@JsonIgnore
 	public Long getTempId() {
 		return tempId;
 	}
 
+	@JsonIgnore
 	public void setTempId(Long tempId) {
 		this.tempId = tempId;
+	}
+
+	@JsonIgnore
+	public ArrayList<NodeTemplate> getEntryNodeTemplates() {
+		return entryNodeTemplates;
+	}
+
+	@JsonIgnore
+	public void setEntryNodeTemplates(ArrayList<NodeTemplate> entryNodeTemplates) {
+		this.entryNodeTemplates = entryNodeTemplates;
 	}
 
 }

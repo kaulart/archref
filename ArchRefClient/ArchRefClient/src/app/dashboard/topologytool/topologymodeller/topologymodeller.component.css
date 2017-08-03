@@ -32,7 +32,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8FC1F2', end
 	margin-bottom: 5px;
 	padding: 10px;
 	width: 100%;
-		 border-style: solid;
+    border-style: solid;
     border-width: 3px;
     border-color:black;
 }

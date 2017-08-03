@@ -33,7 +33,8 @@ import de.arthurkaul.archref.model.Constants;
  * @class - <Path> - A list of points used for drawing paths in a view
  *
  * @field - Long id - ID of a path in a view
- * @field - String pathDataString - Specific representation of a path as a string so that SVG path/line elements can interpret the data
+ * @field - String pathDataString - Specific representation of a path as a
+ *        string so that SVG path/line elements can interpret the data
  * @field - List<Point> points - List of all point in a path
  *
  * @author - Arthur Kaul
@@ -61,7 +62,8 @@ public class Path {
 
 	@Column(name = "PATH_DATA_STRING")
 	@XmlAttribute(name = "pathDataString")
-	private String pathDataString = Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2 + " " + Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2;
+	private String pathDataString = Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2 + " "
+			+ Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "path")
 	@JsonManagedReference(value = "path-point")

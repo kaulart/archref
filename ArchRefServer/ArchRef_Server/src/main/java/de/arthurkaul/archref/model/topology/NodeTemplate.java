@@ -3,6 +3,7 @@ package de.arthurkaul.archref.model.topology;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,11 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.model.graph.Node;
@@ -81,20 +79,18 @@ public class NodeTemplate extends Node {
 	@XmlAttribute(name = "nodeTypeId")
 	private Long nodeTypeId;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "targetNodeTemplate")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetNodeTemplate")
 	@JsonManagedReference(value = "inRelationshipTemplates-targetNodeTemplate")
 	@XmlInverseReference(mappedBy = "targetNodeTemplate")
-	@Cascade({ CascadeType.REMOVE, CascadeType.REFRESH })
 	private List<RelationshipTemplate> inRelationshipTemplates = new ArrayList<RelationshipTemplate>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceNodeTemplate")
 	@JsonManagedReference(value = "outRelationshipTemplates-sourceNodeTemplate")
 	@XmlInverseReference(mappedBy = "sourceNodeTemplate")
-	@Cascade({ CascadeType.REMOVE, CascadeType.REFRESH })
 	private List<RelationshipTemplate> outRelationshipTemplates = new ArrayList<RelationshipTemplate>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TOPOLOGYTEMPLATE", updatable = false)
+	@JoinColumn(name = "TOPOLOGYTEMPLATE")
 	@JsonBackReference(value = "topologyTemplate-nodeTemplate")
 	@XmlInverseReference(mappedBy = "nodeTemplates")
 	private TopologyTemplate topologyTemplate;
@@ -106,9 +102,6 @@ public class NodeTemplate extends Node {
 	@Column(name = "ABSTRACTION_LEVEL")
 	@XmlAttribute(name = "abstractionLevelDepth")
 	private Integer abstractionLevel;
-
-	// @Transient
-	// private NodeTemplate specificTempNodeTemplate;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -132,12 +125,10 @@ public class NodeTemplate extends Node {
 		this.levelGraphNodeId = levelGraphNodeId;
 	}
 
-	@JsonIgnore
 	public NodeType getNodeType() {
 		return nodeType;
 	}
 
-	@JsonIgnore
 	public void setNodeType(NodeType nodeType) {
 		this.nodeType = nodeType;
 	}
@@ -224,7 +215,8 @@ public class NodeTemplate extends Node {
 	// }
 	//
 	// @JsonIgnore
-	// public void setSpecificTempNodeTemplate(NodeTemplate specificTempNodeTemplate) {
+	// public void setSpecificTempNodeTemplate(NodeTemplate
+	// specificTempNodeTemplate) {
 	// this.specificTempNodeTemplate = specificTempNodeTemplate;
 	// }
 

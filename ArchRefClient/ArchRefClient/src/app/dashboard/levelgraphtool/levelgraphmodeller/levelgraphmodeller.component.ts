@@ -1,28 +1,28 @@
-import { Logger } from '../../../../logger/logger';
-import { Constants } from '../../../shared/constants/constants';
-import { LevelGraphNodeType } from '../../../shared/constants/levelgraphnodetype';
-import { LevelGraphRelationType } from '../../../shared/constants/levelgraphrelationtype';
-import { Entity } from '../../../shared/datamodels/entity/entity';
-import { Level } from '../../../shared/datamodels/levelgraph/level';
-import { LevelGraph } from '../../../shared/datamodels/levelgraph/levelgraph';
-import { LevelGraphNode } from '../../../shared/datamodels/levelgraph/levelgraphnode';
-import { LevelGraphRelation } from '../../../shared/datamodels/levelgraph/levelgraphrelation';
-import { ExpectedProperty } from '../../../shared/datamodels/metrics/expectedproperty';
-import { ProvidedProperty } from '../../../shared/datamodels/metrics/providedproperty';
-import { Path } from '../../../shared/datamodels/utility/path';
-import { Point } from '../../../shared/datamodels/utility/point';
-import { Repository } from '../../../shared/datamodels/repository/repository';
-import { RepositoryService } from '../../../shared/dataservices/repository/repository.service';
-import { LevelService } from '../../../shared/dataservices/levelgraph/level.service';
-import { LevelGraphService } from '../../../shared/dataservices/levelgraph/levelgraph.service';
-import { LevelGraphNodeService } from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
-import { LevelGraphRelationService } from '../../../shared/dataservices/levelgraph/levelgraphrelation.service';
-import { ExpectedPropertyService } from '../../../shared/dataservices/metrics/expectedproperty.service';
-import { ProvidedPropertyService } from '../../../shared/dataservices/metrics/providedpropertyservice.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FlashMessageService } from 'angular2-flash-message';
-import { FlashMessage } from 'angular2-flash-message';
+import {Logger} from '../../../../logger/logger';
+import {Constants} from '../../../shared/constants/constants';
+import {LevelGraphNodeType} from '../../../shared/constants/levelgraphnodetype';
+import {LevelGraphRelationType} from '../../../shared/constants/levelgraphrelationtype';
+import {Entity} from '../../../shared/datamodels/entity/entity';
+import {Level} from '../../../shared/datamodels/levelgraph/level';
+import {LevelGraph} from '../../../shared/datamodels/levelgraph/levelgraph';
+import {LevelGraphNode} from '../../../shared/datamodels/levelgraph/levelgraphnode';
+import {LevelGraphRelation} from '../../../shared/datamodels/levelgraph/levelgraphrelation';
+import {ExpectedProperty} from '../../../shared/datamodels/metrics/expectedproperty';
+import {ProvidedProperty} from '../../../shared/datamodels/metrics/providedproperty';
+import {Path} from '../../../shared/datamodels/utility/path';
+import {Point} from '../../../shared/datamodels/utility/point';
+import {Repository} from '../../../shared/datamodels/repository/repository';
+import {RepositoryService} from '../../../shared/dataservices/repository/repository.service';
+import {LevelService} from '../../../shared/dataservices/levelgraph/level.service';
+import {LevelGraphService} from '../../../shared/dataservices/levelgraph/levelgraph.service';
+import {LevelGraphNodeService} from '../../../shared/dataservices/levelgraph/levelgraphnode.service';
+import {LevelGraphRelationService} from '../../../shared/dataservices/levelgraph/levelgraphrelation.service';
+import {ExpectedPropertyService} from '../../../shared/dataservices/metrics/expectedproperty.service';
+import {ProvidedPropertyService} from '../../../shared/dataservices/metrics/providedpropertyservice.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FlashMessageService} from 'angular2-flash-message';
+import {FlashMessage} from 'angular2-flash-message';
 
 @Component({
   selector: 'app-levelgraphmodeller',
@@ -93,16 +93,14 @@ export class LevelGraphModellerComponent implements OnInit {
   entryPoint: boolean;
 
   toolList = [
-    { name: 'Move Node', checked: true },
-    { name: 'ConnectOverTo', checked: false },
-    { name: 'HostedOn', checked: false },
-    { name: 'RefineTo', checked: false }
+    {name: 'Move Node', checked: true},
+    {name: 'ConnectOverTo', checked: false},
+    {name: 'RefineTo', checked: false}
   ];
 
   levelGraphRelationTypes = [
-    { name: 'ConnectOverTo', checked: true },
-    { name: 'HostedOn', checked: true },
-    { name: 'RefineTo', checked: true },
+    {name: 'ConnectOverTo', checked: true},
+    {name: 'RefineTo', checked: true},
   ];
 
   public flashMessage = new FlashMessage();
@@ -247,7 +245,7 @@ export class LevelGraphModellerComponent implements OnInit {
     this.levelGraphRelationService.createLevelGraphRelation(this.currentLevelGraphRelation)
       .subscribe(levelGraphRelationResponse => {
         this.currentLevelGraph.levelGraphRelations.push(levelGraphRelationResponse);
-        this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
+        //  this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
         Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -293,7 +291,6 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    ******************************************************************************************************************************************************************************************************/
   deleteLevelGraphRelation(levelGraphRelation: LevelGraphRelation) {
-
     this.levelGraphRelationService.deleteLevelGraphRelation(levelGraphRelation.id)
       .subscribe(levelGraphRelationResponse => {
         this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
@@ -417,7 +414,7 @@ export class LevelGraphModellerComponent implements OnInit {
     if (this.moveNode) {
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
-      this.updateLevelGraph();
+      // this.updateLevelGraph();
       this.moveNode = false;
     }
   }
@@ -439,7 +436,7 @@ export class LevelGraphModellerComponent implements OnInit {
    ******************************************************************************************************************************************************************************************************/
   startDrawRelation(event: MouseEvent, level: Level, sourceNode: LevelGraphNode) {
 
-    if (this.toolList[1].checked || this.toolList[2].checked || this.toolList[3].checked) {
+    if (this.toolList[1].checked || this.toolList[2].checked) {
       this.drawRelation = true;
 
       this.lastMousePositionY = event.offsetY;
@@ -450,7 +447,7 @@ export class LevelGraphModellerComponent implements OnInit {
       let startPoint: Point;
       let endPoint: Point;
 
-      if (this.toolList[3].checked) {
+      if (this.toolList[2].checked) {
         levelGraphRelationType = LevelGraphRelationType.REFINE_TO;
         startPoint = new Point(this.lastMousePositionX, this.lastMousePositionY);
         endPoint = new Point(this.lastMousePositionX - 5, this.lastMousePositionY - 5);
@@ -466,10 +463,6 @@ export class LevelGraphModellerComponent implements OnInit {
 
       let tempPath = new Path(tempPoints);
       this.currentLevelGraphRelation = new LevelGraphRelation(level.depth, level.depth, sourceNode.id, sourceNode.id, this.currentLevelGraph.id, tempPath, levelGraphRelationType);
-      if (sourceNode.levelGraphNodeType === (LevelGraphNodeType.NODETYPEFRAGMENT || LevelGraphNodeType.RELATIONSHIPTYPEFRAGMENT) && sourceNode.outLevelGraphRelations.length < 1) {
-        this.currentLevelGraphRelation.entryPoint = true;
-        this.currentLevelGraphRelation.exitPoint = true;
-      }
       this.currentLevelGraphRelation.levelGraph = this.currentLevelGraph;
       this.currentLevelGraphRelation.sourceLevelGraphNode = sourceNode;
       this.currentLevelGraphRelation.sourceLevel = level;
@@ -529,29 +522,25 @@ export class LevelGraphModellerComponent implements OnInit {
 
         if (!this.isRelationExist(sourceNode, targetNode)) {
 
-
-          if (this.toolList[1].checked || this.toolList[2].checked) {
+          if (this.toolList[1].checked && this.isConnectedToRelationDrawAllowed(sourceNode, targetNode)) {
             this.currentLevelGraphRelation.path.points[0].x = sourceCenterX;
             this.currentLevelGraphRelation.path.points[0].y = sourceCenterY;
             this.currentLevelGraphRelation.path.points[1].y = targetCenterY;
             this.currentLevelGraphRelation.path.points[1].x = targetCenterX;
             this.currentLevelGraphRelation.path.updatePath();
-
-            if (this.toolList[1].checked && this.isConnectedToRelationDrawAllowed(sourceNode, targetNode)) {
-              this.createLevelGraphRelation();
-            } else if (this.toolList[2].checked && this.isHostedOnRelationDrawAllowed(sourceNode, targetNode)) {
-              this.createLevelGraphRelation();
-            }
-          } else if (this.toolList[3].checked && this.isRefineToRelationDrawAllowed(sourceNode, targetNode, targetLevel)) {
-            // TODO y position ?
+            this.createLevelGraphRelation();
+          } else if (this.toolList[2].checked && this.isRefineToRelationDrawAllowed(sourceNode, targetNode, targetLevel)) {
             this.currentLevelGraphRelation.path.points[0].x = sourceCenterX + Constants.LABELOFFSET;
             this.currentLevelGraphRelation.path.points[1].y = targetCenterY + targetLevel.y;
             this.currentLevelGraphRelation.path.points[1].x = targetCenterX + Constants.LABELOFFSET;
             this.currentLevelGraphRelation.path.updatePath();
+            if ((sourceNode.levelGraphNodeType === LevelGraphNodeType.NODETYPEFRAGMENT && targetNode.levelGraphNodeType === LevelGraphNodeType.NODETYPE) || (sourceNode.levelGraphNodeType === LevelGraphNodeType.RELATIONSHIPTYPEFRAGMENT && targetNode.levelGraphNodeType === LevelGraphNodeType.RELATIONSHIPTYPE)) {
+              this.currentLevelGraphRelation.entryPoint = true;
+              this.currentLevelGraphRelation.exitPoint = true;
+            }
             sourceNode.expectedProperties = sourceNode.expectedProperties.concat(targetNode.expectedProperties);
             sourceNode.providedProperties = sourceNode.providedProperties.concat(targetNode.providedProperties);
             this.createLevelGraphRelation();
-
           }
         }
       } else {
@@ -596,7 +585,7 @@ export class LevelGraphModellerComponent implements OnInit {
    * @param - event: Event - Event Object of the onDragOver Event
    *
    ******************************************************************************************************************************************************************************************************/
-  onDragOver(event: MouseEvent) { event.preventDefault(); }
+  onDragOver(event: MouseEvent) {event.preventDefault();}
 
   /*******************************************************************************************************************************************************************************************************
    *
@@ -660,7 +649,7 @@ export class LevelGraphModellerComponent implements OnInit {
         levelGraphNode.levelGraphNodeType = this.typeCurrentDragData;
         levelGraphNode.levelGraphNodeTypeId = this.currentDragData.id;
         levelGraphNode.icon = this.currentDragData.icon;
-        
+
         this.createLevelGraphNode(levelGraphNode);
       }
       this.drag = false;
@@ -738,7 +727,7 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    ******************************************************************************************************************************************************************************************************/
   stopChangeLevelHeight(event: MouseEvent) {
-    this.updateLevelGraph();
+    //this.updateLevelGraph();
     this.changeLevelHeight = false;
     this.lastMousePositionY = event.offsetY;
   }
@@ -869,39 +858,6 @@ export class LevelGraphModellerComponent implements OnInit {
       this.flashMessageService.display(this.flashMessage);
       return false;
     }
-  }
-
-  /*******************************************************************************************************************************************************************************************************
-   *
-   * @method - isHostedOnRelationDrawAllowed - check if a draw of a hostedTo relation is allowed
-   *
-   * @param - sourceNode: LevelGraphNode - Source node of the relation
-   * @param - targetNode: LevelGraphNode - Target node of the relation
-   *
-   ******************************************************************************************************************************************************************************************************/
-  isHostedOnRelationDrawAllowed(sourceNode: LevelGraphNode, targetNode: LevelGraphNode) {
-
-    if (this.currentLevelGraphRelation.isTargetNodeSourceNodeInSameLevel()) {
-
-      if (sourceNode.levelGraphNodeType === LevelGraphNodeType.NODETYPE && targetNode.levelGraphNodeType === LevelGraphNodeType.NODETYPE) {
-        return true;
-      } else if (sourceNode.levelGraphNodeType === LevelGraphNodeType.RELATIONSHIPTYPE && targetNode.levelGraphNodeType === LevelGraphNodeType.RELATIONSHIPTYPE) {
-        return true;
-      } else {
-        this.flashMessage.message = 'Hosted On Relations can be only drawn between two Nodes of the same Type!';
-        this.flashMessage.isSuccess = false;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-        return false;
-      }
-    } else {
-      this.flashMessage.message = 'HostedOn Relations can only been drawn between two nodes in the same level!';
-      this.flashMessage.isSuccess = false;
-      this.flashMessage.isError = true;
-      this.flashMessageService.display(this.flashMessage);
-      return false;
-    }
-
   }
 
   /*******************************************************************************************************************************************************************************************************

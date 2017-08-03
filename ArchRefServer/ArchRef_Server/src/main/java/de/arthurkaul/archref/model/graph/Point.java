@@ -57,8 +57,8 @@ public class Point {
 	@XmlAttribute(name = "y")
 	private float y = Constants.NODEHEIGHT / 2;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PATH_ID", updatable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "PATH_ID")
 	@JsonBackReference(value = "path-point")
 	@XmlInverseReference(mappedBy = "points")
 	private Path path;

@@ -1,5 +1,5 @@
-import { Entity } from '../entity/entity';
-import { Repository } from '../repository/repository';
+import {Entity} from '../entity/entity';
+import {Repository} from '../repository/repository';
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -22,7 +22,7 @@ export class NodeType extends Entity {
   // default icon
   icon = '/assets/img/nodeTypeDefault.png';
 
-  repositories: Repository[]=[];
+  repository: Repository;
   repositoryId: number;
 
   constructor() {

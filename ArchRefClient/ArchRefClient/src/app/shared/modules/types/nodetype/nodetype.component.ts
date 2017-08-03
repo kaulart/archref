@@ -58,8 +58,8 @@ export class NodeTypeComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize NodeTypeComponent', NodeTypeComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.createdNodeType.repositories.push(this.repository);
-    //    this.createdNodeType.repositoryId = this.currentRepository.id;
+    this.createdNodeType.repository = this.repository;
+    this.createdNodeType.repositoryId = this.repository.id;
   }
 
   /********************************************************************************************************************************************************************************************************

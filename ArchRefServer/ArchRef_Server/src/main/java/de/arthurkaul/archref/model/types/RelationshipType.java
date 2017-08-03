@@ -6,7 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -49,12 +51,11 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	@ManyToMany(mappedBy = "relationshipTypes")
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "REPOSITORY", updatable = false)
-	// @JsonBackReference(value = "repository-relationshipType")
-	@XmlInverseReference(mappedBy = "relationshipTypeList")
-	private List<Repository> repositories;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "REPOSITORY", updatable = false)
+	@JsonBackReference(value = "repository-relationshipType")
+	@XmlInverseReference(mappedBy = "relationshipTypes")
+	private Repository repository;
 
 	@Column(name = "REPOSITORY_ID")
 	@XmlAttribute(name = "repositoryRef")
@@ -80,12 +81,12 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 		this.repositoryId = repositoryId;
 	}
 
-	public List<Repository> getRepositories() {
-		return repositories;
+	public Repository getRepository() {
+		return repository;
 	}
 
-	public void setRepositories(List<Repository> repositories) {
-		this.repositories = repositories;
+	public void setRepository(Repository repository) {
+		this.repository = repository;
 	}
 
 }

@@ -32,15 +32,18 @@ import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <LevelGraphNode> - A node of a <LevelGraph>. Extends the superclass <Node> which extends the superclass <Entity>.
+ * @class - <LevelGraphNode> - A node of a <LevelGraph>. Extends the superclass
+ *        <Node> which extends the superclass <Entity>.
  *
  * @field - <Level> level - Level of the LevelGraphNode
  * @field - Long levelId - ID of the Level of the LevelGraphNode
  * @field - Integer levelDepth - Level depth of the LevelGraphNode
  * @field - <LevelGraph> levelGraph - LevelGraph of the LevelGraphNode
  * @field - Long levelGraphId - ID of the LevelGraph of the LevelGraphNode
- * @field - List<LevelGraphRelation> inLevelGraphRelations - List of all incoming relations of the LevelGraphNode
- * @field - List<LevelGraphRelation> outLevelGraphRelations - List of all outgoing relations of the LevelGraphNode
+ * @field - List<LevelGraphRelation> inLevelGraphRelations - List of all
+ *        incoming relations of the LevelGraphNode
+ * @field - List<LevelGraphRelation> outLevelGraphRelations - List of all
+ *        outgoing relations of the LevelGraphNode
  * @field - String levelGraphNodeType - Type of the LevelGraphNode;
  * @field - Long levelGraphNodeTypeId - ID of the Type of the LevelGraphNode
  *
@@ -60,14 +63,6 @@ public class LevelGraphNode extends Node {
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	// // TODO ENabeln oder XML auf Transient lassen
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "LEVEL")
-	// @JsonBackReference(value = "level-levelGraphNode")
-	// // @XmlInverseReference(mappedBy = "LevelGraphNode")
-	// @XmlTransient
-	// private Level level;
-
 	@Column(name = "LEVEL_ID")
 	@XmlAttribute(name = "abstractionLevelId")
 	private Long levelId;
@@ -86,12 +81,14 @@ public class LevelGraphNode extends Node {
 	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
-	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE,
+			CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
 	@JsonManagedReference(value = "inLevelGraphRelations-targetLevelGraphNode")
 	@XmlInverseReference(mappedBy = "targetLevelGraphNode")
 	private List<LevelGraphRelation> inLevelGraphRelations;
 
-	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.EAGER, mappedBy = "sourceLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE,
+			CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
 	@JsonManagedReference(value = "outLevelGraphRelations-sourceLevelGraphNode")
 	@XmlInverseReference(mappedBy = "sourceLevelGraphNode")
 	private List<LevelGraphRelation> outLevelGraphRelations;
@@ -286,6 +283,26 @@ public class LevelGraphNode extends Node {
 			}
 		}
 
+	}
+
+	@JsonIgnore
+	public List<NodeTemplate> getNodeTemplates() {
+		return nodeTemplates;
+	}
+
+	@JsonIgnore
+	public void setNodeTemplates(List<NodeTemplate> nodeTemplates) {
+		this.nodeTemplates = nodeTemplates;
+	}
+
+	@JsonIgnore
+	public List<RelationshipTemplate> getRelationshipTemplates() {
+		return relationshipTemplates;
+	}
+
+	@JsonIgnore
+	public void setRelationshipTemplates(List<RelationshipTemplate> relationshipTemplates) {
+		this.relationshipTemplates = relationshipTemplates;
 	}
 
 }

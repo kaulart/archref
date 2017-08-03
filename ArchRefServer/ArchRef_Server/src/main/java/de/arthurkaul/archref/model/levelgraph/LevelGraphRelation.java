@@ -72,18 +72,6 @@ public class LevelGraphRelation extends Relation {
 	@XmlAttribute(name = "targetLevelId")
 	private Long targetLevelId;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "SOURCE_LEVEL")
-	// @JsonBackReference(value = "outLevelGraphRelation-sourceLevel")
-	// @XmlElement(name = "SourceAbstractionLevel")
-	// private Level sourceLevel;
-	//
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "TARGET_LEVEL")
-	// @JsonBackReference(value = "inLevelGraphRelations-targetLevel")
-	// @XmlElement(name = "TargetAbstractionLevel")
-	// private Level targetLevel;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TARGET_LEVELGRAPHNODE", updatable = false)
 	@JsonBackReference(value = "inLevelGraphRelations-targetLevelGraphNode")
@@ -195,22 +183,6 @@ public class LevelGraphRelation extends Relation {
 	public void setSourceLevelGraphNode(LevelGraphNode sourceLevelGraphNode) {
 		this.sourceLevelGraphNode = sourceLevelGraphNode;
 	}
-
-	// public Level getSourceLevel() {
-	// return sourceLevel;
-	// }
-	//
-	// public void setSourceLevel(Level sourceLevel) {
-	// this.sourceLevel = sourceLevel;
-	// }
-	//
-	// public Level getTargetLevel() {
-	// return targetLevel;
-	// }
-	//
-	// public void setTargetLevel(Level targetLevel) {
-	// this.targetLevel = targetLevel;
-	// }
 
 	public Boolean isEntryPoint() {
 		return entryPoint;

@@ -72,24 +72,24 @@
 				<ul id="modelling-tool-list">
 					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[0].checked" (click)="changeTool(toolList[0])" value="{{toolList[0].name}}"><i class="fa fa-mouse-pointer" aria-hidden="true"></i>{{toolList[0].name}}</li>
 					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[1].checked" (click)="changeTool(toolList[1])" value="{{toolList[1].name}}"><i class="fa fa-arrow-right" style="color: green;" aria-hidden="true"></i>{{toolList[1].name}}</li>
-					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[3].checked" (click)="changeTool(toolList[3])" value="{{toolList[3].name}}"><i class="fa fa-arrow-right" style="color: yellow;" aria-hidden="true"></i>{{toolList[3].name}}</li>
+					<li class="tool-item"><input style="margin-right: 10px;" type="radio" name="radiogroup" [checked]="toolList[2].checked" (click)="changeTool(toolList[2])" value="{{toolList[2].name}}"><i class="fa fa-arrow-right" style="color: gray;" aria-hidden="true"></i>{{toolList[2].name}}</li>
 				</ul>
 			</div>
 
 			<!-- Level Graph Node Tools -->
 			<div class="toolbox-group">
-				<label>Level Graph Nodes:</label>
+				<label>Fragments:</label>
 				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_level_graph_nodes" aria-expanded="false" aria-controls="toolbox_level_graph_nodes">
-					Level Graph Nodes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+					Fragmenttypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 				</button>
 
 				<div class="collapse" id="toolbox_level_graph_nodes" style="margin: 0px; padding: 0px; width: 100%">
 					<ul id="levelGraphSpezialNodeList" class="list-group">
-						<li class="relationshipType w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'RELATIONSHIPTYPEFRAGMENT')" (dragover)="onDragOver($event)">
+						<li class="relationshipTypeFragment w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'RELATIONSHIPTYPEFRAGMENT')" (dragover)="onDragOver($event)">
 							<h3>RelationshipTypeFragment</h3>
 						</li>
 
-						<li class="nodeType w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'NODETYPEFRAGMENT')" (dragover)="onDragOver($event)">
+						<li class="nodeTypeFragment w3-round" draggable="true" (drag)="onDrag($event, fragmentType, 'NODETYPEFRAGMENT')" (dragover)="onDragOver($event)">
 							<h3>NodeTypeFragment</h3>
 						</li>
 
@@ -138,8 +138,8 @@
 						<ul id="relationTypesList" class="list-group" style="max-height: 300px; overflow: auto; padding: 5px">
 							<li class="warning-item, w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
 							<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
-							<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.name !== 'Select Repository' &&  selectedRepository.nodeTypes.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RELATIONSHIPTYPES AVAILABLE</li>
-							<li class="relationshipType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.nodeTypes" (drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{relationshipType.icon}}" />
+							<li class="warning-item, w3-pale-yellow" *ngIf="selectedRepository.name !== 'Select Repository' &&  selectedRepository.relationshipTypes.length < 1" disabled><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>NO RELATIONSHIPTYPES AVAILABLE</li>
+							<li class="relationshipType w3-round" draggable="true" *ngFor="let relationshipType of selectedRepository.relationshipTypes" (drag)="onDrag($event, relationshipType, 'RELATIONSHIPTYPE')" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{relationshipType.icon}}" />
 								<h3>{{relationshipType.name}}</h3></li>
 						</ul>
 					</div>
@@ -155,7 +155,7 @@
 				<!-- Definition of the gradients of the nodes and the arrow of an edge -->
 				
 			    <defs>
-   					<marker id="Triangle" viewBox="0 0 10 10" refX="50" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+   					<marker id="Triangle" viewBox="0 0 10 10" refX="80" refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 0 0 L 10 5 L 0 10 z" />
    					</marker>
  				</defs>
@@ -191,25 +191,6 @@
 						<stop offset="100%" style="stop-color:rgb(0,128,0);stop-opacity:1" />
 					</linearGradient> 
 				</defs>
-
-				<defs> 
-					<linearGradient id="lgradFragmentNodeType" x1="50%" y1="100%" x2="50%" y2="0%"> 
-						<stop offset="0%" style="stop-color:rgb(255,111,0);stop-opacity:1" />
-						<stop offset="51%" style="stop-color:rgb(219,212,0);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgb(255,111,0);stop-opacity:1" />
-					</linearGradient> 
-				</defs>
-				
-			    <defs> 
-					<linearGradient id="lgradFragmentRelationshipType" x1="50%" y1="100%" x2="50%" y2="0%"> 
-						<stop offset="0%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-						<stop offset="15%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-						<stop offset="50%" style="stop-color:rgb(0,255,255);stop-opacity:1" />
-						<stop offset="85%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgb(145,248,255);stop-opacity:1" />
-					</linearGradient> 
-				</defs>
-				
 				
 					<g *ngFor="let level of currentLevelGraph.levels.reverse()">
 				   	
@@ -221,10 +202,12 @@
 				</g>
 				
 				<!-- Polyline of the refineTo LevelGraphRelations -->
-				<polyline *ngIf="drawRelation && currentLevelGraphRelation.levelGraphRelationType === 'REFINE_TO'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#TriangleDraw)" />
+				<polyline *ngIf="drawRelation && currentLevelGraphRelation.levelGraphRelationType === 'REFINE_TO'" [attr.points]="currentLevelGraphRelation.path.pathDataString" style="fill:none;stroke:gray;stroke-width:6" marker-end="url(#TriangleDraw)" />
 						
 				<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
-					<polyline *ngIf="(levelGraphRelationTypes[2].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO') && showRefineToRelation(levelGraphRelation)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:yellow;stroke-width:6" marker-end="url(#Triangle)" />
+					<polyline *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO') && showRefineToRelation(levelGraphRelation)" [attr.points]="levelGraphRelation.path.pathDataString" style="fill:none;stroke:gray;stroke-width:6" marker-end="url(#Triangle)" />
+			    	<text *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO') && showRefineToRelation(levelGraphRelation) && (levelGraphRelation.entryPoint)" [attr.x]="(levelGraphRelation.path.points[0].x + levelGraphRelation.path.points[1].x)/ 2" [attr.y]="(levelGraphRelation.path.points[0].y + levelGraphRelation.path.points[1].y)/ 2 - 10" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">Entry</text>		
+					<text *ngIf="(levelGraphRelationTypes[1].checked == true) && (levelGraphRelation.levelGraphRelationType === 'REFINE_TO') && showRefineToRelation(levelGraphRelation) && (levelGraphRelation.exitPoint)" [attr.x]="(levelGraphRelation.path.points[0].x + levelGraphRelation.path.points[1].x)/ 2" [attr.y]="(levelGraphRelation.path.points[0].y + levelGraphRelation.path.points[1].y)/ 2 + 30" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">Exit</text>	
 			    </g>
 				
 				<!-- Level Draw Area -->				
@@ -241,8 +224,6 @@
 				
 						<!-- Definition of the level draw areas-->    		
 			       		<svg id="child" [attr.id]="level.depth" [attr.x]="50" [attr.y]="level.y" [attr.height]="level.height"> 
-<!-- 		   	        		<rect class="level-panel" [attr.x]="0" [attr.y]="0" [attr.height]="level.height" (dragover)="onDragOver($event)" (drop)="onDrop($event, level)"></rect>					
- -->	
 
 							<!-- Definition of the connectedToRelation-->
 					 		<g [contextmenu]="[levelGraphRelationContextMenu, {levelGraphRelation: levelGraphRelation}]" *ngFor="let levelGraphRelation  of currentLevelGraph.levelGraphRelations">
@@ -254,26 +235,24 @@
 							<!-- Definition of the RELATIONSHIPTYPEFRAGMENT-->
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
-								    <rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />
-								
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15"  font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>	
+								    <rect rx="80" ry="30" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="#C5E0B3" style="stroke:black;stroke-width:5;" />
+                                  	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 15" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
+								    
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
-								
-									<rect rx="0" ry="0" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y + levelGraphNode.height/3 * 2" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height/3" font-size="24" fill="white" style="stroke:black;stroke-width:5;" />
-					                <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 * 3 + 20" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(NodeType ID:{{levelGraphNode.levelGraphNodeTypeId}})</text>	
 								</g> 	
 							</g>
 							
 							<!-- Definition of the NODETYPEFRAGMENT-->
 							<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
-								    <rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
+								    <rect rx="80" ry="30" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="#F7CBAC" style="stroke:black;stroke-width:5;" />
 								
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
+								    <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 15" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
+								    
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
-								
-									<rect rx="0" ry="0" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y + levelGraphNode.height/3 * 2" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height/3" fill="white" style="stroke:black;stroke-width:5;" />
-					                <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 * 3 + 20" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(NodeType ID:{{levelGraphNode.levelGraphNodeTypeId}})</text>	
 								</g> 	
 							</g>
 					
@@ -281,7 +260,7 @@
 				 			<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15"  [attr.height]="levelGraphNode.height" [attr.width]="levelGraphNode.width" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text> 		
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" [attr.height]="levelGraphNode.height" [attr.width]="levelGraphNode.width" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text> 		
 							
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 							
@@ -296,11 +275,11 @@
 							<g draggable="false" [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g draggable="false" *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />								
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15"  font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}}</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 								
 									<rect rx="0" ry="0" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y + levelGraphNode.height/3 * 2" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height/3" fill="white" style="stroke:black;stroke-width:5;" />
-					                <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 * 3 + 20" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(NodeType ID:{{levelGraphNode.levelGraphNodeTypeId}})</text>	
+					                <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 * 3 + 20" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(RelationshipType ID:{{levelGraphNode.levelGraphNodeTypeId}})</text>	
 								</g>
 							</g>
 						</svg>
@@ -314,7 +293,8 @@
 <contextmenu #levelGraphNodeContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
+		<!-- 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
+ -->
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
 		<li><a class="dropdown-item" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: levelGraphNodeContextMenu.get('levelGraphNode').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
@@ -327,8 +307,9 @@
 	<ul class="dropdown-menu">
 		<li><a *ngIf="levelGraphRelationContextMenu.get('levelGraphRelation').levelGraphRelationType === 'REFINE_TO' && isEntryExitRelation(levelGraphRelationContextMenu.get('levelGraphRelation'))" class="dropdown-item" data-toggle="modal" data-target="#setExitEntryModal" (click)="setLevelGraphRelation(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye"
 				aria-hidden="true"></i>Set Entry/Exit Point</a></li>
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
+		<!-- <li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
+		 -->
 		<li><a class="dropdown-item" routerLink="/dashboard/levelgraphrelationdetails" [queryParams]="{id: levelGraphRelationContextMenu.get('levelGraphRelation').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteLevelGraphRelation(levelGraphRelationContextMenu.get('levelGraphRelation'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>

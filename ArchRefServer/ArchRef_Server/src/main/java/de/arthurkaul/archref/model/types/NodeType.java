@@ -6,7 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -47,12 +49,12 @@ public class NodeType extends de.arthurkaul.archref.model.Entity {
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	@ManyToMany(mappedBy = "nodeTypes")
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "REPOSITORY", updatable = false)
-	// @JsonBackReference(value = "repository-nodeType")
-	@XmlInverseReference(mappedBy = "nodeTypeList")
-	private List<Repository> repository;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "REPOSITORY", updatable = false)
+	@JsonBackReference(value = "repository-nodeType")
+	@XmlInverseReference(mappedBy = "nodeTypes")
+	private Repository repository;
 
 	@Column(name = "REPOSITORY_ID")
 	@XmlAttribute(name = "repositoryRef")
@@ -78,11 +80,11 @@ public class NodeType extends de.arthurkaul.archref.model.Entity {
 		this.repositoryId = repositoryId;
 	}
 
-	public List<Repository> getRepository() {
+	public Repository getRepository() {
 		return repository;
 	}
 
-	public void setRepository(List<Repository> repository) {
+	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
 

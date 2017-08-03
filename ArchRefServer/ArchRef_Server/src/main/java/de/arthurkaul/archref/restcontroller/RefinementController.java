@@ -44,9 +44,7 @@ public class RefinementController {
 			throw new EntityNotFoundException("No refinement could be processed because <TopologyTemplate> with id" + idTopologyTemplate + "was not found in the database.");
 		}
 
-		/*
-		 * Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
-		 */
+		// Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
 		for (Level level : levelGraph.getLevels()) {
 			if (level.getDepth() > levelGraph.getDepth()) {
 				levelGraph.setDepth(level.getDepth());
@@ -55,7 +53,7 @@ public class RefinementController {
 
 		topologyTemplate = refinementService.initializeRefinement(levelGraph, topologyTemplate, levelGraph.getDepth(), smi);
 
-		topologyTemplate = topologyTemplateService.findById(topologyTemplate.getId());
+		topologyTemplate = topologyTemplateService.update(topologyTemplate);
 
 		return ResponseEntity.ok().body(topologyTemplate);
 	}
@@ -77,9 +75,7 @@ public class RefinementController {
 			throw new EntityNotFoundException("No refinement could be processed because <TopologyTemplate> with id" + idTopologyTemplate + "was not found in the database.");
 		}
 
-		/*
-		 * Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
-		 */
+		// Determine the depth of the LevelGraph. ATTENTION the depth is in this case is not equal the number of different levels of the Graph because it is a merged LevelGraph
 		for (Level level : levelGraph.getLevels()) {
 			if (level.getDepth() > levelGraph.getDepth()) {
 				levelGraph.setDepth(level.getDepth());
@@ -88,7 +84,7 @@ public class RefinementController {
 
 		topologyTemplate = refinementService.initializeRefinement(levelGraph, topologyTemplate, topologyTemplate.getAbstractionLevel() + 1, smi);
 
-		topologyTemplateService.update(topologyTemplate);
+		topologyTemplate = topologyTemplateService.update(topologyTemplate);
 
 		return ResponseEntity.ok().body(topologyTemplate);
 	}

@@ -23,7 +23,7 @@ export class RelationshipType extends Entity {
   // default icon
   icon = '/assets/img/relationTypeDefault.png';
 
-  repositories: Repository[];
+  repository: Repository;
   repositoryId: number;
 
   constructor() {

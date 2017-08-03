@@ -37,15 +37,6 @@ const URL_EXPORT = '/api/export/definitions';
  ****************************************************************************************************************************/
 export class AdministrationComponent implements OnInit {
 
-  public repositories: Repository[] = [];
-  public levelGraphs: LevelGraph[] = [];
-  public topologyTemplates: TopologyTemplate[] = [];
-  public nodeTypes: NodeType[] = [];
-  public relationshipTypes: RelationshipType[] = [];
-  public expectedProperties: ExpectedProperty[] = [];
-  public providedProperties: ProvidedProperty[] = [];
-  public properties: Property[] = [];
-
   public flashMessage = new FlashMessage();
   public uploader: FileUploader = new FileUploader({});
 
@@ -55,93 +46,7 @@ export class AdministrationComponent implements OnInit {
     private nodeTypeService: NodeTypeService,
     private flashMessageService: FlashMessageService) {};
 
-  ngOnInit() {
-    this.retrieveRepositories();
-    this.retrieveLevelGraphs();
-    this.retrieveTopologyTemplates();
-    this.retrieveNodeTypes();
-  }
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @method - retrieveRepositories - Call the RepositoryService for loading all repositories from database into the application and subscribe
-   *                                  for a callback. Currently no pagination/streaming of data is supported
-   *
-   *******************************************************************************************************************************************************************************************************/
-  retrieveRepositories() {
-    Logger.info('Retrieve Repository Data', AdministrationComponent.name);
-    this.repositoryService.getRepositories()
-      .subscribe(repositoriesResponse => {
-        this.repositories = repositoriesResponse;
-        Logger.info('Repositories sucessfully retrieved.', AdministrationComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
-
-  /********************************************************************************************************************************************************************************************************
-  *
-  *  @method - retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
-  *                                        and subscribe for a callback. Currently no pagination/streaming of data is supported
-  *
-  *******************************************************************************************************************************************************************************************************/
-  retrieveTopologyTemplates() {
-    Logger.info('Retrieve TopologyTemplate Data', AdministrationComponent.name);
-    this.topologyTemplateService.getTopologyTemplates()
-      .subscribe(topologyTemplateResponse => {
-        this.topologyTemplates = topologyTemplateResponse;
-        Logger.info('Topology Template sucessfully retrieved.', AdministrationComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
-
-
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
-   *                                 for a callback. Currently no pagination/streaming of data is supported
-   *
-   *******************************************************************************************************************************************************************************************************/
-  retrieveLevelGraphs() {
-    Logger.info('Retrieve LevelGraph Data', AdministrationComponent.name);
-    this.levelGraphService.getLevelGraphs()
-      .subscribe(levelGraphsResponse => {
-        this.levelGraphs = levelGraphsResponse;
-        Logger.info('Level Graphs sucessfully retrieved.', AdministrationComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
-  
-  /********************************************************************************************************************************************************************************************************
-   *
-   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
-   *                                 for a callback. Currently no pagination/streaming of data is supported
-   *
-   *******************************************************************************************************************************************************************************************************/
-  retrieveNodeTypes() {
-    Logger.info('Retrieve LevelGraph Data', AdministrationComponent.name);
-    this.nodeTypeService.getNodeTypes()
-      .subscribe(nodeTypesResponse => {
-        this.nodeTypes = nodeTypesResponse;
-        Logger.info('Node Types sucessfully retrieved.', AdministrationComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
-      });
-  }
+  ngOnInit() {}
 
 
   //TODO
