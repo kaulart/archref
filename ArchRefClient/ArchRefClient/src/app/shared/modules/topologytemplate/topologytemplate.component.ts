@@ -38,9 +38,8 @@ const URL_EXPORT = '/topologytemplate';
  *
  *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateComponent implements OnInit {
-  
+
   topologyTemplates: TopologyTemplate[] = [];
-  
   createdTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   editTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   public flashMessage = new FlashMessage();
@@ -93,11 +92,6 @@ export class TopologyTemplateComponent implements OnInit {
       .subscribe(topologyTemplateResponse => {
         this.topologyTemplates = topologyTemplateResponse;
         Logger.info('Topology Template sucessfully retrieved.', TopologyTemplateComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
       });
   }
 

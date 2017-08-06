@@ -4,20 +4,25 @@ import java.util.Collection;
 
 import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
 
-
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Interface - LevelGraphNodeInterface is the Interface for the LevelGraphNodeService
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 public interface LevelGraphNodeInterface {
 
-    Collection<LevelGraphNode> findAllLevelGraphNodes();
-    
-    LevelGraphNode findById(long id);
+	Collection<LevelGraphNode> findAllLevelGraphNodes();
 
-    LevelGraphNode create(LevelGraphNode levelGraphNode);
+	LevelGraphNode findById(long id);
 
-    LevelGraphNode update(LevelGraphNode levelGraphNode);
+	LevelGraphNode create(LevelGraphNode levelGraphNode);
 
-    void delete(long id);
-    
-    void deleteAllLevelGraphNodes();
-	
+	LevelGraphNode update(LevelGraphNode levelGraphNode);
+
+	void delete(long id);
+
+	void deleteAllLevelGraphNodes();
+
 }
-

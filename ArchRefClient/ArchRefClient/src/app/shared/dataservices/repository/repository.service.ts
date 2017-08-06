@@ -35,7 +35,7 @@ export class RepositoryService {
    * @param - id: number - ID of the Repository which should be retrieved from the database
    *
    *******************************************************************************************************************************************************************************************************/
-  public getRepository(id: number): Observable<Repository> {
+  public getRepository(id: string): Observable<Repository> {
     Logger.info('[REQUEST - REPOSITORY] Send GET Repository Request with ID:' + id, RepositoryService.name);
     return this.http.get(this.repositoriesUrl + '/' + id).map(this.extractRepository).catch(this.handleError);
   }
@@ -77,7 +77,7 @@ export class RepositoryService {
    * @param - id: number - ID of the Repository which should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
-  public deleteRepository(id: number): Observable<Repository> {
+  public deleteRepository(id: string): Observable<Repository> {
     Logger.info('[REQUEST - REPOSITORY] Send DELETE Repository Request with ID: ' + id, RepositoryService.name);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });

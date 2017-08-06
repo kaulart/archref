@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 import de.arthurkaul.archref.repositories.topology.RelationshipTemplateRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - RelationshipTemplateService is the Service for the RelationshipTemplate Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class RelationshipTemplateService implements RelationshipTemplateInterface {
 

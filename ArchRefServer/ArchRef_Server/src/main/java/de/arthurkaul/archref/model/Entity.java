@@ -6,13 +6,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -20,8 +16,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -45,24 +39,16 @@ import de.arthurkaul.archref.model.topology.NodeTemplate;
  ******************************************************************************************************************************************************************************************************/
 
 @javax.persistence.Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "ENTITY")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tEntity")
-public class Entity {
+public class Entity extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
 
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
@@ -87,22 +73,19 @@ public class Entity {
 	@XmlTransient
 	private Long tempId;
 
+	@Transient
 	@XmlTransient
 	private ArrayList<NodeTemplate> entryNodeTemplates = new ArrayList<NodeTemplate>();
+
+	@Transient
+	@XmlTransient
+	private ArrayList<NodeTemplate> exitNodeTemplates = new ArrayList<NodeTemplate>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -167,6 +150,16 @@ public class Entity {
 	@JsonIgnore
 	public void setEntryNodeTemplates(ArrayList<NodeTemplate> entryNodeTemplates) {
 		this.entryNodeTemplates = entryNodeTemplates;
+	}
+
+	@JsonIgnore
+	public ArrayList<NodeTemplate> getExitNodeTemplates() {
+		return exitNodeTemplates;
+	}
+
+	@JsonIgnore
+	public void setExitNodeTemplates(ArrayList<NodeTemplate> exitNodeTemplates) {
+		this.exitNodeTemplates = exitNodeTemplates;
 	}
 
 }

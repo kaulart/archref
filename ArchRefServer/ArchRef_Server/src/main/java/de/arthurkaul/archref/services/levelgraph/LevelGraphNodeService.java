@@ -10,6 +10,13 @@ import de.arthurkaul.archref.model.topology.NodeTemplate;
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 import de.arthurkaul.archref.repositories.levelgraph.LevelGraphNodeRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - LevelGraphNodeService is the Service for the LevelGraphNode Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class LevelGraphNodeService implements LevelGraphNodeInterface {
 

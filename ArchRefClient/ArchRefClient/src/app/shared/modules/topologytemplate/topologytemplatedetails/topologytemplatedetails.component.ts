@@ -60,11 +60,6 @@ export class TopologyTemplateDetailsComponent implements OnInit {
       .subscribe(levelGraphResponse => {
         this.currentTopologyTemplate = levelGraphResponse;
         Logger.info('LevelGraph sucessfully retrieved.', LevelGraphDetailsComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
       });
   }
 

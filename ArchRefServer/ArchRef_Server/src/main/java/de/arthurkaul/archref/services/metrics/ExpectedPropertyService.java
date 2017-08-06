@@ -9,6 +9,13 @@ import de.arthurkaul.archref.model.metrics.ExpectedProperty;
 import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.repositories.metrics.ExpectedPropertyRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - ExpectedPropertyRepository is the Service for the Level ExpectedProperty it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class ExpectedPropertyService implements ExpectedPropertyInterface {
 

@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.topology.NodeTemplate;
 import de.arthurkaul.archref.repositories.topology.NodeTemplateRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - NodeTemplateService is the Service for the NodeTemplate Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class NodeTemplateService implements NodeTemplateInterface {
 

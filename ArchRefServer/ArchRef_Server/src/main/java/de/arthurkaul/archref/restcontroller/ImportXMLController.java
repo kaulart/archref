@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.arthurkaul.archref.exceptions.EntityNotFoundException;
+import de.arthurkaul.archref.model.Definition;
 import de.arthurkaul.archref.model.Repository;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
@@ -25,7 +26,15 @@ import de.arthurkaul.archref.services.RepositoryService;
 import de.arthurkaul.archref.services.levelgraph.LevelGraphService;
 import de.arthurkaul.archref.services.topology.TopologyTemplateService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class - <ImportXMLController> - Controller for handling the XML import requests from the client
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/import")
 public class ImportXMLController {
 
 	@Autowired
@@ -37,9 +46,17 @@ public class ImportXMLController {
 	@Autowired
 	TopologyTemplateService topologyTemplateService;
 
-	@RequestMapping(value = "/api/import/levelgraph", method = RequestMethod.POST)
-	public ResponseEntity<LevelGraph> importLevelGraph(@RequestParam("file") MultipartFile multipartFile,
-			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - importLevelGraph - Import a XML file of the a <LevelGraph>
+	 * 
+	 * @param Long id - ID of the <LevelGraph> which should be exported
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/levelgraph", method = RequestMethod.POST)
+	public ResponseEntity<LevelGraph> importLevelGraph(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws JAXBException, IOException {
 
 		File file = convert(multipartFile);
 
@@ -58,9 +75,17 @@ public class ImportXMLController {
 		return ResponseEntity.ok().body(levelGraph);
 	}
 
-	@RequestMapping(value = "/api/import/repository", method = RequestMethod.POST)
-	public ResponseEntity<Repository> importRepository(@RequestParam("file") MultipartFile multipartFile,
-			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - importRepository - Import a XML file of the <Repository> data
+	 * 
+	 * @param Long id - ID of the <Repository>
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/repository", method = RequestMethod.POST)
+	public ResponseEntity<Repository> importRepository(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws JAXBException, IOException {
 
 		File file = convert(multipartFile);
 
@@ -79,9 +104,17 @@ public class ImportXMLController {
 		return ResponseEntity.ok().body(repository);
 	}
 
-	@RequestMapping(value = "/api/import/topologytemplate", method = RequestMethod.POST)
-	public ResponseEntity<TopologyTemplate> importTopologyTemplate(@RequestParam("file") MultipartFile multipartFile,
-			RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - importTopologyTemplate - Import a XML file of the <TopologyTemplate> data
+	 * 
+	 * @param Long id - ID of the <TopologyTemplate>
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/topologytemplate", method = RequestMethod.POST)
+	public ResponseEntity<TopologyTemplate> importTopologyTemplate(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws JAXBException, IOException {
 
 		File file = convert(multipartFile);
 
@@ -98,6 +131,44 @@ public class ImportXMLController {
 		topologyTemplate = topologyTemplateService.create(topologyTemplate);
 
 		return ResponseEntity.ok().body(topologyTemplate);
+	}
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - importDefinition - Import a XML file of the <Definition> data
+	 * 
+	 * @param Long id - ID of the <Definition>
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/definition", method = RequestMethod.POST)
+	public ResponseEntity<Definition> importDefinition(@RequestParam("file") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws JAXBException, IOException {
+
+		File file = convert(multipartFile);
+
+		JAXBContext jaxbContext = JAXBContext.newInstance(Definition.class);
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+		Definition definition = (Definition) jaxbUnmarshaller.unmarshal(file);
+
+		if (definition == null) {
+			throw new EntityNotFoundException("NoDefinition Exception: No Definition created.");
+		}
+
+		for (Repository repository : definition.getRepositories()) {
+			repositoryService.create(repository);
+		}
+
+		for (LevelGraph levelGraph : definition.getLevelGraphs()) {
+			levelGraphService.create(levelGraph);
+		}
+
+		for (TopologyTemplate topologyTemplate : definition.getTopologies()) {
+			topologyTemplateService.create(topologyTemplate);
+		}
+
+		return ResponseEntity.ok().body(definition);
 	}
 
 	public File convert(MultipartFile file) throws IOException {

@@ -17,41 +17,69 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.levelgraph.Level;
 import de.arthurkaul.archref.services.levelgraph.LevelService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class RepositoryController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the Level data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/levels")
 public class LevelController {
 
 	@Autowired
 	LevelService levelService;
 
-	@RequestMapping(value = "/api/levels", method = RequestMethod.GET)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllLevels - Call the Level Service and retrieve all available Levels and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<Level>> - Response with a collection of all available Levels in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<Level>> getAllLevels() {
 
 		Collection<Level> levels = levelService.findAllLevels();
 
 		if (levels.isEmpty()) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("LevelNotFoundException: No Level found. No Level exist.");
 
 		}
 		return ResponseEntity.ok().body(levels);
 	}
 
-	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.GET)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getLevel - Call the Level Service and look for a Level with a certain id. If a Level with this id exist in the database then retrieve it and send it back to the client in a response
+	 * 
+	 * @return ResponseEntity<Level> - Response with only one Level in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Level> getLevel(@PathVariable("id") long id) {
 
 		Level level = levelService.findById(id);
 
 		if (level == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("LevelNotFoundException: Unable to find Level. Level with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(level);
 	}
 
-	@RequestMapping(value = "/api/levels", method = RequestMethod.POST)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createLevel - Create a new Level in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<Level> - Return the created Level with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Level> createLevel(@RequestBody Level level, UriComponentsBuilder ucBuilder) {
 
 		if (level.getId() != null) {
-			throw new EntityAlreadyExistException("LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + level.getId() + " already exist.");
+			throw new EntityAlreadyExistException("LevelAlreadyExistException: Unable to create Level. Level with id " + level.getId() + " already exist.");
 		}
 		Level saved = levelService.create(level);
 
@@ -59,13 +87,20 @@ public class LevelController {
 
 	}
 
-	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.PUT)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateLevel - Update a Level if it exist in the database
+	 * 
+	 * @return ResponseEntity<Level> - Return the updated Level
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Level> updateLevel(@PathVariable("id") long id, @RequestBody Level level) {
 
 		Level currentLevel = levelService.findById(id);
 
 		if (currentLevel == null) {
-			throw new EntityNotFoundException("LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("LevelNotFoundException: Unable to update Level. Level with id " + id + " not found.");
 		}
 
 		currentLevel = level;
@@ -74,7 +109,14 @@ public class LevelController {
 		return ResponseEntity.ok().body(currentLevel);
 	}
 
-	@RequestMapping(value = "/api/levels/{id}", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteLevel - Delete a Level if it exist in the database
+	 * 
+	 * @return ResponseEntity<Level> - return no Level
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteLevel(@PathVariable("id") Long id) {
 
 		Level level = levelService.findById(id);
@@ -88,19 +130,30 @@ public class LevelController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/levels", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteAllLevels - Delete all available Levels in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no Level
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllLevels() {
 
 		levelService.deleteAllLevels();
 		return ResponseEntity.noContent().build();
 	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the Level RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
 	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistException.class })
-
 	public String exceptionHandler(Exception e) {
-
 		return e.getMessage();
-
 	}
 
 }

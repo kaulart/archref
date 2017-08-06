@@ -17,96 +17,144 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
 import de.arthurkaul.archref.services.topology.TopologyTemplateService;
 
-
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class TopologyTemplateController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the TopologyTemplate data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/topologytemplates")
 public class TopologyTemplateController {
-	
-	   @Autowired
-	    TopologyTemplateService topologyTemplateService;
-	
 
-	@RequestMapping(value="/api/topologytemplates", method = RequestMethod.GET)
+	@Autowired
+	TopologyTemplateService topologyTemplateService;
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllTopologyTemplates - Call the TopologyTemplate Service and retrieve all available TopologyTemplates and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<TopologyTemplate>> - Response with a collection of all available TopologyTemplate in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<TopologyTemplate>> getAllTopologyTemplates() {
-		
-		Collection<TopologyTemplate> topologyTemplates =  topologyTemplateService.findAllTopologyTemplate();
-		
-		  if (topologyTemplates.isEmpty()) {
-			  throw new EntityNotFoundException("RepositoryNotFoundException: No Repository found. No Repository exist.");  
-         // You many decide to return HttpStatus.NOT_FOUND
-      }
-       return ResponseEntity.ok().body(topologyTemplates);
-	}
-	
 
-	@RequestMapping(value="/api/topologytemplates/{id}", method = RequestMethod.GET)
+		Collection<TopologyTemplate> topologyTemplates = topologyTemplateService.findAllTopologyTemplate();
+
+		if (topologyTemplates.isEmpty()) {
+			throw new EntityNotFoundException("TopologyTemplateNotFoundException: No TopologyTemplate found. No TopologyTemplate exist.");
+		}
+		return ResponseEntity.ok().body(topologyTemplates);
+	}
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getTopologyTemplate - Call the TopologyTemplate Service and look for a TopologyTemplate with a certain id. If a TopologyTemplate with this id exist in the database then retrieve it
+	 *         and send it back to the client in a response
+	 * 
+	 * @return ResponseEntity<TopologyTemplate> - Response with only one TopologyTemplate in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<TopologyTemplate> getTopologyTemplate(@PathVariable("id") long id) {
 
 		TopologyTemplate topologyTemplate = topologyTemplateService.findById(id);
-		
-		  if (topologyTemplate == null) {
-			throw new EntityNotFoundException("RepositoryNotFoundException: Unable to find Repository. Repository with id " + id + " not found.");          	
-      
-      }
+
+		if (topologyTemplate == null) {
+			throw new EntityNotFoundException("TopologyTemplateNotFoundException: Unable to find TopologyTemplate. TopologyTemplate with id " + id + " not found.");
+
+		}
 		return ResponseEntity.ok().body(topologyTemplate);
 	}
-	
-	
-	@RequestMapping(value = "/api/topologytemplates", method = RequestMethod.POST)
-   public ResponseEntity<TopologyTemplate> createTopologyTemplate(@RequestBody TopologyTemplate topologyTemplate, UriComponentsBuilder ucBuilder) {
-		
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createTopologyTemplate - Create a new TopologyTemplate in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<TopologyTemplate> - Return the created TopologyTemplate with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<TopologyTemplate> createTopologyTemplate(@RequestBody TopologyTemplate topologyTemplate, UriComponentsBuilder ucBuilder) {
+
 		if (topologyTemplate.getId() != null) {
-			throw new EntityAlreadyExistException("RepositoryAlreadyExistException: Unable to create Repository. Repository with id " + topologyTemplate.getId() + " already exist.");          	
-       }
-		
+			throw new EntityAlreadyExistException("TopologyTemplateAlreadyExistException: Unable to create TopologyTemplate. TopologyTemplate with id " + topologyTemplate.getId() + " already exist.");
+		}
+
 		TopologyTemplate saved = topologyTemplateService.create(topologyTemplate);
-     
-       return ResponseEntity.created(ucBuilder.path("/api/topologytemplates/{id}").buildAndExpand(topologyTemplate.getId()).toUri()).body(saved);
-      
-    }
 
-   @RequestMapping(value = "/api/topologytemplates/{id}", method = RequestMethod.PUT)
-   public ResponseEntity<?> updateTopologyTemplate(@PathVariable("id") long id, @RequestBody TopologyTemplate topologyTemplate) {
+		return ResponseEntity.created(ucBuilder.path("/api/topologytemplates/{id}").buildAndExpand(topologyTemplate.getId()).toUri()).body(saved);
 
-	   TopologyTemplate currentTopologyTemplate = topologyTemplateService.findById(id);
+	}
 
-       if (currentTopologyTemplate == null) {
-       	throw new EntityNotFoundException("RepositoryNotFoundException: Unable to update. Repository with id " + id + " not found.");          
-       }
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateTopologyTemplate - Update a Repository if it exist in the database
+	 * 
+	 * @return ResponseEntity<Repository> - Return the updated repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateTopologyTemplate(@PathVariable("id") long id, @RequestBody TopologyTemplate topologyTemplate) {
 
-       currentTopologyTemplate.setName(topologyTemplate.getName());
+		TopologyTemplate currentTopologyTemplate = topologyTemplateService.findById(id);
 
-       topologyTemplateService.update(topologyTemplate);
-       return ResponseEntity.ok().body(currentTopologyTemplate);
-   }
+		if (currentTopologyTemplate == null) {
+			throw new EntityNotFoundException("TopologyTemplateNotFoundException: Unable to update. TopologyTemplate with id " + id + " not found.");
+		}
 
+		currentTopologyTemplate.setName(topologyTemplate.getName());
 
-   @RequestMapping(value = "/api/topologytemplates/{id}", method = RequestMethod.DELETE)
-   public ResponseEntity<Void> deleteTopologyTemplate(@PathVariable("id") Long id) {
+		topologyTemplateService.update(topologyTemplate);
+		return ResponseEntity.ok().body(currentTopologyTemplate);
+	}
 
-	   TopologyTemplate topologyTemplate = topologyTemplateService.findById(id);
-		
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteTopologyTemplate - Delete a Repository if it exist in the database
+	 * 
+	 * @return ResponseEntity<Repository> - return no Repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteTopologyTemplate(@PathVariable("id") Long id) {
+
+		TopologyTemplate topologyTemplate = topologyTemplateService.findById(id);
+
 		if (topologyTemplate == null) {
-			throw new EntityNotFoundException("RepositoryNotFoundException: Unable to delete Repository. Repository with id " + id + " not found.");          	
-       }
-		
+			throw new EntityNotFoundException("TopologyTemplateNotFoundException: Unable to delete TopologyTemplate. TopologyTemplate with id " + id + " not found.");
+		}
+
 		topologyTemplateService.delete(id);
 
-       return ResponseEntity.noContent().build();
-   }
+		return ResponseEntity.noContent().build();
+	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteTopologyTemplates - Delete all available repositories in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no Repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteTopologyTemplates() {
 
-   @RequestMapping(value = "/api/topologytemplates", method = RequestMethod.DELETE)
-   public ResponseEntity<Void> deleteAllRepositories() {
+		topologyTemplateService.deleteAllTopologyTemplates();
+		return ResponseEntity.noContent().build();
+	}
 
-	   topologyTemplateService.deleteAllTopologyTemplates();
-       return ResponseEntity.noContent().build();
-   }
-	
-	
-	@ExceptionHandler(EntityNotFoundException.class)  
-	 
-	public String exceptionHandler(Exception e){  
-		return e.getMessage();     	        
-	}  
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the Repository RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@ExceptionHandler(EntityNotFoundException.class)
+	public String exceptionHandler(Exception e) {
+		return e.getMessage();
+	}
 
 }

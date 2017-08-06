@@ -12,7 +12,7 @@ import {Repository} from '../repository/repository';
  * @superField - icon: String - URL of the icon for representation inherited from Entity
  *
  * @field - repository: Repository - Repository of the NodeType
- * @field - repositoryId: number - ID of the Repository of the NodeType
+ * @field - repositoryId: string - ID of the Repository of the NodeType
  *
  * @author - Arthur Kaul
  *
@@ -23,7 +23,7 @@ export class NodeType extends Entity {
   icon = '/assets/img/nodeTypeDefault.png';
 
   repository: Repository;
-  repositoryId: number;
+  repositoryId: string;
 
   constructor() {
     super();

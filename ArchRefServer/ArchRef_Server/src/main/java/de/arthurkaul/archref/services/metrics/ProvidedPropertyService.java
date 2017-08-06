@@ -9,6 +9,13 @@ import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.model.metrics.ProvidedProperty;
 import de.arthurkaul.archref.repositories.metrics.ProvidedPropertyRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - ProvidedPropertyService is the Service for the ProvidedProperty Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class ProvidedPropertyService implements ProvidedPropertyInterface {
 

@@ -15,13 +15,13 @@ public interface RepositoryInterface {
 
 	Collection<Repository> findAllRepository();
 
-	Repository findById(long id);
+	Repository findById(Long id);
 
 	Repository create(Repository repository);
 
 	Repository update(Repository repository);
 
-	void delete(long id);
+	void delete(Long id);
 
 	void deleteAllRepositories();
 

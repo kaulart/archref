@@ -4,6 +4,13 @@ import java.util.Collection;
 
 import de.arthurkaul.archref.model.metrics.ExpectedProperty;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Interface - ExpectedPropertyInterface is the Interface for the ExpectedPropertyService
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 public interface ExpectedPropertyInterface {
 
 	Collection<ExpectedProperty> findAllExpectedProperties();
@@ -17,6 +24,5 @@ public interface ExpectedPropertyInterface {
 	void delete(long id);
 
 	void deleteAllExpectedProperties();
-
 
 }

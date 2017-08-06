@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
-import de.arthurkaul.archref.model.types.NodeType;
-import de.arthurkaul.archref.model.types.RelationshipType;
 
 @XmlRootElement(name = "Definition")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,12 +30,28 @@ public class Definition {
 	@XmlElement(name = "Topology")
 	private List<TopologyTemplate> topologies = new ArrayList<TopologyTemplate>();
 
-	@XmlElementWrapper(name = "NodeTypes")
-	@XmlElement(name = "NodeType")
-	private List<NodeType> nodeTypes = new ArrayList<NodeType>();
+	public List<Repository> getRepositories() {
+		return repositories;
+	}
 
-	@XmlElementWrapper(name = "RelationshipTypes")
-	@XmlElement(name = "RelationshipType")
-	private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+	public void setRepositories(List<Repository> repositories) {
+		this.repositories = repositories;
+	}
+
+	public List<LevelGraph> getLevelGraphs() {
+		return levelGraphs;
+	}
+
+	public void setLevelGraphs(List<LevelGraph> levelGraphs) {
+		this.levelGraphs = levelGraphs;
+	}
+
+	public List<TopologyTemplate> getTopologies() {
+		return topologies;
+	}
+
+	public void setTopologies(List<TopologyTemplate> topologies) {
+		this.topologies = topologies;
+	}
 
 }

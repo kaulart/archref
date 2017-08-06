@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.constants.Constants;
 import de.arthurkaul.archref.model.metrics.ExpectedProperty;
 import de.arthurkaul.archref.model.metrics.ProvidedProperty;
 

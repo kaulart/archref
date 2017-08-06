@@ -11,81 +11,116 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import de.arthurkaul.archref.exceptions.EntityAlreadyExistException;
 import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.metrics.ProvidedProperty;
 import de.arthurkaul.archref.services.metrics.ProvidedPropertyService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class ProvidedPropertyController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the ProvidedProperty data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/providedproperties")
 public class ProvidedPropertyController {
 
 	@Autowired
 	ProvidedPropertyService providedPropertySerivce;
-	
-	@RequestMapping(value = "/api/providedproperties", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllProvidedProperties - Call the ProvidedProperty Service and retrieve all available ProvidedProperties and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<ProvidedProperty>> - Response with a collection of all available ProvidedProperties in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<ProvidedProperty>> getAllProvidedProperties() {
 
 		Collection<ProvidedProperty> providedProperties = providedPropertySerivce.findAllProvidedProperties();
 
 		if (providedProperties.isEmpty()) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("ProvidedPropertyNotFoundException: No ProvidedProperty found. No ProvidedProperty exist.");
 		}
 		return ResponseEntity.ok().body(providedProperties);
 	}
-	
-	@RequestMapping(value = "/api/providedproperties/{id}", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getProvidedProperty - Call the ProvidedProperty Service and look for a ProvidedProperty with a certain id. If a ProvidedProperty with this id exist in the database then retrieve it
+	 *         and send it back to the client in a response
+	 * 
+	 * @return ResponseEntity<ProvidedProperty> - Response with only one ProvidedProperty in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ProvidedProperty> getProvidedProperty(@PathVariable("id") long id) {
 
 		ProvidedProperty providedProperty = providedPropertySerivce.findById(id);
 
 		if (providedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("ProvidedPropertyNotFoundException: Unable to find ProvidedProperty. ProvidedProperty with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(providedProperty);
 	}
 
-	@RequestMapping(value = "/api/providedproperties", method = RequestMethod.POST)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createProvidedProperty - Create a new Repository in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<Repository> - Return the created repository with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ProvidedProperty> createProvidedProperty(@RequestBody ProvidedProperty providedProperty, UriComponentsBuilder ucBuilder) {
-		
+
 		if (providedProperty.getId() != null) {
-			throw new EntityAlreadyExistException(
-					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + providedProperty.getId()
-							+ " already exist.");
+			throw new EntityAlreadyExistException("ProvidedPropertyAlreadyExistException: Unable to create ProvidedProperty. ProvidedProperty with id " + providedProperty.getId() + " already exist.");
 		}
 		ProvidedProperty saved = providedPropertySerivce.create(providedProperty);
 
-		return ResponseEntity.created(ucBuilder.path("/api/providedproperties/{id}").buildAndExpand(saved.getId()).toUri())
-				.body(saved);
+		return ResponseEntity.created(ucBuilder.path("/api/providedproperties/{id}").buildAndExpand(saved.getId()).toUri()).body(saved);
 
 	}
-	
-	@RequestMapping(value = "/api/providedproperties/{id}", method = RequestMethod.PUT)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateProvidedProperty - Update a ProvidedProperty if it exist in the database
+	 * 
+	 * @return ResponseEntity<ProvidedProperty> - Return the updated ProvidedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ProvidedProperty> updateProvidedProperty(@PathVariable("id") long id, @RequestBody ProvidedProperty providedProperty) {
 
 		ProvidedProperty currentProvidedProperty = providedPropertySerivce.findById(id);
 
 		if (currentProvidedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("ProvidedPropertyNotFoundException: Unable to update ProvidedProperty. ProvidedProperty with id " + id + " not found.");
 		}
 		currentProvidedProperty = providedProperty;
 		providedPropertySerivce.update(currentProvidedProperty);
 		return ResponseEntity.ok().body(currentProvidedProperty);
 	}
 
-	@RequestMapping(value = "/api/providedproperties/{id}", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteProvidedProperty - Delete a ProvidedProperty if it exist in the database
+	 * 
+	 * @return ResponseEntity<ProvidedProperty> - return no ProvidedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProvidedProperty(@PathVariable("id") Long id) {
 
 		ProvidedProperty providedProperty = providedPropertySerivce.findById(id);
 
 		if (providedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to delete LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("ProvidedPropertyNotFoundException: Unable to delete ProvidedProperty. ProvidedProperty with id " + id + " not found.");
 		}
 
 		providedPropertySerivce.delete(id);
@@ -93,19 +128,30 @@ public class ProvidedPropertyController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/providedproperties", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteProvidedProperties - Delete all available ProvidedProperties in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no ProvidedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProvidedProperties() {
 
 		providedPropertySerivce.deleteAllProvidedProperties();
 		return ResponseEntity.noContent().build();
 	}
 
-	@ExceptionHandler({EntityNotFoundException.class, EntityAlreadyExistException.class})
-
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the ProvidedPropertys RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistException.class })
 	public String exceptionHandler(Exception e) {
-
 		return e.getMessage();
-
 	}
-	
+
 }

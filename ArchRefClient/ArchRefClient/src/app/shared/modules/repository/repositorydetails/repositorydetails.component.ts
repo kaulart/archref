@@ -55,20 +55,15 @@ export class RepositoryDetailsComponent implements OnInit {
    * @method retrieveRepositoryData - Call the RepositoryService for loading repository from database into the application and subscribe
    *                                  for a callback.
    *
-   * @param id: number - ID of the Repository which should be loaded from the database
+   * @param id: string - ID of the Repository which should be loaded from the database
    *
    *******************************************************************************************************************************************************************************************************/
-  retrieveRepositoryData(id: number) {
+  retrieveRepositoryData(id: string) {
     Logger.info('Retrieve Repository Data', RepositoryDetailsComponent.name);
     this.repositoryService.getRepository(id)
       .subscribe(repositoryResponse => {
         this.currentRepository = repositoryResponse;
         Logger.info('Repositories sucessfully retrieved.', RepositoryDetailsComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
       });
   }
 

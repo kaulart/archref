@@ -28,11 +28,10 @@ import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <RelationshipType> - RelationshipType inherited from <Entity> it is
- *        the type of a <RelationshipTemplate> or of a <LevelGraphNode>
+ * @class - <RelationshipType> - RelationshipType inherited from <Entity> it is the type of a <RelationshipTemplate> or of a <LevelGraphNode>
  *
  * @field - <Repository> repository - Repository of the RelationshipType
- * @field - Long repositoryId - ID of the Repository of the RelationshipType
+ * @field - String repositoryId - ID of the Repository of the RelationshipType
  *
  * @author - Arthur Kaul
  *
@@ -59,7 +58,7 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 
 	@Column(name = "REPOSITORY_ID")
 	@XmlAttribute(name = "repositoryRef")
-	private Long repositoryId;
+	private String repositoryId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "relationshipType")
 	@JsonManagedReference(value = "relationshipType-relationshipTemplate")
@@ -73,11 +72,11 @@ public class RelationshipType extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	public Long getRepositoryId() {
+	public String getRepositoryId() {
 		return repositoryId;
 	}
 
-	public void setRepositoryId(Long repositoryId) {
+	public void setRepositoryId(String repositoryId) {
 		this.repositoryId = repositoryId;
 	}
 

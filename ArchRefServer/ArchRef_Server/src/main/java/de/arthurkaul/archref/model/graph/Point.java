@@ -3,8 +3,6 @@ package de.arthurkaul.archref.model.graph;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,12 +11,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.constants.Constants;
+import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -35,19 +33,13 @@ import de.arthurkaul.archref.model.Constants;
 @Table(name = "POINT")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tPoint")
-public class Point {
+public class Point extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	@XmlIDExtension
-	private Long id;
 
 	@Column(name = "X")
 	@XmlAttribute(name = "x")
@@ -68,14 +60,6 @@ public class Point {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public float getX() {
 		return x;

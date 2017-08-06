@@ -7,8 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,12 +18,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.LevelGraphNodeType;
+import de.arthurkaul.archref.constants.LevelGraphNodeType;
+import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -46,20 +43,13 @@ import de.arthurkaul.archref.model.LevelGraphNodeType;
 @XmlRootElement(name = "LevelGraph")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tLevelGraph")
-public class LevelGraph {
+public class LevelGraph extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
 
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
@@ -126,14 +116,6 @@ public class LevelGraph {
 
 	public void setLevelGraphRelations(List<LevelGraphRelation> levelGraphRelations) {
 		this.levelGraphRelations = levelGraphRelations;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {

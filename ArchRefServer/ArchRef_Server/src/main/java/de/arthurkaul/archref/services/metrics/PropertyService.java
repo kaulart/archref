@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.repositories.metrics.PropertyRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - PropertyService is the Service for the Property Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class PropertyService implements PropertyInterface {
 

@@ -23,6 +23,15 @@ export class Utility {
 
     return array;
   }
+  
+    static deleteElementFromArryS(id: string, array: any[]) {
+    array = array.filter(function(obj) {
+
+      return obj.id !== id;
+    });
+
+    return array;
+  }
 
   /*******************************************************************************************************************************************************************************************************
    *

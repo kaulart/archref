@@ -8,8 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,21 +18,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.constants.Constants;
+import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
  * @class - <Path> - A list of points used for drawing paths in a view
  *
  * @field - Long id - ID of a path in a view
- * @field - String pathDataString - Specific representation of a path as a
- *        string so that SVG path/line elements can interpret the data
+ * @field - String pathDataString - Specific representation of a path as a string so that SVG path/line elements can interpret the data
  * @field - List<Point> points - List of all point in a path
  *
  * @author - Arthur Kaul
@@ -45,7 +42,7 @@ import de.arthurkaul.archref.model.Constants;
 @Table(name = "Path")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tPath")
-public class Path {
+public class Path extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -53,17 +50,9 @@ public class Path {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
-
 	@Column(name = "PATH_DATA_STRING")
 	@XmlAttribute(name = "pathDataString")
-	private String pathDataString = Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2 + " "
-			+ Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2;
+	private String pathDataString = Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2 + " " + Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "path")
 	@JsonManagedReference(value = "path-point")
@@ -81,14 +70,6 @@ public class Path {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getPathDataString() {
 		return pathDataString;

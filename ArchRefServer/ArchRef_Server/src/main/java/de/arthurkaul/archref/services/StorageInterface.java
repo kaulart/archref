@@ -8,10 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /***********************************************************************************************************************************************************************************************************
  * 
- * @Interface - StorageInterface is the Service for the FileStorage on the
- *            Server Data it implements the interface for the methods which have
- *            to be implemented by a storage service for storing files on the
- *            server
+ * @Interface - StorageInterface is the Service for the FileStorage on the Server Data it implements the interface for the methods which have to be implemented by a storage service for storing files
+ *            on the server
  * 
  * @author Arthur Kaul
  *
@@ -25,6 +23,8 @@ public interface StorageInterface {
 	Stream<Path> loadAll();
 
 	Path load(String filename, long id, String type);
+
+	Path loadXML(String filename);
 
 	Resource loadAsResource(String filename, long id, String type);
 

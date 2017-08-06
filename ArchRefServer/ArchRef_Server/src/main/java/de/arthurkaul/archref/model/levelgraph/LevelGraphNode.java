@@ -25,25 +25,22 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.LevelGraphRelationType;
+import de.arthurkaul.archref.constants.LevelGraphRelationType;
 import de.arthurkaul.archref.model.graph.Node;
 import de.arthurkaul.archref.model.topology.NodeTemplate;
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <LevelGraphNode> - A node of a <LevelGraph>. Extends the superclass
- *        <Node> which extends the superclass <Entity>.
+ * @class - <LevelGraphNode> - A node of a <LevelGraph>. Extends the superclass <Node> which extends the superclass <Entity>.
  *
  * @field - <Level> level - Level of the LevelGraphNode
  * @field - Long levelId - ID of the Level of the LevelGraphNode
  * @field - Integer levelDepth - Level depth of the LevelGraphNode
  * @field - <LevelGraph> levelGraph - LevelGraph of the LevelGraphNode
  * @field - Long levelGraphId - ID of the LevelGraph of the LevelGraphNode
- * @field - List<LevelGraphRelation> inLevelGraphRelations - List of all
- *        incoming relations of the LevelGraphNode
- * @field - List<LevelGraphRelation> outLevelGraphRelations - List of all
- *        outgoing relations of the LevelGraphNode
+ * @field - List<LevelGraphRelation> inLevelGraphRelations - List of all incoming relations of the LevelGraphNode
+ * @field - List<LevelGraphRelation> outLevelGraphRelations - List of all outgoing relations of the LevelGraphNode
  * @field - String levelGraphNodeType - Type of the LevelGraphNode;
  * @field - Long levelGraphNodeTypeId - ID of the Type of the LevelGraphNode
  *
@@ -81,14 +78,12 @@ public class LevelGraphNode extends Node {
 	@XmlAttribute(name = "levelGraphId")
 	private Long levelGraphId;
 
-	@OneToMany(cascade = { CascadeType.REMOVE,
-			CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
 	@JsonManagedReference(value = "inLevelGraphRelations-targetLevelGraphNode")
 	@XmlInverseReference(mappedBy = "targetLevelGraphNode")
 	private List<LevelGraphRelation> inLevelGraphRelations;
 
-	@OneToMany(cascade = { CascadeType.REMOVE,
-			CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
+	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "sourceLevelGraphNode")
 	@JsonManagedReference(value = "outLevelGraphRelations-sourceLevelGraphNode")
 	@XmlInverseReference(mappedBy = "sourceLevelGraphNode")
 	private List<LevelGraphRelation> outLevelGraphRelations;
@@ -133,14 +128,6 @@ public class LevelGraphNode extends Node {
 	 * @getter / @setter - Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	// public Level getLevel() {
-	// return level;
-	// }
-	//
-	// public void setLevel(Level level) {
-	// this.level = level;
-	// }
 
 	public Long getLevelId() {
 		return levelId;

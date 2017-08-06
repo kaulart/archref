@@ -17,13 +17,27 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.types.NodeType;
 import de.arthurkaul.archref.services.types.NodeTypeService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class NodeTypeController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the NodeType data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/nodetypes")
 public class NodeTypeController {
 
 	@Autowired
 	NodeTypeService nodeTypeService;
 
-	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.GET)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllNodeTypes - Call the NodeType Service and retrieve all available NodeTypes and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<NodeType>> - Response with a collection of all available NodeTypes in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<NodeType>> getAllNodeTypes() {
 
 		Collection<NodeType> nodeTypes = nodeTypeService.findAllNodeTypes();
@@ -36,60 +50,80 @@ public class NodeTypeController {
 		return ResponseEntity.ok().body(nodeTypes);
 	}
 
-	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.GET)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getNodeType - Call the NodeType Service and look for a NodeType with a certain id. If a NodeType with this id exist in the database then retrieve it and send it back to the client in
+	 *         a response
+	 * 
+	 * @return ResponseEntity<NodeType> - Response with only one NodeType in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<NodeType> getNodeType(@PathVariable("id") long id) {
 
 		NodeType nodeType = nodeTypeService.findById(id);
 
 		if (nodeType == null) {
-			throw new EntityNotFoundException(
-					"NodeTypeNotFoundException: Unable to find NodeType. NodeType with id " + id + " not found.");
+			throw new EntityNotFoundException("NodeTypeNotFoundException: Unable to find NodeType. NodeType with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(nodeType);
 	}
 
-	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.POST)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createNodeType - Create a new NodeType in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<NodeType> - Return the created NodeType with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<NodeType> createNodeType(@RequestBody NodeType nodeType, UriComponentsBuilder ucBuilder) {
 
 		if (nodeType.getId() != null) {
-			throw new EntityAlreadyExistException(
-					"NodeTypeAlreadyExistException: Unable to create NodeType. NodeType with id " + nodeType.getId()
-							+ " already exist.");
+			throw new EntityAlreadyExistException("NodeTypeAlreadyExistException: Unable to create NodeType. NodeType with id " + nodeType.getId() + " already exist.");
 		}
 		NodeType saved = nodeTypeService.create(nodeType);
 
-		return ResponseEntity.created(ucBuilder.path("/api/nodetype/{id}").buildAndExpand(nodeType.getId()).toUri())
-				.body(saved);
+		return ResponseEntity.created(ucBuilder.path("/api/nodetype/{id}").buildAndExpand(nodeType.getId()).toUri()).body(saved);
 
 	}
 
-	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.PUT)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateNodeType - Update a NodeType if it exist in the database
+	 * 
+	 * @return ResponseEntity<NodeType> - Return the updated NodeType
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<NodeType> updateNodeType(@PathVariable("id") long id, @RequestBody NodeType nodeType) {
 
 		NodeType currentNodeType = nodeTypeService.findById(id);
 
 		if (currentNodeType == null) {
-			throw new EntityNotFoundException(
-					"NodeTypeNotFoundException: Unable to update NodeType. NodeType with id " + id + " not found.");
+			throw new EntityNotFoundException("NodeTypeNotFoundException: Unable to update NodeType. NodeType with id " + id + " not found.");
 		}
 		currentNodeType = nodeType;
-//		currentNodeType.setIcon(nodeType.getIcon());
-//		currentNodeType.setName(nodeType.getName());
-//		currentNodeType.setProvidedProperties(nodeType.getProvidedProperties());
-		
+
 		nodeTypeService.update(currentNodeType);
 		return ResponseEntity.ok().body(currentNodeType);
 	}
 
-	@RequestMapping(value = "/api/nodetypes/{id}", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteNodeType - Delete a NodeType if it exist in the database
+	 * 
+	 * @return ResponseEntity<NodeType> - return no NodeType
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteNodeType(@PathVariable("id") Long id) {
 
 		NodeType nodeType = nodeTypeService.findById(id);
 
 		if (nodeType == null) {
-			throw new EntityNotFoundException(
-					"NodeTypeNotFoundException: Unable to delete NodeType. NodeType with id " + id + " not found.");
+			throw new EntityNotFoundException("NodeTypeNotFoundException: Unable to delete NodeType. NodeType with id " + id + " not found.");
 		}
 
 		nodeTypeService.delete(id);
@@ -97,19 +131,30 @@ public class NodeTypeController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/api/nodetypes", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteAllNodeTypes - Delete all available NodeTypes in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no NodeType
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllNodeTypes() {
 
 		nodeTypeService.deleteAllNodeTypes();
 		return ResponseEntity.noContent().build();
 	}
 
-	@ExceptionHandler({EntityNotFoundException.class, EntityAlreadyExistException.class})
-
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the NodeType RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistException.class })
 	public String exceptionHandler(Exception e) {
-
 		return e.getMessage();
-
 	}
 
 }

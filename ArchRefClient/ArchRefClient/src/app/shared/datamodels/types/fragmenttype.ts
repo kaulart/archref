@@ -20,5 +20,3 @@ export class FragmentType extends Entity {
   }
 
 }
-
-//TODO löschen wenn nicht benötigt am schluss

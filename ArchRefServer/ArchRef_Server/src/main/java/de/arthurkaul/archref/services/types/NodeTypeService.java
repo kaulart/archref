@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.types.NodeType;
 import de.arthurkaul.archref.repositories.types.NodeTypeRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - RelationshipTypeService is the RelationshipType for the NodeTemplate Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class NodeTypeService implements NodeTypeInterface {
 

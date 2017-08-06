@@ -24,7 +24,8 @@ const URL = '/api/fileupload/relationshiptype';
  *                                                Also you can select a RelationshipType and call the RelationshipTypeDetailComponent where you can see all
  *                                                data which are included in a RelationshipType.
  *
- * @field / @Input - currentRepository: Repository -  Repository which is currently selected
+ * @field - relationshipTypes: RelationshipType[] -  List of the relationshipTypes
+ * @field - repository: Repository -  Repository which is currently selected
  * @field - createdRelationshipType: RelationshipType - RelationshipType which should be created
  * @field - editRelationshipType: RelationshipType - RelationshipType which should be edit
  * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a

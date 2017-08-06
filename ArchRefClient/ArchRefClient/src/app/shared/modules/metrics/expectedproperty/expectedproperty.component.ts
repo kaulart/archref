@@ -33,9 +33,6 @@ export class ExpectedPropertyComponent implements OnInit {
   @Input()
   entity: Entity;
 
-  @Input()
-  expectedProperties: ExpectedProperty[] = [];
-
   createdExpectedProperty: ExpectedProperty = new ExpectedProperty('Unnamed', 'Undefined');
   editExpectedProperty: ExpectedProperty = new ExpectedProperty('Unnamed', 'Undefined');
 
@@ -53,8 +50,8 @@ export class ExpectedPropertyComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize ExpectedPropertyComponent', ExpectedPropertyComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-//    this.createdExpectedProperty.entityExpected = this.entity;
-//    this.createdExpectedProperty.entityExpectedId = this.entity.id;
+    this.createdExpectedProperty.entityExpected = this.entity;
+    this.createdExpectedProperty.entityExpectedId = this.entity.id;
   }
 
   /********************************************************************************************************************************************************************************************************

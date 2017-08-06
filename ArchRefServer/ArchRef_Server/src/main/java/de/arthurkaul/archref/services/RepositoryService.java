@@ -10,9 +10,7 @@ import de.arthurkaul.archref.repositories.RepositoryRepository;
 
 /***********************************************************************************************************************************************************************************************************
  * 
- * @Service - RepositoryService is the Service for the Repository Data it
- *          implements CURD methods which create, update, retrieve and delete
- *          data from and in the database
+ * @Service - RepositoryService is the Service for the Repository Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
  * 
  * @author Arthur Kaul
  *
@@ -30,7 +28,7 @@ public class RepositoryService implements RepositoryInterface {
 	}
 
 	@Override
-	public Repository findById(long id) {
+	public Repository findById(Long id) {
 
 		return repositoryRepository.findOne(id);
 	}
@@ -62,7 +60,7 @@ public class RepositoryService implements RepositoryInterface {
 	}
 
 	@Override
-	public void delete(long id) {
+	public void delete(Long id) {
 
 		repositoryRepository.delete(id);
 	}

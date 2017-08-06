@@ -2,9 +2,6 @@ package de.arthurkaul.archref.model.metrics;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
@@ -14,7 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
+import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -34,20 +31,13 @@ import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 @XmlRootElement(name = "Property")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tProperty")
-public class Property {
+public class Property extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
 
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
@@ -62,14 +52,6 @@ public class Property {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

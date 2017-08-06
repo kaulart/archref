@@ -17,6 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.arthurkaul.archref.exceptions.StorageFileNotFoundException;
 import de.arthurkaul.archref.services.StorageService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class FileUploadController - Controller for handle file uploads from the client and storing the files on the file system of the server
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
 public class FileUploadController {
 

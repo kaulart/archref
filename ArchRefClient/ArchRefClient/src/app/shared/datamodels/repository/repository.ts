@@ -15,7 +15,7 @@ import { RelationshipType } from '../types/relationshiptype';
  ******************************************************************************************************************************************************************************************************/
 export class Repository {
 
-  id: number = null;
+  id: string = null;
   name: string;
   nodeTypes: NodeType[];
   relationshipTypes: RelationshipType[];

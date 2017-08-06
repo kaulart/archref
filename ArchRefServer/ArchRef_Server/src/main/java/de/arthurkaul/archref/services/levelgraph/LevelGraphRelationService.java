@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import de.arthurkaul.archref.model.levelgraph.LevelGraphRelation;
 import de.arthurkaul.archref.repositories.levelgraph.LevelGraphRelationRepository;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @Service - LevelGraphRelationService is the Service for the LevelGraphRelation Data it implements CRUD methods which create, update, retrieve and delete data from and in the database
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @Service
 public class LevelGraphRelationService implements LevelGraphRelationInterface {
 

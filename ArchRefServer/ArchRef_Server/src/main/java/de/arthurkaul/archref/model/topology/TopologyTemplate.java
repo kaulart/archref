@@ -7,8 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -21,13 +19,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import de.arthurkaul.archref.model.Constants;
+import de.arthurkaul.archref.constants.Constants;
+import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -52,19 +50,13 @@ import de.arthurkaul.archref.model.Constants;
 @XmlRootElement(name = "TopologyTemplate")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tTopologyTemplate")
-public class TopologyTemplate {
+public class TopologyTemplate extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
 
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
@@ -106,14 +98,6 @@ public class TopologyTemplate {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -188,11 +172,11 @@ public class TopologyTemplate {
 
 			for (int i = 0; i < topologyTemplate.getNodeTemplates().size(); i++) {
 				System.out.println(topologyTemplate.getNodeTemplates().get(i).getTempId() + " == " + relation.getSourceNodeId());
-				if (topologyTemplate.getNodeTemplates().get(i).getTempId() == relation.getSourceNodeId()) {
+				if (topologyTemplate.getNodeTemplates().get(i).getTempId().equals(relation.getSourceNodeId())) {
 					sourceNode = topologyTemplate.getNodeTemplates().get(i);
 				}
 				System.out.println(topologyTemplate.getNodeTemplates().get(i).getTempId() + " == " + relation.getTargetNodeId());
-				if (topologyTemplate.getNodeTemplates().get(i).getTempId() == relation.getTargetNodeId()) {
+				if (topologyTemplate.getNodeTemplates().get(i).getTempId().equals(relation.getTargetNodeId())) {
 					targetNode = topologyTemplate.getNodeTemplates().get(i);
 				}
 			}
@@ -230,13 +214,13 @@ public class TopologyTemplate {
 					this.getNodeTemplates().get(count).setY(y);
 
 					for (int k = 0; k < this.getRelationshipTemplates().size(); k++) {
-						if (this.getRelationshipTemplates().get(k).getSourceNodeId() == this.getNodeTemplates().get(count).getId()) {
+						if (this.getRelationshipTemplates().get(k).getSourceNodeId().equals(this.getNodeTemplates().get(count).getId())) {
 							this.getRelationshipTemplates().get(k).getPath().getPoints().get(0).setX(x + this.getNodeTemplates().get(count).getWidth() / 2);
 							this.getRelationshipTemplates().get(k).getPath().getPoints().get(0).setY(y + this.getNodeTemplates().get(count).getHeight() / 2);
 							this.getRelationshipTemplates().get(k).getPath().updatePath();
 						}
 
-						if (this.getRelationshipTemplates().get(k).getTargetNodeId() == this.getNodeTemplates().get(count).getId()) {
+						if (this.getRelationshipTemplates().get(k).getTargetNodeId().equals(this.getNodeTemplates().get(count).getId())) {
 							this.getRelationshipTemplates().get(k).getPath().getPoints().get(1).setX(x + this.getNodeTemplates().get(count).getWidth() / 2);
 							this.getRelationshipTemplates().get(k).getPath().getPoints().get(1).setY(y + this.getNodeTemplates().get(count).getHeight() / 2);
 							this.getRelationshipTemplates().get(k).getPath().updatePath();

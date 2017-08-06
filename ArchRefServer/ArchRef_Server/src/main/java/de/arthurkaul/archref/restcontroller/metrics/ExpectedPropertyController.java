@@ -17,76 +17,110 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.metrics.ExpectedProperty;
 import de.arthurkaul.archref.services.metrics.ExpectedPropertyService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class ExpectedPropertyController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the ExpectedProperty data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/expectedproperties")
 public class ExpectedPropertyController {
 
 	@Autowired
 	ExpectedPropertyService expectedPropertyService;
-	
-	@RequestMapping(value = "/api/expectedproperties", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllExpectedProperties - Call the ExpectedProperty Service and retrieve all available ExpectedProperties and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<ExpectedProperty>> - Response with a collection of all available ExpectedProperties in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<ExpectedProperty>> getAllExpectedProperties() {
 
 		Collection<ExpectedProperty> expectedProperties = expectedPropertyService.findAllExpectedProperties();
 
 		if (expectedProperties.isEmpty()) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("ExpectedPropertyNotFoundException: No ExpectedProperty found. No ExpectedProperty exist.");
 		}
 		return ResponseEntity.ok().body(expectedProperties);
 	}
-	
-	@RequestMapping(value = "/api/expectedproperties/{id}", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getExpectedProperty - Call the ExpectedProperty Service and look for a ExpectedProperty with a certain id. If a repository with this id exist in the database then retrieve it and send
+	 *         it back to the client in a response
+	 * 
+	 * @return ResponseEntity<ExpectedProperty> - Response with only one ExpectedProperty in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ExpectedProperty> getExpectedProperty(@PathVariable("id") long id) {
 
 		ExpectedProperty expectedProperty = expectedPropertyService.findById(id);
 
 		if (expectedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("ExpectedPropertyNotFoundException: Unable to find ExpectedProperty. ExpectedProperty with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(expectedProperty);
 	}
 
-	@RequestMapping(value = "/api/expectedproperties", method = RequestMethod.POST)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createExpectedProperty - Create a new ExpectedProperty in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<ExpectedProperty> - Return the created ExpectedProperty with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ExpectedProperty> createExpectedProperty(@RequestBody ExpectedProperty expectedProperty, UriComponentsBuilder ucBuilder) {
-		
+
 		if (expectedProperty.getId() != null) {
-			throw new EntityAlreadyExistException(
-					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + expectedProperty.getId()
-							+ " already exist.");
+			throw new EntityAlreadyExistException("ExpectedPropertyAlreadyExistException: Unable to create ExpectedProperty. ExpectedProperty with id " + expectedProperty.getId() + " already exist.");
 		}
 		ExpectedProperty saved = expectedPropertyService.create(expectedProperty);
 
-		return ResponseEntity.created(ucBuilder.path("/api/expectedproperties/{id}").buildAndExpand(saved.getId()).toUri())
-				.body(saved);
+		return ResponseEntity.created(ucBuilder.path("/api/expectedproperties/{id}").buildAndExpand(saved.getId()).toUri()).body(saved);
 
 	}
-	
-	@RequestMapping(value = "/api/expectedproperties/{id}", method = RequestMethod.PUT)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateExpectedProperty - Update a ExpectedProperty if it exist in the database
+	 * 
+	 * @return ResponseEntity<ExpectedProperty> - Return the updated ExpectedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ExpectedProperty> updateExpectedProperty(@PathVariable("id") long id, @RequestBody ExpectedProperty expectedProperty) {
 
 		ExpectedProperty currentExpectedProperty = expectedPropertyService.findById(id);
 
 		if (currentExpectedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("ExpectedPropertyFoundException: Unable to update ExpectedProperty. ExpectedProperty with id " + id + " not found.");
 		}
 		currentExpectedProperty = expectedProperty;
 		expectedPropertyService.update(currentExpectedProperty);
 		return ResponseEntity.ok().body(currentExpectedProperty);
 	}
 
-	@RequestMapping(value = "/api/expectedproperties/{id}", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteExpectedProperty - Delete a ExpectedProperty if it exist in the database
+	 * 
+	 * @return ResponseEntity<ExpectedProperty> - return no ExpectedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteExpectedProperty(@PathVariable("id") Long id) {
 
 		ExpectedProperty expectedProperty = expectedPropertyService.findById(id);
 
 		if (expectedProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to delete LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("ExpectedPropertyNotFoundException: Unable to delete ExpectedProperty. ExpectedProperty with id " + id + " not found.");
 		}
 
 		expectedPropertyService.delete(id);
@@ -94,19 +128,32 @@ public class ExpectedPropertyController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/expectedproperties", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteExpectedProperties - Delete all available ExpectedProperties in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no ExpectedProperty
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteExpectedProperties() {
 
 		expectedPropertyService.deleteAllExpectedProperties();
 		return ResponseEntity.noContent().build();
 	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the ExpectedProperty RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
 	@ExceptionHandler(EntityNotFoundException.class)
-
 	public String exceptionHandler(Exception e) {
 
 		return e.getMessage();
 
 	}
-	
+
 }

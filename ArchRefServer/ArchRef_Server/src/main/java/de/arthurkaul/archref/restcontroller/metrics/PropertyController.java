@@ -17,76 +17,110 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.metrics.Property;
 import de.arthurkaul.archref.services.metrics.PropertyService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class PropertyController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the Property data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/properties")
 public class PropertyController {
-	
+
 	@Autowired
 	PropertyService propertyService;
-	
-	@RequestMapping(value = "/api/properties", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllProperties - Call the Property Service and retrieve all available Properties and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<Property>> - Response with a collection of all available Propertyies in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<Property>> getAllProperties() {
 
 		Collection<Property> properties = propertyService.findAllProperties();
 
 		if (properties.isEmpty()) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: No LevelGraph found. No LevelGraph exist.");
+			throw new EntityNotFoundException("PropertyNotFoundException: No Property found. No Property exist.");
 		}
 		return ResponseEntity.ok().body(properties);
 	}
-	
-	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.GET)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getProperty - Call the Property Service and look for a Property with a certain id. If a repository with this id exist in the database then retrieve it and send it back to the client
+	 *         in a response
+	 * 
+	 * @return ResponseEntity<Property> - Response with only one Property in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Property> getProperty(@PathVariable("id") long id) {
 
 		Property property = propertyService.findById(id);
 
 		if (property == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to find LevelGraph. LevelGraph with id " + id + " not found.");
+			throw new EntityNotFoundException("PropertyFoundException: Unable to find Property. Property with id " + id + " not found.");
 
 		}
 		return ResponseEntity.ok().body(property);
 	}
 
-	@RequestMapping(value = "/api/properties", method = RequestMethod.POST)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createProperty - Create a new Property in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<Property> - Return the created Property with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Property> createProperty(@RequestBody Property property, UriComponentsBuilder ucBuilder) {
-		
+
 		if (property.getId() != null) {
-			throw new EntityAlreadyExistException(
-					"LevelGraphAlreadyExistException: Unable to create LevelGraph. LevelGraph with id " + property.getId()
-							+ " already exist.");
+			throw new EntityAlreadyExistException("PropertyAlreadyExistException: Unable to create Property. Property with id " + property.getId() + " already exist.");
 		}
 		Property saved = propertyService.create(property);
 
-		return ResponseEntity.created(ucBuilder.path("/api/propterties/{id}").buildAndExpand(saved.getId()).toUri())
-				.body(saved);
+		return ResponseEntity.created(ucBuilder.path("/api/propterties/{id}").buildAndExpand(saved.getId()).toUri()).body(saved);
 
 	}
-	
-	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.PUT)
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateProperty - Update a Property if it exist in the database
+	 * 
+	 * @return ResponseEntity<Property> - Return the updated Property
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Property> updateProperty(@PathVariable("id") long id, @RequestBody Property property) {
 
 		Property currentProperty = propertyService.findById(id);
 
 		if (currentProperty == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to update LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("PropertyNotFoundException: Unable to update Property. Property with id " + id + " not found.");
 		}
 		currentProperty = property;
 		propertyService.update(currentProperty);
 		return ResponseEntity.ok().body(currentProperty);
 	}
 
-	@RequestMapping(value = "/api/properties/{id}", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteProperty - Delete a Repository if it exist in the database
+	 * 
+	 * @return ResponseEntity<Repository> - return no Repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProperty(@PathVariable("id") Long id) {
 
 		Property property = propertyService.findById(id);
 
 		if (property == null) {
-			throw new EntityNotFoundException(
-					"LevelGraphNotFoundException: Unable to delete LevelGraph. LevelGraph with id " + id
-							+ " not found.");
+			throw new EntityNotFoundException("PropertyNotFoundException: Unable to delete Property. Property with id " + id + " not found.");
 		}
 
 		propertyService.delete(id);
@@ -94,19 +128,30 @@ public class PropertyController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/properties", method = RequestMethod.DELETE)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteProperties - Delete all available repositories in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no Repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteProperties() {
 
 		propertyService.deleteAllProperties();
 		return ResponseEntity.noContent().build();
 	}
 
-	@ExceptionHandler({EntityNotFoundException.class, EntityAlreadyExistException.class})
-
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the Property RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@ExceptionHandler({ EntityNotFoundException.class, EntityAlreadyExistException.class })
 	public String exceptionHandler(Exception e) {
-
 		return e.getMessage();
-
 	}
-	
+
 }

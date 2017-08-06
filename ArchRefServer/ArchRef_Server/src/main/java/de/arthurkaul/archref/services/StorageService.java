@@ -19,9 +19,7 @@ import de.arthurkaul.archref.exceptions.StorageFileNotFoundException;
 
 /***********************************************************************************************************************************************************************************************************
  * 
- * @Service - StorageService is the Service for the Repository Data it
- *          implements CURD methods which create, update, retrieve and delete
- *          data from and in the database
+ * @Service - StorageService is the Service for the Repository Data it implements CURD methods which create, update, retrieve and delete data from and in the database
  * 
  * @author Arthur Kaul
  *
@@ -51,8 +49,7 @@ public class StorageService implements StorageInterface {
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation))
-					.map(path -> this.rootLocation.relativize(path));
+			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation)).map(path -> this.rootLocation.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}
@@ -62,6 +59,11 @@ public class StorageService implements StorageInterface {
 	@Override
 	public Path load(String filename, long id, String type) {
 		return rootLocation.resolve(type + id + filename);
+	}
+
+	@Override
+	public Path loadXML(String filename) {
+		return rootLocation.resolve(filename);
 	}
 
 	@Override

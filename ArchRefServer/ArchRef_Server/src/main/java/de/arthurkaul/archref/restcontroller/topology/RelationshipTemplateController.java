@@ -17,95 +17,146 @@ import de.arthurkaul.archref.exceptions.EntityNotFoundException;
 import de.arthurkaul.archref.model.topology.RelationshipTemplate;
 import de.arthurkaul.archref.services.topology.RelationshipTemplateService;
 
+/***********************************************************************************************************************************************************************************************************
+ * 
+ * @class RelationshipTemplateController - is the RestController Interface of the server it handles all request from clients and implements the CRUD methods for the RelationshipTemplate data
+ * 
+ * @author Arthur Kaul
+ *
+ **********************************************************************************************************************************************************************************************************/
 @RestController
+@RequestMapping("/api/relationshiptemplates")
+
 public class RelationshipTemplateController {
 
 	@Autowired
 	RelationshipTemplateService relationshipTemplateService;
-	
 
-	@RequestMapping(value="/api/relationshiptemplates", method = RequestMethod.GET)
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getAllRelationshipTemplates - Call the RelationshipTemplate Service and retrieve all available RelationshipTemplates and send a response back to the client
+	 * 
+	 * @return ResponseEntity<Collection<RelationshipTemplate>> - Response with a collection of all available RelationshipTemplates in the database
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<RelationshipTemplate>> getAllRelationshipTemplates() {
-		
-		Collection<RelationshipTemplate> relationshiptemplates =  relationshipTemplateService.findAllRelationshipTemplates();
-		
-		  if (relationshiptemplates.isEmpty()) {
-			  throw new EntityNotFoundException("RepositoryNotFoundException: No Repository found. No Repository exist.");  
-      // You many decide to return HttpStatus.NOT_FOUND
-   }
-    return ResponseEntity.ok().body(relationshiptemplates);
-	}
-	
 
-	@RequestMapping(value="/api/relationshiptemplates/{id}", method = RequestMethod.GET)
+		Collection<RelationshipTemplate> relationshiptemplates = relationshipTemplateService.findAllRelationshipTemplates();
+
+		if (relationshiptemplates.isEmpty()) {
+			throw new EntityNotFoundException("RelationshipTemplateNotFoundException: No RelationshipTemplate found. No RelationshipTemplate exist.");
+		}
+		return ResponseEntity.ok().body(relationshiptemplates);
+	}
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - getRelationshipTemplate - Call the RelationshipTemplate Service and look for a RelationshipTemplate with a certain id. If a RelationshipTemplate with this id exist in the database
+	 *         then retrieve it and send it back to the client in a response
+	 * 
+	 * @return ResponseEntity<RelationshipTemplate> - Response with only one RelationshipTemplate in the body
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<RelationshipTemplate> getRelationshipTemplate(@PathVariable("id") long id) {
 
 		RelationshipTemplate relationshiptemplate = relationshipTemplateService.findById(id);
-		
-		  if (relationshiptemplate == null) {
-			throw new EntityNotFoundException("RepositoryNotFoundException: Unable to find Repository. Repository with id " + id + " not found.");          	
-   
-   }
+
+		if (relationshiptemplate == null) {
+			throw new EntityNotFoundException("RelationshipTemplateNotFoundException: Unable to find RelationshipTemplate. RelationshipTemplate with id " + id + " not found.");
+
+		}
 		return ResponseEntity.ok().body(relationshiptemplate);
 	}
-	
-	
-	@RequestMapping(value = "/api/relationshiptemplates", method = RequestMethod.POST)
-public ResponseEntity<RelationshipTemplate> createRelationshipTemplate(@RequestBody RelationshipTemplate relationshiptemplate, UriComponentsBuilder ucBuilder) {
-		
+
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - createRelationshipTemplate - Create a new RelationshipTemplate in the database with the data which was send in the request
+	 * 
+	 * @return ResponseEntity<RelationshipTemplate> - Return the created RelationshipTemplate with his new id
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<RelationshipTemplate> createRelationshipTemplate(@RequestBody RelationshipTemplate relationshiptemplate, UriComponentsBuilder ucBuilder) {
+
 		if (relationshiptemplate.getId() != null) {
-			throw new EntityAlreadyExistException("RepositoryAlreadyExistException: Unable to create Repository. Repository with id " + relationshiptemplate.getId() + " already exist.");          	
-    }
-		
+			throw new EntityAlreadyExistException(
+					"RelationshipTemplateAlreadyExistException: Unable to create RelationshipTemplate. RelationshipTemplate with id " + relationshiptemplate.getId() + " already exist.");
+		}
+
 		RelationshipTemplate saved = relationshipTemplateService.create(relationshiptemplate);
-  
-    return ResponseEntity.created(ucBuilder.path("/api/relationshiptemplates/{id}").buildAndExpand(relationshiptemplate.getId()).toUri()).body(saved);
-   
- }
 
-@RequestMapping(value = "/api/relationshiptemplates/{id}", method = RequestMethod.PUT)
-public ResponseEntity<?> updateRelationshipTemplate(@PathVariable("id") long id, @RequestBody RelationshipTemplate relationshiptemplate) {
+		return ResponseEntity.created(ucBuilder.path("/api/relationshiptemplates/{id}").buildAndExpand(relationshiptemplate.getId()).toUri()).body(saved);
 
-	RelationshipTemplate currentNodeTemplate = relationshipTemplateService.findById(id);
+	}
 
-    if (currentNodeTemplate == null) {
-    	throw new EntityNotFoundException("RepositoryNotFoundException: Unable to update. Repository with id " + id + " not found.");          
-    }
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updateRelationshipTemplate - Update a RelationshipTemplate if it exist in the database
+	 * 
+	 * @return ResponseEntity<RelationshipTemplate> - Return the updated RelationshipTemplate
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateRelationshipTemplate(@PathVariable("id") long id, @RequestBody RelationshipTemplate relationshiptemplate) {
 
-    currentNodeTemplate = relationshiptemplate;
+		RelationshipTemplate currentrelationshiptemplate = relationshipTemplateService.findById(id);
 
-    relationshipTemplateService.update(relationshiptemplate);
-    return ResponseEntity.ok().body(currentNodeTemplate);
-}
+		if (currentrelationshiptemplate == null) {
+			throw new EntityNotFoundException("RelationshipTemplateNotFoundException: Unable to update. RelationshipTemplate with id " + id + " not found.");
+		}
 
+		currentrelationshiptemplate = relationshiptemplate;
 
-@RequestMapping(value = "/api/relationshiptemplates/{id}", method = RequestMethod.DELETE)
-public ResponseEntity<Void> deleteRelationshipTemplate(@PathVariable("id") Long id) {
+		currentrelationshiptemplate = relationshipTemplateService.update(relationshiptemplate);
+		return ResponseEntity.ok().body(currentrelationshiptemplate);
+	}
 
-	RelationshipTemplate nodeTemplate = relationshipTemplateService.findById(id);
-		
-		if (nodeTemplate == null) {
-			throw new EntityNotFoundException("RepositoryNotFoundException: Unable to delete Repository. Repository with id " + id + " not found.");          	
-    }
-		
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteRelationshipTemplate - Delete a RelationshipTemplate if it exist in the database
+	 * 
+	 * @return ResponseEntity<RelationshipTemplate> - return no RelationshipTemplate
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteRelationshipTemplate(@PathVariable("id") Long id) {
+
+		RelationshipTemplate relationshiptemplate = relationshipTemplateService.findById(id);
+
+		if (relationshiptemplate == null) {
+			throw new EntityNotFoundException("RelationshipTemplateException: Unable to delete RelationshipTemplate. RelationshipTemplate with id " + id + " not found.");
+		}
+
 		relationshipTemplateService.delete(id);
 
-    return ResponseEntity.noContent().build();
-}
+		return ResponseEntity.noContent().build();
+	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - deleteAllRelationshipTemplates - Delete all available repositories in the database
+	 * 
+	 * @return ResponseEntity<Void> - return no Repository
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@RequestMapping(method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteAllRelationshipTemplates() {
 
-@RequestMapping(value = "/api/relationshiptemplates", method = RequestMethod.DELETE)
-public ResponseEntity<Void> deleteAllRelationshipTemplates() {
+		relationshipTemplateService.deleteAllRelationshipTemplates();
+		return ResponseEntity.noContent().build();
+	}
 
-	relationshipTemplateService.deleteAllRelationshipTemplates();
-    return ResponseEntity.noContent().build();
-}
-	
-	
-	@ExceptionHandler(EntityNotFoundException.class)  
-	 
-	public String exceptionHandler(Exception e){  
-		return e.getMessage();     	        
-	}  
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - exceptionHandler - Handle the errors which are thrown in the RelationshipTemplate RestController Scope
+	 * 
+	 * @return String - Error Message String
+	 * 
+	 ******************************************************************************************************************************************************************************************************/
+	@ExceptionHandler(EntityNotFoundException.class)
+	public String exceptionHandler(Exception e) {
+		return e.getMessage();
+	}
 
 }

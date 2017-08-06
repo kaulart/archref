@@ -209,17 +209,6 @@ public class NodeTemplate extends Node {
 		return nodeTemplate;
 	}
 
-	// @JsonIgnore
-	// public NodeTemplate getSpecificTempNodeTemplate() {
-	// return specificTempNodeTemplate;
-	// }
-	//
-	// @JsonIgnore
-	// public void setSpecificTempNodeTemplate(NodeTemplate
-	// specificTempNodeTemplate) {
-	// this.specificTempNodeTemplate = specificTempNodeTemplate;
-	// }
-
 	public void updateForeignKey() {
 		this.setTopologyTemplateId(this.topologyTemplate.getId());
 	}

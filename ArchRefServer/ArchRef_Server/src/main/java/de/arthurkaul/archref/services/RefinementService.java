@@ -6,8 +6,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.arthurkaul.archref.model.LevelGraphNodeType;
-import de.arthurkaul.archref.model.LevelGraphRelationType;
+import de.arthurkaul.archref.constants.LevelGraphNodeType;
+import de.arthurkaul.archref.constants.LevelGraphRelationType;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.model.levelgraph.LevelGraphNode;
 import de.arthurkaul.archref.model.levelgraph.LevelGraphRelation;
@@ -64,6 +64,7 @@ public class RefinementService {
 
 	// Queues for the different types of Fragment Level Graph Nodes
 	ArrayList<LevelGraphNode> fragmentNodesQueue = new ArrayList<LevelGraphNode>();
+	ArrayList<LevelGraphNode> exitentryNodesQueue = new ArrayList<LevelGraphNode>();
 	ArrayList<LevelGraphNode> entryNodesQueue = new ArrayList<LevelGraphNode>();
 	ArrayList<LevelGraphNode> exitNodesQueue = new ArrayList<LevelGraphNode>();
 	ArrayList<LevelGraphNode> includeNodesQueue = new ArrayList<LevelGraphNode>();
@@ -123,11 +124,11 @@ public class RefinementService {
 
 	/*******************************************************************************************************************************************************************************************************
 	 * 
-	 * @method startRefinement - Start the first refinement step of the abstract TopologyTemplate and start recursively the refinement for all generated specific topology templates until the target
-	 *         abstraction level is reached
+	 * @method startRefinement - Start the refinement of the abstract TopologyTemplate and start recursively the refinement for all generated specific topology templates until the target abstraction
+	 *         level is reached
 	 * 
 	 * @param abstractTopologyTemplate - The TopologyTemplate which should be refined
-	 * @return
+	 * @return abstractTopologyTemplate - The abstractTopology with his refined childTopologyTemplates
 	 ******************************************************************************************************************************************************************************************************/
 	public TopologyTemplate startRefinement(TopologyTemplate abstractTopologyTemplate) {
 
@@ -151,41 +152,56 @@ public class RefinementService {
 
 	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * @method startRefinementStep - Start the first refinement step of the abstract TopologyTemplate with a randomly selected NodeTemplate of the abstract TopologyTemplate
+	 * 
+	 * @param abstractTopologyTemplate - get a abstract TopologyTemplate which should be refined
+	 * @return abstractTopologyTemplate - return the abstract TopologyTemplate with all generated specific TopologyTemplates
+	 ******************************************************************************************************************************************************************************************************/
 	private TopologyTemplate startRefinementStep(TopologyTemplate abstractTopologyTemplate) {
 
+		// Initialize the NodeTemplate Queue and RelationshipTemplate Queue
 		queueNodeTemplates = new ArrayList<NodeTemplate>(abstractTopologyTemplate.getNodeTemplates());
 		queueRelationshipTemplates = new ArrayList<RelationshipTemplate>(abstractTopologyTemplate.getRelationshipTemplates());
 
+		// Select a NodeTemplate from which the algorithm should start
 		NodeTemplate startNodeTemplate = queueNodeTemplates.iterator().next();
 
+		// Generate a temporary specific TopologyTemplate which represent the current refine state
 		spezificTopologyTemplate = new TopologyTemplate();
 		spezificTopologyTemplate.setName("RefinedTopologyTemplate");
 		spezificTopologyTemplate.setAbstractionLevel(abstractTopologyTemplate.getAbstractionLevel() + 1);
 		spezificTopologyTemplate.setParentTopologyTemplate(abstractTopologyTemplate);
 		spezificTopologyTemplate.setParentTopologyTemplateId(abstractTopologyTemplate.getId());
 
+		// refine the Node Template
 		refineNodeTemplate(new ArrayList<RelationshipTemplate>(), startNodeTemplate, abstractTopologyTemplate);
 
 		return abstractTopologyTemplate;
 	}
 
+	/*******************************************************************************************************************************************************************************************************
+	 * 
+	 * 
+	 * 
+	 * @param prevRelationshipTemplates - previous refined relationshipTemplates
+	 * @param abstractNodeTemplate - NodeTemplate which should be refined
+	 * @param abstractTopologyTemplate - TopologyTemplate which should be refined
+	 ******************************************************************************************************************************************************************************************************/
 	private void refineNodeTemplate(ArrayList<RelationshipTemplate> prevRelationshipTemplates, NodeTemplate abstractNodeTemplate, TopologyTemplate abstractTopologyTemplate) {
 
+		// Search in the current abstraction level of the level graph if a LGN exist with the same NT of the abstact NodeTemplate
 		for (LevelGraphNode levelGraphNode : levelGraph.getNodeTypes().get(startAbstractionLevel)) {
-			System.out.println(levelGraphNode.getLevelGraphNodeTypeId() + " == " + abstractNodeTemplate.getNodeTypeId());
 			if (levelGraphNode.getLevelGraphNodeTypeId() == abstractNodeTemplate.getNodeTypeId()) {
+
+				// Search if a refine relation exist which fulfill the expected properties
 				for (LevelGraphRelation levelGraphRelation : levelGraphNode.getOutRefineRelations()) {
-
 					LevelGraphNode refinLevelGraphNode = levelGraphNodeService.findById(levelGraphRelation.getTargetNodeId());
-
-					System.out.println(smiThresholdExceeded(refinLevelGraphNode.getProvidedProperties(), abstractNodeTemplate.getExpectedProperties()));
 					if (smiThresholdExceeded(refinLevelGraphNode.getProvidedProperties(), abstractNodeTemplate.getExpectedProperties())) {
 
 						ArrayList<LevelGraphNode> preveNodeQueue = new ArrayList<LevelGraphNode>();
 						ArrayList<LevelGraphNode> entryNodeQueue = new ArrayList<LevelGraphNode>();
-
-						System.out.println("NodeType: " + refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPE));
-						System.out.println("NodeTypeFragment: " + refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT));
 
 						if (refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPE)) {
 							entryNodeQueue.add(refinLevelGraphNode);
@@ -198,33 +214,29 @@ public class RefinementService {
 							}
 						}
 
-						System.out.println("PrevRelationEmpty?: " + !prevRelationshipTemplates.isEmpty());
 						if (!prevRelationshipTemplates.isEmpty()) {
 							for (RelationshipTemplate prevRelationshipTemplate : prevRelationshipTemplates) {
 								preveNodeQueue.add(prevRelationshipTemplate.getLevelGraphNode());
 							}
 						}
 
-						System.out.println("PrevRelationEmpty?: " + prevRelationshipTemplates.isEmpty());
-						System.out.println("Kompatible?: " + isCompatibleToPrevRefinement(preveNodeQueue, entryNodeQueue, false));
-
+						// Check if the refinement is compatible to the previous refinement
 						if (prevRelationshipTemplates.isEmpty() || isCompatibleToPrevRefinement(preveNodeQueue, entryNodeQueue, false)) {
 
 							TopologyTemplate fragment = new TopologyTemplate();
 							exitNodeTemplates = new ArrayList<NodeTemplate>();
 							entryNodeTemplates = new ArrayList<NodeTemplate>();
 
+							// create the refined fragment and add it to the current specific TopologyTemplate
 							fragment = createNodeTypeFragment(refinLevelGraphNode, abstractNodeTemplate, prevRelationshipTemplates, abstractTopologyTemplate);
 							spezificTopologyTemplate.getNodeTemplates().addAll(fragment.getNodeTemplates());
 							spezificTopologyTemplate.getRelationshipTemplates().addAll(fragment.getRelationshipTemplates());
-							// abstractNodeTemplate.setEntryNodeTemplates(entryNodeTemplates);
+
+							abstractNodeTemplate.setExitNodeTemplates(exitNodeTemplates);
+							abstractNodeTemplate.setEntryNodeTemplates(entryNodeTemplates);
 							abstractNodeTemplate.setRefined(true);
 
 							queueNodeTemplates.remove(abstractNodeTemplate);
-
-							System.out.println("Noch unbesuchte ausgehende Kanten?: " + existNotVisitedOutRelation(abstractNodeTemplate));
-							System.out.println("Gibt es noch unbesuchte Knoten: " + !queueNodeTemplates.isEmpty());
-							System.out.println("gibt es noch nicht verfeinerte Kanten " + !queueRelationshipTemplates.isEmpty());
 
 							if (existNotVisitedOutRelation(abstractNodeTemplate)) {
 
@@ -242,7 +254,7 @@ public class RefinementService {
 							} else if (!queueRelationshipTemplates.isEmpty()) {
 
 								RelationshipTemplate abstractRelationshipTemplate = queueRelationshipTemplates.iterator().next();
-								refineRelationshipTemplate(new ArrayList<NodeTemplate>(), abstractRelationshipTemplate, abstractTopologyTemplate);
+								refineRelationshipTemplate(abstractRelationshipTemplate.getSourceNodeTemplate().getExitNodeTemplates(), abstractRelationshipTemplate, abstractTopologyTemplate);
 
 							} else {
 
@@ -255,6 +267,8 @@ public class RefinementService {
 
 								queueChildTopologyTemplate.add(deepCopy);
 							}
+
+							System.out.println("Prev Empty: " + !prevRelationshipTemplates.isEmpty());
 							if (!prevRelationshipTemplates.isEmpty()) {
 
 								for (RelationshipTemplate relationshipTemplate : prevRelationshipTemplates) {
@@ -263,7 +277,7 @@ public class RefinementService {
 							}
 
 							spezificTopologyTemplate.getNodeTemplates().removeAll(fragment.getNodeTemplates());
-							spezificTopologyTemplate.getNodeTemplates().removeAll(fragment.getRelationshipTemplates());
+							spezificTopologyTemplate.getRelationshipTemplates().removeAll(fragment.getRelationshipTemplates());
 
 							queueNodeTemplates.add(abstractNodeTemplate);
 							abstractNodeTemplate.setRefined(false);
@@ -337,7 +351,7 @@ public class RefinementService {
 										}
 									}
 
-									relationshipTemplate.setTargetNodeId(abstractRelationshipTemplate.getTargetNodeTemplate().getTempId());
+									// relationshipTemplate.setTargetNodeId(abstractRelationshipTemplate.getTargetNodeTemplate().getTempId());
 								}
 							}
 
@@ -362,7 +376,7 @@ public class RefinementService {
 
 								// Jump Call zum nächsten kante in der liste
 								abstractRelationshipTemplate = queueRelationshipTemplates.iterator().next();
-								refineRelationshipTemplate(new ArrayList<NodeTemplate>(), abstractRelationshipTemplate, abstractTopologyTemplate);
+								refineRelationshipTemplate(abstractRelationshipTemplate.getSourceNodeTemplate().getExitNodeTemplates(), abstractRelationshipTemplate, abstractTopologyTemplate);
 
 							} else {
 								TopologyTemplate deepCopy = spezificTopologyTemplate.clone();
@@ -376,7 +390,7 @@ public class RefinementService {
 							}
 							queueRelationshipTemplates.add(abstractRelationshipTemplate);
 							spezificTopologyTemplate.getNodeTemplates().removeAll(fragment.getNodeTemplates());
-							spezificTopologyTemplate.getNodeTemplates().removeAll(fragment.getRelationshipTemplates());
+							spezificTopologyTemplate.getRelationshipTemplates().removeAll(fragment.getRelationshipTemplates());
 
 							abstractRelationshipTemplate.setRefined(false);
 						}
@@ -405,6 +419,7 @@ public class RefinementService {
 		} else {
 
 			fragmentNodesQueue = new ArrayList<LevelGraphNode>();
+			exitentryNodesQueue = new ArrayList<LevelGraphNode>();
 			entryNodesQueue = new ArrayList<LevelGraphNode>();
 			exitNodesQueue = new ArrayList<LevelGraphNode>();
 			includeNodesQueue = new ArrayList<LevelGraphNode>();
@@ -412,6 +427,7 @@ public class RefinementService {
 			for (LevelGraphRelation refineRelation : refinLevelGraphNode.getOutLevelGraphRelations()) {
 				refineRelation.getTargetLevelGraphNode().setRefined(false);
 				if (refineRelation.isEntryPoint() && refineRelation.isExitPoint()) {
+					exitentryNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					entryNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					exitNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
@@ -423,7 +439,7 @@ public class RefinementService {
 					fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 				} else {
 					includeNodesQueue.add(refineRelation.getTargetLevelGraphNode());
-					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
+					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
 						fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					}
 
@@ -486,7 +502,7 @@ public class RefinementService {
 
 				} else {
 					includeNodesQueue.add(refineRelation.getTargetLevelGraphNode());
-					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
+					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
 						fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					}
 				}
@@ -515,6 +531,7 @@ public class RefinementService {
 
 	private void startRefineFragmentNodeType(TopologyTemplate fragment, LevelGraphNode startNode, NodeTemplate abstractNodeTemplate, ArrayList<RelationshipTemplate> prevRelationshipTemplates,
 			ArrayList<RelationshipTemplate> prev, TopologyTemplate abstractTopologyTemplate, LevelGraphNode refinLevelGraphNode) {
+		System.out.println();
 
 		ArrayList<NodeTemplate> sourceNodeTemplate = new ArrayList<NodeTemplate>();
 		NodeTemplate tempNodeTemplate = createNewSpezificNodeTemplate(startNode, abstractNodeTemplate, prev, abstractTopologyTemplate, fragment);
@@ -610,9 +627,16 @@ public class RefinementService {
 			}
 		}
 
+		// for (LevelGraphNode exitentryNode : exitentryNodesQueue) {
+		// if (exitentryNode.getId() == refineNode.getId() && !exitentryNode.isRefined()) {
+		// createSpezificRelationshipTemplate(fragment, refineNode, sourceNodeTemplates, null, abstractTopologyTemplate);
+		// }
+		// }
+
 		for (LevelGraphNode exitNode : exitNodesQueue) {
 			if (exitNode.getId() == refineNode.getId()) {
 				exitRelationshipTemplates.addAll(createSpezificRelationshipTemplate(fragment, refineNode, sourceNodeTemplates, null, abstractTopologyTemplate));
+
 			}
 		}
 
@@ -649,13 +673,14 @@ public class RefinementService {
 			for (RelationshipTemplate relationshipTemplate : prevRelationshipTemplates) {
 
 				for (LevelGraphRelation connectRelation : refineLevelGraphNode.getInLevelGraphRelations()) {
-					System.out.println(relationshipTemplate.getLevelGraphNode().getId() == connectRelation.getSourceLevelGraphNode().getId());
+					System.out.println(relationshipTemplate.getLevelGraphNode().getId() + "==" + connectRelation.getSourceLevelGraphNode().getId());
 					if (relationshipTemplate.getLevelGraphNode().getId() == connectRelation.getSourceLevelGraphNode().getId()) {
 
 						if (relationshipTemplate.getTargetNodeId() != null) {
 
 							RelationshipTemplate copyRelationshipTemplate = relationshipTemplate.clone(relationshipTemplate.getTopologyTemplate(), relationshipTemplate.getSourceNodeTemplate(),
 									relationshipTemplate.getTargetNodeTemplate());
+							copyRelationshipTemplate.setSourceNodeId(relationshipTemplate.getSourceNodeId());
 							copyRelationshipTemplate.setTargetNodeId(tempIdGenerator);
 							fragmentPart.getRelationshipTemplates().add(copyRelationshipTemplate);
 						} else {

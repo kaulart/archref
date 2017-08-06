@@ -51,7 +51,7 @@ public class Relation extends de.arthurkaul.archref.model.Entity {
 	@XmlAttribute(name = "targetNodeId")
 	private Long targetNodeId;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PATH_ID")
 	@JsonManagedReference(value = "relation-path")
 	@XmlElement(name = "Path")

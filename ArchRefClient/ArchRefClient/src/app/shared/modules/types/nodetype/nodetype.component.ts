@@ -24,7 +24,8 @@ const URL = '/api/fileupload/nodetype';
  *                                  Also you can select a NodeType and call the NodeTypeDetailComponent where you can see all
  *                                  data which are included in a NodeType.
  *
- * @field - currentRepository: Repository -  Repository which is currently selected
+ * @field - nodeTypes: NodeType[] -  List of the nodeTypes
+ * @field - repository: Repository -  Repository which is currently selected
  * @field - createdNodeType: NodeType - NodeType which should be created
  * @field - editNodeType: NodeType - NodeType which should be edit
  * @field - flashMessage: FlashMessage - For display errors and warnings you can also use it for display success messages but this may a

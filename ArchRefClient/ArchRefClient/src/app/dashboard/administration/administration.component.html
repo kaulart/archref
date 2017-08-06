@@ -7,6 +7,28 @@
 		<div class="w3-theme-d4 w3-card-4 heading row heading panel-heading control-panel">
 			<h2 class="col-sm-3">Administration</h2>
 
+			<!-- Import Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="import" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#importAreaDefinition">
+				<i class="fa fa-upload" aria-hidden="true"></i> Import
+			</button>
+			
+			<!-- Export Button-->
+			<button class="w3-right w3-theme-l1 btn btn-primary" id="export" aria-expanded="true" (click)="exportDefinition()">
+				<i class="fa fa-upload" aria-hidden="true"></i> Export
+			</button>
+			
+		</div>
+		
+		<!-- Import Panel -->
+		<div class="collapse panel-collapse w3-theme-l1 input-panel" id="importAreaDefinition">
+			<form>
+
+				<div class="form-group">
+					<label for="file">Definition XML-File: </label> <input class="form-control" #file type="file" ng2FileSelect [uploader]="uploader" />
+				</div>
+
+				<button type="submit" class="btn btn-success" (click)="importDefinition()">Upload</button>
+			</form>
 		</div>
 
 	</div>

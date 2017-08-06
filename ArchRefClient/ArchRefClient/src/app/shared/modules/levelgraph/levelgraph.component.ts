@@ -112,11 +112,6 @@ export class LevelGraphComponent implements OnInit {
       .subscribe(levelGraphsResponse => {
         this.levelGraphs = levelGraphsResponse;
         Logger.info('Level Graphs sucessfully retrieved.', LevelGraphComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
       });
   }
 

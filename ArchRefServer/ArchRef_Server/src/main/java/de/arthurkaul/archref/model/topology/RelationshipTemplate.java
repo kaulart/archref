@@ -177,8 +177,10 @@ public class RelationshipTemplate extends Relation {
 		relationshipTemplate.setPath(this.getPath().clone());
 		relationshipTemplate.setSourceNodeId(sourceNodeTemplate.getId());
 		relationshipTemplate.setSourceNodeTemplate(sourceNodeTemplate);
-		relationshipTemplate.setTargetNodeId(targetNodeTemplate.getId());
-		relationshipTemplate.setTargetNodeTemplate(targetNodeTemplate);
+		if (targetNodeTemplate != null) {
+			relationshipTemplate.setTargetNodeTemplate(targetNodeTemplate);
+			relationshipTemplate.setTargetNodeId(targetNodeTemplate.getId());
+		}
 		relationshipTemplate.setIcon(this.getIcon());
 
 		relationshipTemplate.setLevelGraphNode(this.levelGraphNode);

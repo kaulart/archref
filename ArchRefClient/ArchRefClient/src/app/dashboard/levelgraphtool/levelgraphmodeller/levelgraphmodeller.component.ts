@@ -19,6 +19,7 @@ import {LevelGraphNodeService} from '../../../shared/dataservices/levelgraph/lev
 import {LevelGraphRelationService} from '../../../shared/dataservices/levelgraph/levelgraphrelation.service';
 import {ExpectedPropertyService} from '../../../shared/dataservices/metrics/expectedproperty.service';
 import {ProvidedPropertyService} from '../../../shared/dataservices/metrics/providedpropertyservice.service';
+import {Utility} from '../../../utility';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FlashMessageService} from 'angular2-flash-message';
@@ -199,7 +200,7 @@ export class LevelGraphModellerComponent implements OnInit {
   updateLevelGraph() {
     this.levelGraphService.updateLevelGraph(this.currentLevelGraph)
       .subscribe(levelGraph => {
-        this.currentLevelGraph = levelGraph;
+             this.currentLevelGraph = levelGraph;
       },
       (error) => {
         this.flashMessage.message = error;
@@ -245,7 +246,6 @@ export class LevelGraphModellerComponent implements OnInit {
     this.levelGraphRelationService.createLevelGraphRelation(this.currentLevelGraphRelation)
       .subscribe(levelGraphRelationResponse => {
         this.currentLevelGraph.levelGraphRelations.push(levelGraphRelationResponse);
-        //  this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
         Logger.info('Level Graph Relation created sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -272,7 +272,30 @@ export class LevelGraphModellerComponent implements OnInit {
    ******************************************************************************************************************************************************************************************************/
   deleteLevelGraphNode(levelGraphNode: LevelGraphNode) {
     this.levelGraphNodeService.deleteLevelGraphNode(levelGraphNode.id).subscribe(levelGraphNodeResponse => {
-      this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
+
+      for (let levelGraphRelation of this.currentLevelGraph.levelGraphRelations) {
+        if (levelGraphRelation.sourceNodeId === levelGraphNode.id) {
+          for (let node of this.currentLevelGraph.levelGraphNodes) {
+            if (node.id === levelGraphRelation.targetNodeId) {
+              node.inLevelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, node.inLevelGraphRelations);
+            }
+          }
+          this.currentLevelGraph.levelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, this.currentLevelGraph.levelGraphRelations);
+
+        }
+
+        if (levelGraphRelation.targetNodeId === levelGraphNode.id) {
+          for (let node of this.currentLevelGraph.levelGraphNodes) {
+            if (node.id === levelGraphRelation.sourceNodeId) {
+              node.outLevelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, node.outLevelGraphRelations);
+            }
+          }
+          this.currentLevelGraph.levelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, this.currentLevelGraph.levelGraphRelations);
+        }
+      }
+
+      this.currentLevelGraph.levelGraphNodes = Utility.deleteElementFromArry(levelGraphNode.id, this.currentLevelGraph.levelGraphNodes);
+      //    this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
       Logger.info('Level Graph Node with id: ' + levelGraphNode.id + ' was deleted sucessfully.', LevelGraphModellerComponent.name);
     },
       (error) => {
@@ -293,7 +316,20 @@ export class LevelGraphModellerComponent implements OnInit {
   deleteLevelGraphRelation(levelGraphRelation: LevelGraphRelation) {
     this.levelGraphRelationService.deleteLevelGraphRelation(levelGraphRelation.id)
       .subscribe(levelGraphRelationResponse => {
-        this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
+
+        for (let node of this.currentLevelGraph.levelGraphNodes) {
+          if (node.id === levelGraphRelation.sourceNodeId) {
+            node.outLevelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, node.outLevelGraphRelations);
+          }
+
+          if (node.id === levelGraphRelation.targetNodeId) {
+            node.inLevelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, node.inLevelGraphRelations);
+          }
+        }
+
+        this.currentLevelGraph.levelGraphRelations = Utility.deleteElementFromArry(levelGraphRelation.id, this.currentLevelGraph.levelGraphRelations);
+
+        // this.levelGraphService.getLevelGraph(this.currentLevelGraph.id).subscribe(levelGraphResponse => this.currentLevelGraph = levelGraphResponse);
         Logger.info('Level Graph Relation with id: ' + levelGraphRelation.id + ' was deleted sucessfully.', LevelGraphModellerComponent.name);
       },
       (error) => {
@@ -414,7 +450,6 @@ export class LevelGraphModellerComponent implements OnInit {
     if (this.moveNode) {
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
-      // this.updateLevelGraph();
       this.moveNode = false;
     }
   }
@@ -565,7 +600,7 @@ export class LevelGraphModellerComponent implements OnInit {
 
   /*******************************************************************************************************************************************************************************************************
    *
-   * @method - onDrag is called to start drag and drop of level graph nodes from toolbox to the draw area
+   * @method - onDrag - is called to start drag and drop of level graph nodes from toolbox to the draw area
    *
    * @param - event: Event - Event Object of the onDrag Event
    * @param - dragData: any, - Level on which the node will be droped
@@ -585,7 +620,9 @@ export class LevelGraphModellerComponent implements OnInit {
    * @param - event: Event - Event Object of the onDragOver Event
    *
    ******************************************************************************************************************************************************************************************************/
-  onDragOver(event: MouseEvent) {event.preventDefault();}
+  onDragOver(event: MouseEvent) {
+    event.preventDefault();
+  }
 
   /*******************************************************************************************************************************************************************************************************
    *
@@ -727,7 +764,6 @@ export class LevelGraphModellerComponent implements OnInit {
    *
    ******************************************************************************************************************************************************************************************************/
   stopChangeLevelHeight(event: MouseEvent) {
-    //this.updateLevelGraph();
     this.changeLevelHeight = false;
     this.lastMousePositionY = event.offsetY;
   }
@@ -1039,12 +1075,22 @@ export class LevelGraphModellerComponent implements OnInit {
     this.expectedPropertySerivce.createExpectedProperty(this.createdExpectedProperty).subscribe(expectedPropertyResponse => this.entity.expectedProperties.push(expectedPropertyResponse));
   }
 
+  /*******************************************************************************************************************************************************************************************************
+   *
+   *  @method - addExpectedProperty - Add a ExpectedProperty to the current set entity
+   *
+   ******************************************************************************************************************************************************************************************************/
   setEntryExitProperty() {
     this.currentLevelGraphRelation.exitPoint = this.exitPoint;
     this.currentLevelGraphRelation.entryPoint = this.entryPoint;
     this.updateLevelGraph();
   }
 
+  /*******************************************************************************************************************************************************************************************************
+   *
+   *  @method - isEntryExitRelation - Set the entry and exit property of a refineTo relation
+   *
+   ******************************************************************************************************************************************************************************************************/
   isEntryExitRelation(relation: LevelGraphRelation) {
     let sourceNode: LevelGraphNode;
     let targetNode: LevelGraphNode;
@@ -1068,12 +1114,15 @@ export class LevelGraphModellerComponent implements OnInit {
 
   }
 
+  /*******************************************************************************************************************************************************************************************************
+   *
+   *  @method - setLevelGraphRelation - Set current selected relation and the values of the entry and exit point of the relation
+   *
+   ******************************************************************************************************************************************************************************************************/
   setLevelGraphRelation(relation: LevelGraphRelation) {
     this.currentLevelGraphRelation = relation;
     this.entryPoint = relation.entryPoint;
     this.exitPoint = relation.exitPoint;
-
   }
-
 
 }

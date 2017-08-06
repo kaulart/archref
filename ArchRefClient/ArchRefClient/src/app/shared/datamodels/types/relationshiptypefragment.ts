@@ -22,5 +22,3 @@ export class RelationshipTypeFragment extends Entity {
   }
 
 }
-
-/// TODO löschen wenn nicht benötigt am schluss

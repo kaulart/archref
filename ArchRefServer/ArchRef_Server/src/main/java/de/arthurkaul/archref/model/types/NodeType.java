@@ -28,11 +28,10 @@ import de.arthurkaul.archref.model.topology.NodeTemplate;
 
 /*******************************************************************************************************************************************************************************************************
  *
- * @class - <NodeType> - NodeType inherited from <Entity> it is the type of a
- *        <NodeTemplate> or of a <LevelGraphNode>
+ * @class - <NodeType> - NodeType inherited from <Entity> it is the type of a <NodeTemplate> or of a <LevelGraphNode>
  *
  * @field - <Repository> repository: Repository - Repository of the NodeType
- * @field - Long repositoryId - ID of the Repository of the NodeType
+ * @field - String repositoryId - ID of the Repository of the NodeType
  *
  * @author - Arthur Kaul
  *
@@ -58,7 +57,7 @@ public class NodeType extends de.arthurkaul.archref.model.Entity {
 
 	@Column(name = "REPOSITORY_ID")
 	@XmlAttribute(name = "repositoryRef")
-	private Long repositoryId;
+	private String repositoryId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nodeType")
 	@JsonManagedReference(value = "nodeType-nodeTemplate")
@@ -72,11 +71,11 @@ public class NodeType extends de.arthurkaul.archref.model.Entity {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	public Long getRepositoryId() {
+	public String getRepositoryId() {
 		return repositoryId;
 	}
 
-	public void setRepositoryId(Long repositoryId) {
+	public void setRepositoryId(String repositoryId) {
 		this.repositoryId = repositoryId;
 	}
 

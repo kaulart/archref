@@ -3,12 +3,9 @@ package de.arthurkaul.archref.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -20,7 +17,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlIDExtension;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -31,12 +29,10 @@ import de.arthurkaul.archref.model.types.RelationshipType;
  *
  * @class - <Repository> - List of <NodeType> and <RelationshipType> objects
  *
- * @field - Long id: number - ID of the Repository
+ * @field - String id: number - ID of the Repository
  * @field - String name: name - Name of the Repository
- * @field - List<NodeType> nodeTypeList - List of the NodeTypes in the
- *        Repository
- * @field - List<RelationshipType> relationshipType - List of the
- *        RelationshipTypes in the Repository
+ * @field - List<NodeType> nodeTypeList - List of the NodeTypes in the Repository
+ * @field - List<RelationshipType> relationshipType - List of the RelationshipTypes in the Repository
  *
  * @author - Arthur Kaul
  *
@@ -47,7 +43,7 @@ import de.arthurkaul.archref.model.types.RelationshipType;
 @XmlRootElement(name = "Repository")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tRepository")
-public class Repository {
+public class Repository extends Base {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -55,25 +51,20 @@ public class Repository {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
-	@Id
-	@GeneratedValue()
-	@Column(name = "ID")
-	@XmlAttribute(name = "id")
-	@XmlIDExtension
-	private Long id;
-
 	@Column(name = "NAME")
 	@XmlAttribute(name = "name")
 	@NotNull
 	private String name;
 
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "repository")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "repository")
+	@Cascade(CascadeType.ALL)
 	@JsonManagedReference(value = "repository-nodeType")
 	@XmlElementWrapper(name = "NodeTypes")
 	@XmlElement(name = "NodeType")
 	private List<NodeType> nodeTypes = new ArrayList<NodeType>();
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "repository")
+	@OneToMany(mappedBy = "repository")
+	@Cascade(CascadeType.ALL)
 	@JsonManagedReference(value = "repository-relationshipType")
 	@XmlElementWrapper(name = "RelationshipTypes")
 	@XmlElement(name = "RelationshipType")
@@ -84,14 +75,6 @@ public class Repository {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

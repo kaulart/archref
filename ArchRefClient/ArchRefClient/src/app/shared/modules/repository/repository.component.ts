@@ -94,11 +94,6 @@ export class RepositoryComponent implements OnInit {
       .subscribe(repositoriesResponse => {
         this.repositories = repositoriesResponse;
         Logger.info('Repositories sucessfully retrieved.', RepositoryComponent.name);
-      },
-      (error) => {
-        this.flashMessage.message = error;
-        this.flashMessage.isError = true;
-        this.flashMessageService.display(this.flashMessage);
       });
   }
 
@@ -131,11 +126,11 @@ export class RepositoryComponent implements OnInit {
    * @param - id: number - ID of the repository witch should be deleted from the database
    *
    *******************************************************************************************************************************************************************************************************/
-  deleteRepository(id: number, event) {
+  deleteRepository(id: string, event) {
     Logger.info('Delete Repository', RepositoryComponent.name);
     this.repositoryService.deleteRepository(id)
       .subscribe(repositoryResponse => {
-        this.repositories = Utility.deleteElementFromArry(id, this.repositories);
+        this.repositories = Utility.deleteElementFromArryS(id, this.repositories);
         Logger.info('Repository with id: ' + id + ' was deleted sucessfully.', RepositoryComponent.name);
       },
       (error) => {
@@ -148,7 +143,7 @@ export class RepositoryComponent implements OnInit {
   /********************************************************************************************************************************************************************************************************
    *
    * @method - importRepository - Call the ImportService for upload a XML file to the server component and import the data of the XML file
-   * 
+   *
    *******************************************************************************************************************************************************************************************************/
   importRepository() {
     this.uploader.setOptions({url: URL_IMPORT});
