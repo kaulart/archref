@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -61,11 +62,11 @@ public class LevelGraphNode extends Node {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 	@Column(name = "LEVEL_ID")
-	@XmlAttribute(name = "abstractionLevelId")
+	@XmlAttribute(name = "abstractionLevelId", required = true)
 	private Long levelId;
 
 	@Column(name = "LEVEL_DEPTH")
-	@XmlAttribute(name = "abstractionDepth")
+	@XmlAttribute(name = "abstractionDepth", required = true)
 	private int levelDepth;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -75,7 +76,7 @@ public class LevelGraphNode extends Node {
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
-	@XmlAttribute(name = "levelGraphId")
+	@XmlAttribute(name = "levelGraphId", required = true)
 	private Long levelGraphId;
 
 	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetLevelGraphNode")
@@ -89,7 +90,7 @@ public class LevelGraphNode extends Node {
 	private List<LevelGraphRelation> outLevelGraphRelations;
 
 	@Column(name = "LEVELGRAPHNODETYPE")
-	@XmlElement(name = "Type")
+	@XmlElement(name = "Type", required = true)
 	private String levelGraphNodeType;
 
 	@Column(name = "LEVELGRAPHNODETYPE_ID")
@@ -108,20 +109,16 @@ public class LevelGraphNode extends Node {
 	@JsonIgnore
 	private List<RelationshipTemplate> relationshipTemplates = new ArrayList<RelationshipTemplate>();
 
+	// Temporary fields only used for the refinement
+	@Transient
+	@JsonIgnore
 	@XmlTransient
 	private ArrayList<LevelGraphRelation> outRefineRelations = new ArrayList<LevelGraphRelation>();
 
+	@Transient
+	@JsonIgnore
 	@XmlTransient
 	private ArrayList<LevelGraphRelation> outConnectRelations = new ArrayList<LevelGraphRelation>();
-
-	@XmlTransient
-	private ArrayList<LevelGraphRelation> outRefineEntryRelations = new ArrayList<LevelGraphRelation>();
-
-	@XmlTransient
-	private ArrayList<LevelGraphRelation> outRefineExitRelations = new ArrayList<LevelGraphRelation>();
-
-	@XmlTransient
-	private ArrayList<LevelGraphRelation> outRefineIncludeRelations = new ArrayList<LevelGraphRelation>();
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -214,65 +211,6 @@ public class LevelGraphNode extends Node {
 	}
 
 	@JsonIgnore
-	public ArrayList<LevelGraphRelation> getOutRefineEntryRelations() {
-		return outRefineEntryRelations;
-	}
-
-	@JsonIgnore
-	public void setOutRefineEntryRelations(ArrayList<LevelGraphRelation> outRefineEntryRelations) {
-		this.outRefineEntryRelations = outRefineEntryRelations;
-	}
-
-	@JsonIgnore
-	public ArrayList<LevelGraphRelation> getOutRefineExitRelations() {
-		return outRefineExitRelations;
-	}
-
-	@JsonIgnore
-	public void setOutRefineExitRelations(ArrayList<LevelGraphRelation> outRefineExitRelations) {
-		this.outRefineExitRelations = outRefineExitRelations;
-	}
-
-	@JsonIgnore
-	public ArrayList<LevelGraphRelation> getOutRefineIncludeRelations() {
-		return outRefineIncludeRelations;
-	}
-
-	@JsonIgnore
-	public void setOutRefineIncludeRelations(ArrayList<LevelGraphRelation> outRefineIncludeRelations) {
-		this.outRefineIncludeRelations = outRefineIncludeRelations;
-	}
-
-	public void splitRelations() {
-
-		for (LevelGraphRelation levelGraphRelation : this.outLevelGraphRelations) {
-			if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.REFINE_TO)) {
-				this.outRefineRelations.add(levelGraphRelation);
-			} else if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.CONNECT_OVER_TO)) {
-				this.outConnectRelations.add(levelGraphRelation);
-			}
-		}
-
-	}
-
-	public void splitFragmentRelations() {
-
-		for (LevelGraphRelation levelGraphRelation : this.outLevelGraphRelations) {
-			if (levelGraphRelation.isEntryPoint() && levelGraphRelation.isExitPoint()) {
-				this.outRefineEntryRelations.add(levelGraphRelation);
-				this.outRefineExitRelations.add(levelGraphRelation);
-			} else if (levelGraphRelation.isEntryPoint() && !levelGraphRelation.isExitPoint()) {
-				this.outRefineEntryRelations.add(levelGraphRelation);
-			} else if (!levelGraphRelation.isEntryPoint() && levelGraphRelation.isExitPoint()) {
-				this.outRefineExitRelations.add(levelGraphRelation);
-			} else {
-				this.outRefineIncludeRelations.add(levelGraphRelation);
-			}
-		}
-
-	}
-
-	@JsonIgnore
 	public List<NodeTemplate> getNodeTemplates() {
 		return nodeTemplates;
 	}
@@ -290,6 +228,23 @@ public class LevelGraphNode extends Node {
 	@JsonIgnore
 	public void setRelationshipTemplates(List<RelationshipTemplate> relationshipTemplates) {
 		this.relationshipTemplates = relationshipTemplates;
+	}
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - splitRelations - Split the LevelGraphRelations of a Node into Refine and Conncted_Over_To_Relations for the refinement
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+	public void splitRelations() {
+
+		for (LevelGraphRelation levelGraphRelation : this.outLevelGraphRelations) {
+			if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.REFINE_TO)) {
+				this.outRefineRelations.add(levelGraphRelation);
+			} else if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.CONNECT_OVER_TO)) {
+				this.outConnectRelations.add(levelGraphRelation);
+			}
+		}
+
 	}
 
 }

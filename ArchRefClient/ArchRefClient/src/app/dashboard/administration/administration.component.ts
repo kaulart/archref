@@ -7,7 +7,7 @@ import {Repository} from '../../shared/datamodels/repository/repository';
 import {TopologyTemplate} from '../../shared/datamodels/topology/topologytemplate';
 import {NodeType} from '../../shared/datamodels/types/nodetype';
 import {RelationshipType} from '../../shared/datamodels/types/relationshiptype';
-import { ExportXmlService } from '../../shared/dataservices/exportxml.service';
+import {ExportXmlService} from '../../shared/dataservices/exportxml.service';
 import {LevelGraphService} from '../../shared/dataservices/levelgraph/levelgraph.service';
 import {RepositoryService} from '../../shared/dataservices/repository/repository.service';
 import {TopologyTemplateService} from '../../shared/dataservices/topologytemplate/topologytemplate.service';
@@ -42,6 +42,10 @@ export class AdministrationComponent implements OnInit {
   public flashMessage = new FlashMessage();
   public uploader: FileUploader = new FileUploader({});
 
+  topologyTemplates: TopologyTemplate[] = [];
+  levelGraphs: LevelGraph[] = [];
+  repositories: Repository[] = [];
+
   constructor(private repositoryService: RepositoryService,
     private topologyTemplateService: TopologyTemplateService,
     private levelGraphService: LevelGraphService,
@@ -49,8 +53,56 @@ export class AdministrationComponent implements OnInit {
     private flashMessageService: FlashMessageService,
     private xmlExportSerivce: ExportXmlService) {};
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.retrieveTopologyTemplates();
+    this.retrieveRepositories();
+    this.retrieveLevelGraphs();
+  }
 
+  /********************************************************************************************************************************************************************************************************
+   *
+   *  @method - retrieveTopologyTemplates - Call the TopologyTemplateService for loading all TopologyTemplates from database into the application
+   *                                        and subscribe for a callback. Currently no pagination/streaming of data is supported
+   *
+   *******************************************************************************************************************************************************************************************************/
+  retrieveTopologyTemplates() {
+    Logger.info('Retrieve TopologyTemplate Data', AdministrationComponent.name);
+    this.topologyTemplateService.getTopologyTemplates()
+      .subscribe(topologyTemplateResponse => {
+        this.topologyTemplates = topologyTemplateResponse;
+        Logger.info('Topology Template sucessfully retrieved.', AdministrationComponent.name);
+      });
+  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe
+   *                                 for a callback. Currently no pagination/streaming of data is supported
+   *
+   *******************************************************************************************************************************************************************************************************/
+  retrieveLevelGraphs() {
+    Logger.info('Retrieve LevelGraph Data', AdministrationComponent.name);
+    this.levelGraphService.getLevelGraphs()
+      .subscribe(levelGraphsResponse => {
+        this.levelGraphs = levelGraphsResponse;
+        Logger.info('Level Graphs sucessfully retrieved.', AdministrationComponent.name);
+      });
+  }
+
+  /********************************************************************************************************************************************************************************************************
+   *
+   * @method - retrieveRepositories - Call the RepositoryService for loading all repositories from database into the application and subscribe
+   *                                  for a callback. Currently no pagination/streaming of data is supported
+   *
+   *******************************************************************************************************************************************************************************************************/
+  retrieveRepositories() {
+    Logger.info('Retrieve Repository Data', AdministrationComponent.name);
+    this.repositoryService.getRepositories()
+      .subscribe(repositoriesResponse => {
+        this.repositories = repositoriesResponse;
+        Logger.info('Repositories sucessfully retrieved.', AdministrationComponent.name);
+      });
+  }
 
   /********************************************************************************************************************************************************************************************************
    *
@@ -61,6 +113,33 @@ export class AdministrationComponent implements OnInit {
     this.uploader.setOptions({url: URL_IMPORT});
     this.uploader.uploadAll();
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+
+      response = JSON.parse(response);
+      for (let levelGraph of response.levelGraphs) {
+        this.levelGraphService.updateLevelGraph(levelGraph)
+          .subscribe(levelGraphResponse => {
+             this.levelGraphs.push(levelGraphResponse);
+          },
+          (error) => {
+            this.flashMessage.isError = true;
+            this.flashMessageService.display(this.flashMessage);
+          });
+      }
+
+      for (let topologyTemplates of response.topologyTemplates) {
+        this.topologyTemplateService.updateTopologyTemplate(topologyTemplates)
+          .subscribe(topologyTemplateResponse => {
+             this.topologyTemplates.push(topologyTemplateResponse);
+          },
+          (error) => {
+            this.flashMessage.message = error;
+            this.flashMessage.isError = true;
+            this.flashMessageService.display(this.flashMessage);
+          });
+      }
+
+      this.repositories.push(response.repositories);
+
     };
   }
 
@@ -74,7 +153,7 @@ export class AdministrationComponent implements OnInit {
   exportDefinition() {
     this.xmlExportSerivce.getXmlFile(URL_EXPORT).subscribe(
       res => {
-        FileSaver.saveAs(res,  'ArchRefDefinition.xml');
+        FileSaver.saveAs(res, 'ArchRefDefinition.xml');
       },
       (error) => {
         this.flashMessage.message = error;

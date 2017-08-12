@@ -39,7 +39,9 @@ const URL_EXPORT = '/topologytemplate';
  *********************************************************************************************************************************************************************************************************/
 export class TopologyTemplateComponent implements OnInit {
 
+  @Input()
   topologyTemplates: TopologyTemplate[] = [];
+
   createdTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   editTopologyTemplate: TopologyTemplate = new TopologyTemplate();
   public flashMessage = new FlashMessage();
@@ -56,7 +58,6 @@ export class TopologyTemplateComponent implements OnInit {
   ngOnInit() {
     Logger.info('Initialize TopologyTemplateComponent', TopologyTemplateComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.retrieveTopologyTemplates();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -149,7 +150,16 @@ export class TopologyTemplateComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       let topologyTemplate: TopologyTemplate = new TopologyTemplate();
       topologyTemplate = JSON.parse(response);
-      this.topologyTemplates.push(topologyTemplate);
+        this.topologyTemplateService.updateTopologyTemplate(topologyTemplate)
+      .subscribe(topologyTemplateResponse => {
+         this.topologyTemplates.push(topologyTemplateResponse);
+        Logger.info('Topology Template with id: ' + topologyTemplateResponse.id + ' and name:' + topologyTemplateResponse.name + ' was updated sucessfully.', TopologyTemplateComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
     };
   }
 

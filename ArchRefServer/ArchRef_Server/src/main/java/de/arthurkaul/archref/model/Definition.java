@@ -13,9 +13,20 @@ import javax.xml.bind.annotation.XmlType;
 import de.arthurkaul.archref.model.levelgraph.LevelGraph;
 import de.arthurkaul.archref.model.topology.TopologyTemplate;
 
-@XmlRootElement(name = "Definition")
+@XmlRootElement(name = "Definition", namespace = "archRef")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tDefinition")
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @class - <Definition> - Used for export and import a combination of Level Graphs, Topologies and Repositories
+ *
+ * @field - List<Repository> repositories - List of Repositories
+ * @field - List<LevelGraph> levelGraphs - List of LevelGraphs
+ * @field - List<TopologyTemplate> topologies - List of TopologyTemplates
+ *
+ * @author - Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
 public class Definition {
 
 	@XmlElementWrapper(name = "Repositories")
@@ -30,6 +41,11 @@ public class Definition {
 	@XmlElement(name = "Topology")
 	private List<TopologyTemplate> topologies = new ArrayList<TopologyTemplate>();
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @getter / @setter Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public List<Repository> getRepositories() {
 		return repositories;
 	}

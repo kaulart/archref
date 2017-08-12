@@ -155,6 +155,11 @@ public class TopologyTemplate extends Base {
 		this.abstractionLevel = abstractionLevel;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of TopologyTemplate
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public TopologyTemplate clone() {
 		TopologyTemplate topologyTemplate = new TopologyTemplate();
 		topologyTemplate.setAbstractionLevel(this.abstractionLevel);
@@ -186,6 +191,11 @@ public class TopologyTemplate extends Base {
 		return topologyTemplate;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method updateForeignKey() - update the foreign Keys of the NodeTemplates and RelationshipTemplates
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public void updateForeignKey() {
 
 		for (NodeTemplate node : this.nodeTemplates) {
@@ -197,6 +207,11 @@ public class TopologyTemplate extends Base {
 		}
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method updatePosition() - update the Position of the element for the view representation
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public void updatePosition() {
 
 		int fieldsWidthHeight = (int) Math.sqrt(this.getNodeTemplates().size());

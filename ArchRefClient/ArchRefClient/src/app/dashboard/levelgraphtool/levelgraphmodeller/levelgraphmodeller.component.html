@@ -296,6 +296,7 @@
 		<!-- 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ExpectedProperty</a></li>
  -->
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Add ProvidedProperty</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#editLevelGraphNodeName" (click)="setLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a></li>
 		<li><a class="dropdown-item" routerLink="/dashboard/levelgraphnodedetails" [queryParams]="{id: levelGraphNodeContextMenu.get('levelGraphNode').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteLevelGraphNode(levelGraphNodeContextMenu.get('levelGraphNode'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
@@ -422,3 +423,27 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal for Edit LevelGraphName-->
+<div class="modal fade modal-position" id="editLevelGraphNodeName" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Level Graph Node Name</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="form-group">
+						<label for="name">Name: </label> <input #editName type="text" class="form-control" id="name" value="{{currentLevelGraphNode.name}}" required>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="editLevelGraphNodeName(editName.value)" data-dismiss="modal">Save</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

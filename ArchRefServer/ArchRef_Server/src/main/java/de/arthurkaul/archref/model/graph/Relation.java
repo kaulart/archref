@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -26,6 +26,7 @@ import de.arthurkaul.archref.model.metrics.ProvidedProperty;
  * @field - Long sourceNodeId - ID of the source node of relation
  * @field - Long targetNodeId - ID of the target node of relation
  * @field - <Path> path - Path of the line from source node to target node
+ * @field - boolean refined - Used for the refinement to indicate if a relation is refined or not
  *
  * @author - Arthur Kaul
  *
@@ -44,19 +45,21 @@ public class Relation extends de.arthurkaul.archref.model.Entity {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "SOURCE_NODE_ID")
-	@XmlAttribute(name = "sourceNodeId")
+	@XmlAttribute(name = "sourceNodeId", required = true)
 	private Long sourceNodeId;
 
 	@Column(name = "TARGET_NODE_ID")
-	@XmlAttribute(name = "targetNodeId")
+	@XmlAttribute(name = "targetNodeId", required = true)
 	private Long targetNodeId;
 
 	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "PATH_ID")
 	@JsonManagedReference(value = "relation-path")
-	@XmlElement(name = "Path")
+	@XmlTransient
 	private Path path = new Path();
 
+	// Temporary field only used for the refinement
+	@Transient
 	@JsonIgnore
 	@XmlTransient
 	private boolean refined = false;
@@ -99,6 +102,11 @@ public class Relation extends de.arthurkaul.archref.model.Entity {
 		this.refined = refined;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the Relation
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public Relation clone() {
 		Relation relation = new Relation();
 		relation.setIcon(this.getIcon());

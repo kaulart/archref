@@ -29,7 +29,6 @@ import de.arthurkaul.archref.model.types.RelationshipType;
  *
  * @class - <Repository> - List of <NodeType> and <RelationshipType> objects
  *
- * @field - String id: number - ID of the Repository
  * @field - String name: name - Name of the Repository
  * @field - List<NodeType> nodeTypeList - List of the NodeTypes in the Repository
  * @field - List<RelationshipType> relationshipType - List of the RelationshipTypes in the Repository
@@ -52,7 +51,7 @@ public class Repository extends Base {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "NAME")
-	@XmlAttribute(name = "name")
+	@XmlAttribute(name = "name", required = true)
 	@NotNull
 	private String name;
 

@@ -2,6 +2,7 @@ package de.arthurkaul.archref.model.graph;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -40,20 +41,26 @@ public class Node extends de.arthurkaul.archref.model.Entity {
 	 ***************************************************************************************************************************************************************************************************/
 	@Column(name = "X")
 	@XmlAttribute(name = "x")
+	@XmlTransient
 	private float x = 0.0f;
 
 	@Column(name = "Y")
 	@XmlAttribute(name = "y")
+	@XmlTransient
 	private float y = 0.0f;;
 
 	@Column(name = "WIDTH")
 	@XmlAttribute(name = "width")
+	@XmlTransient
 	private float width = Constants.NODEWIDTH;
 
 	@Column(name = "HEIGHT")
 	@XmlAttribute(name = "height")
+	@XmlTransient
 	private float height = Constants.NODEHEIGHT;
 
+	// Temporary field only used for the refinement
+	@Transient
 	@JsonIgnore
 	@XmlTransient
 	private boolean refined = false;
@@ -104,6 +111,11 @@ public class Node extends de.arthurkaul.archref.model.Entity {
 		this.refined = refined;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the Node
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	@Override
 	public Node clone() {
 		Node node = new Node();

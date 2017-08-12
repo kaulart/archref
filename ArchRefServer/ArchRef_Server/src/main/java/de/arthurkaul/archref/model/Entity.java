@@ -29,10 +29,13 @@ import de.arthurkaul.archref.model.topology.NodeTemplate;
  * @class - <Entity> - Superclass for all entities like <LevelGraphNodes>, <NodeType>, <NodeTemplate>. etc. if you want to extend the data of all this objects for example with metrics put this data as
  *        fields into this class like the expected and provided properties.
  *
- * @field - Long id - ID of the Entity
  * @field - String name - Name of the Entity
  * @field - List<ExpectedProperty> expectedProperties - List of expected properties of the Entity
  * @field - List<ProvidedProperty> providedProperties - List of provided properties of the Entity
+ * @field - String icon - path of the icon of the entity
+ * @field - Long tempId - Temporary ID of an Entity which is not persisted
+ * @field - ArrayList<NodeTemplate> entryNodeTemplates - Temporary entry Nodes are needed for the refinement
+ * @field - ArrayList<NodeTemplate> exitNodeTemplates - Temporary entry Nodes are needed for the refinement
  *
  * @author - Arthur Kaul
  *
@@ -51,7 +54,7 @@ public class Entity extends Base {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "NAME")
-	@XmlAttribute(name = "name")
+	@XmlAttribute(name = "name", required = true)
 	private String name = "Unnamed";
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entityExpected")
@@ -70,15 +73,19 @@ public class Entity extends Base {
 	@XmlTransient
 	private String icon = "/assets/img/nodeTypeDefault.png";
 
+	// Temporary fields needed for the refinement only they will not be persisted
 	@XmlTransient
+	@JsonIgnore
 	private Long tempId;
 
 	@Transient
 	@XmlTransient
+	@JsonIgnore
 	private ArrayList<NodeTemplate> entryNodeTemplates = new ArrayList<NodeTemplate>();
 
 	@Transient
 	@XmlTransient
+	@JsonIgnore
 	private ArrayList<NodeTemplate> exitNodeTemplates = new ArrayList<NodeTemplate>();
 
 	/***************************************************************************************************************************************************************************************************
@@ -119,19 +126,6 @@ public class Entity extends Base {
 		this.icon = icon;
 	}
 
-	public Entity clone() {
-		Entity entity = new Entity();
-		entity.setIcon(this.icon);
-		entity.setName(this.name);
-		for (ExpectedProperty property : this.expectedProperties) {
-			entity.getExpectedProperties().add(property.clone());
-		}
-		for (ProvidedProperty property : this.providedProperties) {
-			entity.getProvidedProperties().add(property.clone());
-		}
-		return entity;
-	}
-
 	@JsonIgnore
 	public Long getTempId() {
 		return tempId;
@@ -160,6 +154,24 @@ public class Entity extends Base {
 	@JsonIgnore
 	public void setExitNodeTemplates(ArrayList<NodeTemplate> exitNodeTemplates) {
 		this.exitNodeTemplates = exitNodeTemplates;
+	}
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the Entity
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+	public Entity clone() {
+		Entity entity = new Entity();
+		entity.setIcon(this.icon);
+		entity.setName(this.name);
+		for (ExpectedProperty property : this.expectedProperties) {
+			entity.getExpectedProperties().add(property.clone());
+		}
+		for (ProvidedProperty property : this.providedProperties) {
+			entity.getProvidedProperties().add(property.clone());
+		}
+		return entity;
 	}
 
 }

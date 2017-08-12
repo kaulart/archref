@@ -46,7 +46,7 @@ public class ProvidedProperty extends Property {
 	private de.arthurkaul.archref.model.Entity entityProvided;
 
 	@Column(name = "ENTITYPROVIDED_ID")
-	@XmlAttribute(name = "entityProvidedId")
+	@XmlAttribute(name = "entityProvidedId", required = true)
 	private Long entityProvidedId;
 
 	/***************************************************************************************************************************************************************************************************
@@ -71,6 +71,11 @@ public class ProvidedProperty extends Property {
 		this.entityProvidedId = entityProvidedId;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the ProvidedProperty
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public ProvidedProperty clone() {
 		ProvidedProperty property = new ProvidedProperty();
 		property.setName(this.getName());

@@ -56,7 +56,7 @@ public class NodeType extends de.arthurkaul.archref.model.Entity {
 	private Repository repository;
 
 	@Column(name = "REPOSITORY_ID")
-	@XmlAttribute(name = "repositoryRef")
+	@XmlAttribute(name = "repositoryRef", required = true)
 	private String repositoryId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nodeType")

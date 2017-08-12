@@ -48,17 +48,17 @@
 
 			<div id="repository" class="w3-card-4 rounded tab-pane active" role="tabpanel">
 				<!-- Selector for the RepositoryComponent -->
-				<app-repository></app-repository>
+				<app-repository [repositories]="repositories"></app-repository>
 			</div>
 
 			<div id="levelGraph" class="w3-card-4 rounded tab-pane" role="tabpanel">
 				<!-- Selector for the LevelGraphComponent -->
-				<app-levelgraph></app-levelgraph>
+				<app-levelgraph [levelGraphs]="levelGraphs"></app-levelgraph>
 			</div>
 
 			<div id="topologyTemplate" class="w3-card-4 rounded tab-pane" role="tabpanel">
 				<!-- Selector for the TopologyTemplateComponent -->
-				<app-topologytemplate></app-topologytemplate>
+				<app-topologytemplate [topologyTemplates]="topologyTemplates"></app-topologytemplate>
 			</div>
 
 		</div>

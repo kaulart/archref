@@ -57,31 +57,31 @@ public class LevelGraphRelation extends Relation {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "SOURCE_LEVEL_DEPTH")
-	@XmlElement(name = "SourceAbstractioLevel")
+	@XmlElement(name = "SourceAbstractioLevel", required = true)
 	private Integer sourceLevelDepth;
 
 	@Column(name = "TARGET_LEVEL_DEPTH")
-	@XmlElement(name = "TargetAbstractioLevel")
+	@XmlElement(name = "TargetAbstractioLevel", required = true)
 	private Integer targetLevelDepth;
 
 	@Column(name = "SOURCE_LEVEL_ID")
-	@XmlAttribute(name = "sourceLevelId")
+	@XmlAttribute(name = "sourceLevelId", required = true)
 	private Long sourceLevelId;
 
 	@Column(name = "TARGET_LEVEL_ID")
-	@XmlAttribute(name = "targetLevelId")
+	@XmlAttribute(name = "targetLevelId", required = true)
 	private Long targetLevelId;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TARGET_LEVELGRAPHNODE", updatable = false)
 	@JsonBackReference(value = "inLevelGraphRelations-targetLevelGraphNode")
-	@XmlElement(name = "TargetLevelGraphNode")
+	@XmlElement(name = "TargetLevelGraphNode", required = true)
 	private LevelGraphNode targetLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SOURCE_LEVELGRAPHNODE", updatable = false)
 	@JsonBackReference(value = "outLevelGraphRelations-sourceLevelGraphNode")
-	@XmlElement(name = "SourceLevelGraphNode")
+	@XmlElement(name = "SourceLevelGraphNode", required = true)
 	private LevelGraphNode sourceLevelGraphNode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -91,19 +91,19 @@ public class LevelGraphRelation extends Relation {
 	private LevelGraph levelGraph;
 
 	@Column(name = "LEVELGRAPH_ID")
-	@XmlAttribute(name = "levelGraphId")
+	@XmlAttribute(name = "levelGraphId", required = true)
 	private Long levelGraphId;
 
 	@Column(name = "TYPE")
-	@XmlElement(name = "Type")
+	@XmlElement(name = "Type", required = true)
 	private String levelGraphRelationType;
 
 	@Column(name = "ENTRY_POINT")
-	@XmlAttribute(name = "entryPoint")
+	@XmlAttribute(name = "entryPoint", required = true)
 	private Boolean entryPoint = false;
 
 	@Column(name = "EXIT_POINT")
-	@XmlAttribute(name = "exitPoint")
+	@XmlAttribute(name = "exitPoint", required = true)
 	private Boolean exitPoint = false;
 
 	/***************************************************************************************************************************************************************************************************

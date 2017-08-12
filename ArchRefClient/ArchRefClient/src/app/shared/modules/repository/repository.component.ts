@@ -16,7 +16,6 @@ const URL_IMPORT = '/api/import/repository';
 // URL for XML Export
 const URL_EXPORT = '/repository';
 
-
 @Component({
   selector: 'app-repository',
   templateUrl: './repository.component.html',
@@ -40,6 +39,7 @@ const URL_EXPORT = '/repository';
  *********************************************************************************************************************************************************************************************************/
 export class RepositoryComponent implements OnInit {
 
+  @Input()
   public repositories: Repository[] = [];
 
   public createdRepository: Repository = new Repository();
@@ -60,7 +60,6 @@ export class RepositoryComponent implements OnInit {
   ngOnInit() {
     Logger.info('Initialize Repository Component', RepositoryComponent.name);
     this.flashMessage.timeoutInMS = Constants.FLASHMESSAGETIMEOUT;
-    this.retrieveRepositories();
   }
 
   /********************************************************************************************************************************************************************************************************

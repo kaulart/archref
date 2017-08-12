@@ -40,7 +40,6 @@ import de.arthurkaul.archref.model.types.NodeType;
  * @field - List<RelationshipTemplate> outRelationshipTemplates - Array of all outgoing RelationshipTemplates of the NodeTemplate
  * @field - <TopologyTemplate> topologyTemplate - TopologyTemplate of the NodeTemplate
  * @field - <TopologyTemplate> topologyTemplateId - ID of TopologyTemplate of the NodeTemplate
- * @field - Integer abstractionLevel - Level of abstraction of the NodeTemplate
  *
  * @author - Arthur Kaul
  *
@@ -66,7 +65,7 @@ public class NodeTemplate extends Node {
 	private LevelGraphNode levelGraphNode;
 
 	@Column(name = "LEVELGRAPHNODE_ID")
-	@XmlAttribute(name = "levelGraphNodeId")
+	@XmlAttribute(name = "levelGraphNodeId", required = true)
 	private Long levelGraphNodeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -76,7 +75,7 @@ public class NodeTemplate extends Node {
 	private NodeType nodeType;
 
 	@Column(name = "NODETYPE_ID")
-	@XmlAttribute(name = "nodeTypeId")
+	@XmlAttribute(name = "nodeTypeId", required = true)
 	private Long nodeTypeId;
 
 	@OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "targetNodeTemplate")
@@ -96,12 +95,8 @@ public class NodeTemplate extends Node {
 	private TopologyTemplate topologyTemplate;
 
 	@Column(name = "TOPOLOGYTEMPLATE_ID")
-	@XmlAttribute(name = "topologyTemplateId")
+	@XmlAttribute(name = "topologyTemplateId", required = true)
 	private Long topologyTemplateId;
-
-	@Column(name = "ABSTRACTION_LEVEL")
-	@XmlAttribute(name = "abstractionLevelDepth")
-	private Integer abstractionLevel;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -165,14 +160,6 @@ public class NodeTemplate extends Node {
 		this.topologyTemplate = topologyTemplate;
 	}
 
-	public Integer getAbstractionLevel() {
-		return abstractionLevel;
-	}
-
-	public void setAbstractionLevel(Integer abstractionLevel) {
-		this.abstractionLevel = abstractionLevel;
-	}
-
 	public Long getTopologyTemplateId() {
 		return topologyTemplateId;
 	}
@@ -181,9 +168,13 @@ public class NodeTemplate extends Node {
 		this.topologyTemplateId = topologyTemplateId;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the NodeTemplate
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public NodeTemplate clone(TopologyTemplate topologyTemplate) {
 		NodeTemplate nodeTemplate = new NodeTemplate();
-		nodeTemplate.setAbstractionLevel(this.abstractionLevel);
 		nodeTemplate.setName(this.getName());
 		nodeTemplate.setHeight(this.getHeight());
 		nodeTemplate.setWidth(this.getWidth());
@@ -209,6 +200,11 @@ public class NodeTemplate extends Node {
 		return nodeTemplate;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method updateForeignKey() - Update the foreign key of the topologyTemplate
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public void updateForeignKey() {
 		this.setTopologyTemplateId(this.topologyTemplate.getId());
 	}

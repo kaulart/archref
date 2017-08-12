@@ -6,8 +6,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
@@ -38,6 +42,9 @@ import de.arthurkaul.archref.model.types.RelationshipType;
  ******************************************************************************************************************************************************************************************************/
 @Entity
 @Table(name = "RELATIONSHIPTEMPLATE")
+@XmlRootElement(name = "RelationshipTemplate")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "tRelationshipTemplate")
 public class RelationshipTemplate extends Relation {
 
 	/***************************************************************************************************************************************************************************************************
@@ -53,7 +60,7 @@ public class RelationshipTemplate extends Relation {
 	private LevelGraphNode levelGraphNode;
 
 	@Column(name = "LEVELGRAPHNODE_ID")
-	@XmlAttribute(name = "levelGraphNodeId")
+	@XmlAttribute(name = "levelGraphNodeId", required = true)
 	private Long levelGraphNodeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -63,19 +70,19 @@ public class RelationshipTemplate extends Relation {
 	private RelationshipType relationshipType;
 
 	@Column(name = "RELATIONSHIPTYPE_ID")
-	@XmlAttribute(name = "relationshipTypeId")
+	@XmlAttribute(name = "relationshipTypeId", required = true)
 	private Long relationshipTypeId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SOURCE_NODETEMPLATE", updatable = false)
 	@JsonBackReference(value = "outRelationshipTemplates-sourceNodeTemplate")
-	@XmlElement(name = "SourceNodeTemplate")
+	@XmlElement(name = "SourceNodeTemplate", required = true)
 	private NodeTemplate sourceNodeTemplate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TARGET_NODETEMPLATE", updatable = false)
 	@JsonBackReference(value = "inRelationshipTemplates-targetNodeTemplate")
-	@XmlElement(name = "TargetNodeTemplate")
+	@XmlElement(name = "TargetNodeTemplate", required = true)
 	private NodeTemplate targetNodeTemplate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -85,12 +92,8 @@ public class RelationshipTemplate extends Relation {
 	private TopologyTemplate topologyTemplate;
 
 	@Column(name = "TOPOLOGYTEMPLATE_ID")
-	@XmlAttribute(name = "topologyTemplateId")
+	@XmlAttribute(name = "topologyTemplateId", required = true)
 	private Long topologyTemplateId;
-
-	@Column(name = "ABSTRACTION_LEVEL")
-	@XmlAttribute(name = "abstractionLevelDepth")
-	private Integer abstractionLevel;
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -162,17 +165,13 @@ public class RelationshipTemplate extends Relation {
 		this.topologyTemplateId = topologyTemplateId;
 	}
 
-	public Integer getAbstractionLevel() {
-		return abstractionLevel;
-	}
-
-	public void setAbstractionLevel(Integer abstractionLevel) {
-		this.abstractionLevel = abstractionLevel;
-	}
-
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of RelationshipTemplate
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public RelationshipTemplate clone(TopologyTemplate topologyTemplate, NodeTemplate sourceNodeTemplate, NodeTemplate targetNodeTemplate) {
 		RelationshipTemplate relationshipTemplate = new RelationshipTemplate();
-		relationshipTemplate.setAbstractionLevel(this.abstractionLevel);
 		relationshipTemplate.setName(this.getName());
 		relationshipTemplate.setPath(this.getPath().clone());
 		relationshipTemplate.setSourceNodeId(sourceNodeTemplate.getId());
@@ -201,6 +200,11 @@ public class RelationshipTemplate extends Relation {
 		return relationshipTemplate;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method updateForeignKey() - Update the foreign key of the topologyTemplate
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public void updateForeignKey() {
 		this.setTopologyTemplateId(this.topologyTemplate.getId());
 		this.setSourceNodeId(this.getSourceNodeTemplate().getId());

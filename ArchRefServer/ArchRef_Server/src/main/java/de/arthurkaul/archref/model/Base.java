@@ -19,16 +19,30 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "BASE")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tBase")
+/*******************************************************************************************************************************************************************************************************
+ *
+ * @class - <Base> - Superclass for all object in the refinement to set give global unique id
+ *
+ * @field - Long id - ID of a Entity
+ *
+ * @author - Arthur Kaul
+ *
+ ******************************************************************************************************************************************************************************************************/
 public class Base {
 
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(generator = "long")
 	@GenericGenerator(name = "long", strategy = "de.arthurkaul.archref.UseExistingOrGenerateIdGeneratorLong")
-	@XmlAttribute(name = "id")
+	@XmlAttribute(name = "id", required = true)
 	@XmlIDExtension
 	private Long id;
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @getter / @setter Getter and Setter for the fields
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public Long getId() {
 		return id;
 	}

@@ -71,6 +71,8 @@ public class ImportXMLController {
 
 		}
 		levelGraph = levelGraphService.create(levelGraph);
+		levelGraph.updatePosition();
+		levelGraphService.update(levelGraph);
 
 		return ResponseEntity.ok().body(levelGraph);
 	}
@@ -124,11 +126,12 @@ public class ImportXMLController {
 		TopologyTemplate topologyTemplate = (TopologyTemplate) jaxbUnmarshaller.unmarshal(file);
 
 		if (topologyTemplate == null) {
-
 			throw new EntityNotFoundException("NoTopologyTemplateCreated Exception: No TopologyTemplate created.");
-
 		}
+
 		topologyTemplate = topologyTemplateService.create(topologyTemplate);
+		topologyTemplate.updatePosition();
+		topologyTemplateService.update(topologyTemplate);
 
 		return ResponseEntity.ok().body(topologyTemplate);
 	}
@@ -160,15 +163,27 @@ public class ImportXMLController {
 			repositoryService.create(repository);
 		}
 
-		for (LevelGraph levelGraph : definition.getLevelGraphs()) {
-			levelGraphService.create(levelGraph);
+		for (int i = 0; i < definition.getLevelGraphs().size(); i++) {
+			LevelGraph levelGraph = levelGraphService.create(definition.getLevelGraphs().get(i));
+			if (levelGraph != null) {
+				levelGraph.updatePosition();
+				levelGraph = levelGraphService.update(levelGraph);
+				definition.getLevelGraphs().set(i, levelGraph);
+			}
 		}
 
-		for (TopologyTemplate topologyTemplate : definition.getTopologies()) {
-			topologyTemplateService.create(topologyTemplate);
+		for (int i = 0; i < definition.getTopologies().size(); i++) {
+			TopologyTemplate topologyTemplate = topologyTemplateService.create(definition.getTopologies().get(i));
+			if (topologyTemplate != null) {
+				topologyTemplate.updatePosition();
+				topologyTemplate = topologyTemplateService.update(topologyTemplate);
+				definition.getTopologies().set(i, topologyTemplate);
+
+			}
 		}
 
 		return ResponseEntity.ok().body(definition);
+
 	}
 
 	public File convert(MultipartFile file) throws IOException {

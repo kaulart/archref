@@ -8,23 +8,18 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.arthurkaul.archref.constants.Constants;
-import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
@@ -33,6 +28,7 @@ import de.arthurkaul.archref.model.Base;
  * @field - Long id - ID of a path in a view
  * @field - String pathDataString - Specific representation of a path as a string so that SVG path/line elements can interpret the data
  * @field - List<Point> points - List of all point in a path
+ * @filed - Relation relation - parent of the path
  *
  * @author - Arthur Kaul
  *
@@ -40,29 +36,28 @@ import de.arthurkaul.archref.model.Base;
 
 @Entity
 @Table(name = "Path")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "tPath")
-public class Path extends Base {
+public class Path {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
 	 * @fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(generator = "long")
+	@GenericGenerator(name = "long", strategy = "de.arthurkaul.archref.UseExistingOrGenerateIdGeneratorLong")
+	private Long id;
 
 	@Column(name = "PATH_DATA_STRING")
-	@XmlAttribute(name = "pathDataString")
 	private String pathDataString = Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2 + " " + Constants.NODEWIDTH / 2 + "," + Constants.NODEHEIGHT / 2;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "path")
 	@JsonManagedReference(value = "path-point")
-	@XmlElementWrapper(name = "Points")
-	@XmlElement(name = "Point")
 	private List<Point> points = new ArrayList<Point>(Arrays.asList(new Point(), new Point()));
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "path")
 	@JsonBackReference(value = "relation-path")
-	@XmlInverseReference(mappedBy = "path")
 	private Relation relation;
 
 	/***************************************************************************************************************************************************************************************************
@@ -70,6 +65,14 @@ public class Path extends Base {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getPathDataString() {
 		return pathDataString;
@@ -95,6 +98,11 @@ public class Path extends Base {
 		this.relation = relation;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the Path
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public Path clone() {
 		Path path = new Path();
 		path.setPathDataString(this.pathDataString);
@@ -106,6 +114,11 @@ public class Path extends Base {
 		return path;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - update the path data string
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	public void updatePath() {
 		this.pathDataString = "";
 		for (Point point : this.points) {

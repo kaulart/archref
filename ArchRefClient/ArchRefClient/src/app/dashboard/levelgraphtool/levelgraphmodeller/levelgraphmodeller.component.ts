@@ -200,7 +200,7 @@ export class LevelGraphModellerComponent implements OnInit {
   updateLevelGraph() {
     this.levelGraphService.updateLevelGraph(this.currentLevelGraph)
       .subscribe(levelGraph => {
-             this.currentLevelGraph = levelGraph;
+        this.currentLevelGraph = levelGraph;
       },
       (error) => {
         this.flashMessage.message = error;
@@ -450,6 +450,7 @@ export class LevelGraphModellerComponent implements OnInit {
     if (this.moveNode) {
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
+      this.updateLevelGraph();
       this.moveNode = false;
     }
   }
@@ -573,7 +574,6 @@ export class LevelGraphModellerComponent implements OnInit {
               this.currentLevelGraphRelation.entryPoint = true;
               this.currentLevelGraphRelation.exitPoint = true;
             }
-            sourceNode.expectedProperties = sourceNode.expectedProperties.concat(targetNode.expectedProperties);
             sourceNode.providedProperties = sourceNode.providedProperties.concat(targetNode.providedProperties);
             this.createLevelGraphRelation();
           }
@@ -673,11 +673,6 @@ export class LevelGraphModellerComponent implements OnInit {
       } else {
         levelGraphNode.name = this.currentDragData.name;
 
-        for (let property of this.currentDragData.expectedProperties) {
-          let tempProperty = new ExpectedProperty(property.name, property.value);
-          levelGraphNode.expectedProperties.push(tempProperty);
-        }
-
         for (let property of this.currentDragData.providedProperties) {
           let tempProperty = new ProvidedProperty(property.name, property.value);
           levelGraphNode.providedProperties.push(tempProperty);
@@ -766,6 +761,7 @@ export class LevelGraphModellerComponent implements OnInit {
   stopChangeLevelHeight(event: MouseEvent) {
     this.changeLevelHeight = false;
     this.lastMousePositionY = event.offsetY;
+    this.updateLevelGraph();
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1123,6 +1119,17 @@ export class LevelGraphModellerComponent implements OnInit {
     this.currentLevelGraphRelation = relation;
     this.entryPoint = relation.entryPoint;
     this.exitPoint = relation.exitPoint;
+  }
+
+  setLevelGraphNode(levelGraphNode: LevelGraphNode) {
+    this.currentLevelGraphNode = levelGraphNode;
+  }
+
+  editLevelGraphNodeName(name: string) {
+    this.currentLevelGraphNode.name = name;
+    this.currentLevelGraph.levelGraphNodes = Utility.updateElementInArry(this.currentLevelGraphNode, this.currentLevelGraph.levelGraphNodes);
+    this.updateLevelGraph();
+
   }
 
 }

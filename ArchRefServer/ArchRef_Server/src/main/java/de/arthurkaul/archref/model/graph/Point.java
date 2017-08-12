@@ -3,37 +3,33 @@ package de.arthurkaul.archref.model.graph;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import de.arthurkaul.archref.constants.Constants;
-import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
  * @class - <Point> - A point in a coordinate system used for drawing
  *
+ * @filed - Long id - ID of the point
  * @field - float x - X-Position in a Cartesian coordinate system
  * @field - float y - Y-Position in a Cartesian coordinate system
+ * @filed - Path path - path in which the point is used
  *
  * @author - Arthur Kaul
  *
  ******************************************************************************************************************************************************************************************************/
-
 @Entity
 @Table(name = "POINT")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "tPoint")
-public class Point extends Base {
+public class Point {
 
 	/***************************************************************************************************************************************************************************************************
 	 * 
@@ -41,18 +37,21 @@ public class Point extends Base {
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
 
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(generator = "long")
+	@GenericGenerator(name = "long", strategy = "de.arthurkaul.archref.UseExistingOrGenerateIdGeneratorLong")
+	private Long id;
+
 	@Column(name = "X")
-	@XmlAttribute(name = "x")
 	private float x = Constants.NODEWIDTH / 2;
 
 	@Column(name = "Y")
-	@XmlAttribute(name = "y")
 	private float y = Constants.NODEHEIGHT / 2;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PATH_ID")
 	@JsonBackReference(value = "path-point")
-	@XmlInverseReference(mappedBy = "points")
 	private Path path;
 
 	/***************************************************************************************************************************************************************************************************
@@ -60,6 +59,14 @@ public class Point extends Base {
 	 * @getter / @setter Getter and Setter for the fields
 	 * 
 	 ***************************************************************************************************************************************************************************************************/
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public float getX() {
 		return x;
@@ -77,20 +84,25 @@ public class Point extends Base {
 		this.y = y;
 	}
 
-	public Point clone(Path path) {
-		Point point = new Point();
-		point.setX(this.x);
-		point.setY(this.y);
-		point.setPath(this.path);
-		return point;
-	}
-
 	public Path getPath() {
 		return path;
 	}
 
 	public void setPath(Path path) {
 		this.path = path;
+	}
+
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the Point
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+	public Point clone(Path path) {
+		Point point = new Point();
+		point.setX(this.x);
+		point.setY(this.y);
+		point.setPath(this.path);
+		return point;
 	}
 
 }

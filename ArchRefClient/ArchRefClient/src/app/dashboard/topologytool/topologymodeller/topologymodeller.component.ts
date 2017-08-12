@@ -79,8 +79,9 @@ export class TopologyModellerComponent implements OnInit {
   currentTopologyTemplate = new TopologyTemplate();
   currentTopologyTemplates: TopologyTemplate[] = [];
 
-  currentNodeTemplate: NodeTemplate;
-  currentRelationshipTemplate: RelationshipTemplate;
+  currentNodeTemplate: NodeTemplate = new NodeTemplate();
+  currentRelationshipTemplate: RelationshipTemplate = new RelationshipTemplate(0, 0, null, 0, 0);
+
 
   levelGraphs: LevelGraph[] = [];
 
@@ -311,7 +312,7 @@ export class TopologyModellerComponent implements OnInit {
   deleteNodeTemplate(nodeTemplate: NodeTemplate) {
     Logger.info('Delete NodeTemplate', TopologyModellerComponent.name);
     this.nodeTemplateService.deleteNodeTemplate(nodeTemplate.id).subscribe(nodeTemplateResponse => {
-     // this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
+      // this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
 
       for (let relationshipTemplate of this.currentTopologyTemplate.relationshipTemplates) {
         if (relationshipTemplate.sourceNodeId === nodeTemplate.id) {
@@ -369,8 +370,6 @@ export class TopologyModellerComponent implements OnInit {
           }
         }
         this.currentTopologyTemplate.relationshipTemplates = Utility.deleteElementFromArry(relationshipTemplate.id, this.currentTopologyTemplate.relationshipTemplates);
-
-        // this.topologyTemplateService.getTopologyTemplate(this.currentTopologyTemplate.id).subscribe(topologyTemplateResponse => this.currentTopologyTemplate = topologyTemplateResponse);
         Logger.info('Relationship Template with  id: ' + relationshipTemplateResponse.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
@@ -451,11 +450,6 @@ export class TopologyModellerComponent implements OnInit {
       tempNodeTemplate.topologyTemplateId = this.currentTopologyTemplate.id;
       tempNodeTemplate.topologyTemplate = this.currentTopologyTemplate;
       tempNodeTemplate.abstractionLevel = this.currentTopologyTemplate.id;
-
-      for (let property of this.currentDragData.expectedProperties) {
-        let tempProperty = new ExpectedProperty(property.name, property.value);
-        tempNodeTemplate.expectedProperties.push(tempProperty);
-      }
 
       for (let property of this.currentDragData.providedProperties) {
         let tempProperty = new ProvidedProperty(property.name, property.value);
@@ -565,7 +559,7 @@ export class TopologyModellerComponent implements OnInit {
       this.moveNode = false;
       this.lastMousePositionY = event.offsetY;
       this.lastMousePositionX = event.offsetX;
-      //  this.updateTopologyTemplate();
+      this.updateTopologyTemplate();
     }
   }
 
@@ -755,11 +749,6 @@ export class TopologyModellerComponent implements OnInit {
         this.currentRelationshipTemplate.relationshipType = relationshipTypeResponse;
       });
 
-    }
-
-    for (let property of parentData.expectedProperties) {
-      let tempProperty = new ExpectedProperty(property.name, property.value);
-      this.currentRelationshipTemplate.expectedProperties.push(tempProperty);
     }
 
     for (let property of parentData.providedProperties) {
@@ -1077,6 +1066,26 @@ export class TopologyModellerComponent implements OnInit {
     } else {
       levelGraph.checked = true;
     }
+  }
+
+  setNodeTemplate(nodeTemplate: NodeTemplate) {
+    this.currentNodeTemplate = nodeTemplate;
+  }
+
+  editNodeTemplateName(name: string) {
+    this.currentNodeTemplate.name = name;
+    this.currentTopologyTemplate.nodeTemplates = Utility.updateElementInArry(this.currentNodeTemplate, this.currentTopologyTemplate.nodeTemplates);
+    this.updateTopologyTemplate();
+  }
+
+  setRelationshipTemplate(relationshipTemplate: RelationshipTemplate) {
+    this.currentRelationshipTemplate = relationshipTemplate;
+  }
+
+  editRelationshipTemplateName(name: string) {
+    this.currentRelationshipTemplate.name = name;
+    this.currentTopologyTemplate.relationshipTemplates = Utility.updateElementInArry(this.currentRelationshipTemplate, this.currentTopologyTemplate.relationshipTemplates);
+    this.updateTopologyTemplate();
   }
 
 }

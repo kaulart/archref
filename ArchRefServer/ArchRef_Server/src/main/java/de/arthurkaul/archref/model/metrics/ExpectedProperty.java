@@ -46,7 +46,7 @@ public class ExpectedProperty extends Property {
 	private de.arthurkaul.archref.model.Entity entityExpected;
 
 	@Column(name = "ENTITYEXPECTED_ID")
-	@XmlAttribute(name = "entityExpectedId")
+	@XmlAttribute(name = "entityExpectedId", required = true)
 	private Long entityExpectedId;
 
 	/***************************************************************************************************************************************************************************************************
@@ -71,6 +71,11 @@ public class ExpectedProperty extends Property {
 		this.entityExpected = entityExpected;
 	}
 
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method clone() - create a deep copy of the ExpectedProperty
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
 	@Override
 	public ExpectedProperty clone() {
 		ExpectedProperty property = new ExpectedProperty();

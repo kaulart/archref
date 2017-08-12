@@ -3,12 +3,12 @@ package de.arthurkaul.archref.model.levelgraph;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,21 +18,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.arthurkaul.archref.constants.Constants;
 import de.arthurkaul.archref.constants.LevelGraphNodeType;
+import de.arthurkaul.archref.constants.LevelGraphRelationType;
 import de.arthurkaul.archref.model.Base;
 
 /*******************************************************************************************************************************************************************************************************
  *
  * @class - <LevelGraph> - LevelGraph is used for the refinement of <TopologyTemplate> Data Models
  *
- * @field - Long id - ID of the LevelGraph
  * @field - String name - Name of the LevelGraph
  * @field - List<Level> levels - List of the different levels of a LevelGraph
  * @field - List<LevelGraphNode> levelGraphNodes - List of all LevelGraphNodes in the LevelGraph
  * @field - List<LevelGraphRelation> levelGraphRelations - List of all LevelGraphRelations in the LevelGraph
+ * @field - ArrayList<ArrayList<LevelGraphNode>> nodeTypes- Used to construct of LevelGraphNodes of the NodeType according to the level only used for the refinement
+ * @field - ArrayList<ArrayList<LevelGraphNode>> nodeTypeFragments - Used to construct of LevelGraphNodes of the NodeTypeFragment according to the level refinement
+ * @field - ArrayList<ArrayList<LevelGraphNode>> relationshipTypes - Used to construct of LevelGraphNodes of the RelationshipTypes according to the level refinement
+ * @field - ArrayList<ArrayList<LevelGraphNode>> relationshipTypeFragments - Used to construct of LevelGraphNodes of the RelationshipTypeFragments according to the level refinement
  *
  * @author - Arthur Kaul
  *
@@ -52,39 +60,48 @@ public class LevelGraph extends Base {
 	 ***************************************************************************************************************************************************************************************************/
 
 	@Column(name = "NAME")
-	@XmlAttribute(name = "name")
+	@XmlAttribute(name = "name", required = true)
 	private String name = "Unnamed";
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@Cascade(CascadeType.ALL)
 	@JsonManagedReference(value = "levelgraph-levels")
 	@XmlElementWrapper(name = "AbstractionLevels")
 	@XmlElement(name = "AbstractioLevel")
 	private List<Level> levels = new ArrayList<Level>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@Cascade(CascadeType.ALL)
 	@JsonManagedReference(value = "levelgraph-levelgraphnodes")
 	@XmlElementWrapper(name = "LevelGraphNodes")
 	@XmlElement(name = "LevelGraphNode")
 	private List<LevelGraphNode> levelGraphNodes = new ArrayList<LevelGraphNode>();
 
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "levelGraph")
+	@Cascade(CascadeType.ALL)
 	@JsonManagedReference(value = "levelgraph-levelgraphrelation")
 	@XmlElementWrapper(name = "LevelGraphRelations")
 	@XmlElement(name = "LevelGraphRelation")
 	private List<LevelGraphRelation> levelGraphRelations = new ArrayList<LevelGraphRelation>();
 
+	// Temporary fields used for the refinement only
+	@Transient
 	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> nodeTypes = new ArrayList<ArrayList<LevelGraphNode>>();
 
+	@Transient
 	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> nodeTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
 
+	@Transient
 	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypes = new ArrayList<ArrayList<LevelGraphNode>>();
 
+	@Transient
 	@XmlTransient
 	private ArrayList<ArrayList<LevelGraphNode>> relationshipTypeFragments = new ArrayList<ArrayList<LevelGraphNode>>();
 
+	@Transient
 	@XmlTransient
 	private int depth = 0;
 
@@ -202,29 +219,49 @@ public class LevelGraph extends Base {
 			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
 				levelGraphNode.splitRelations();
 				this.relationshipTypes.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
-			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
-				levelGraphNode.splitFragmentRelations();
-				this.nodeTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
-			} else if (levelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPEFRAGMENT)) {
-				levelGraphNode.splitFragmentRelations();
-				this.relationshipTypeFragments.get(levelGraphNode.getLevelDepth()).add(levelGraphNode);
 			}
 
 		}
 
 	}
 
-	// public void setIdToNull() {
-	// this.setId(null);
-	// for (LevelGraphNode levelGraphNode : this.levelGraphNodes) {
-	// levelGraphNode.setIdToNull();
-	// }
-	// for (LevelGraphRelation levelGraphRelation : this.levelGraphRelations) {
-	// levelGraphRelation.setIdToNull();
-	// }
-	// for (Level level : this.levels) {
-	// level.setIdToNull();
-	// }
-	// }
+	/***************************************************************************************************************************************************************************************************
+	 * 
+	 * @method - updatePosition - Update the Position to default values. Needed for import to initialize the view positions of the front-end
+	 * 
+	 ***************************************************************************************************************************************************************************************************/
+	public void updatePosition() {
+
+		for (Level level : this.getLevels()) {
+			level.setY(level.getDepth() * Constants.LEVELHEIGHT + level.getDepth() * Constants.LEVELGAPOFFSET);
+		}
+
+		for (LevelGraphNode levelGraphNode : this.getLevelGraphNodes()) {
+
+			for (LevelGraphRelation levelGraphRelation : this.getLevelGraphRelations()) {
+
+				if (levelGraphRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.REFINE_TO)) {
+
+					if (levelGraphRelation.getSourceNodeId().equals(levelGraphNode.getId())) {
+						levelGraphRelation.getPath().getPoints().get(0)
+								.setY(levelGraphNode.getLevelDepth() * Constants.LEVELHEIGHT + levelGraphNode.getLevelDepth() * Constants.LEVELGAPOFFSET + levelGraphNode.getHeight() / 2);
+						levelGraphRelation.getPath().getPoints().get(0).setX(levelGraphNode.getX() + Constants.NODEWIDTH / 2 + Constants.LEVELGAPOFFSET);
+						levelGraphRelation.getPath().updatePath();
+					}
+
+					if (levelGraphRelation.getTargetNodeId().equals(levelGraphNode.getId())) {
+						levelGraphRelation.getPath().getPoints().get(1)
+								.setY(levelGraphNode.getLevelDepth() * Constants.LEVELHEIGHT + levelGraphNode.getLevelDepth() * Constants.LEVELGAPOFFSET + levelGraphNode.getHeight() / 2);
+						levelGraphRelation.getPath().getPoints().get(1).setX(levelGraphNode.getX() + Constants.NODEWIDTH / 2 + Constants.LEVELGAPOFFSET);
+
+						levelGraphRelation.getPath().updatePath();
+					}
+				}
+
+			}
+
+		}
+
+	}
 
 }

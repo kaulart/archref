@@ -46,6 +46,7 @@ export class LevelGraphComponent implements OnInit {
 
   levels = 3;
 
+  @Input()
   levelGraphs: LevelGraph[] = [];
 
   createdLevelGraph: LevelGraph = new LevelGraph();
@@ -63,7 +64,6 @@ export class LevelGraphComponent implements OnInit {
   ngOnInit() {
     Logger.info('Iniitalize LevelGraphComponent', LevelGraphComponent.name);
     this.flashMessage.timeoutInMS = 4000;
-    this.retrieveLevelGraphs();
   }
 
   /********************************************************************************************************************************************************************************************************
@@ -168,7 +168,16 @@ export class LevelGraphComponent implements OnInit {
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       let levelGraph: LevelGraph = new LevelGraph();
       levelGraph = JSON.parse(response);
-      this.levelGraphs.push(levelGraph);
+         this.levelGraphService.updateLevelGraph(levelGraph)
+      .subscribe(levelGraphResponse => {
+         this.levelGraphs.push(levelGraphResponse);
+        Logger.info('Level Graph with id: ' + levelGraphResponse.id + ' and name:' + levelGraphResponse.name + ' was updated sucessfully.', LevelGraphComponent.name);
+      },
+      (error) => {
+        this.flashMessage.message = error;
+        this.flashMessage.isError = true;
+        this.flashMessageService.display(this.flashMessage);
+      });
     };
   }
 

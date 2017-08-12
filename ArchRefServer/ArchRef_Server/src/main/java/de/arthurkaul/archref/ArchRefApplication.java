@@ -1,15 +1,11 @@
 package de.arthurkaul.archref;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import de.arthurkaul.archref.services.RepositoryService;
 import de.arthurkaul.archref.services.StorageService;
-import de.arthurkaul.archref.services.levelgraph.LevelGraphService;
-import de.arthurkaul.archref.services.topology.TopologyTemplateService;
 
 /***********************************************************************************************************************************************************************************************************
  * 
@@ -34,43 +30,11 @@ public class ArchRefApplication {
 		SpringApplication.run(ArchRefApplication.class, args);
 	}
 
-	@Autowired
-	LevelGraphService levelGraphService;
-
-	@Autowired
-	RepositoryService repositoryService;
-
-	@Autowired
-	TopologyTemplateService topologyTemplateService;
-
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
 			storageService.deleteAll();
 			storageService.init();
-
-			// File file = new File("ArchRefDefinition.xml");
-			//
-			// JAXBContext jaxbContext = JAXBContext.newInstance(Definition.class);
-			// Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			//
-			// Definition definition = (Definition) jaxbUnmarshaller.unmarshal(file);
-			//
-			// if (definition == null) {
-			// throw new EntityNotFoundException("NoDefinition Exception: No Definition created.");
-			// }
-			//
-			// for (Repository repository : definition.getRepositories()) {
-			// repositoryService.create(repository);
-			// }
-			//
-			// for (LevelGraph levelGraph : definition.getLevelGraphs()) {
-			// levelGraphService.create(levelGraph);
-			// }
-			//
-			// for (TopologyTemplate topologyTemplate : definition.getTopologies()) {
-			// topologyTemplateService.create(topologyTemplate);
-			// }
 
 		};
 	}

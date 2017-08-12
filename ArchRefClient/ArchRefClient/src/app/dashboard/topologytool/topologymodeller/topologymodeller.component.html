@@ -52,12 +52,12 @@
 						<i class="fa fa-arrow-down icon" aria-hidden="true">Specific Topology</i>
 					</button>
 				</div>
-				
+
 				<div class="col-sm-2">
-				<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateTopologyTemplate()">
-					<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
-				</button>
-			</div>
+					<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateTopologyTemplate()">
+						<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
+					</button>
+				</div>
 
 			</div>
 
@@ -227,11 +227,11 @@
 <contextmenu #nodeTemplateContextMenu>
 <div class="dropdown open">
 	<ul class="dropdown-menu">
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Repository RelationshipType</a>
+		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Repository RelationshipTypes</a>
 			<ul tabindex="-1" class="dropdown-menu">
 				<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO REPOSITORY SELECTED</i></li>
-				<li class="w3-pale-yellow" *ngIf="selectedRepository.nodeTypes.length < 1 && selectedRepository.name !== 'Select Repository'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABE</i></li>
-				<li *ngFor="let relationshipType of selectedRepository.nodeTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawRelation($event, relationshipType, nodeTemplateContextMenu.get('nodeTemplate'))">{{relationshipType.name}} (ID: {{relationshipType.id}})</a></li>
+				<li class="w3-pale-yellow" *ngIf="selectedRepository.relationshipTypes.length < 1 && selectedRepository.name !== 'Select Repository'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABE</i></li>
+				<li *ngFor="let relationshipType of selectedRepository.relationshipTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawRelation($event, relationshipType, nodeTemplateContextMenu.get('nodeTemplate'))">{{relationshipType.name}} (ID: {{relationshipType.id}})</a></li>
 			</ul></li>
 
 		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph RelationshipTypes</a>
@@ -248,7 +248,7 @@
 				<li *ngFor="let levelGraphNode of selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
 			</ul></li>
 
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph Node Compliant</a>
+		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph Compliant Relation</a>
 			<ul tabindex="-1" class="dropdown-menu">
 				<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i></li>
 				<li class="w3-pale-yellow" *ngIf="currentLevelGraphCompliantRelationshipTypes.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i></li>
@@ -257,6 +257,7 @@
 
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#editNodeTemplateName" (click)="setNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a></li>
 		<li><a class="dropdown-item" routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: nodeTemplateContextMenu.get('nodeTemplate').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
@@ -269,6 +270,7 @@
 	<ul class="dropdown-menu">
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
 		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
+		<li><a class="dropdown-item" data-toggle="modal" data-target="#editRelationshipTemplateName" (click)="setRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a></li>
 		<li><a class="dropdown-item" routerLink="/dashboard/relationshiptemplatedetails" [queryParams]="{id: relationshipTemplateContextMenu.get('relationshipTemplate').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
 		<li><a class="dropdown-item" (click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
 	</ul>
@@ -383,3 +385,53 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- Modal for Edit TopologyNodeName-->
+<div class="modal fade modal-position" id="editNodeTemplateName" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit NodeTemplate Name</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="form-group">
+						<label for="name">Name: </label> <input #editNameNodeTmeplate type="text" class="form-control" value="{{currentNodeTemplate.name}}" required>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="editNodeTemplateName(editNameNodeTmeplate.value)" data-dismiss="modal">Save</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Modal for Edit TopologyRelationName-->
+<div class="modal fade modal-position" id="editRelationshipTemplateName" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class=" w3-theme-l1 modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit RelationshipTemplate Name</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="  input-panel">
+				<form>
+					<div class="form-group">
+						<label for="name">Name: </label> <input #editNameRelationshipTmeplate type="text" class="form-control" id="name" value="{{currentRelationshipTemplate.name}}" required>
+					</div>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" (click)="editRelationshipTemplateName(editNameRelationshipTmeplate.value)" data-dismiss="modal">Save</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

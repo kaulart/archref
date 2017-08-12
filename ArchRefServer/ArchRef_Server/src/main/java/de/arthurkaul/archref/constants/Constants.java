@@ -14,7 +14,9 @@ package de.arthurkaul.archref.constants;
  *********************************************************************************************************************************************************************************************************/
 public class Constants {
 
-	public static final float LEVELHEIGHT = 300.0f;
+	public static final int LEVELHEIGHT = 300;
+	public static final int LEVELGAPOFFSET = 40;
+	public static final int LABELOFFSET = 50;
 	public static final float NODEHEIGHT = 150.0f;
 	public static final float NODEWIDTH = 350.0f;
 	public static final int LOWESTABSTRACTIONLEVEL = 0;
