@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:complexType name="tDefinition">
+      <xsd:sequence>
+         <xsd:element name="Repositories" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="Repository" type="tRepository" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="LevelGraphs" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="LevelGraph" type="tLevelGraph" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="Topologies" minOccurs="0">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="Topology" type="tTopologyTemplate" minOccurs="0" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="tRepository">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence>
+               <xsd:element name="NodeTypes" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="NodeType" type="tNodeType" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="RelationshipTypes" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="RelationshipType" type="tRelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tBase">
+      <xsd:sequence/>
+      <xsd:attribute name="id" type="xsd:long" use="required"/>
+   </xsd:complexType>
+   <xsd:complexType name="tNodeType">
+      <xsd:complexContent>
+         <xsd:extension base="tEntity">
+            <xsd:sequence/>
+            <xsd:attribute name="repositoryRef" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tEntity">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence>
+               <xsd:element name="ExpectedProperties" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="ExpectedProperty" type="tExpectedProperty" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="ProvidedProperties" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="ProvidedProperty" type="tProvidedProperty" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tExpectedProperty">
+      <xsd:complexContent>
+         <xsd:extension base="tProperty">
+            <xsd:sequence/>
+            <xsd:attribute name="entityExpectedId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tProperty">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="value" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tProvidedProperty">
+      <xsd:complexContent>
+         <xsd:extension base="tProperty">
+            <xsd:sequence/>
+            <xsd:attribute name="entityProvidedId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tRelationshipType">
+      <xsd:complexContent>
+         <xsd:extension base="tEntity">
+            <xsd:sequence/>
+            <xsd:attribute name="repositoryRef" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tLevelGraph">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence>
+               <xsd:element name="AbstractionLevels" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="AbstractioLevel" type="tAbstrationLevel" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="LevelGraphNodes" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="LevelGraphNode" type="tLevelGraphNode" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="LevelGraphRelations" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="LevelGraphRelation" type="tLevelGraphRelation" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tAbstrationLevel">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence/>
+            <xsd:attribute name="abstractionDepth" type="xsd:int" use="required"/>
+            <xsd:attribute name="levelGraphId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tLevelGraphNode">
+      <xsd:complexContent>
+         <xsd:extension base="tNode">
+            <xsd:sequence>
+               <xsd:element name="Type" type="xsd:string"/>
+            </xsd:sequence>
+            <xsd:attribute name="abstractionLevelId" type="xsd:long" use="required"/>
+            <xsd:attribute name="abstractionDepth" type="xsd:int" use="required"/>
+            <xsd:attribute name="levelGraphId" type="xsd:long" use="required"/>
+            <xsd:attribute name="levelGraphNodeTypeId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tNode">
+      <xsd:complexContent>
+         <xsd:extension base="tEntity">
+            <xsd:sequence/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tLevelGraphRelation">
+      <xsd:complexContent>
+         <xsd:extension base="tRelation">
+            <xsd:sequence>
+               <xsd:element name="SourceAbstractioLevel" type="xsd:int"/>
+               <xsd:element name="TargetAbstractioLevel" type="xsd:int"/>
+               <xsd:element name="TargetLevelGraphNode" type="tLevelGraphNode"/>
+               <xsd:element name="SourceLevelGraphNode" type="tLevelGraphNode"/>
+               <xsd:element name="Type" type="xsd:string"/>
+            </xsd:sequence>
+            <xsd:attribute name="sourceLevelId" type="xsd:long" use="required"/>
+            <xsd:attribute name="targetLevelId" type="xsd:long" use="required"/>
+            <xsd:attribute name="levelGraphId" type="xsd:long" use="required"/>
+            <xsd:attribute name="entryPoint" type="xsd:boolean" use="required"/>
+            <xsd:attribute name="exitPoint" type="xsd:boolean" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tRelation">
+      <xsd:complexContent>
+         <xsd:extension base="tEntity">
+            <xsd:sequence/>
+            <xsd:attribute name="sourceNodeId" type="xsd:long" use="required"/>
+            <xsd:attribute name="targetNodeId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tTopologyTemplate">
+      <xsd:complexContent>
+         <xsd:extension base="tBase">
+            <xsd:sequence>
+               <xsd:element name="NodeTemplates" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="NodeTemplate" type="tNodeTemplate" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="RelationshipTemplates" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="RelationshipTemplate" type="tRelationshipTemplate" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+               <xsd:element name="parentTopologyTemplateId" type="xsd:long" minOccurs="0"/>
+               <xsd:element name="ChildTopologyTemplates" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:sequence>
+                        <xsd:element name="TopologyTemplate" type="tTopologyTemplate" minOccurs="0" maxOccurs="unbounded"/>
+                     </xsd:sequence>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string"/>
+            <xsd:attribute name="abstractionLevelDepth" type="xsd:int" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tNodeTemplate">
+      <xsd:complexContent>
+         <xsd:extension base="tNode">
+            <xsd:sequence/>
+            <xsd:attribute name="levelGraphNodeId" type="xsd:long" use="required"/>
+            <xsd:attribute name="nodeTypeId" type="xsd:long" use="required"/>
+            <xsd:attribute name="topologyTemplateId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="tRelationshipTemplate">
+      <xsd:complexContent>
+         <xsd:extension base="tRelation">
+            <xsd:sequence>
+               <xsd:element name="SourceNodeTemplate" type="tNodeTemplate"/>
+               <xsd:element name="TargetNodeTemplate" type="tNodeTemplate"/>
+            </xsd:sequence>
+            <xsd:attribute name="levelGraphNodeId" type="xsd:long" use="required"/>
+            <xsd:attribute name="relationshipTypeId" type="xsd:long" use="required"/>
+            <xsd:attribute name="topologyTemplateId" type="xsd:long" use="required"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="Repository" type="tRepository"/>
+   <xsd:element name="NodeType" type="tNodeType"/>
+   <xsd:element name="ExpectedProperty" type="tExpectedProperty"/>
+   <xsd:element name="Property" type="tProperty"/>
+   <xsd:element name="ProvidedProperty" type="tProvidedProperty"/>
+   <xsd:element name="RelationshipType" type="tRelationshipType"/>
+   <xsd:element name="LevelGraph" type="tLevelGraph"/>
+   <xsd:element name="LevelGraphNode" type="tLevelGraphNode"/>
+   <xsd:element name="LevelGraphRelation" type="tLevelGraphRelation"/>
+   <xsd:element name="TopologyTemplate" type="tTopologyTemplate"/>
+   <xsd:element name="NodeTemplate" type="tNodeTemplate"/>
+   <xsd:element name="RelationshipTemplate" type="tRelationshipTemplate"/>
+</xsd:schema>
