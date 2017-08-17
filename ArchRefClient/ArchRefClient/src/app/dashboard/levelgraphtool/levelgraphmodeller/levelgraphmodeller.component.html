@@ -237,8 +237,10 @@
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 								    <rect rx="80" ry="30" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="#C5E0B3" style="stroke:black;stroke-width:5;" />
                                   	
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 15" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">{{levelGraphNode.name}}</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 10" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">(ID:{{levelGraphNode.id}})</text>	
+
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/1 - 10" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
 								    
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 								</g> 	
@@ -249,8 +251,10 @@
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPEFRAGMENT') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 								    <rect rx="80" ry="30" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="#F7CBAC" style="stroke:black;stroke-width:5;" />
 								
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
-								    <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 15" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">{{levelGraphNode.name}}</text>	
+								    <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 15" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">(ID:{{levelGraphNode.id}})</text>	
+								    
+								    <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2" [attr.y]="levelGraphNode.y + levelGraphNode.height/1 - 10" font-size="30" font-family="Verdana" fill="black" text-anchor="middle">+</text>	
 								    
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 								</g> 	
@@ -260,7 +264,8 @@
 				 			<g [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g *ngIf="((levelGraphNode.levelGraphNodeType === 'NODETYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradNodeType)" style="stroke:black;stroke-width:5;" />
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" [attr.height]="levelGraphNode.height" [attr.width]="levelGraphNode.width" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text> 		
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" [attr.height]="levelGraphNode.height" [attr.width]="levelGraphNode.width" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">{{levelGraphNode.name}}</text> 		
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 10" [attr.height]="levelGraphNode.height" [attr.width]="levelGraphNode.width" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">(ID:{{levelGraphNode.id}})</text> 		
 							
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 							
@@ -275,7 +280,9 @@
 							<g draggable="false" [contextmenu]="[levelGraphNodeContextMenu, {levelGraphNode: levelGraphNode}]" *ngFor="let levelGraphNode  of currentLevelGraph.levelGraphNodes">
 								<g draggable="false" *ngIf="((levelGraphNode.levelGraphNodeType === 'RELATIONSHIPTYPE') && (levelGraphNode.levelId === level.id))" (mousedown)="startMoveNode($event, levelGraphNode); startDrawRelation($event, level, levelGraphNode)" (mousemove)="onMoveNode($event, level)" (mouseup)="stopMoveNode($event); stopDrawRelation($event, levelGraphNode, level);">
 									<rect rx="20" ry="20" [attr.id]="levelGraphNode.id" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height" fill="url(#lgradRelationshipType)" style="stroke:black;stroke-width:5;" />								
-									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="white" text-anchor="middle">{{levelGraphNode.name}} (ID:{{levelGraphNode.id}})</text>	
+									<text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/4 + 15" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">{{levelGraphNode.name}}</text>	
+								    <text [attr.x]="levelGraphNode.x + levelGraphNode.width/2 + levelGraphNode.height/100 * 35" [attr.y]="levelGraphNode.y + levelGraphNode.height/2 + 10" font-size="24" font-family="Verdana" fill="black" text-anchor="middle">(ID:{{levelGraphNode.id}})</text>	
+								    
 								    <image [attr.xlink:href]="levelGraphNode.icon" [attr.x]="levelGraphNode.x + levelGraphNode.height/100 * 10" [attr.y]="levelGraphNode.y + levelGraphNode.height/100 * 10" [attr.width]="levelGraphNode.width/100 * 20" [attr.height]="levelGraphNode.height/100 * 56" />
 								
 									<rect rx="0" ry="0" [attr.x]="levelGraphNode.x" [attr.y]="levelGraphNode.y + levelGraphNode.height/3 * 2" [attr.width]="levelGraphNode.width" [attr.height]="levelGraphNode.height/3" fill="white" style="stroke:black;stroke-width:5;" />

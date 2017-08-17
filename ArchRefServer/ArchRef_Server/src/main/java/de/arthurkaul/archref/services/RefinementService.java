@@ -225,7 +225,6 @@ public class RefinementService {
 							currentEntryNodeQueue.add(refinLevelGraphNode);
 						} else if (refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
 							for (LevelGraphRelation entryRelation : refinLevelGraphNode.getOutLevelGraphRelations()) {
-								System.out.println("EntryPoint: " + entryRelation.isEntryPoint());
 								if (entryRelation.isEntryPoint()) {
 									currentEntryNodeQueue.add(entryRelation.getTargetLevelGraphNode());
 								}
@@ -353,6 +352,7 @@ public class RefinementService {
 						// Else if he is of the RELATIONSHIPTYPEFRAGMENT add all Entry Level Graph Nodes of a the Fragment to the Queue
 						if (refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPE)) {
 							currentEntryNodeQueue.add(refinLevelGraphNode);
+							currentExitNodeQueue.add(refinLevelGraphNode);
 						} else if (refinLevelGraphNode.getLevelGraphNodeType().equals(LevelGraphNodeType.RELATIONSHIPTYPEFRAGMENT)) {
 							for (LevelGraphRelation refineRelation : refinLevelGraphNode.getOutLevelGraphRelations()) {
 								if (refineRelation.getLevelGraphRelationType().equals(LevelGraphRelationType.REFINE_TO)) {
@@ -519,7 +519,7 @@ public class RefinementService {
 					fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 				} else {
 					includeNodesQueue.add(refineRelation.getTargetLevelGraphNode());
-					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
+					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPE)) {
 						fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					}
 				}
@@ -590,7 +590,7 @@ public class RefinementService {
 
 				} else {
 					includeNodesQueue.add(refineRelation.getTargetLevelGraphNode());
-					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPEFRAGMENT)) {
+					if (refineRelation.getTargetLevelGraphNode().getLevelGraphNodeType().equals(LevelGraphNodeType.NODETYPE)) {
 						fragmentNodesQueue.add(refineRelation.getTargetLevelGraphNode());
 					}
 				}

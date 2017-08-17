@@ -21,10 +21,10 @@ import { Entity } from '../entity/entity';
 
 export class Node extends Entity {
 
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x: number = 0;
+  y: number = 0;
+  width: number = Constants.NODEWIDTH;;
+  height: number = Constants.NODEHEIGHT;;
 
   constructor() {
     super();

@@ -11,7 +11,7 @@ describe('App: SbadminNg2', () => {
       ],
     });
   });
-  
+
   it('should create the app', async(() => {
     let fixture = TestBed.createComponent(AppComponent);
     let app = fixture.debugElement.componentInstance;

@@ -28,7 +28,7 @@ export class LevelGraphToolComponent implements OnInit {
   ngOnInit() {
     this.retrieveLevelGraphs();
   }
-
+  
   /********************************************************************************************************************************************************************************************************
   *
   * @method - retrieveLevelGraphs - Call the LevelGraphService for loading all LevelGraphs from database into the application and subscribe

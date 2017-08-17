@@ -582,7 +582,6 @@ export class TopologyModellerComponent implements OnInit {
     let maxLevel = 0;
     for (let level of levelGraph.levels) {
       if (level.depth > maxLevel) {
-        alert(level.depth);
         maxLevel = level.depth;
       }
     }
@@ -609,6 +608,7 @@ export class TopologyModellerComponent implements OnInit {
           this.flashMessageService.display(this.flashMessage);
         },
           (error) => {
+            this.updateTopologyTemplate();
             this.flashMessage.message = error;
             this.flashMessage.isSuccess = false;
             this.flashMessage.isError = true;
