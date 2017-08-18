@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /*******************************************************************************************************************************************************************************************************
  * 
- * @class EntityNotFoundException - Exception if a Entity was not found in the
- *        database the Database
+ * @class EntityNotFoundException - Exception if a Entity was not found in the database
  * 
  * @author Arthur Kaul
  *

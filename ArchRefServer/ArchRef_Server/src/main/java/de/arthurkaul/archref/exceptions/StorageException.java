@@ -2,8 +2,7 @@ package de.arthurkaul.archref.exceptions;
 
 /*******************************************************************************************************************************************************************************************************
  * 
- * @class StorageException - Exception if it was not possible to read or write
- *        to the file storage of the server database the Database
+ * @class StorageException - Exception if it was not possible to read or write to the file storage of the server database the Database
  * 
  * @author Arthur Kaul
  *

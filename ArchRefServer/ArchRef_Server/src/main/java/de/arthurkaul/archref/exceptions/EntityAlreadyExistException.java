@@ -2,8 +2,7 @@ package de.arthurkaul.archref.exceptions;
 
 /*******************************************************************************************************************************************************************************************************
  * 
- * @class EntityAlreadyExistException - Exception if a Entity already Exist in
- *        the Database
+ * @class EntityAlreadyExistException - Exception if a entity already exist in the database
  * 
  * @author Arthur Kaul
  *

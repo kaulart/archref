@@ -84,7 +84,7 @@ export class ProvidedPropertyComponent implements OnInit {
   updateProvidedProperty(name: string, value: string) {
     Logger.info('Update ProvidedProperty', ProvidedPropertyComponent.name);
     this.editProvidedProperty.name = name;
-    this.editProvidedProperty.value = name;
+    this.editProvidedProperty.value = value;
     this.providedPropertyService.updateProvidedProperty(this.editProvidedProperty).subscribe(responseProperty => {
       this.entity.providedProperties = Utility.updateElementInArry(responseProperty, this.entity.providedProperties);
     },
