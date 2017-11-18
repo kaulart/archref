@@ -8,12 +8,10 @@ import { FlashMessageModule } from 'angular2-flash-message';
 import { AdministrationModule } from './administration/administration.module';
 import { LevelGraphToolModule } from './levelgraphtool/levelgraphtool.module';
 import { TopologyTemplateToolModule } from './topologytool/topologytemplatetool.module';
-import { ContextmenuModule } from 'ng2-contextmenu';
 
 @NgModule({
   imports: [
     TopologyTemplateToolModule,
-    ContextmenuModule,
     LevelGraphToolModule,
     FlashMessageModule,
     CommonModule,

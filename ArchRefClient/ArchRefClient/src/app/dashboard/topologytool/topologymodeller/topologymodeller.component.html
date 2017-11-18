@@ -10,18 +10,25 @@
 
 				<div class="col-sm-5">
 					<h3>
-						Topology Template Name: <input disabled style="color: black" value="{{currentTopologyTemplate.name}}" />
+						Topology Template Name: <input disabled style="color: black"
+							value="{{currentTopologyTemplate.name}}" />
 					</h3>
 				</div>
 				<div class="col-sm-5">
 					<h3>
-						Topology Template ID: <input disabled style="color: black" value="{{currentTopologyTemplate.id}}" />
+						Topology Template ID: <input disabled style="color: black"
+							value="{{currentTopologyTemplate.id}}" />
 					</h3>
 				</div>
 
 				<div class="w3-right col-sm-2 row">
-					<button [disabled]="this.levelGraphs.length < 1" class="btn btn-primary w3-green" type="button" data-toggle="modal" data-target="#refinementModal" (click)="setUsedLevelGraphs()">Start Refinement</button>
-					<label *ngIf="this.levelGraphs.length < 1" class="w3-pale-yellow"> <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>No LevelGraph for Refinement Available
+					<button [disabled]="this.levelGraphs.length < 1"
+						class="btn btn-primary w3-green" type="button" data-toggle="modal"
+						data-target="#refinementModal" (click)="setUsedLevelGraphs()">Start
+						Refinement</button>
+					<label *ngIf="this.levelGraphs.length < 1" class="w3-pale-yellow">
+						<i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>No
+						LevelGraph for Refinement Available
 					</label>
 				</div>
 
@@ -32,29 +39,49 @@
 			<div class="col-sm-12 w3-center control-group">
 
 				<div class="row">
-					<button [disabled]="currentTopologyTemplate.parentTopologyTemplateId === undefined || currentTopologyTemplate.parentTopologyTemplateId === null" class="btn w3-green" (click)="loadAbstractTopologyTemplates()" style="color: black">
-						<i class="fa fa-arrow-up icon" aria-hidden="true">Abstract Topology</i>
+					<button
+						[disabled]="currentTopologyTemplate.parentTopologyTemplateId === undefined || currentTopologyTemplate.parentTopologyTemplateId === null"
+						class="btn w3-green" (click)="loadAbstractTopologyTemplates()"
+						style="color: black">
+						<i class="fa fa-arrow-up icon" aria-hidden="true">Abstract
+							Topology</i>
 					</button>
 				</div>
 
 
 				<div class="row">
-					<button [disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) - 1 < 0" class="btn btn-default  btn-circle w3-green" type="button" (click)="prevTopology()">
-						<i class="fa fa-arrow-left icon" aria-hidden="true">Prev Topology</i>
+					<button
+						[disabled]="currentTopologyTemplates.length < 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) - 1 < 0"
+						class="btn btn-default  btn-circle w3-green" type="button"
+						(click)="prevTopology()">
+						<i class="fa fa-arrow-left icon" aria-hidden="true">Prev
+							Topology</i>
 					</button>
-					<input id="abstractionLevel" class=" w3-center" style="color: black" disabled value="Abstraction Level: {{currentTopologyTemplate.abstractionLevel}}" />
-					<button [disabled]="currentTopologyTemplates.length <= 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) + 1 >= currentTopologyTemplates.length" class="btn btn-default w3-green" type="button" (click)="nextTopology()">
-						<i class="icon fa fa-arrow-right" aria-hidden="true">Next Topology</i>
+					<input id="abstractionLevel" class=" w3-center"
+						style="color: black" disabled
+						value="Abstraction Level: {{currentTopologyTemplate.abstractionLevel}}" />
+					<button
+						[disabled]="currentTopologyTemplates.length <= 1 || currentTopologyTemplates.indexOf(currentTopologyTemplate) + 1 >= currentTopologyTemplates.length"
+						class="btn btn-default w3-green" type="button"
+						(click)="nextTopology()">
+						<i class="icon fa fa-arrow-right" aria-hidden="true">Next
+							Topology</i>
 					</button>
 				</div>
 				<div class="row">
-					<button [disabled]="currentTopologyTemplate.childTopologyTemplates.length < 1" class="btn w3-green" (click)="loadSpecificTopologyTemplates()" style="color: black">
-						<i class="fa fa-arrow-down icon" aria-hidden="true">Specific Topology</i>
+					<button
+						[disabled]="currentTopologyTemplate.childTopologyTemplates.length < 1"
+						class="btn w3-green" (click)="loadSpecificTopologyTemplates()"
+						style="color: black">
+						<i class="fa fa-arrow-down icon" aria-hidden="true">Specific
+							Topology</i>
 					</button>
 				</div>
 
 				<div class="col-sm-2">
-					<button id="saveBtn" class="btn btn-primary w3-right w3-green btn-10" type="button" (click)="updateTopologyTemplate()">
+					<button id="saveBtn"
+						class="btn btn-primary w3-right w3-green btn-10" type="button"
+						(click)="updateTopologyTemplate()">
 						<i class="icon fa fa-floppy-o" aria-hidden="true"></i>Save
 					</button>
 				</div>
@@ -76,29 +103,53 @@
 			<!-- Repository Tool Box -->
 			<div class="toolbox-group">
 				<div class="w3-pale-yellow">
-					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If you use Node Types from one or more selected repositories, you may model Level Graph Topology Templates which are not Level Graph Compliant</i>
+					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If
+						you use Node Types from one or more selected repositories, you may
+						model Level Graph Topology Templates which are not Level Graph
+						Compliant</i>
 				</div>
 				<label>Selected Repository:</label>
 				<div class="dropdown">
-					<button id="selectRepository" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedRepository.name}}</button>
+					<button id="selectRepository"
+						class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button"
+						data-toggle="dropdown">{{selectedRepository.name}}</button>
 
 					<ul class="list dropdown-menu" style="width: 100%;">
-						<li class="w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
-						<li class="listItem" *ngFor="let repository of repositories" (click)="onSelectRepository(repository)">{{ repository.name }}</li>
+						<li class="w3-pale-yellow" *ngIf="repositories.length < 1"
+							disabled><i class="icon fa fa-exclamation-triangle"
+							aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
+						<li class="listItem" *ngFor="let repository of repositories"
+							(click)="onSelectRepository(repository)">{{ repository.name
+							}}</li>
 					</ul>
 				</div>
 
-				<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#toolbox_nodes" aria-expanded="false" aria-controls="toolbox_nodes">
+				<button style="width: 100%"
+					class="w3-theme-d2 w3-border-brown btn btn-primary" type="button"
+					data-toggle="collapse" data-target="#toolbox_nodes"
+					aria-expanded="false" aria-controls="toolbox_nodes">
 					NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 				</button>
 
 				<div class="collapse toolbox" id="toolbox_nodes">
 					<ul class="list list-group">
 
-						<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
-						<li class="w3-pale-yellow" *ngIf="repositories.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
-						<li class="w3-pale-yellow" *ngIf="selectedRepository.nodeTypes.length < 1 && selectedRepository.name !== 'Select Repository'" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
-						<li class="nodeTemplate w3-round" draggable="true" *ngFor="let nodeType of selectedRepository.nodeTypes" (drag)=" onDragNodeType($event, nodeType)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{nodeType.icon}}" />
+						<li class="w3-pale-yellow"
+							*ngIf="selectedRepository.name === 'Select Repository' && repositories.length > 0"
+							disabled><i class="icon fa fa-exclamation-triangle"
+							aria-hidden="true"></i>NO RPOSITORY SELECTED</li>
+						<li class="w3-pale-yellow" *ngIf="repositories.length < 1"
+							disabled><i class="icon fa fa-exclamation-triangle"
+							aria-hidden="true"></i>NO REPOSITORY AVAILABLE</li>
+						<li class="w3-pale-yellow"
+							*ngIf="selectedRepository.nodeTypes.length < 1 && selectedRepository.name !== 'Select Repository'"
+							disabled><i class="icon fa fa-exclamation-triangle"
+							aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
+						<li class="nodeTemplate w3-round" draggable="true"
+							*ngFor="let nodeType of selectedRepository.nodeTypes"
+							(drag)=" onDragNodeType($event, nodeType)"
+							(dragover)="onDragOver($event)"><img
+							style="width: 32px; height: 32px" src="{{nodeType.icon}}" />
 							<h3>{{nodeType.name}}</h3></li>
 					</ul>
 				</div>
@@ -109,49 +160,94 @@
 			<div class="toolbox-group">
 
 				<div class="dropdown">
-					<button id="selcetLevelGraph" class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{selectedLevelGraph.name}}</button>
+					<button id="selcetLevelGraph"
+						class=" w3-theme-d2 btn btn-primary dropdown-toggle" type="button"
+						data-toggle="dropdown">{{selectedLevelGraph.name}}</button>
 
 					<ul class="list dropdown-menu" style="width: 100%;">
-						<li class="w3-pale-yellow" *ngIf="levelGraphs.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
-						<li class="listItem" *ngFor="let levelGraph of levelGraphs" (click)="onSelectLevelGraph(levelGraph)">{{ levelGraph.name }}</li>
+						<li class="w3-pale-yellow" *ngIf="levelGraphs.length < 1" disabled><i
+							class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO
+							LEVEL GRAPH AVAILABLE</li>
+						<li class="listItem" *ngFor="let levelGraph of levelGraphs"
+							(click)="onSelectLevelGraph(levelGraph)">{{ levelGraph.name
+							}}</li>
 					</ul>
 				</div>
 
 				<div class="tool-item">
 
-					<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#levelGraph_compliantNodeTypes" aria-expanded="false" aria-controls="levelGraph_nodeTypes">
-						Level {{currentTopologyTemplate.abstractionLevel}} NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+					<button style="width: 100%"
+						class="w3-theme-d2 w3-border-brown btn btn-primary" type="button"
+						data-toggle="collapse"
+						data-target="#levelGraph_compliantNodeTypes" aria-expanded="false"
+						aria-controls="levelGraph_nodeTypes">
+						Level {{currentTopologyTemplate.abstractionLevel}} NodeTypes<i
+							class="fa fa-caret-down w3-right" aria-hidden="true"></i>
 					</button>
 
 					<div class="collapse toolbox" id="levelGraph_compliantNodeTypes">
 						<ul class="list list-group">
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH SELECTED</li>
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name !== 'Select Level Graph' && selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
-							<li class="nodeTemplate w3-round" draggable="true" *ngFor="let levelGraphNode of selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length > 0"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO LEVEL GRAPH SELECTED</li>
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length < 1"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name !== 'Select Level Graph' && selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel.length < 1"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
+							<li class="nodeTemplate w3-round" draggable="true"
+								*ngFor="let levelGraphNode of selectedLevelGraphNodeNodeTypeCurrentAbstractionLevel"
+								(drag)="onDragLevelGraphNode($event, levelGraphNode)"
+								(dragover)="onDragOver($event)"><img
+								style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
 								<h3>{{levelGraphNode.name}}</h3></li>
 						</ul>
 					</div>
 				</div>
 
 				<div class="w3-pale-yellow">
-					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If you use Node Types from one/multiple selected LevelGraphs, you can model Topology Templates which are Single Level Single/Multiple Graph - Compliant</i>
+					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If
+						you use Node Types from one/multiple selected LevelGraphs, you can
+						model Topology Templates which are Single Level Single/Multiple
+						Graph - Compliant</i>
 				</div>
 
 				<div class="tool-item">
-					<button style="width: 100%" class="w3-theme-d2 w3-border-brown btn btn-primary" type="button" data-toggle="collapse" data-target="#levelGraph_nodeTypes" aria-expanded="false" aria-controls="levelGraph_nodeTypes">
-						All NodeTypes<i class="fa fa-caret-down w3-right" aria-hidden="true"></i>
+					<button style="width: 100%"
+						class="w3-theme-d2 w3-border-brown btn btn-primary" type="button"
+						data-toggle="collapse" data-target="#levelGraph_nodeTypes"
+						aria-expanded="false" aria-controls="levelGraph_nodeTypes">
+						All NodeTypes<i class="fa fa-caret-down w3-right"
+							aria-hidden="true"></i>
 					</button>
 
 					<div class="collapse toolbox" id="levelGraph_nodeTypes">
 						<ul class="list list-group">
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length > 0" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH SELECTED</li>
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
-							<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name !== 'Select Level Graph' && selectedLevelGraphNodeNodeType.length < 1" disabled><i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length > 0"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO LEVEL GRAPH SELECTED</li>
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name === 'Select Level Graph' && levelGraphs.length < 1"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO LEVEL GRAPH AVAILABLE</li>
+							<li class="w3-pale-yellow"
+								*ngIf="selectedLevelGraph.name !== 'Select Level Graph' && selectedLevelGraphNodeNodeType.length < 1"
+								disabled><i class="icon fa fa-exclamation-triangle"
+								aria-hidden="true"></i>NO NODETYPES AVAILABLE</li>
 
-							<ng-container *ngFor="let levelGraphNode of selectedLevelGraphNodeNodeType">
+							<ng-container
+								*ngFor="let levelGraphNode of selectedLevelGraphNodeNodeType">
 
-							<li class="nodeTemplate w3-round" draggable="true" *ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE')" (drag)="onDragLevelGraphNode($event, levelGraphNode)" (dragover)="onDragOver($event)"><img style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
+							<li class="nodeTemplate w3-round" draggable="true"
+								*ngIf="(levelGraphNode.levelGraphNodeType === 'NODETYPE')"
+								(drag)="onDragLevelGraphNode($event, levelGraphNode)"
+								(dragover)="onDragOver($event)"><img
+								style="width: 32px; height: 32px" src="{{levelGraphNode.icon}}" />
 								<h3>{{levelGraphNode.name}}</h3></li>
 							</ng-container>
 						</ul>
@@ -159,62 +255,112 @@
 				</div>
 
 				<div class="w3-pale-yellow">
-					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If you use Node Types from one/multiple selected Level Graphs, you may model Topology Templates which are Single/Multiple-Graph Compliant</i>
+					<i class="icon fa fa-exclamation-triangle" aria-hidden="true">If
+						you use Node Types from one/multiple selected Level Graphs, you
+						may model Topology Templates which are Single/Multiple-Graph
+						Compliant</i>
 				</div>
 
 			</div>
 		</div>
 
 		<!-- Draw area container -->
-		<div id="draw_area" class="w3-rest w3-theme-l5 scroll-panel" (mousemove)="onDrawLevelGraphRelation($event)">
+		<div id="draw_area" class="w3-rest w3-theme-l5 scroll-panel"
+			(mousemove)="onDrawLevelGraphRelation($event)">
 
 			<!-- svg container for display svg elements like rect, line, polyline etc. -->
 			<svg (dragover)="onDragOver($event)" (drop)="onDrop($event)">
 				
 				<!-- Definition of gradients of the node Template and of the arrows of the polyline -->
 				<defs>
-   					<marker id="TriangleEnd" viewBox="0 0 10 10" refX="80" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+   					<marker id="TriangleEnd" viewBox="0 0 10 10" refX="80" refY="5"
+					markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 0 0 L 10 5 L 0 10 z" />
    					</marker>
  				</defs> 
  					 
  				<defs>
-   					<marker id="TriangleEndDraw" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+   					<marker id="TriangleEndDraw" viewBox="0 0 10 10" refX="5"
+					refY="5" markerWidth="4" markerHeight="4" orient="auto">
     				  	<path d="M 0 0 L 10 5 L 0 10 z" />
    					</marker>
  				</defs>
  				
  				<defs> 
-					<linearGradient id="nodeTemplate" x1="49%" y1="100%" x2="51%" y2="0%"> 
-					<stop offset="0%" style="stop-color:rgb(143,193,242);stop-opacity:1" />
-					<stop offset="50%" style="stop-color:rgb(123,166,209);stop-opacity:1" />
-					<stop offset="100%" style="stop-color:rgb(143,193,242);stop-opacity:1" />
+					<linearGradient id="nodeTemplate" x1="49%" y1="100%" x2="51%"
+					y2="0%"> 
+					<stop offset="0%"
+					style="stop-color:rgb(143,193,242);stop-opacity:1" />
+					<stop offset="50%"
+					style="stop-color:rgb(123,166,209);stop-opacity:1" />
+					<stop offset="100%"
+					style="stop-color:rgb(143,193,242);stop-opacity:1" />
 					</linearGradient> 
 				</defs>
 				
 				<!-- Draw Line witch is enabled if you draw a relation to display the currentDrawRelation -->
-				<polyline *ngIf="drawRelation || drawCurrentLevelGraphRelation || drawCurrentLevelGraphCompliantRelation" [attr.points]="currentRelationshipTemplate.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#TriangleEndDraw)">
+				<polyline
+					*ngIf="drawRelation || drawCurrentLevelGraphRelation || drawCurrentLevelGraphCompliantRelation"
+					[attr.points]="currentRelationshipTemplate.path.pathDataString"
+					style="fill:none;stroke:black;stroke-width:6"
+					marker-end="url(#TriangleEndDraw)">
 					       <marker href="#TriangleEnd" position="175px" />
 				</polyline>	
 				
 				
 				<!-- Relationship Template -->
-			 	<g [contextmenu]="[relationshipTemplateContextMenu, {relationshipTemplate: relationshipTemplate}]" *ngFor="let relationshipTemplate of currentTopologyTemplate.relationshipTemplates">
-					    <polyline [attr.points]="relationshipTemplate.path.pathDataString" style="fill:none;stroke:black;stroke-width:6" marker-end="url(#TriangleEnd)">
+			 	<g (mousedown)="setEntity(relationshipTemplate); setRelationshipTemplate(relationshipTemplate)" [contextMenu]="relationshipTemplateMenu"
+					[contextMenuSubject]="relationshipTemplate"
+					*ngFor="let relationshipTemplate of currentTopologyTemplate.relationshipTemplates">
+					    <polyline
+					[attr.points]="relationshipTemplate.path.pathDataString"
+					style="fill:none;stroke:black;stroke-width:6"
+					marker-end="url(#TriangleEnd)">
 					    
 					    </polyline>
-					    	<text [attr.x]="(relationshipTemplate.path.points[0].x + relationshipTemplate.path.points[1].x)/ 2" [attr.y]="(relationshipTemplate.path.points[0].y + relationshipTemplate.path.points[1].y)/ 2 - 10" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">{{relationshipTemplate.name}} (ID:{{relationshipTemplate.id}})</text>		
-					        <text [attr.x]="(relationshipTemplate.path.points[0].x + relationshipTemplate.path.points[1].x)/ 2" [attr.y]="(relationshipTemplate.path.points[0].y + relationshipTemplate.path.points[1].y)/ 2 + 30" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(RelationshipType ID:{{relationshipTemplate.relationshipTypeId}})</text>	
+					    	<text
+					[attr.x]="(relationshipTemplate.path.points[0].x + relationshipTemplate.path.points[1].x)/ 2"
+					[attr.y]="(relationshipTemplate.path.points[0].y + relationshipTemplate.path.points[1].y)/ 2 - 10"
+					font-family="Verdana" font-size="24" fill="black"
+					text-anchor="middle">{{relationshipTemplate.name}} (ID:{{relationshipTemplate.id}})</text>		
+					        <text
+					[attr.x]="(relationshipTemplate.path.points[0].x + relationshipTemplate.path.points[1].x)/ 2"
+					[attr.y]="(relationshipTemplate.path.points[0].y + relationshipTemplate.path.points[1].y)/ 2 + 30"
+					font-family="Verdana" font-size="24" fill="black"
+					text-anchor="middle">(RelationshipType ID:{{relationshipTemplate.relationshipTypeId}})</text>	
 				</g>
 				
 				<!-- Node Template -->
-				<g [contextmenu]="[nodeTemplateContextMenu, {nodeTemplate: nodeTemplate}]" *ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates" (mouseup)="stopDrawLevelGraphRelation(nodeTemplate)" (mousedown)="startMoveNode($event, nodeTemplate); setCurrentLevelGraphCompliantRelationshipTypes($event, nodeTemplate.levelGraphNodeId)" (mousemove)="onMoveNode($event)"
-					(mouseup)="stopMoveNode($event)">
-					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)" style="stroke:black;stroke-width:5;" />				    
-				    <image [attr.xlink:href]="nodeTemplate.icon" [attr.x]="nodeTemplate.x + nodeTemplate.height/100 * 10" [attr.y]="nodeTemplate.y + nodeTemplate.height/100 * 10" [attr.width]="nodeTemplate.width/100 * 20" [attr.height]="nodeTemplate.height/100 * 56" />			
-					<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2 + nodeTemplate.height/100 * 35" [attr.y]="nodeTemplate.y + nodeTemplate.height/4 + 15" font-family="Verdana" font-size="20" fill="white" text-anchor="middle">{{nodeTemplate.name}} (ID:{{nodeTemplate.id}})</text>		
-                    <rect rx="0" ry="0" [attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y + nodeTemplate.height/3 * 2" [attr.width]="nodeTemplate.width" [attr.height]="nodeTemplate.height/3" fill="white" style="stroke:black;stroke-width:5;" />
-					<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2" [attr.y]="nodeTemplate.y + nodeTemplate.height/4 * 3 + 20" font-family="Verdana" font-size="24" fill="black" text-anchor="middle">(NodeType ID:{{nodeTemplate.nodeTypeId}})</text>	
+				<g (mousedown)="setEntity(nodeTemplate); setNodeTemplate(nodeTemplate)" [contextMenu]="nodeTemplateMenu"
+					[contextMenuSubject]="nodeTemplate"
+					*ngFor="let nodeTemplate of currentTopologyTemplate.nodeTemplates"
+					(mouseup)="stopDrawLevelGraphRelation(nodeTemplate)"
+					(mousedown)="startMoveNode($event, nodeTemplate); setCurrentLevelGraphCompliantRelationshipTypes($event, nodeTemplate.levelGraphNodeId)"
+					(mousemove)="onMoveNode($event)" (mouseup)="stopMoveNode($event)">
+					<rect rx="20" ry="20" [attr.id]="nodeTemplate.id"
+					[attr.x]="nodeTemplate.x" [attr.y]="nodeTemplate.y"
+					[attr.width]="nodeTemplate.width"
+					[attr.height]="nodeTemplate.height" fill="url(#nodeTemplate)"
+					style="stroke:black;stroke-width:5;" />				    
+				    <image [attr.xlink:href]="nodeTemplate.icon"
+					[attr.x]="nodeTemplate.x + nodeTemplate.height/100 * 10"
+					[attr.y]="nodeTemplate.y + nodeTemplate.height/100 * 10"
+					[attr.width]="nodeTemplate.width/100 * 20"
+					[attr.height]="nodeTemplate.height/100 * 56" />			
+					<text
+					[attr.x]="nodeTemplate.x + nodeTemplate.width/2 + nodeTemplate.height/100 * 35"
+					[attr.y]="nodeTemplate.y + nodeTemplate.height/4 + 15"
+					font-family="Verdana" font-size="20" fill="white"
+					text-anchor="middle">{{nodeTemplate.name}} (ID:{{nodeTemplate.id}})</text>		
+                    <rect rx="0" ry="0" [attr.x]="nodeTemplate.x"
+					[attr.y]="nodeTemplate.y + nodeTemplate.height/3 * 2"
+					[attr.width]="nodeTemplate.width"
+					[attr.height]="nodeTemplate.height/3" fill="white"
+					style="stroke:black;stroke-width:5;" />
+					<text [attr.x]="nodeTemplate.x + nodeTemplate.width/2"
+					[attr.y]="nodeTemplate.y + nodeTemplate.height/4 * 3 + 20"
+					font-family="Verdana" font-size="24" fill="black"
+					text-anchor="middle">(NodeType ID:{{nodeTemplate.nodeTypeId}})</text>	
 				</g>
 					
            </svg>
@@ -222,92 +368,155 @@
 	</div>
 </div>
 
+<context-menu #nodeTemplateMenu> 
 
-<!-- Node Template context menu -->
-<contextmenu #nodeTemplateContextMenu>
-<div class="dropdown open">
-	<ul class="dropdown-menu">
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Repository RelationshipTypes</a>
-			<ul tabindex="-1" class="dropdown-menu">
-				<li class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO REPOSITORY SELECTED</i></li>
-				<li class="w3-pale-yellow" *ngIf="selectedRepository.relationshipTypes.length < 1 && selectedRepository.name !== 'Select Repository'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABE</i></li>
-				<li *ngFor="let relationshipType of selectedRepository.relationshipTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawRelation($event, relationshipType, nodeTemplateContextMenu.get('nodeTemplate'))">{{relationshipType.name}} (ID: {{relationshipType.id}})</a></li>
-			</ul></li>
-
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph RelationshipTypes</a>
-			<ul tabindex="-1" class="dropdown-menu">
-				<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i></li>
-				<li class="w3-pale-yellow" *ngIf="selectedLevelGraphNodeRelationType.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i></li>
-				<li *ngFor="let levelGraphNode of selectedLevelGraphNodeRelationType"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
-			</ul></li>
-
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level {{currentTopologyTemplate.abstractionLevel}} RelationshipTypes</a>
-			<ul tabindex="-1" class="dropdown-menu">
-				<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i></li>
-				<li class="w3-pale-yellow" *ngIf="selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i></li>
-				<li *ngFor="let levelGraphNode of selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
-			</ul></li>
-
-		<li class="dropdown-submenu"><a class="dropdown-item"><i class="fa fa-arrow-right" aria-hidden="true"></i>Level Graph Compliant Relation</a>
-			<ul tabindex="-1" class="dropdown-menu">
-				<li class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i></li>
-				<li class="w3-pale-yellow" *ngIf="currentLevelGraphCompliantRelationshipTypes.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'"><i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i></li>
-				<li *ngFor="let levelGraphNode of currentLevelGraphCompliantRelationshipTypes"><a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphCompliantRelation($event, levelGraphNode, nodeTemplateContextMenu.get('nodeTemplate'))">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a></li>
-			</ul></li>
-
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#editNodeTemplateName" (click)="setNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a></li>
-		<li><a class="dropdown-item" routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: nodeTemplateContextMenu.get('nodeTemplate').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
-		<li><a class="dropdown-item" (click)="deleteNodeTemplate(nodeTemplateContextMenu.get('nodeTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
-	</ul>
-</div>
-</contextmenu>
+	<ng-template contextMenuItem [subMenu]="subMenuRepository">
+		Repository RelationshipTypes
+  	</ng-template>
+  	<context-menu #subMenuRepository>	
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedRepository.name === 'Select Repository'" contextMenuItem>
+      		<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO REPOSITORY SELECTED</i>
+    	</ng-template>
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedRepository.relationshipTypes.length < 1 && selectedRepository.name !== 'Select Repository'" contextMenuItem>
+      		<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABE</i>
+    	</ng-template>
+    	<ng-template *ngFor="let relationshipType of selectedRepository.relationshipTypes" contextMenuItem>
+      		<a class="dropdown-item" tabindex="-1" (click)="startDrawRelation($event, relationshipType, getCurrentNodeTemplate())">{{relationshipType.name}}(ID: {{relationshipType.id}})</a>
+    	</ng-template>
+  	</context-menu>
+	 
+	<ng-template contextMenuItem [subMenu]="subLevelGraph"> 
+			Level Graph RelationshipTypes		    	
+	</ng-template>	
+	<context-menu #subLevelGraph>	
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'" contextMenuItem>
+			<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i>
+		</ng-template>
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedLevelGraphNodeRelationType.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'" contextMenuItem>
+      		<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i>
+    	</ng-template>
+    	<ng-template *ngFor="let levelGraphNode of selectedLevelGraphNodeRelationType" contextMenuItem>
+      		<a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphRelation($event, levelGraphNode, getCurrentNodeTemplate())">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a>
+    	</ng-template>
+  	</context-menu>
+	
+	<ng-template contextMenuItem [subMenu]="subRelationshipTypes"> 
+		Level {{currentTopologyTemplate.abstractionLevel}} RelationshipTypes
+	</ng-template>	
+	<context-menu #subRelationshipTypes>	
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'" contextMenuItem>
+			<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i>
+		</ng-template>
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'" contextMenuItem>
+      		<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i>
+    	</ng-template>
+    	<ng-template *ngFor="let levelGraphNode of selectedLevelGraphNodeRelationTypeCurrentAbstractionLevel" contextMenuItem>
+      		<a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphRelation($event, levelGraphNode, getCurrentNodeTemplate())">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a>
+    	</ng-template>
+  	</context-menu>
+	
+	<ng-template contextMenuItem [subMenu]="subComplLevelGraph"> 
+		Level Graph Compliant Relation
+	</ng-template>	
+	<context-menu #subComplLevelGraph>	
+    	<ng-template class="w3-pale-yellow" *ngIf="selectedLevelGraph.name === 'Select LevelGraph'" contextMenuItem>
+			<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO LEVEL GRAPH SELECTED</i>
+		</ng-template>
+    	<ng-template class="w3-pale-yellow" *ngIf="currentLevelGraphCompliantRelationshipTypes.length < 1 && selectedLevelGraph.name !== 'Select LevelGraph'" contextMenuItem>
+      		<i class="icon fa fa-exclamation-triangle" aria-hidden="true">NO RELATIONSHIPTYPE AVAILABEL</i>
+    	</ng-template>
+    	<ng-template *ngFor="let levelGraphNode of currentLevelGraphCompliantRelationshipTypes" contextMenuItem>
+      		<a class="dropdown-item" tabindex="-1" (click)="startDrawCurrentLevelGraphCompliantRelation($event, levelGraphNode, getCurrentNodeTemplate())">{{levelGraphNode.name}} (ID: {{levelGraphNode.id}})</a>
+    	</ng-template>
+  	</context-menu>
+	
+	<ng-template contextMenuItem >
+		<a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a>
+	</ng-template>
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a>	
+	</ng-template>
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" data-toggle="modal" data-target="#editNodeTemplateName"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a>
+	</ng-template>
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" routerLink="/dashboard/nodetemplatedetails" [queryParams]="{id: getCurrentNodeTemplate().id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a>
+	</ng-template> 
+    <ng-template contextMenuItem> 
+		<a class="dropdown-item" (click)="deleteNodeTemplate(getCurrentNodeTemplate())"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+	</ng-template>  
+</context-menu>
 
 <!-- Relationship Template context menu -->
-<contextmenu #relationshipTemplateContextMenu>
-<div class="dropdown open">
-	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</a></li>
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty" (click)="setEntity(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a></li>
-		<li><a class="dropdown-item" data-toggle="modal" data-target="#editRelationshipTemplateName" (click)="setRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a></li>
-		<li><a class="dropdown-item" routerLink="/dashboard/relationshiptemplatedetails" [queryParams]="{id: relationshipTemplateContextMenu.get('relationshipTemplate').id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a></li>
-		<li><a class="dropdown-item" (click)="deleteRelationshipTemplate(relationshipTemplateContextMenu.get('relationshipTemplate'))"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a></li>
-	</ul>
-</div>
-</contextmenu>
+<context-menu #relationshipTemplateMenu> 
+	<ng-template contextMenuItem >
+		<button class="dropdown-item" data-toggle="modal" data-target="#createExpectedProperty"><i class="fa fa-eye" aria-hidden="true"></i>Expected Property</button>
+	</ng-template>
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" data-toggle="modal" data-target="#createProvidedProperty"><i class="fa fa-eye" aria-hidden="true"></i>Provided Property</a>
+	</ng-template> 
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" data-toggle="modal" data-target="#editRelationshipTemplateName"><i class="fa fa-eye" aria-hidden="true"></i>Edit Name</a>
+	</ng-template> 
+	<ng-template contextMenuItem> 
+		<a class="dropdown-item" routerLink="/dashboard/relationshiptemplatedetails" [queryParams]="{id: getCurrenrRelationshipTemplate().id}"><i class="fa fa-eye" aria-hidden="true"></i>View Details</a>
+	</ng-template> 
+	 <ng-template contextMenuItem> 
+		<a class="dropdown-item" (click)="deleteRelationshipTemplate()"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a> 
+	</ng-template> 
+</context-menu>
 
 
 <!-- Modal for Create ProvidedProperty -->
-<div class="modal fade modal-position" id="createProvidedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="createProvidedProperty"
+	tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Create ProvidedProperty</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" id="exampleModalLabel">Create
+					ProvidedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createProvidedProperty.name" #nameProperty type="text" class="form-control" id="nameProperty" value="{{createProvidedProperty.name}}" required>
-						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+						<label for="nameProperty">Name: </label> <input
+							#nameProperty="ngModel" name="name"
+							[(ngModel)]="createProvidedProperty.name" #nameProperty
+							type="text" class="form-control" id="nameProperty"
+							value="{{createProvidedProperty.name}}" required>
+						<div
+							*ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)"
+							class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is
+								required</div>
 
 						</div>
 					</div>
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createProvidedProperty.value" #valueProperty type="text" class="form-control" id="valueProperty" value="{{createProvidedProperty.value}}" required>
-						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+						<label for="valueProperty">Value: </label> <input
+							#valueProperty="ngModel" name="value"
+							[(ngModel)]="createProvidedProperty.value" #valueProperty
+							type="text" class="form-control" id="valueProperty"
+							value="{{createProvidedProperty.value}}" required>
+						<div
+							*ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)"
+							class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is
+								required</div>
 
 						</div>
 					</div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="addProvidedProperty()" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						(click)="addProvidedProperty()" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>
@@ -317,35 +526,55 @@
 
 
 <!-- Modal for Create ExpectedProperty -->
-<div class="modal fade modal-position" id="createExpectedProperty" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="createExpectedProperty"
+	tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Create ExpectedProperty</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" id="exampleModalLabel">Create
+					ExpectedProperty</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="  input-panel">
 				<form>
 					<div class="col-sm-6 form-group">
-						<label for="nameProperty">Name: </label> <input #nameProperty="ngModel" name="name" [(ngModel)]="createExpectedProperty.name" #nameProperty type="text" class="form-control" id="nameProperty" value="{{createExpectedProperty.name}}" required>
-						<div *ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!nameProperty.errors.required">Name is required</div>
+						<label for="nameProperty">Name: </label> <input
+							#nameProperty="ngModel" name="name"
+							[(ngModel)]="createExpectedProperty.name" #nameProperty
+							type="text" class="form-control" id="nameProperty"
+							value="{{createExpectedProperty.name}}" required>
+						<div
+							*ngIf="nameProperty.errors && (nameProperty.dirty || nameProperty.touched)"
+							class="alert alert-danger">
+							<div [hidden]="!nameProperty.errors.required">Name is
+								required</div>
 
 						</div>
 					</div>
 
 					<div class="col-sm-6 form-group">
 
-						<label for="valueProperty">Value: </label> <input #valueProperty="ngModel" name="value" [(ngModel)]="createExpectedProperty.value" #valueProperty type="text" class="form-control" id="valueProperty" value="{{createExpectedProperty.value}}" required>
-						<div *ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)" class="alert alert-danger">
-							<div [hidden]="!valueProperty.errors.required">Value is required</div>
+						<label for="valueProperty">Value: </label> <input
+							#valueProperty="ngModel" name="value"
+							[(ngModel)]="createExpectedProperty.value" #valueProperty
+							type="text" class="form-control" id="valueProperty"
+							value="{{createExpectedProperty.value}}" required>
+						<div
+							*ngIf="valueProperty.errors && (valueProperty.dirty || valueProperty.touched)"
+							class="alert alert-danger">
+							<div [hidden]="!valueProperty.errors.required">Value is
+								required</div>
 
 						</div>
 					</div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="addExpectedProperty()" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						(click)="addExpectedProperty()" data-dismiss="modal">Save</button>
 
 				</form>
 			</div>
@@ -354,32 +583,48 @@
 </div>
 
 <!-- Modal for Refinement -->
-<div class="modal fade modal-position" id="refinementModal" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="refinementModal"
+	tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Refinement</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="  input-panel">
 				<div class="col-sm-12 form-group">
-					<label>Select Level Graphs which should be used for the Refinement:</label>
-					<div id="refineGraphList" class="w3-light-grey" style="max-height: 300px; overflow: auto">
-						<label *ngFor="let levelGraph of levelGraphs" class="form-control"> <input type="checkbox" name="levelGraphs" [(ngModel)]="levelGraph.checked" value="{{levelGraph.id}}" (click)="onCheckLevelGraph(levelGraph)" /> Name: {{levelGraph.name}} ID: {{levelGraph.id}}
+					<label>Select Level Graphs which should be used for the
+						Refinement:</label>
+					<div id="refineGraphList" class="w3-light-grey"
+						style="max-height: 300px; overflow: auto">
+						<label *ngFor="let levelGraph of levelGraphs" class="form-control">
+							<input type="checkbox" name="levelGraphs"
+							[(ngModel)]="levelGraph.checked" value="{{levelGraph.id}}"
+							(click)="onCheckLevelGraph(levelGraph)" /> Name:
+							{{levelGraph.name}} ID: {{levelGraph.id}}
 						</label>
 					</div>
 				</div>
 				<form>
 
 					<div class="col-sm-12 form-group">
-						<label for="smi">Satisfaction Index (between 0 and 1): </label> <input #smi type="number" min="0" max="1" class="form-control" value="1" required>
+						<label for="smi">Satisfaction Index (between 0 and 1): </label> <input
+							#smi type="number" min="0" max="1" class="form-control" value="1"
+							required>
 					</div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="setUsedLevelGraphs()">Restore</button>
-<!-- 					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value, steps)" data-dismiss="modal">Refinement</button>
- -->					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value, 1)" data-dismiss="modal">One Step Refinement</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						(click)="setUsedLevelGraphs()">Restore</button>
+					<!-- 					<button type="button" class="btn btn-primary" (click)="startRefinement(smi.value, steps)" data-dismiss="modal">Refinement</button>
+ -->
+					<button type="button" class="btn btn-primary"
+						(click)="startRefinement(smi.value, 1)" data-dismiss="modal">One
+						Step Refinement</button>
 				</form>
 			</div>
 		</div>
@@ -388,22 +633,31 @@
 
 
 <!-- Modal for Edit TopologyNodeName-->
-<div class="modal fade modal-position" id="editNodeTemplateName" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="editNodeTemplateName"
+	tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Edit NodeTemplate Name</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" id="exampleModalLabel">Edit
+					NodeTemplate Name</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="  input-panel">
 				<form>
 					<div class="form-group">
-						<label for="name">Name: </label> <input #editNameNodeTmeplate type="text" class="form-control" value="{{currentNodeTemplate.name}}" required>
+						<label for="name">Name: </label> <input #editNameNodeTmeplate
+							type="text" class="form-control"
+							value="{{currentNodeTemplate.name}}" required>
 					</div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="editNodeTemplateName(editNameNodeTmeplate.value)" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						(click)="editNodeTemplateName(editNameNodeTmeplate.value)"
+						data-dismiss="modal">Save</button>
 				</form>
 			</div>
 		</div>
@@ -413,25 +667,33 @@
 
 
 <!-- Modal for Edit TopologyRelationName-->
-<div class="modal fade modal-position" id="editRelationshipTemplateName" tabindex="-1" role="dialog" data-backdrop="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade modal-position" id="editRelationshipTemplateName"
+	tabindex="-1" role="dialog" data-backdrop="true"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class=" w3-theme-l1 modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Edit RelationshipTemplate Name</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" id="exampleModalLabel">Edit
+					RelationshipTemplate Name</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="  input-panel">
 				<form>
 					<div class="form-group">
-						<label for="name">Name: </label> <input #editNameRelationshipTmeplate type="text" class="form-control" id="name" value="{{currentRelationshipTemplate.name}}" required>
+						<label for="name">Name: </label> <input
+							#editNameRelationshipTmeplate type="text" class="form-control"
+							id="name" value="{{currentRelationshipTemplate.name}}" required>
 					</div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" (click)="editRelationshipTemplateName(editNameRelationshipTmeplate.value)" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						(click)="editRelationshipTemplateName(editNameRelationshipTmeplate.value)"
+						data-dismiss="modal">Save</button>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
-

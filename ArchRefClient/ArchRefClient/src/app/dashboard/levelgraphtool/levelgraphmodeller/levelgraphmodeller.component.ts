@@ -24,6 +24,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FlashMessageService} from 'angular2-flash-message';
 import {FlashMessage} from 'angular2-flash-message';
+import {ContextMenuService, ContextMenuComponent} from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-levelgraphmodeller',
@@ -1123,6 +1124,14 @@ export class LevelGraphModellerComponent implements OnInit {
 
   setLevelGraphNode(levelGraphNode: LevelGraphNode) {
     this.currentLevelGraphNode = levelGraphNode;
+  }
+
+  getLevelGraphRelation() {
+    return this.currentLevelGraphRelation;
+  }
+
+  getLevelGraphNode(levelGraphNode: LevelGraphNode) {
+    return this.currentLevelGraphNode;
   }
 
   editLevelGraphNodeName(name: string) {

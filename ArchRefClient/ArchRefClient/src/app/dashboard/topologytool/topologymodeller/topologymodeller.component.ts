@@ -31,6 +31,8 @@ import {TopologyTemplateService} from '../../../shared/dataservices/topologytemp
 import {Utility} from '../../../utility';
 import {FlashMessageService} from 'angular2-flash-message';
 import {FlashMessage} from 'angular2-flash-message';
+import {ContextMenuService, ContextMenuComponent} from 'ngx-contextmenu';
+
 
 @Component({
   selector: 'app-topologymodeller',
@@ -354,22 +356,23 @@ export class TopologyModellerComponent implements OnInit {
    * @param - id: number - ID of the RelationshipTemplate witch should be deleted from the database
    *
    ****************************************************************************************************************************************/
-  deleteRelationshipTemplate(relationshipTemplate: RelationshipTemplate) {
+  deleteRelationshipTemplate() {
     Logger.info('Delete RelationshipTemplate', TopologyModellerComponent.name);
-    this.relationshipTemplateService.deleteRelationshipTemplate(relationshipTemplate.id)
+    let tempRelationshipTemplate = this.currentRelationshipTemplate;
+    this.relationshipTemplateService.deleteRelationshipTemplate(this.currentRelationshipTemplate.id)
       .subscribe(relationshipTemplateResponse => {
 
         for (let node of this.currentTopologyTemplate.nodeTemplates) {
-          if (node.id === relationshipTemplate.sourceNodeId) {
-            node.outRelationshipTemplates = Utility.deleteElementFromArry(relationshipTemplate.id, node.outRelationshipTemplates);
+          if (node.id === tempRelationshipTemplate.sourceNodeId) {
+            node.outRelationshipTemplates = Utility.deleteElementFromArry(tempRelationshipTemplate.id, node.outRelationshipTemplates);
           }
 
 
-          if (node.id === relationshipTemplate.targetNodeId) {
-            node.inRelationshipTemplates = Utility.deleteElementFromArry(relationshipTemplate.id, node.inRelationshipTemplates);
+          if (node.id === tempRelationshipTemplate.targetNodeId) {
+            node.inRelationshipTemplates = Utility.deleteElementFromArry(tempRelationshipTemplate.id, node.inRelationshipTemplates);
           }
         }
-        this.currentTopologyTemplate.relationshipTemplates = Utility.deleteElementFromArry(relationshipTemplate.id, this.currentTopologyTemplate.relationshipTemplates);
+        this.currentTopologyTemplate.relationshipTemplates = Utility.deleteElementFromArry(tempRelationshipTemplate.id, this.currentTopologyTemplate.relationshipTemplates);
         Logger.info('Relationship Template with  id: ' + relationshipTemplateResponse.id + ' was deleted sucessfully.', TopologyModellerComponent.name);
       },
       (error) => {
@@ -1080,6 +1083,15 @@ export class TopologyModellerComponent implements OnInit {
 
   setRelationshipTemplate(relationshipTemplate: RelationshipTemplate) {
     this.currentRelationshipTemplate = relationshipTemplate;
+//    alert(this.currentRelationshipTemplate.sourceNodeId);
+  }
+
+  getCurrenrRelationshipTemplate() {
+    return this.currentRelationshipTemplate;
+  }
+
+  getCurrentNodeTemplate() {
+    return this.currentNodeTemplate;
   }
 
   editRelationshipTemplateName(name: string) {

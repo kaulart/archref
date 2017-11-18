@@ -7,7 +7,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ExportXmlService } from './shared/dataservices/exportxml.service';
-import { ContextmenuModule } from 'ng2-contextmenu';
 import { RepositoryService } from './shared/dataservices/repository/repository.service';
 import { LevelService } from './shared/dataservices/levelgraph/level.service';
 import { LevelGraphService } from './shared/dataservices/levelgraph/levelgraph.service';
@@ -31,7 +30,6 @@ import 'hammerjs';
   ],
   imports: [
     BrowserModule,
-    ContextmenuModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
